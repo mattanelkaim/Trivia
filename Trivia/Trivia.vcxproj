@@ -128,6 +128,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Handlers\IRequestHandler.h" />
+    <ClInclude Include="Handlers\LoginRequestHandler.h" />
+    <ClInclude Include="Infrastructure\Communicator.h" />
+    <ClInclude Include="Infrastructure\RequestHandlerFactory.h" />
+    <ClInclude Include="Infrastructure\IDatabase.h" />
+    <ClInclude Include="Infrastructure\Server.h" />
+    <ClInclude Include="Managers\LoggedUser.h" />
+    <ClInclude Include="Managers\LoginManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
