@@ -11,6 +11,6 @@ private:
 	LoginManager m_loginManager;
 
 public:
-	LoginRequesetHandler createLoginRequestHandler();
+	LoginRequestHandler createLoginRequestHandler();
 	LoginManager& getLoginManager();
 };
