@@ -21,6 +21,8 @@
     <ClInclude Include="Handlers\LoginRequestHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
     <ClInclude Include="Infrastructure\Communicator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -39,5 +41,6 @@
     <ClInclude Include="Managers\LoggedUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+>>>>>>> 40a759dce5f75eb43161d5726bf2794cc98c15e2
   </ItemGroup>
 </Project>
