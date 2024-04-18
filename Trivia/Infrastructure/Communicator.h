@@ -15,7 +15,7 @@ private:
 	//void handleNewClient(SOCKET clientSocket);
 
 public:
-	Communicator() = default;
+	Communicator();
 	void bindAndListen() const;
 	//void startHandleRequests();
 };
