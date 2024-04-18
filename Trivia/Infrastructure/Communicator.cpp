@@ -5,7 +5,12 @@
 constexpr auto PORT = 7777;
 
 Communicator::Communicator()
-{}
+{
+	this->m_serverSocket = socket(AF_INET,  SOCK_STREAM,  IPPROTO_TCP); 
+
+	if (this->m_serverSocket == INVALID_SOCKET)
+		throw std::exception(__FUNCTION__ " - socket");
+}
 
 void Communicator::bindAndListen() const
 {
