@@ -1,5 +1,6 @@
 #include "Communicator.h"
 #include <iostream>
+#include <WinSock2.h>
 
 constexpr auto PORT = 7777;
 
