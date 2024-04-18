@@ -9,12 +9,13 @@ class Communicator
 {
 private:
 	std::map<SOCKET, IRequestHandler*> m_clients;
-	RequestHandlerFactory& m_handlerFactory;
+	//RequestHandlerFactory& m_handlerFactory;
 	SOCKET m_serverSocket;
 
-	void bindAndListen();
-	void handleNewClient(SOCKET clientSocket);
+	//void handleNewClient(SOCKET clientSocket);
 
 public:
-	void startHandleRequests();
+	Communicator() = default;
+	void bindAndListen() const;
+	//void startHandleRequests();
 };
