@@ -11,7 +11,7 @@ private:
 	std::map<SOCKET, IRequestHandler*> m_clients;
 	//RequestHandlerFactory& m_handlerFactory;
 	SOCKET m_serverSocket;
-	//void handleNewClient(SOCKET clientSocket);
+	void handleNewClient(SOCKET clientSocket);
 
 public:
 	Communicator();
