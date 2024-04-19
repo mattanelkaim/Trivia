@@ -18,6 +18,5 @@ private:
 	SOCKET m_serverSocket;
 
 	void bindAndListen();
-	void acceptClient(); // Helper function
 	void handleNewClient(SOCKET clientSocket);
 };
