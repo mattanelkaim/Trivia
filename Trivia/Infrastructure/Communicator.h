@@ -10,7 +10,7 @@ class Communicator
 public:
 	Communicator();
 	~Communicator() noexcept;
-	void startHandleRequests();
+	void startHandleRequests(); // Why is it public?
 
 private:
 	std::map<SOCKET, IRequestHandler*> m_clients;
@@ -18,7 +18,6 @@ private:
 	SOCKET m_serverSocket;
 
 	void bindAndListen();
-	void serverListen();
-	void acceptClient();
+	void acceptClient(); // Helper function
 	void handleNewClient(SOCKET clientSocket);
 };
