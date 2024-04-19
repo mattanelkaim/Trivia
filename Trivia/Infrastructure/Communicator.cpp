@@ -7,6 +7,7 @@
 
 using std::to_string;
 constexpr unsigned short PORT = 7777;
+constexpr std::string_view SIGN_IN = "Hello";
 
 
 Communicator::Communicator()
@@ -40,7 +41,7 @@ void Communicator::bindAndListen()
 	if (listen(this->m_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::runtime_error(__FUNCTION__ " - listen() err: " + to_string(WSAGetLastError()));
 
-	std::cout << "Listening on port " << PORT << "...\n";
+	std::cout << "Listening on port " << PORT << "...\n\n";
 	std::thread t_connector(&Communicator::startHandleRequests, this);
 	t_connector.detach();
 }
@@ -49,32 +50,26 @@ void Communicator::startHandleRequests()
 {
 	do
 	{
-		std::cout << "Waiting for new client connection request\n";
-		acceptClient();
+		// This accepts the client and create a specific socket from server to this client
+		// The process will not continue until a client connects to the server
+		SOCKET clientSocket = accept(m_serverSocket, NULL, NULL);
+		if (clientSocket == INVALID_SOCKET)
+			throw std::runtime_error(__FUNCTION__ " - accept() err: " + to_string(WSAGetLastError()));
+
+		std::cout << "Client accepted. Server and client can communicate\n";
+		// Add client with LoginRequestHandler to map
+		this->m_clients.emplace(clientSocket, new LoginRequestHandler);
+
+		// The function that handles the conversation with the client
+		std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
+		handlerThread.detach();
 	} while (true);
-}
-
-void Communicator::acceptClient()
-{
-	// This accepts the client and create a specific socket from server to this client
-	// The process will not continue until a client connects to the server
-	SOCKET clientSocket = accept(m_serverSocket, NULL, NULL);
-	if (clientSocket == INVALID_SOCKET)
-		throw std::runtime_error(__FUNCTION__ " - accept() err: " + to_string(WSAGetLastError()));
-
-	std::cout << "Client accepted. Server and client can communicate\n";
-	// Add client with LoginRequestHandler to map
-	this->m_clients.emplace(clientSocket, new LoginRequestHandler);
-
-	// The function that handles the conversation with the client
-	std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
-	handlerThread.detach();
 }
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	// Currently just echoes the message back to the client
 	const std::string msg = Helper::getStringPartFromSocket(clientSocket, (int)(SIGN_IN.size()));
-	std::cout << "client sent '" << msg << "'. Echoing back...\n";
+	std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
 	Helper::sendData(clientSocket, msg);
 }
