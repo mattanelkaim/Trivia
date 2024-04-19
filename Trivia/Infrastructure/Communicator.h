@@ -7,15 +7,17 @@
 
 class Communicator
 {
+public:
+	Communicator();
+	~Communicator() noexcept;
+	void startHandleRequests();
+
 private:
 	std::map<SOCKET, IRequestHandler*> m_clients;
 	//RequestHandlerFactory& m_handlerFactory;
 	SOCKET m_serverSocket;
-
-	//void handleNewClient(SOCKET clientSocket);
-
-public:
-	Communicator() = default;
-	void bindAndListen() const;
-	//void startHandleRequests();
+	void bindAndListen();
+	void serverListen();
+	void acceptClient();
+	void handleNewClient(SOCKET clientSocket);
 };
