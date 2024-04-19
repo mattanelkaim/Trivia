@@ -7,8 +7,8 @@
 
 using std::to_string;
 constexpr unsigned short PORT = 7777;
-constexpr std::string_view EXIT = "EXIT";
 constexpr std::string_view SIGN_IN = "hello";
+
 
 Communicator::Communicator()
 {
@@ -20,7 +20,7 @@ Communicator::Communicator()
 
 Communicator::~Communicator() noexcept
 {
-	for (const auto& client : this->m_clients)
+	for (auto& client : this->m_clients)
 		delete client.second;
 }
 
@@ -83,28 +83,4 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 	std::cout << "client sent '" << msg << "'. Echoing back...\n";
 	Helper::sendData(clientSocket, msg);
-}
-
-
-#include "WSAInitializer.h"
-int main(void)
-{
-	try
-	{
-		WSAInitializer wsaInit;
-		Communicator c;
-		c.startHandleRequests();
-		
-		std::string userInput;
-		do
-		{
-			std::cin >> userInput;
-		} while (userInput != EXIT);
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << e.what();
-	}
-
-	return 0;
 }

@@ -145,6 +145,7 @@
     <ClCompile Include="Infrastructure\Helper.cpp" />
     <ClCompile Include="Infrastructure\Server.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
