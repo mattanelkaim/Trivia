@@ -7,7 +7,8 @@
 
 using std::to_string;
 constexpr unsigned short PORT = 7777;
-constexpr auto EXIT = "EXIT";
+constexpr std::string_view EXIT = "EXIT";
+constexpr std::string_view SIGN_IN = "hello";
 
 Communicator::Communicator()
 {
@@ -74,13 +75,13 @@ void Communicator::acceptClient()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-	const std::string msg = Helper::getStringPartFromSocket(clientSocket, 5);
+	const std::string msg = Helper::getStringPartFromSocket(clientSocket, (int)(SIGN_IN.size()));
 
 	// "hello" just for now
-	if (msg == "hello")
+	if (msg == SIGN_IN)
 		this->m_clients.emplace(clientSocket, new LoginRequestHandler);
 
-	std::cout << "client sent " << msg << ". Echoing back...\n";
+	std::cout << "client sent '" << msg << "'. Echoing back...\n";
 	Helper::sendData(clientSocket, msg);
 }
 
