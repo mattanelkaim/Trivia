@@ -1,8 +1,8 @@
 from typing import Union
 from socket import socket, AF_INET, SOCK_STREAM
 
-SERVER_PORT = ...
-SERVER_IP = '127.0.0.1'
+SERVER_PORT = 7777
+SERVER_IP = 'localhost'
 ERROR_SOCKET_VALUE = None
 BUFFER_SIZE = 1024
 
