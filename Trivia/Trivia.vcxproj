@@ -109,6 +109,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Ws2_32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,14 +132,19 @@
     <ClInclude Include="Handlers\IRequestHandler.h" />
     <ClInclude Include="Handlers\LoginRequestHandler.h" />
     <ClInclude Include="Infrastructure\Communicator.h" />
+    <ClInclude Include="Infrastructure\Helper.h" />
     <ClInclude Include="Infrastructure\RequestHandlerFactory.h" />
     <ClInclude Include="Infrastructure\IDatabase.h" />
     <ClInclude Include="Infrastructure\Server.h" />
+    <ClInclude Include="Infrastructure\WSAInitializer.h" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Infrastructure\Communicator.cpp" />
+    <ClCompile Include="Infrastructure\Helper.cpp" />
+    <ClCompile Include="Infrastructure\Server.cpp" />
+    <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
