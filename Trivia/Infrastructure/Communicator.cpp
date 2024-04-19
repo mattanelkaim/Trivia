@@ -1,6 +1,7 @@
 #include "Communicator.h"
 #include <iostream>
 #include <string>
+#include <thread>
 #include <WinSock2.h>
 
 using std::to_string;
@@ -30,7 +31,13 @@ void Communicator::bindAndListen() const
 		throw std::runtime_error(__FUNCTION__ " - listen" + to_string(WSAGetLastError()));
 
 	std::cout << "Listening on port " << PORT << "...\n";
+	std::thread connector(&Communicator::handleNewClient, this);
+	connector.detach();
 }
+
+void Communicator::handleNewClient(SOCKET clientSocket)
+{}
+
 
 #include "WSAInitializer.h"
 int main(void)
