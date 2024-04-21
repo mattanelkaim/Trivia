@@ -3,6 +3,8 @@
 #include "Communicator.h"
 #include "IDatabase.h"
 #include "RequestHandlerFactory.h"
+#include "./WSAInitializer.h"
+#include <iostream>
 
 class Server
 {
