@@ -1,25 +1,17 @@
 #include "Server.h"
-#include "./WSAInitializer.h"
-#include <iostream>
+#include <thread>
 
 constexpr std::string_view EXIT = "EXIT";
 
 void Server::run()
 {
-	try
-	{
-		WSAInitializer wsaInit;
-		Server server;
-		server.run();
+	std::string userInput;
 
-		std::string userInput;
-		do
-		{
-			std::cin >> userInput;
-		} while (userInput != EXIT);
-	}
-	catch (const std::exception& e)
+	std::thread t_connector(&Communicator::startHandleRequests, &(this->m_communicator));
+	t_connector.detach();
+
+	do
 	{
-		std::cerr << e.what();
-	}
+		std::cin >> userInput;
+	} while (userInput != EXIT);
 }
