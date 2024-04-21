@@ -139,6 +139,7 @@
     <ClInclude Include="Infrastructure\WSAInitializer.h" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
+    <ClInclude Include="Responses\JsonResponsePacketSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Infrastructure\Communicator.cpp" />
