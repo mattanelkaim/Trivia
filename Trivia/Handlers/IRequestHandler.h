@@ -2,7 +2,9 @@
 
 #include "../ServerDefenitions.h"
 
-struct RequestResult; // Double-linkage shit
+struct RequestResult; // Double-circular-jerk-dependency-linkage mega-shit
+struct RequestInfo; // Double-circular-jerk-dependency-linkage mega-shit
+
 
 class IRequestHandler
 {
