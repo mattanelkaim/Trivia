@@ -42,8 +42,6 @@ void Communicator::bindAndListen()
 		throw std::runtime_error(__FUNCTION__ " - listen() err: " + to_string(WSAGetLastError()));
 
 	std::cout << "Listening on port " << PORT << "...\n\n";
-	std::thread t_connector(&Communicator::startHandleRequests, this);
-	t_connector.detach();
 }
 
 void Communicator::startHandleRequests()
