@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,12 +139,15 @@
     <ClInclude Include="Infrastructure\WSAInitializer.h" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
+    <ClInclude Include="Responses\JsonResponsePacketSerializer.h" />
+    <ClInclude Include="ServerDefenitions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Infrastructure\Communicator.cpp" />
     <ClCompile Include="Infrastructure\Helper.cpp" />
     <ClCompile Include="Infrastructure\Server.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
+    <ClCompile Include="Responses\JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
