@@ -1,12 +1,11 @@
 #pragma once
 
-#include <string>
 #include "../ServerDefenitions.h"
 
 class JsonResponsePacketSerializer
 {
 public:
-	JsonResponsePacketSerializer() = delete; // this ensures that this class is never instanciated
+	JsonResponsePacketSerializer() = delete; // This ensures that this class is never instantiated
 
 	static buffer serializeErrorResponse(const ErrorResponse& response);
 	static buffer serializeLoginResponse(const LoginResponse& response);
