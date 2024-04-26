@@ -2,29 +2,31 @@
 
 #include <vector>
 
-#ifndef BUFFER
-typedef std::vector<byte> buffer; // the 'byte' typedef already exists in <vector>
-#define BUFFER
-#endif // !BUFFER
+using buffer = std::vector<byte>; // The 'byte' typedef already exists in <vector>
 
 
 #pragma region responseDefenitions
 
-// response structs
-struct ErrorResponse {
+// Response structs
+struct ErrorResponse
+{
 	std::string message;
 };
-struct LoginResponse {
-	unsigned int status;
-};
-struct SignupResponse {
+
+struct LoginResponse
+{
 	unsigned int status;
 };
 
-#define ERROR_MESSAGE_JSON "{message: \"ERROR\"}"
-#define ERROR_MESSAGE_JSON_LENGTH sizeof(ERROR_MESSAGE_JSON)
+struct SignupResponse
+{
+	unsigned int status;
+};
+
+constexpr std::string_view ERROR_MSG_JSON = "{message: \"ERROR\"}";
 
 #pragma endregion
+
 
 #pragma region protocolDefenitions
 
@@ -34,6 +36,6 @@ enum messageType : byte
 	REQUEST
 };
 
-#define NUM_BYTES_RESERVED_FOR_MESSAGE_LENGTH 4
+constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 
 #pragma endregion
