@@ -1,8 +1,14 @@
 #pragma once
 
+#include "Handlers/IRequestHandler.h"
+#include <ctime> // Used for std::time_t
+#include <string>
 #include <vector>
 
-using buffer = std::vector<byte>; // The 'byte' typedef already exists in <vector>
+class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
+
+using byte = unsigned char;
+using buffer = std::vector<byte>;
 
 
 #pragma region responseDefenitions
@@ -28,7 +34,50 @@ constexpr std::string_view ERROR_MSG_JSON = "{message: \"ERROR\"}";
 #pragma endregion
 
 
+#pragma region requestDefenitions
+
+enum RequestId : byte
+{
+	LOGIN,
+	SIGNUP
+};
+
+struct RequestInfo
+{
+	RequestId id;
+	std::time_t receivalTime;
+	buffer buffer;
+};
+
+struct RequestResult
+{
+	buffer response;
+	IRequestHandler* newHandler;
+};
+
+// Request structs
+struct LoginRequest
+{
+	std::string username;
+	std::string password;
+};
+
+struct SignupRequest
+{
+	std::string username;
+	std::string password;
+	std::string email;
+};
+
+#pragma endregion
+
+
 #pragma region protocolDefenitions
+
+/* protocol template: {code}{data length}{message}
+ *					   ^^^^  ^^^^^^^^^^^  ^^^^^^^
+ *                   1 byte,  4 bytes,  {data length} bytes
+ */
 
 enum messageType : byte
 {
@@ -37,5 +86,6 @@ enum messageType : byte
 };
 
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
+constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
 
 #pragma endregion
