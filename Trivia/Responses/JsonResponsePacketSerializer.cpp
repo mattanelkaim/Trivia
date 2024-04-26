@@ -1,56 +1,50 @@
-#include "JsonResponsePacketSerializer.h"
 #include "../Infrastructure/Helper.h"
+#include "JsonResponsePacketSerializer.h"
+
 
 buffer JsonResponsePacketSerializer::serializeErrorResponse(const ErrorResponse& response)
 {
-    buffer buff(0);
-    std::string json = ERROR_MESSAGE_JSON;
+    buffer buff;
 
-    buff.push_back(messageType::RESPONSE); // the first byte is the response code
+    buff.push_back(messageType::RESPONSE); // The first byte is the response code
 
-    // pushing the json's length to the buffer
-    for (const byte& b : Helper::getPaddedNumber(ERROR_MESSAGE_JSON_LENGTH, NUM_BYTES_RESERVED_FOR_MESSAGE_LENGTH))
-        buff.push_back(b);
+    // Pushing the JSON's length to the buffer
+    buff.append_range(Helper::getPaddedNumber(ERROR_MSG_JSON.length(), BYTES_RESERVED_FOR_MSG_LEN));
 
-    // pushing the actual message to the buffer
-    for (const byte& b : json)
-        buff.push_back(b);
+    // Pushing the actual message to the buffer
+    buff.append_range(ERROR_MSG_JSON);
     
     return buff;
-}       
+}
 
 buffer JsonResponsePacketSerializer::serializeLoginResponse(const LoginResponse& response)
 {
-    buffer buff(0);
-    std::string json = "{status: 1}";
+    buffer buff;
+    const std::string_view json = "{status: 1}";
 
-    buff.push_back(messageType::RESPONSE); // the first byte is the response code
+    buff.push_back(messageType::RESPONSE); // The first byte is the response code
 
-    // pushing the json's length to the buffer
-    for (const byte& b : Helper::getPaddedNumber(json.length(), NUM_BYTES_RESERVED_FOR_MESSAGE_LENGTH))
-        buff.push_back(b);
+    // Pushing the JSON's length to the buffer
+    buff.append_range(Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN));
 
-    // pushing the actual message to the buffer
-    for (const byte& b : json)
-        buff.push_back(b);
+    // Pushing the actual message to the buffer
+    buff.append_range(json);
 
     return buff;
 }
 
 buffer JsonResponsePacketSerializer::serializeSignupResponse(const SignupResponse& response)
 {
-    buffer buff(0);
-    std::string json = "{status: 1}";
+    buffer buff;
+    const std::string_view json = "{status: 1}";
 
-    buff.push_back(messageType::RESPONSE); // the first byte is the response code
+    buff.push_back(messageType::RESPONSE); // The first byte is the response code
 
-    // pushing the json's length to the buffer
-    for (const byte& b : Helper::getPaddedNumber(json.length(), NUM_BYTES_RESERVED_FOR_MESSAGE_LENGTH))
-        buff.push_back(b);
+    // Pushing the JSON's length to the buffer
+    buff.append_range(Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN));
 
-    // pushing the actual message to the buffer
-    for (const byte& b : json)
-        buff.push_back(b);
+    // Pushing the actual message to the buffer
+    buff.append_range(json);
 
     return buff;
 }
