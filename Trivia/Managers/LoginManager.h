@@ -2,6 +2,7 @@
 
 #include "../Infrastructure/IDatabase.h"
 #include "LoggedUser.h"
+#include <string>
 #include <vector>
 
 class LoginManager

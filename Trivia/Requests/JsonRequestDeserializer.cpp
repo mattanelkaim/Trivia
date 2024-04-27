@@ -2,6 +2,7 @@
 #include "../ServerDefenitions.h"
 #include "JsonRequestDeserializer.h"
 #include <stdexcept>
+#include <string>
 
 using json = nlohmann::json;
 

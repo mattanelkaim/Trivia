@@ -1,5 +1,6 @@
 #include "../Infrastructure/Helper.h"
 #include "JsonResponseSerializer.h"
+#include <string>
 
 
 buffer JsonResponseSerializer::serializeErrorResponse(const ErrorResponse& response)

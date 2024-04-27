@@ -1,5 +1,6 @@
 #include "Server.h"
 #include <iostream>
+#include <string>
 #include <thread>
 
 constexpr std::string_view EXIT = "EXIT";
