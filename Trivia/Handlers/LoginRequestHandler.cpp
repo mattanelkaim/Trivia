@@ -25,7 +25,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
         throw std::runtime_error("RequestInfo is not login/signup!");
     }
     
-    result.newHandler = nullptr; // TODO assign other handlers respectively
+    result.newHandler = nullptr; // TODO(mattan) assign other handlers respectively
 
     return result;
 }
