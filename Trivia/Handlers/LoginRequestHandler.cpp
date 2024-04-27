@@ -1,4 +1,5 @@
 #include "../Responses/JsonResponseSerializer.h"
+#include "../ServerDefenitions.h"
 #include "LoginRequestHandler.h"
 #include <stdexcept>
 
