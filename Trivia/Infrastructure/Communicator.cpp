@@ -67,7 +67,7 @@ void Communicator::startHandleRequests()
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	// Currently just echoes the message back to the client
-	const std::string msg = Helper::getStringPartFromSocket(clientSocket, (int)(SIGN_IN.size()));
+	const std::string msg = Helper::getStringPartFromSocket(clientSocket, (unsigned int)SIGN_IN.size());
 	std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
 	Helper::sendData(clientSocket, msg);
 }

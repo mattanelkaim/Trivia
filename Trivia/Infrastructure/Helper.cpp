@@ -15,14 +15,14 @@ int Helper::getMessageTypeCode(SOCKET sc)
 
 // receive data from socket according byteSize
 // returns the data as int
-int Helper::getIntPartFromSocket(SOCKET sc, const int& bytesNum)
+int Helper::getIntPartFromSocket(SOCKET sc, const unsigned int& bytesNum)
 {
 	return stoi(getStringPartFromSocket(sc, bytesNum));
 }
 
 // receive data from socket according byteSize
 // returns the data as string
-std::string Helper::getStringPartFromSocket(SOCKET sc, const int& bytesNum)
+std::string Helper::getStringPartFromSocket(SOCKET sc, const unsigned int& bytesNum)
 {
 	const char* s = getPartFromSocket(sc, bytesNum, 0);
 	const std::string str(s);
@@ -34,18 +34,18 @@ std::string Helper::getStringPartFromSocket(SOCKET sc, const int& bytesNum)
 std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits) noexcept
 {
 	std::ostringstream oStr;
-	oStr << std::setw(digits) << std::setfill('0') << num;
+	oStr << std::setw((std::streamsize)digits) << std::setfill('0') << num;
 	return oStr.str();
 }
 
 // Must delete returned pointer!
-char* Helper::getPartFromSocket(SOCKET sc, const int& bytesNum, const int& flags)
+char* Helper::getPartFromSocket(SOCKET sc, const unsigned int& bytesNum, const int& flags)
 {
 	if (bytesNum <= 0) return (char*)"";
 
 	char* data = new char[bytesNum + 1]; // Allocate data for msg with terminator
 
-	if (recv(sc, data, bytesNum, flags) == INVALID_SOCKET)
+	if (recv(sc, data, (int)bytesNum, flags) == INVALID_SOCKET)
 	{
 		std::ostringstream oStr;
 		oStr << "Error while receiving from socket: " << sc << " | Error: " << WSAGetLastError();
