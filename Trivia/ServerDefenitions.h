@@ -43,9 +43,9 @@ enum RequestId : size_t
 
 struct RequestInfo
 {
-    buffer buffer;
-    std::time_t receivalTime{};
     RequestId id{};
+    std::time_t receivalTime{};
+    buffer buffer;
 };
 
 struct RequestResult
