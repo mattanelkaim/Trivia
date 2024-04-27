@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Handlers/IRequestHandler.h"
+#include "RequestHandlerFactory.h"
 #include <map>
 #include <WinSock2.h>
 
