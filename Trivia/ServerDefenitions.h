@@ -51,7 +51,7 @@ struct RequestInfo
 struct RequestResult
 {
     buffer response;
-    IRequestHandler* newHandler;
+    IRequestHandler* newHandler = nullptr;
 };
 
 // Request structs
