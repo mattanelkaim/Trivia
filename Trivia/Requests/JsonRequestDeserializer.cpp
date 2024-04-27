@@ -1,12 +1,11 @@
-#include "../Infrastructure/Helper.h"
 #include "../json.hpp"
 #include "../ServerDefenitions.h"
-#include "JsonRequestPacketDeserializer.h"
+#include "JsonRequestDeserializer.h"
 #include <stdexcept>
 
 using json = nlohmann::json;
 
-LoginRequest JsonResponsePacketDeserializer::deserializeLoginResponse(const buffer& response)
+LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const buffer& response)
 {
     if (response.size() < JSON_OFFSET + 2) // +2 curly braces
         throw std::runtime_error("Response does not match protocol structure");
@@ -23,7 +22,7 @@ LoginRequest JsonResponsePacketDeserializer::deserializeLoginResponse(const buff
     return request;
 }
 
-SignupRequest JsonResponsePacketDeserializer::deserializeSignupResponse(const buffer& response)
+SignupRequest JsonResponseDeserializer::deserializeSignupResponse(const buffer& response)
 {
     if (response.size() < JSON_OFFSET + 2) // +2 curly braces
         throw std::runtime_error("Response does not match protocol structure");
