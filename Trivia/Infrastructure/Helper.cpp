@@ -41,11 +41,11 @@ std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits) noe
 // Must delete returned pointer!
 char* Helper::getPartFromSocket(SOCKET sc, const unsigned int& bytesNum, const int& flags)
 {
-    if (bytesNum <= 0) return (char*)"";
+    if (bytesNum <= 0) return const_cast<char*>("");
 
     char* data = new char[bytesNum + 1]; // Allocate data for msg with terminator
 
-    if (recv(sc, data, (int)bytesNum, flags) == INVALID_SOCKET)
+    if (recv(sc, data, static_cast<int>(bytesNum), flags) == INVALID_SOCKET)
     {
         std::ostringstream oStr;
         oStr << "Error while receiving from socket: " << sc << " | Error: " << WSAGetLastError();
@@ -61,6 +61,6 @@ char* Helper::getPartFromSocket(SOCKET sc, const unsigned int& bytesNum, const i
 // this is private function
 void Helper::sendData(SOCKET sc, const std::string& message)
 {
-    if (send(sc, message.c_str(), (int)(message.size()), 0) == INVALID_SOCKET)
+    if (send(sc, message.c_str(), static_cast<int>(message.size()), 0) == INVALID_SOCKET)
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }
