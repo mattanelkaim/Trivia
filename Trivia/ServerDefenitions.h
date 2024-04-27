@@ -15,17 +15,17 @@ using buffer = std::vector<byte>;
 // Response structs
 struct ErrorResponse
 {
-	std::string message;
+    std::string message;
 };
 
 struct LoginResponse
 {
-	unsigned int status;
+    unsigned int status;
 };
 
 struct SignupResponse
 {
-	unsigned int status;
+    unsigned int status;
 };
 
 constexpr std::string_view ERROR_MSG_JSON = "{message: \"ERROR\"}";
@@ -37,35 +37,35 @@ constexpr std::string_view ERROR_MSG_JSON = "{message: \"ERROR\"}";
 
 enum RequestId : size_t
 {
-	LOGIN,
-	SIGNUP
+    LOGIN,
+    SIGNUP
 };
 
 struct RequestInfo
 {
-	buffer buffer;
-	std::time_t receivalTime{};
-	RequestId id{};
+    buffer buffer;
+    std::time_t receivalTime{};
+    RequestId id{};
 };
 
 struct RequestResult
 {
-	buffer response;
-	IRequestHandler* newHandler;
+    buffer response;
+    IRequestHandler* newHandler;
 };
 
 // Request structs
 struct LoginRequest
 {
-	std::string username;
-	std::string password;
+    std::string username;
+    std::string password;
 };
 
 struct SignupRequest
 {
-	std::string username;
-	std::string password;
-	std::string email;
+    std::string username;
+    std::string password;
+    std::string email;
 };
 
 #pragma endregion
@@ -80,8 +80,8 @@ struct SignupRequest
 
 enum messageType : byte
 {
-	RESPONSE,
-	REQUEST
+    RESPONSE,
+    REQUEST
 };
 
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;

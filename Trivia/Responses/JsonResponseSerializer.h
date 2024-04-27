@@ -5,12 +5,12 @@
 class JsonResponseSerializer
 {
 public:
-	JsonResponseSerializer() = delete; // This ensures that this class is never instantiated
+    JsonResponseSerializer() = delete; // This ensures that this class is never instantiated
 
-	static buffer serializeErrorResponse(const ErrorResponse& response);
-	static buffer serializeLoginResponse(const LoginResponse& response);
-	static buffer serializeSignupResponse(const SignupResponse& response);
+    static buffer serializeErrorResponse(const ErrorResponse& response);
+    static buffer serializeLoginResponse(const LoginResponse& response);
+    static buffer serializeSignupResponse(const SignupResponse& response);
 
 private:
-	static buffer serializeGeneralResponse(const messageType& type, const std::string& json); // Internal helper function
+    static buffer serializeGeneralResponse(const messageType& type, const std::string& json); // Internal helper function
 };

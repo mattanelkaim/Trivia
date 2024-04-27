@@ -2,8 +2,16 @@
 #include "Infrastructure/WSAInitializer.h"
 #include <iostream>
 
+#include "ServerDefenitions.h"
 int main(void)
 {
+	RequestInfo r;
+	std::cout << __cplusplus << '\n';
+	std::cout << sizeof(r.id) << '\n';
+	std::cout << sizeof(r.receivalTime) << '\n';
+	std::cout << sizeof(r.buffer) << '\n';
+	std::cout << sizeof(r) << "\n\n";
+
 	try
 	{
 		WSAInitializer wsaInit;

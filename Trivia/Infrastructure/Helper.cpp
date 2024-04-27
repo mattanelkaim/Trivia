@@ -10,57 +10,57 @@ using std::to_string;
 // and returns the code. if no message found in the socket returns 0 (which means the client disconnected)
 int Helper::getMessageTypeCode(SOCKET sc)
 {
-	return getIntPartFromSocket(sc, 3);
+    return getIntPartFromSocket(sc, 3);
 }
 
 // receive data from socket according byteSize
 // returns the data as int
 int Helper::getIntPartFromSocket(SOCKET sc, const unsigned int& bytesNum)
 {
-	return stoi(getStringPartFromSocket(sc, bytesNum));
+    return stoi(getStringPartFromSocket(sc, bytesNum));
 }
 
 // receive data from socket according byteSize
 // returns the data as string
 std::string Helper::getStringPartFromSocket(SOCKET sc, const unsigned int& bytesNum)
 {
-	const char* s = getPartFromSocket(sc, bytesNum, 0);
-	const std::string str(s);
-	delete[] s;
-	return str;
+    const char* s = getPartFromSocket(sc, bytesNum, 0);
+    const std::string str(s);
+    delete[] s;
+    return str;
 }
 
 // return string after padding zeros if necessary
 std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits) noexcept
 {
-	std::ostringstream oStr;
-	oStr << std::setw((std::streamsize)digits) << std::setfill('0') << num;
-	return oStr.str();
+    std::ostringstream oStr;
+    oStr << std::setw((std::streamsize)digits) << std::setfill('0') << num;
+    return oStr.str();
 }
 
 // Must delete returned pointer!
 char* Helper::getPartFromSocket(SOCKET sc, const unsigned int& bytesNum, const int& flags)
 {
-	if (bytesNum <= 0) return (char*)"";
+    if (bytesNum <= 0) return (char*)"";
 
-	char* data = new char[bytesNum + 1]; // Allocate data for msg with terminator
+    char* data = new char[bytesNum + 1]; // Allocate data for msg with terminator
 
-	if (recv(sc, data, (int)bytesNum, flags) == INVALID_SOCKET)
-	{
-		std::ostringstream oStr;
-		oStr << "Error while receiving from socket: " << sc << " | Error: " << WSAGetLastError();
-		delete[] data;
-		throw std::runtime_error(oStr.str());
-	}
+    if (recv(sc, data, (int)bytesNum, flags) == INVALID_SOCKET)
+    {
+        std::ostringstream oStr;
+        oStr << "Error while receiving from socket: " << sc << " | Error: " << WSAGetLastError();
+        delete[] data;
+        throw std::runtime_error(oStr.str());
+    }
 
-	data[bytesNum] = 0; // Terminator
-	return data;
+    data[bytesNum] = 0; // Terminator
+    return data;
 }
 
 // send data to socket
 // this is private function
 void Helper::sendData(SOCKET sc, const std::string& message)
 {
-	if (send(sc, message.c_str(), (int)(message.size()), 0) == INVALID_SOCKET)
-		throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
+    if (send(sc, message.c_str(), (int)(message.size()), 0) == INVALID_SOCKET)
+        throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }
