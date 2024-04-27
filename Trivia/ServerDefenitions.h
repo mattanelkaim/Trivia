@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Handlers/IRequestHandler.h"
 #include <ctime> // Used for std::time_t
 #include <string>
 #include <vector>
@@ -36,7 +35,7 @@ constexpr std::string_view ERROR_MSG_JSON = "{message: \"ERROR\"}";
 
 #pragma region requestDefenitions
 
-enum RequestId : byte
+enum RequestId : size_t
 {
 	LOGIN,
 	SIGNUP
@@ -44,9 +43,9 @@ enum RequestId : byte
 
 struct RequestInfo
 {
-	RequestId id;
-	std::time_t receivalTime;
 	buffer buffer;
+	std::time_t receivalTime{};
+	RequestId id{};
 };
 
 struct RequestResult
