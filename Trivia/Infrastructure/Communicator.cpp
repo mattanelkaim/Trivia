@@ -6,7 +6,7 @@
 #include <WinSock2.h>
 
 using std::to_string;
-constexpr unsigned short PORT = 7777;
+constexpr uint16_t PORT = 7777;
 constexpr std::string_view SIGN_IN = "Hello";
 
 

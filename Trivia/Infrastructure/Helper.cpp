@@ -15,14 +15,14 @@ int Helper::getMessageTypeCode(SOCKET sc)
 
 // receive data from socket according byteSize
 // returns the data as int
-int Helper::getIntPartFromSocket(SOCKET sc, const unsigned int& bytesNum)
+int Helper::getIntPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
 {
     return stoi(getStringPartFromSocket(sc, bytesNum));
 }
 
 // receive data from socket according byteSize
 // returns the data as string
-std::string Helper::getStringPartFromSocket(SOCKET sc, const unsigned int& bytesNum)
+std::string Helper::getStringPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
 {
     const char* s = getPartFromSocket(sc, bytesNum, 0);
     const std::string str(s);
@@ -39,7 +39,7 @@ std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits) noe
 }
 
 // Must delete returned pointer!
-char* Helper::getPartFromSocket(SOCKET sc, const unsigned int& bytesNum, const int& flags)
+char* Helper::getPartFromSocket(SOCKET sc, const uint32_t& bytesNum, const int& flags)
 {
     if (bytesNum <= 0) return const_cast<char*>("");
 
