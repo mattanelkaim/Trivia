@@ -38,7 +38,7 @@ int Helper::getCodeFromSocket(SOCKET sc)
 // returns the data as int
 int Helper::getIntPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
 {
-    return stoi(getStringFromSocket(sc, bytesNum));
+return stoi(getStringFromSocket(sc, bytesNum));
 }
 
 // return string after padding zeros if necessary
@@ -67,6 +67,10 @@ std::string Helper::getStringFromSocket(SOCKET sc, const uint32_t& bytesNum)
     data[bytesNum] = 0; // Terminator
     const std::string str(data);
     delete[] data;
+
+#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN)
+    std::cout << "[CLIENT] " << str << '\n';
+#endif
     return str;
 }
 
@@ -74,6 +78,9 @@ std::string Helper::getStringFromSocket(SOCKET sc, const uint32_t& bytesNum)
 // this is private function
 void Helper::sendData(SOCKET sc, const std::string& message)
 {
+#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_OUT)
+    std::cout << "[SERVER] " << message << '\n';
+#endif
     if (send(sc, message.c_str(), static_cast<int>(message.size()), 0) == INVALID_SOCKET) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }
