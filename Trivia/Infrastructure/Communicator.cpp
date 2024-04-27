@@ -23,7 +23,7 @@ Communicator::Communicator()
 Communicator::~Communicator() noexcept
 {
     for (auto& client : this->m_clients)
-        delete client.second;
+        if (client.second != nullptr) delete client.second;
 }
 
 void Communicator::bindAndListen() const
