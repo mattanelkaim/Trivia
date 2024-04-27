@@ -45,10 +45,10 @@ def main():
                  "0: login test"
                  "not 0: signup test") == '0':
             print(f"Testing login - sending \"{LOGIN_TEST_MESSAGE}\"...")
-            server_sock.send(bytes(LOGIN_TEST_MESSAGE))
+            server_sock.send(LOGIN_TEST_MESSAGE.encode())
         else:
             print(f"Testing signup - sending \"{SIGNUP_TEST_MESSAGE}\"...")
-            server_sock.send(bytes(SIGNUP_TEST_MESSAGE))
+            server_sock.send(SIGNUP_TEST_MESSAGE.encode())
 
         print(f"answer was: \"{server_sock.recv(BUFFER_SIZE).decode()}\"")
     except Exception as e:
