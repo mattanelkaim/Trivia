@@ -7,7 +7,6 @@
 
 using std::to_string;
 constexpr uint16_t PORT = 7777;
-constexpr std::string_view SIGN_IN = "Hello";
 
 
 Communicator::Communicator()
@@ -66,8 +65,10 @@ void Communicator::startHandleRequests()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-    // Currently just echoes the message back to the client
-    const std::string msg = Helper::getStringPartFromSocket(clientSocket, (unsigned int)SIGN_IN.size());
+    const int code = Helper::getIntPartFromSocket(clientSocket, 1);
+    std::cout << "read code\n";
+    const std::string msg = Helper::getMessageFromSocket(clientSocket);
+
     std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
     Helper::sendData(clientSocket, msg);
 }

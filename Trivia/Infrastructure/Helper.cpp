@@ -10,42 +10,39 @@ using std::to_string;
 std::string Helper::getMessageFromSocket(SOCKET sc)
 {
     const int length = getIntPartFromSocket(sc, BYTES_RESERVED_FOR_MSG_LEN);
-    return getStringPartFromSocket(sc, length);
+    std::cout << "Reading " << length << " bytes\n";
+    return getStringFromSocket(sc, static_cast<uint32_t>(length));
 }
 
 // receive data from socket according byteSize
 // returns the data as int
 int Helper::getIntPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
 {
-    return stoi(getStringPartFromSocket(sc, bytesNum));
-}
+    std::cout << "reading " << bytesNum << " bytes\n";
+    const std::string data = getStringFromSocket(sc, bytesNum);
 
-// receive data from socket according byteSize
-// returns the data as string
-std::string Helper::getStringPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
-{
-    const char* s = getPartFromSocket(sc, bytesNum, 0);
-    const std::string str(s);
-    delete[] s;
-    return str;
+    std::cout << "received '" << data << "'\n";
+    const int num = stoi(data);
+    std::cout << "converted to '" << num << "'\n";
+    return num;
 }
 
 // return string after padding zeros if necessary
 std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits) noexcept
 {
     std::ostringstream oStr;
-    oStr << std::setw((std::streamsize)digits) << std::setfill('0') << num;
+    oStr << std::setw(static_cast<std::streamsize>(digits)) << std::setfill('0') << num;
     return oStr.str();
 }
 
 // Must delete returned pointer!
-char* Helper::getPartFromSocket(SOCKET sc, const uint32_t& bytesNum, const int& flags)
+std::string Helper::getStringFromSocket(SOCKET sc, const uint32_t& bytesNum)
 {
     if (bytesNum <= 0) return const_cast<char*>("");
 
     char* data = new char[bytesNum + 1]; // Allocate data for msg with terminator
 
-    if (recv(sc, data, static_cast<int>(bytesNum), flags) == INVALID_SOCKET)
+    if (recv(sc, data, static_cast<int>(bytesNum), 0) == INVALID_SOCKET) // flags = 0
     {
         std::ostringstream oStr;
         oStr << "Error while receiving from socket: " << sc << " | Error: " << WSAGetLastError();
@@ -54,13 +51,15 @@ char* Helper::getPartFromSocket(SOCKET sc, const uint32_t& bytesNum, const int& 
     }
 
     data[bytesNum] = 0; // Terminator
-    return data;
+    const std::string str(data);
+    delete[] data;
+    return str;
 }
 
 // send data to socket
 // this is private function
 void Helper::sendData(SOCKET sc, const std::string& message)
 {
-    if (send(sc, message.c_str(), static_cast<int>(message.size()), 0) == INVALID_SOCKET)
+    if (send(sc, message.c_str(), static_cast<int>(message.size()), 0) == INVALID_SOCKET) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }
