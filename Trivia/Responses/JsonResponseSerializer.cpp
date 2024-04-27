@@ -18,14 +18,13 @@ buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse& res
     return serializeGeneralResponse(messageType::RESPONSE, "{status: 1}");
 }
 
-
 buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type, const std::string& json)
 {
     buffer buff;
 
     // The first byte is the response code
-    buff.push_back(type);
-    
+    buff.append_range(std::to_string(type));
+
     // Pushing the JSON's length to the buffer
     buff.append_range(Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN));
 
