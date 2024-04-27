@@ -1,8 +1,8 @@
 #include "../Infrastructure/Helper.h"
-#include "JsonResponsePacketSerializer.h"
+#include "JsonResponseSerializer.h"
 
 
-buffer JsonResponsePacketSerializer::serializeErrorResponse(const ErrorResponse& response)
+buffer JsonResponseSerializer::serializeErrorResponse(const ErrorResponse& response)
 {
     buffer buff;
 
@@ -17,7 +17,7 @@ buffer JsonResponsePacketSerializer::serializeErrorResponse(const ErrorResponse&
     return buff;
 }
 
-buffer JsonResponsePacketSerializer::serializeLoginResponse(const LoginResponse& response)
+buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse& response)
 {
     buffer buff;
     const std::string_view json = "{status: 1}";
@@ -33,7 +33,7 @@ buffer JsonResponsePacketSerializer::serializeLoginResponse(const LoginResponse&
     return buff;
 }
 
-buffer JsonResponsePacketSerializer::serializeSignupResponse(const SignupResponse& response)
+buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse& response)
 {
     buffer buff;
     const std::string_view json = "{status: 1}";

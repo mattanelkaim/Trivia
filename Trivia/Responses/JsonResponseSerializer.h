@@ -2,10 +2,10 @@
 
 #include "../ServerDefenitions.h"
 
-class JsonResponsePacketSerializer
+class JsonResponseSerializer
 {
 public:
-	JsonResponsePacketSerializer() = delete; // This ensures that this class is never instantiated
+	JsonResponseSerializer() = delete; // This ensures that this class is never instantiated
 
 	static buffer serializeErrorResponse(const ErrorResponse& response);
 	static buffer serializeLoginResponse(const LoginResponse& response);

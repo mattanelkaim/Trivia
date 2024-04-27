@@ -1,4 +1,4 @@
-#include "../Responses/JsonResponsePacketSerializer.h"
+#include "../Responses/JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include <stdexcept>
 
@@ -15,10 +15,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 	switch (info.id)
 	{
 	case LOGIN:
-		result.response = JsonResponsePacketSerializer::serializeLoginResponse(LoginResponse{LOGIN});
+		result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{LOGIN});
 		break;
 	case SIGNUP:
-		result.response = JsonResponsePacketSerializer::serializeSignupResponse(SignupResponse{SIGNUP});
+		result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{SIGNUP});
 		break;
 	default:
 		throw std::runtime_error("RequestInfo is not login/signup!");

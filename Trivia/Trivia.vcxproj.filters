@@ -45,13 +45,13 @@
     <ClInclude Include="Infrastructure\WSAInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Responses\JsonResponsePacketSerializer.h">
+    <ClInclude Include="Responses\JsonResponseSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ServerDefenitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Requests\JsonRequestPacketDeserializer.h">
+    <ClInclude Include="Requests\JsonRequestDeserializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="json.hpp">
@@ -77,13 +77,13 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Responses\JsonResponsePacketSerializer.cpp">
+    <ClCompile Include="Responses\JsonResponseSerializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Handlers\LoginRequestHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Requests\JsonRequestPacketDeserializer.cpp">
+    <ClCompile Include="Requests\JsonRequestDeserializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
