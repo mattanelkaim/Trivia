@@ -1,3 +1,4 @@
+#include "../Responses/JsonResponseSerializer.h"
 #include "../ServerDefenitions.h"
 #include "Communicator.h"
 #include "Helper.h"
@@ -78,17 +79,32 @@ void Communicator::handleNewClient(SOCKET clientSocket)
         // Read data from socket
         const RequestId code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
         const std::string msg = Helper::getMessageFromSocket(clientSocket);
-        RequestInfo info{.id = code, .receivalTime = time(nullptr)};
 
+        // Initialize RequestInfo structure
+        RequestInfo request{.id = code, .receivalTime = time(nullptr)};
+        request.buffer.append_range(msg);
+
+        // Get current handler from clients map
         LoginRequestHandler* handler = (LoginRequestHandler*)(this->m_clients.at(clientSocket));
         
-        if (handler->isRequestRelevant(info))
+        if (handler->isRequestRelevant(request))
         {
-            std::cout << "logging in...\n";
+            RequestResult result = handler->handleRequest(request); // Serialized
+
+            // Update handler on map
+            delete handler; // Finished with old handler
+            this->m_clients[clientSocket] = result.newHandler;
+
+            Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
+            std::cout << "Login successful\n";
+        }
+        else
+        {
+            const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{}); // TODO(mattan) use response struct?
+            Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
+            std::cout << "Login NOT successful\n";
         }
 
-        std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
-        Helper::sendData(clientSocket, msg);
     }
     catch (const std::exception& e)
     {
