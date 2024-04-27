@@ -1,3 +1,4 @@
+#include "../ServerDefenitions.h"
 #include "Communicator.h"
 #include "Helper.h"
 #include <iostream>
@@ -25,7 +26,7 @@ Communicator::~Communicator() noexcept
         delete client.second;
 }
 
-void Communicator::bindAndListen()
+void Communicator::bindAndListen() const
 {
     struct sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET; // Must be AF_INET
@@ -74,8 +75,17 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
     try
     {
-        const int code = Helper::getCodeFromSocket(clientSocket);
+        // Read data from socket
+        const RequestId code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
         const std::string msg = Helper::getMessageFromSocket(clientSocket);
+        RequestInfo info{.id = code, .receivalTime = time(nullptr)};
+
+        LoginRequestHandler* handler = (LoginRequestHandler*)(this->m_clients.at(clientSocket));
+        
+        if (handler->isRequestRelevant(info))
+        {
+            std::cout << "logging in...\n";
+        }
 
         std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
         Helper::sendData(clientSocket, msg);
