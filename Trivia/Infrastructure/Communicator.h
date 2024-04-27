@@ -8,15 +8,15 @@
 class Communicator
 {
 public:
-	Communicator();
-	~Communicator() noexcept;
-	void startHandleRequests(); // Why is it public?
+    Communicator();
+    ~Communicator() noexcept;
+    void startHandleRequests(); // Why is it public?
 
 private:
-	std::map<SOCKET, IRequestHandler*> m_clients;
-	//RequestHandlerFactory& m_handlerFactory;
-	SOCKET m_serverSocket;
+    std::map<SOCKET, IRequestHandler*> m_clients;
+    //RequestHandlerFactory& m_handlerFactory;
+    SOCKET m_serverSocket;
 
-	void bindAndListen();
-	void handleNewClient(SOCKET clientSocket);
+    void bindAndListen();
+    void handleNewClient(SOCKET clientSocket);
 };
