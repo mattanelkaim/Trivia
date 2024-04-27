@@ -9,9 +9,29 @@ using std::to_string;
 
 std::string Helper::getMessageFromSocket(SOCKET sc)
 {
-    const int length = getIntPartFromSocket(sc, BYTES_RESERVED_FOR_MSG_LEN);
-    std::cout << "Reading " << length << " bytes\n";
+    int length;
+    try
+    {
+        length = getIntPartFromSocket(sc, BYTES_RESERVED_FOR_MSG_LEN);
+    }
+    catch (const std::invalid_argument&)
+    {
+        throw std::runtime_error("Invalid protocol structure: length"); // TODO(mattan) protocol_error
+    }
+
     return getStringFromSocket(sc, static_cast<uint32_t>(length));
+}
+
+int Helper::getCodeFromSocket(SOCKET sc)
+{
+    try
+    {
+        return getIntPartFromSocket(sc, BYTES_RESERVED_FOR_CODE);
+    }
+    catch (const std::invalid_argument&)
+    {
+        throw std::runtime_error("Invalid protocol structure: code"); // TODO(mattan) protocol_error
+    }
 }
 
 // receive data from socket according byteSize
@@ -22,9 +42,7 @@ int Helper::getIntPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
     const std::string data = getStringFromSocket(sc, bytesNum);
 
     std::cout << "received '" << data << "'\n";
-    const int num = stoi(data);
-    std::cout << "converted to '" << num << "'\n";
-    return num;
+    return stoi(data);
 }
 
 // return string after padding zeros if necessary

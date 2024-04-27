@@ -74,8 +74,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 {
     try
     {
-        const int code = Helper::getIntPartFromSocket(clientSocket, 1);
-        std::cout << "read code\n";
+        const int code = Helper::getCodeFromSocket(clientSocket);
         const std::string msg = Helper::getMessageFromSocket(clientSocket);
 
         std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
@@ -83,6 +82,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
     }
     catch (const std::exception& e)
     {
+
         std::cerr << e.what() << '\n';
     }
 }
