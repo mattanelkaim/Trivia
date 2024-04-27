@@ -1,4 +1,5 @@
 #pragma once
+#define SERVER_DEBUG_ALL // Debugging flag in Helper
 
 #include <ctime> // Used for std::time_t
 #include <string>
