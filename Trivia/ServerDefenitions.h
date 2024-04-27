@@ -84,6 +84,7 @@ enum messageType : byte
     REQUEST
 };
 
+constexpr auto BYTES_RESERVED_FOR_CODE = 1;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
 
