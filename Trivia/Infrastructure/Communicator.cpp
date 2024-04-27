@@ -45,30 +45,44 @@ void Communicator::bindAndListen()
 
 void Communicator::startHandleRequests()
 {
-    do
+    try
     {
-        // This accepts the client and create a specific socket from server to this client
-        // The process will not continue until a client connects to the server
-        SOCKET clientSocket = accept(m_serverSocket, NULL, NULL);
-        if (clientSocket == INVALID_SOCKET)
-            throw std::runtime_error(__FUNCTION__ " - accept() err: " + to_string(WSAGetLastError()));
+        do
+        {
+            // This accepts the client and create a specific socket from server to this client
+            // The process will not continue until a client connects to the server
+            SOCKET clientSocket = accept(m_serverSocket, NULL, NULL);
+            if (clientSocket == INVALID_SOCKET)
+                throw std::runtime_error(__FUNCTION__ " - accept() err: " + to_string(WSAGetLastError()));
 
-        std::cout << "Client accepted. Server and client can communicate\n";
-        // Add client with LoginRequestHandler to map
-        this->m_clients.emplace(clientSocket, new LoginRequestHandler);
+            std::cout << "Client accepted. Server and client can communicate\n";
+            // Add client with LoginRequestHandler to map
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler);
 
-        // The function that handles the conversation with the client
-        std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
-        handlerThread.detach();
-    } while (true);
+            // The function that handles the conversation with the client
+            std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
+            handlerThread.detach();
+        } while (true);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-    const int code = Helper::getIntPartFromSocket(clientSocket, 1);
-    std::cout << "read code\n";
-    const std::string msg = Helper::getMessageFromSocket(clientSocket);
+    try
+    {
+        const int code = Helper::getIntPartFromSocket(clientSocket, 1);
+        std::cout << "read code\n";
+        const std::string msg = Helper::getMessageFromSocket(clientSocket);
 
-    std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
-    Helper::sendData(clientSocket, msg);
+        std::cout << "client sent '" << msg << "'. Echoing back...\n\n";
+        Helper::sendData(clientSocket, msg);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
