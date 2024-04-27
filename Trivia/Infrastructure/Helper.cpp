@@ -1,3 +1,4 @@
+#include "../ServerDefenitions.h"
 #include "Helper.h"
 #include <iomanip>
 #include <iostream>
@@ -6,11 +7,10 @@
 
 using std::to_string;
 
-// receives the type code of the message from socket (3 bytes)
-// and returns the code. if no message found in the socket returns 0 (which means the client disconnected)
-int Helper::getMessageTypeCode(SOCKET sc)
+std::string Helper::getMessageFromSocket(SOCKET sc)
 {
-    return getIntPartFromSocket(sc, 3);
+    const int length = getIntPartFromSocket(sc, BYTES_RESERVED_FOR_MSG_LEN);
+    return getStringPartFromSocket(sc, length);
 }
 
 // receive data from socket according byteSize
