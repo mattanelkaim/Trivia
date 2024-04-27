@@ -38,11 +38,7 @@ int Helper::getCodeFromSocket(SOCKET sc)
 // returns the data as int
 int Helper::getIntPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
 {
-    std::cout << "reading " << bytesNum << " bytes\n";
-    const std::string data = getStringFromSocket(sc, bytesNum);
-
-    std::cout << "received '" << data << "'\n";
-    return stoi(data);
+    return stoi(getStringFromSocket(sc, bytesNum));
 }
 
 // return string after padding zeros if necessary
