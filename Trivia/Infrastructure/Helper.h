@@ -6,12 +6,12 @@
 class Helper
 {
 public:
-	static int getMessageTypeCode(SOCKET sc);
-	static int getIntPartFromSocket(SOCKET sc, const unsigned int& bytesNum);
-	static std::string getStringPartFromSocket(SOCKET sc, const unsigned int& bytesNum);
-	static void sendData(SOCKET sc, const std::string& message);
-	static std::string getPaddedNumber(const size_t& num, const size_t& digits) noexcept;
+    static int getMessageTypeCode(SOCKET sc);
+    static int getIntPartFromSocket(SOCKET sc, const unsigned int& bytesNum);
+    static std::string getStringPartFromSocket(SOCKET sc, const unsigned int& bytesNum);
+    static void sendData(SOCKET sc, const std::string& message);
+    static std::string getPaddedNumber(const size_t& num, const size_t& digits) noexcept;
 
 private:
-	static char* getPartFromSocket(SOCKET sc, const unsigned int& bytesNum, const int& flags = 0);
+    static char* getPartFromSocket(SOCKET sc, const unsigned int& bytesNum, const int& flags = 0);
 };
