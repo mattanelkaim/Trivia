@@ -1,6 +1,7 @@
-#include "SqliteDatabase.h"
 #include "../ServerDefenitions.h"
+#include "SqliteDatabase.h"
 #include <stdexcept>
+
 
 bool SqliteDatabase::open()
 {
