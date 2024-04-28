@@ -52,17 +52,19 @@ void SqliteDatabase::addNewUser(const std::string& username, const std::string& 
 	this->runQuery(query, this->callbackText, nullptr);
 }
 
+void SqliteDatabase::runQuery(const std::string_view& query) const
+{
+	runQuery(query, nullptr, nullptr);
+}
+
 void SqliteDatabase::runQuery(const std::string_view& query, const sqlite3_callback& callback, void* data) const
 {
 	char* sql_error_msg = nullptr;
 
-	sqlite3_exec(this->_db, query.data(), nullptr, nullptr, &sql_error_msg);
-
-	std::string error_msg_str;
-	if (sql_error_msg)
+	if (SQLITE_OK != sqlite3_exec(this->_db, query.data(), callback, data, &sql_error_msg))
 	{
 		const std::string err = sql_error_msg;
-		delete sql_error_msg;
+		sqlite3_free(sql_error_msg);
 		throw std::runtime_error(err);
 	}	
 }
