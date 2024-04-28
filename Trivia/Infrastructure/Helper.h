@@ -12,5 +12,5 @@ public:
     static std::string getMessageFromSocket(SOCKET sc); // Helper function
     static int getCodeFromSocket(SOCKET sc); // Helper function
     static void sendData(SOCKET sc, const std::string& message);
-    static std::string getPaddedNumber(const size_t& num, const size_t& digits) noexcept;
+    static std::string getPaddedNumber(const size_t& num, const size_t& digits);
 };
