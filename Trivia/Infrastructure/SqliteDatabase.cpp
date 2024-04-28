@@ -36,7 +36,8 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 	return numUsers != 0;
 }
 
-bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string_view& password) const
+// password could be a string_view, but unfortunately it does not match base class's method signature
+bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
 	std::string realPassword = "";
 	const std::string query = "SELECT password FROM users WHERE username = " + username;
