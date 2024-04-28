@@ -1,7 +1,10 @@
 #pragma once
 
+#include <ctime> // Used for std::time_t
+#include <string>
 #include <vector>
 
+using byte = unsigned char;
 using buffer = std::vector<byte>; // The 'byte' typedef already exists in <vector>
 
 #pragma region DatabaseDefenitions
