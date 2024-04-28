@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../ServerDefenitions.h"
-#include <string>
 
 class JsonResponseSerializer
 {
@@ -13,5 +12,5 @@ public:
     static buffer serializeSignupResponse(const SignupResponse& response);
 
 private:
-    static buffer serializeGeneralResponse(const messageType& type, const std::string& json); // Internal helper function
+    static buffer serializeGeneralResponse(const messageType& type, const std::string_view& json); // Internal helper function
 };

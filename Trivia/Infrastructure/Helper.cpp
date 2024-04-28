@@ -1,7 +1,6 @@
 #include "../ServerDefenitions.h"
 #include "Helper.h"
 #include <iostream>
-#include <sstream>
 #include <string>
 
 using std::to_string;
@@ -56,10 +55,8 @@ std::string Helper::getStringFromSocket(SOCKET sc, const uint32_t& bytesNum)
 
     if (recv(sc, data, static_cast<int>(bytesNum), 0) == INVALID_SOCKET) // flags = 0
     {
-        std::ostringstream oStr;
-        oStr << "Error while receiving from socket: " << sc << " | Error: " << WSAGetLastError();
         delete[] data;
-        throw std::runtime_error(oStr.str());
+        throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(WSAGetLastError()));
     }
 
     data[bytesNum] = 0; // Terminator
@@ -74,11 +71,11 @@ std::string Helper::getStringFromSocket(SOCKET sc, const uint32_t& bytesNum)
 
 // send data to socket
 // this is private function
-void Helper::sendData(SOCKET sc, const std::string& message)
+void Helper::sendData(SOCKET sc, const std::string_view& message)
 {
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_OUT)
     std::cout << "[SERVER] " << message << '\n';
 #endif
-    if (send(sc, message.c_str(), static_cast<int>(message.size()), 0) == INVALID_SOCKET) // flags = 0
+    if (send(sc, message.data(), static_cast<int>(message.size()), 0) == INVALID_SOCKET) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }

@@ -18,7 +18,7 @@ buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse& res
     return serializeGeneralResponse(messageType::RESPONSE, "{status: 1}");
 }
 
-buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type, const std::string& json)
+buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type, const std::string_view& json)
 {
     buffer buff;
 
