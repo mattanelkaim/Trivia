@@ -8,5 +8,7 @@ private:
     std::string m_username;
 
 public:
-    std::string getUsername() const;
+	LoggedUser() = delete;
+	LoggedUser(const std::string& username) noexcept;
+	std::string getUsername() const noexcept;
 };
