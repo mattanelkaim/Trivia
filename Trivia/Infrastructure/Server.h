@@ -7,8 +7,8 @@
 class Server
 {
 private:
-	// TODO cannot instantiate abstract IDatabase
-	//IDatabase m_database;
+	IDatabase* m_database;
+	RequestHandlerFactory m_handlerFactory;
 	Communicator m_communicator;
 	//RequestHandlerFactory m_handlerFactory;
 
