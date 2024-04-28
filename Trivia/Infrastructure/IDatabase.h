@@ -8,8 +8,8 @@ public:
 	virtual bool open() = 0;
 	virtual bool close() = 0;
 
-	// queries
+	// Queries
 	virtual bool doesUserExist(const std::string& username) const = 0;
-	virtual bool doesPasswordMatch(const std::string&, const std::string&) const = 0;
-	virtual void addNewUser(const std::string&, const std::string&, const std::string&) = 0;
+	virtual bool doesPasswordMatch(const std::string& username, const std::string& password) const = 0;
+	virtual void addNewUser(const std::string& username, const std::string& password, const std::string& email) = 0;
 };
