@@ -1,5 +1,6 @@
 #include "../../sqlite/sqlite3.h"
 #include "IDatabase.h"
+#include <string>
 
 class SqliteDatabase : public IDatabase
 {
