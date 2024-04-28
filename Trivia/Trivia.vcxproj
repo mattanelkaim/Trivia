@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\sqlite\sqlite3.h" />
+    <ClInclude Include="..\sqlite\sqlite3ext.h" />
     <ClInclude Include="Handlers\IRequestHandler.h" />
     <ClInclude Include="Handlers\LoginRequestHandler.h" />
     <ClInclude Include="Infrastructure\Communicator.h" />
@@ -144,6 +146,8 @@
     <ClInclude Include="ServerDefenitions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\sqlite\shell.c" />
+    <ClCompile Include="..\sqlite\sqlite3.c" />
     <ClCompile Include="Infrastructure\Communicator.cpp" />
     <ClCompile Include="Infrastructure\Helper.cpp" />
     <ClCompile Include="Infrastructure\Server.cpp" />
