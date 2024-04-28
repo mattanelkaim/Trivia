@@ -1,18 +1,28 @@
 #include "../ServerDefenitions.h"
 #include "SqliteDatabase.h"
 #include <stdexcept>
+#include <string>
 
+using std::to_string;
 
 bool SqliteDatabase::open()
 {
-	return sqlite3_open(DB_FILE_NAME, &this->_db) == SQLITE_OK;
+	if (SQLITE_OK != sqlite3_open(DB_FILE_NAME, &(this->_db)))
+		throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->_db)));
+
+	return true;
 }
 
 bool SqliteDatabase::close()
 {
-	bool success = sqlite3_close(this->_db) == SQLITE_OK;
-	this->_db = nullptr;
-	return success;
+	if (this->_db != nullptr)
+	{
+		const bool isSuccess = sqlite3_close(this->_db) == SQLITE_OK;
+		this->_db = nullptr;
+		return isSuccess;
+	}
+
+	return true;
 }
 
 bool SqliteDatabase::doesUserExist(const std::string& username) const
