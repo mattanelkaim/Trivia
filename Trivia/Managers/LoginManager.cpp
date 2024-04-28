@@ -2,9 +2,9 @@
 #include "LoginManager.h"
 
 
-bool LoginManager::isUserLoggedIn(const std::string& username) const noexcept
+bool LoginManager::isUserLoggedIn(const std::string_view& username) const noexcept
 {
-	auto isIdenticalUsername = [username](const LoggedUser& user) noexcept {return user.getUsername() == username; };
+	auto isIdenticalUsername = [username](const LoggedUser& user) noexcept { return user.getUsername() == username; };
 	return std::find_if(m_loggedUsers.cbegin(), m_loggedUsers.cend(), isIdenticalUsername) != m_loggedUsers.cend();
 }
 
@@ -20,8 +20,8 @@ void LoginManager::login(const std::string& username, const std::string& passwor
 		this->m_loggedUsers.emplace_back(username); // Calls LoggedUser constructor
 }
 
-void LoginManager::logout(const std::string& username) noexcept
+void LoginManager::logout(const std::string_view& username) noexcept
 {
-	auto isIdenticalUsername = [username](const LoggedUser& user) noexcept {return user.getUsername() == username; };
+	auto isIdenticalUsername = [username](const LoggedUser& user) noexcept { return user.getUsername() == username; };
 	std::erase_if(this->m_loggedUsers, isIdenticalUsername);
 }
