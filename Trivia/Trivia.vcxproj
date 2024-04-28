@@ -153,6 +153,8 @@
     <ClCompile Include="Infrastructure\Server.cpp" />
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
+    <ClCompile Include="Managers\LoggedUser.cpp" />
+    <ClCompile Include="Managers\LoginManager.cpp" />
     <ClCompile Include="Responses\JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
