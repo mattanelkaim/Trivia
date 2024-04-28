@@ -9,11 +9,12 @@ using buffer = std::vector<byte>; // The 'byte' typedef already exists in <vecto
 
 #pragma region DatabaseDefenitions
 
-#define DB_FILE_NAME "TriviaDB.sqlite" /* Hey @mattany funny bunny money honey runny, Please keep this as
-											  * a #define and not using/constexpr/whatever other pakistani shit
-											  * you like doing because it enables us to concatenate it with other
-											  * literal strings if needed. For example: '"../" DB_FILE_NAME' 
-											  * sincerely, daddy. */
+/* Hey @mattany funny bunny money honey runny, Please keep this as
+* a #define and not using/constexpr/whatever other pakistani shit
+* you like doing because it enables us to concatenate it with other
+* literal strings if needed. For example: '"../" DB_FILE_NAME' 
+* sincerely, daddy. */
+constexpr std::string_view DB_FILE_NAME = "TriviaDB.sqlite";
 
 #pragma endregion
 

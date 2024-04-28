@@ -8,7 +8,7 @@ using std::to_string;
 
 bool SqliteDatabase::open()
 {
-	if (SQLITE_OK != sqlite3_open(DB_FILE_NAME, &(this->_db)))
+	if (SQLITE_OK != sqlite3_open(DB_FILE_NAME.data(), &(this->_db)))
 		throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->_db)));
 
 	return true;
