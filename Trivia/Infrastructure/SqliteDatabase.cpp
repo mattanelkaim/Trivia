@@ -1,3 +1,4 @@
+#include "../../sqlite/sqlite3.h"
 #include "../ServerDefenitions.h"
 #include "SqliteDatabase.h"
 #include <stdexcept>
@@ -30,7 +31,7 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 	int numUsers = 0;
 	const std::string query = "SELECT COUNT(USERNAME) FROM USERS WHERE USERNAME = " + username;
 
-	this->runQuery(query, this->callbackInt, &numUsers);
+	this->runQuery(query, callbackInt, &numUsers);
 
 	return numUsers != 0;
 }
@@ -40,17 +41,17 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 	std::string realPassword = "";
 	const std::string query = "SELECT PASSWORD FROM USERS WHERE USERNAME = " + username;
 
-	this->runQuery(query, this->callbackInt, &realPassword);
+	this->runQuery(query, callbackText, &realPassword);
 
 	return password == realPassword;
 }
 
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
 {
-	const std::string query = "INSERT (USERNAME, PASSWORD, MAIL) INTO USERS VALUES ('" + username + "', '" + password + "', '" + email + "')";
-
-	this->runQuery(query, this->callbackText, nullptr);
+	this->runQuery("INSERT (USERNAME, PASSWORD, MAIL) INTO USERS VALUES('" + username + "', '" + password + "', '" + email + "')");
 }
+
+// Helper functions
 
 void SqliteDatabase::runQuery(const std::string_view& query) const
 {
@@ -81,7 +82,7 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**
 	return 1;
 }
 
-int callbackText(void* destination, int rows, char** data, char** columnsNames)
+int SqliteDatabase::callbackText(void* destination, int rows, char** data, char** columnsNames)
 {
 	if (rows == 1 && data[0] != nullptr)
 	{
