@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\sqlite\sqlite3.h" />
+    <ClInclude Include="..\sqlite\sqlite3ext.h" />
     <ClInclude Include="Handlers\IRequestHandler.h" />
     <ClInclude Include="Handlers\LoginRequestHandler.h" />
     <ClInclude Include="Infrastructure\Communicator.h" />
@@ -136,6 +138,7 @@
     <ClInclude Include="Infrastructure\RequestHandlerFactory.h" />
     <ClInclude Include="Infrastructure\IDatabase.h" />
     <ClInclude Include="Infrastructure\Server.h" />
+    <ClInclude Include="Infrastructure\SqliteDatabase.h" />
     <ClInclude Include="Infrastructure\WSAInitializer.h" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
@@ -143,9 +146,12 @@
     <ClInclude Include="ServerDefenitions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\sqlite\shell.c" />
+    <ClCompile Include="..\sqlite\sqlite3.c" />
     <ClCompile Include="Infrastructure\Communicator.cpp" />
     <ClCompile Include="Infrastructure\Helper.cpp" />
     <ClCompile Include="Infrastructure\Server.cpp" />
+    <ClCompile Include="Infrastructure\SqliteDatabase.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
     <ClCompile Include="Responses\JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="Source.cpp" />
