@@ -7,10 +7,10 @@
 class Server
 {
 private:
-    // TODO(mattan) cannot instantiate abstract IDatabase
-    //IDatabase m_database;
-    Communicator m_communicator;
-    //RequestHandlerFactory m_handlerFactory;
+	IDatabase* m_database;
+	RequestHandlerFactory m_handlerFactory;
+	Communicator m_communicator;
+	//RequestHandlerFactory m_handlerFactory;
 
 public:
     void run();
