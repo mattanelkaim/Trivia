@@ -20,33 +20,33 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 	int numUsers = 0;
 	const std::string query = "SELECT COUNT(USERNAME) FROM USERS WHERE USERNAME = " + username + ';';
 
-	this->runQuery(query.c_str(), this->callbackInt, &numUsers);
+	this->runQuery(query, this->callbackInt, &numUsers);
 
 	return numUsers != 0;
 }
 
-bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
+bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string_view& password) const
 {
 	std::string realPassword = "";
 	const std::string query = "SELECT PASSWORD FROM USERS WHERE USERNAME = " + username + ';';
 
-	this->runQuery(query.c_str(), this->callbackInt, &realPassword);
+	this->runQuery(query, this->callbackInt, &realPassword);
 
 	return password == realPassword;
 }
 
-void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& mail)
+void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
 {
-	std::string query = "INSERT (USERNAME, PASSWORD, MAIL) INTO USERS VALUES ('" + username + "', '" + password + "', '" + mail + "');";
+	const std::string query = "INSERT (USERNAME, PASSWORD, MAIL) INTO USERS VALUES ('" + username + "', '" + password + "', '" + email + "');";
 
-	this->runQuery(query.c_str(), this->callbackText, nullptr);
+	this->runQuery(query, this->callbackText, nullptr);
 }
 
-void SqliteDatabase::runQuery(const char* query, const sqlite3_callback& callback, void* data) const
+void SqliteDatabase::runQuery(const std::string_view& query, const sqlite3_callback& callback, void* data) const
 {
 	char* sql_error_msg = nullptr;
 
-	sqlite3_exec(this->_db, query, nullptr, nullptr, &sql_error_msg);
+	sqlite3_exec(this->_db, query.data(), nullptr, nullptr, &sql_error_msg);
 
 	std::string error_msg_str;
 	if (sql_error_msg)
@@ -59,21 +59,21 @@ void SqliteDatabase::runQuery(const char* query, const sqlite3_callback& callbac
 
 #pragma region CallbackFunctions
 
-int SqliteDatabase::callbackInt(void* _data, int argc, char** argv, char** azColName)
+int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char** columnsNames)
 {
-	if (argc == 1 && argv[0] != nullptr)
+	if (rows == 1 && data[0] != nullptr)
 	{
-		*static_cast<int*>(_data) = atoi(argv[0]);
+		*static_cast<int*>(destination) = atoi(data[0]);
 		return 0;
 	}
 	return 1;
 }
 
-int callbackText(void* _data, int argc, char** argv, char** azColName)
+int callbackText(void* destination, int rows, char** data, char** columnsNames)
 {
-	if (argc == 1 && argv[0] != nullptr)
+	if (rows == 1 && data[0] != nullptr)
 	{
-		*static_cast<std::string*>(_data) = argv[0];
+		*static_cast<std::string*>(destination) = data[0];
 		return 0;
 	}
 	return 1;
