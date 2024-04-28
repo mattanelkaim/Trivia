@@ -1,6 +1,5 @@
 #include "../ServerDefenitions.h"
 #include "Helper.h"
-#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -38,15 +37,14 @@ int Helper::getCodeFromSocket(SOCKET sc)
 // returns the data as int
 int Helper::getIntPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
 {
-return stoi(getStringFromSocket(sc, bytesNum));
+    return stoi(getStringFromSocket(sc, bytesNum));
 }
 
 // return string after padding zeros if necessary
-std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits) noexcept
+std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits)
 {
-    std::ostringstream oStr;
-    oStr << std::setw(static_cast<std::streamsize>(digits)) << std::setfill('0') << num;
-    return oStr.str();
+    const std::string numStr = std::to_string(num);
+    return std::string(digits - numStr.size(), '0') + numStr;
 }
 
 // Must delete returned pointer!
