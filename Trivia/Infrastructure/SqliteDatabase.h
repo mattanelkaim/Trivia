@@ -10,7 +10,7 @@ public:
 
 	// Queries
 	virtual bool doesUserExist(const std::string& username) const;
-	virtual bool doesPasswordMatch(const std::string&username , const std::string_view& password) const;
+	virtual bool doesPasswordMatch(const std::string& username , const std::string_view& password) const;
 	virtual void addNewUser(const std::string& username, const std::string& password, const std::string& email);
 
 private:
