@@ -157,6 +157,7 @@
     <ClCompile Include="Handlers\MenuRequestHandler.cpp" />
     <ClCompile Include="Infrastructure\Communicator.cpp" />
     <ClCompile Include="Infrastructure\Helper.cpp" />
+    <ClCompile Include="Infrastructure\RequestHandlerFactory.cpp" />
     <ClCompile Include="Infrastructure\Server.cpp" />
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
