@@ -17,7 +17,7 @@ std::string Helper::getMessageFromSocket(SOCKET sc)
         throw std::runtime_error("Invalid protocol structure: length"); // TODO(mattan) protocol_error
     }
 
-    return getStringFromSocket(sc, static_cast<uint32_t>(length));
+    return getStringFromSocket(sc, length);
 }
 
 int Helper::getCodeFromSocket(SOCKET sc)
@@ -34,26 +34,27 @@ int Helper::getCodeFromSocket(SOCKET sc)
 
 // receive data from socket according byteSize
 // returns the data as int
-int Helper::getIntPartFromSocket(SOCKET sc, const uint32_t& bytesNum)
+int Helper::getIntPartFromSocket(SOCKET sc, const int& bytesNum)
 {
     return stoi(getStringFromSocket(sc, bytesNum));
 }
 
-// return string after padding zeros if necessary
-std::string Helper::getPaddedNumber(const size_t& num, const size_t& digits)
+// Return string after padding zeros if necessary
+std::string Helper::getPaddedNumber(const uint32_t& num, const size_t& digits)
 {
+    // Cannot be constexpr nor noexcept cuz to_string is kaki
     const std::string numStr = std::to_string(num);
     return std::string(digits - numStr.size(), '0') + numStr;
 }
 
-// Must delete returned pointer!
-std::string Helper::getStringFromSocket(SOCKET sc, const uint32_t& bytesNum)
+// bytesNum is not unsigned to match recv parameter specification
+std::string Helper::getStringFromSocket(SOCKET sc, const int& bytesNum)
 {
-    if (bytesNum <= 0) return const_cast<char*>("");
+    if (bytesNum <= 0) return "";
 
     char* data = new char[bytesNum + 1]; // Allocate data for msg with terminator
 
-    if (recv(sc, data, static_cast<int>(bytesNum), 0) == INVALID_SOCKET) // flags = 0
+    if (recv(sc, data, bytesNum, 0) == INVALID_SOCKET) // flags = 0
     {
         delete[] data;
         throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(WSAGetLastError()));
