@@ -9,6 +9,6 @@ private:
 
 public:
     LoggedUser() = delete;
-    LoggedUser(const std::string& username) noexcept;
+    explicit LoggedUser(const std::string& username) noexcept;
     std::string getUsername() const noexcept;
 };
