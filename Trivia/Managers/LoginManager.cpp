@@ -1,10 +1,8 @@
 #include "LoginManager.h"
 
 
-bool LoginManager::isUserLoggedIn(const std::string_view& username) const noexcept
-{
-	return std::find(m_loggedUsers.cbegin(), m_loggedUsers.cend(), username) != m_loggedUsers.cend();
-}
+LoginManager::LoginManager()
+	: m_database(nullptr) {}
 
 void LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
@@ -21,4 +19,10 @@ void LoginManager::login(const std::string& username, const std::string& passwor
 void LoginManager::logout(const std::string_view& username) noexcept
 {
 	std::erase(this->m_loggedUsers, username);
+}
+
+
+bool LoginManager::isUserLoggedIn(const std::string_view& username) const noexcept
+{
+	return std::find(m_loggedUsers.cbegin(), m_loggedUsers.cend(), username) != m_loggedUsers.cend();
 }
