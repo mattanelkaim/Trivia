@@ -11,6 +11,7 @@ private:
     LoginManager m_loginManager;
 
 public:
+    RequestHandlerFactory();
     LoginRequestHandler createLoginRequestHandler();
     LoginManager& getLoginManager();
 };
