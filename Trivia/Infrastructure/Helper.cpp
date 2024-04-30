@@ -52,7 +52,7 @@ std::string Helper::getStringFromSocket(SOCKET sc, const int& bytesNum)
 {
     if (bytesNum <= 0) return "";
 
-    char* data = new char[bytesNum + 1]; // Allocate data for msg with terminator
+    char* data = new char[static_cast<size_t>(bytesNum) + 1]; // Allocate data for msg with terminator
 
     if (recv(sc, data, bytesNum, 0) == INVALID_SOCKET) // flags = 0
     {
@@ -60,7 +60,7 @@ std::string Helper::getStringFromSocket(SOCKET sc, const int& bytesNum)
         throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(WSAGetLastError()));
     }
 
-    data[bytesNum] = 0; // Terminator
+    data[bytesNum] = '\0'; // Terminator
     const std::string str(data);
     delete[] data;
 
