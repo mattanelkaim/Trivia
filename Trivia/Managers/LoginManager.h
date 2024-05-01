@@ -7,12 +7,17 @@
 
 class LoginManager
 {
-private:
-    IDatabase* m_database;
-    std::vector<LoggedUser> m_loggedUsers;
-
 public:
-    void signup(const std::string&, const std::string&, const std::string&);
-    void login(const std::string&, const std::string&);
-    void logout(const std::string&);
+	explicit LoginManager(IDatabase* db);
+	LoginManager() = delete;
+
+	bool signup(const std::string& username, const std::string& password, const std::string& email);
+	bool login(const std::string& username, const std::string& password);
+	void logout(const std::string_view& username) noexcept;
+
+private:
+	IDatabase* m_database;
+	std::vector<LoggedUser> m_loggedUsers;
+
+	bool isUserLoggedIn(const std::string_view& username) const noexcept;
 };

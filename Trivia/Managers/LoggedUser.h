@@ -8,5 +8,9 @@ private:
     std::string m_username;
 
 public:
-    std::string getUsername() const;
+    LoggedUser() = delete;
+    explicit LoggedUser(const std::string& username) noexcept;
+    std::string getUsername() const noexcept;
+
+    bool operator==(const std::string_view& otherUsername) const noexcept;
 };
