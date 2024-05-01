@@ -6,6 +6,16 @@
 
 using std::to_string;
 
+SqliteDatabase::SqliteDatabase()
+{
+	this->open(); // TODO(mattan) construct tables in code
+}
+
+SqliteDatabase::~SqliteDatabase()
+{
+	this->close();
+}
+
 bool SqliteDatabase::open()
 {
 	if (SQLITE_OK != sqlite3_open(DB_FILE_NAME.data(), &(this->_db)))
@@ -29,7 +39,7 @@ bool SqliteDatabase::close()
 bool SqliteDatabase::doesUserExist(const std::string& username) const
 {
 	int numUsers = 0;
-	const std::string query = "SELECT COUNT(username) FROM users WHERE username = " + username;
+	const std::string query = "SELECT COUNT(username) FROM users WHERE username = '" + username + '\'';
 
 	this->runQuery(query, callbackInt, &numUsers);
 
@@ -40,7 +50,7 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
 	std::string realPassword = "";
-	const std::string query = "SELECT password FROM users WHERE username = " + username;
+	const std::string query = "SELECT password FROM users WHERE username = '" + username + '\'';
 
 	this->runQuery(query, callbackText, &realPassword);
 
