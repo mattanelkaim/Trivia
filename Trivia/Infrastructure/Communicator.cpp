@@ -70,7 +70,7 @@ void Communicator::startHandleRequests()
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
     }
 }
 
@@ -113,7 +113,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
         }
         catch (const std::exception& e)
         {
-            std::cerr << e.what() << '\n';
+            std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
         }
     } while (true);
 }
