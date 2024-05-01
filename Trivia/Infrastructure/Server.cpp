@@ -1,4 +1,5 @@
 #include "Server.h"
+#include "SqliteDatabase.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -6,8 +7,13 @@
 constexpr std::string_view EXIT = "EXIT";
 
 Server::Server()
-    : m_database(nullptr), m_handlerFactory(RequestHandlerFactory()), m_communicator(Communicator(this->m_handlerFactory))
+    : m_database(new SqliteDatabase()), m_handlerFactory(RequestHandlerFactory(m_database)), m_communicator(Communicator(this->m_handlerFactory))
 {}
+
+Server::~Server()
+{
+    delete this->m_database;
+}
 
 void Server::run()
 {
