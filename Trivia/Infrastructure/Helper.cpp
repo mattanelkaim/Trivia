@@ -1,4 +1,4 @@
-#include "../ServerDefenitions.h"
+#include "../ServerDefinitions.h"
 #include "Helper.h"
 #include <iostream>
 #include <string>
