@@ -4,16 +4,25 @@
 LoginManager::LoginManager()
 	: m_database(nullptr) {}
 
-void LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
+bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
-	this->m_database->addNewUser(username, password, email);
+	if (!m_database->doesUserExist(username))
+	{
+		this->m_database->addNewUser(username, password, email);
+		return true;
+	}
+	return false; // User already exists
 }
 
-void LoginManager::login(const std::string& username, const std::string& password)
+bool LoginManager::login(const std::string& username, const std::string& password)
 {
 	// Log in if username exists with correct password, and not already logged in
 	if (m_database->doesUserExist(username) && m_database->doesPasswordMatch(username, password) && !isUserLoggedIn(username))
+	{
 		this->m_loggedUsers.emplace_back(username); // Calls LoggedUser constructor
+		return true;
+	}
+	return false; // Login failed
 }
 
 void LoginManager::logout(const std::string_view& username) noexcept

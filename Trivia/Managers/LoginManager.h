@@ -10,8 +10,8 @@ class LoginManager
 public:
 	LoginManager();
 
-	void signup(const std::string& username, const std::string& password, const std::string& email);
-	void login(const std::string& username, const std::string& password);
+	bool signup(const std::string& username, const std::string& password, const std::string& email);
+	bool login(const std::string& username, const std::string& password);
 	void logout(const std::string_view& username) noexcept;
 
 private:
