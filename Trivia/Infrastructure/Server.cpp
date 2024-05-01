@@ -6,7 +6,8 @@
 constexpr std::string_view EXIT = "EXIT";
 
 Server::Server()
-    : m_database(nullptr) {}
+    : m_database(nullptr), m_handlerFactory(RequestHandlerFactory()), m_communicator(Communicator(this->m_handlerFactory))
+{}
 
 void Server::run()
 {
