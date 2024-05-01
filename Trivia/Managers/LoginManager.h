@@ -8,7 +8,8 @@
 class LoginManager
 {
 public:
-	LoginManager();
+	LoginManager(IDatabase* db);
+	LoginManager() = delete;
 
 	bool signup(const std::string& username, const std::string& password, const std::string& email);
 	bool login(const std::string& username, const std::string& password);
