@@ -1,8 +1,13 @@
 #include "../Responses/JsonResponseSerializer.h"
 #include "../ServerDefenitions.h"
+
+#include "../Infrastructure/RequestHandlerFactory.h"
 #include "LoginRequestHandler.h"
 #include <stdexcept>
 
+
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
+    : m_handlerFactory(handlerFactory) {}
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info)
 {
