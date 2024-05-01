@@ -1,8 +1,8 @@
 #include "LoginManager.h"
 
 
-LoginManager::LoginManager()
-	: m_database(nullptr) {}
+LoginManager::LoginManager(IDatabase* db)
+	: m_database(db) {}
 
 bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
@@ -29,7 +29,6 @@ void LoginManager::logout(const std::string_view& username) noexcept
 {
 	std::erase(this->m_loggedUsers, username);
 }
-
 
 bool LoginManager::isUserLoggedIn(const std::string_view& username) const noexcept
 {

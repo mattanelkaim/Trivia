@@ -13,7 +13,9 @@ private:
     LoginManager m_loginManager;
 
 public:
-    RequestHandlerFactory();
+    RequestHandlerFactory(IDatabase* db);
+    RequestHandlerFactory() = delete;
+
     LoginRequestHandler* createLoginRequestHandler();
     LoginManager& getLoginManager();
 };
