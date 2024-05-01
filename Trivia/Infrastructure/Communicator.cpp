@@ -1,3 +1,4 @@
+#include "../Handlers/LoginRequestHandler.h"
 #include "../Responses/JsonResponseSerializer.h"
 #include "../ServerDefenitions.h"
 #include "Communicator.h"
@@ -11,8 +12,9 @@ using std::to_string;
 constexpr uint16_t PORT = 7777;
 
 
-Communicator::Communicator()
-{
+Communicator::Communicator(RequestHandlerFactory& handlerFactory)
+    : m_handlerFactory(handlerFactory) {
+
     this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     
     if (this->m_serverSocket == INVALID_SOCKET)
@@ -59,7 +61,7 @@ void Communicator::startHandleRequests()
 
             std::cout << "Client accepted. Server and client can communicate\n";
             // Add client with LoginRequestHandler to map
-            this->m_clients.emplace(clientSocket, new LoginRequestHandler);
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
 
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
@@ -68,46 +70,50 @@ void Communicator::startHandleRequests()
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
     }
 }
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-    try
+    do
     {
-        // Read data from socket
-        const RequestId code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
-        const std::string msg = Helper::getMessageFromSocket(clientSocket);
-
-        // Initialize RequestInfo structure
-        RequestInfo request{.id = code, .receivalTime = time(nullptr)};
-        request.buffer.append_range(msg); // string to vector
-
-        // Get current handler from clients map
-        IRequestHandler* handler = this->m_clients.at(clientSocket);
-        
-        // Handle request
-        if (handler != nullptr || handler->isRequestRelevant(request))
+        try
         {
-            RequestResult result = handler->handleRequest(request); // Serialized
+            // Read data from socket
+            const RequestId code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
+            const std::string msg = Helper::getMessageFromSocket(clientSocket);
 
-            // Update handler on map
-            delete handler; // Done with old handler
-            this->m_clients[clientSocket] = result.newHandler;
+            // Initialize RequestInfo structure
+            RequestInfo request{.id = code, .receivalTime = time(nullptr)};
+            request.buffer.append_range(msg); // String to vector
 
-            Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
-            std::cout << "Operation successful\n";
+            // Get current handler from clients map
+            IRequestHandler* handler = this->m_clients.at(clientSocket);
+
+            // Handle request
+            if (handler != nullptr || handler->isRequestRelevant(request))
+            {
+                RequestResult result = handler->handleRequest(request); // Serialized
+
+                // Update handler on map
+                delete handler; // Done with old handler
+                this->m_clients[clientSocket] = result.newHandler;
+
+                Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
+                std::cout << "Operation successful\n\n";
+            }
+            else
+            {
+                std::cout << "Handler is invalid!\n";
+                const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"});
+                Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
+                std::cout << "Operation NOT successful\n\n";
+            }
         }
-        else
+        catch (const std::exception& e)
         {
-            const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{}); // TODO(mattan) use response struct?
-            Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
-            std::cout << "Operation NOT successful\n";
+            std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
         }
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    } while (true);
 }

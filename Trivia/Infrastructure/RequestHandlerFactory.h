@@ -1,8 +1,10 @@
 #pragma once
 
-#include "../Handlers/LoginRequestHandler.h"
+
 #include "../Managers/LoginManager.h"
 #include "IDatabase.h"
+
+class LoginRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
 class RequestHandlerFactory
 {
@@ -11,6 +13,9 @@ private:
     LoginManager m_loginManager;
 
 public:
-    LoginRequestHandler createLoginRequestHandler();
+    explicit RequestHandlerFactory(IDatabase* db);
+    RequestHandlerFactory() = delete;
+
+    LoginRequestHandler* createLoginRequestHandler();
     LoginManager& getLoginManager();
 };

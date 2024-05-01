@@ -130,14 +130,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\sqlite\sqlite3.h" />
+    <ClInclude Include="..\sqlite\sqlite3ext.h" />
     <ClInclude Include="Handlers\IRequestHandler.h" />
     <ClInclude Include="Handlers\LoginRequestHandler.h" />
+    <ClInclude Include="Handlers\MenuRequestHandler.h" />
     <ClInclude Include="Infrastructure\Communicator.h" />
     <ClInclude Include="Infrastructure\Helper.h" />
     <ClInclude Include="Infrastructure\RequestHandlerFactory.h" />
     <ClInclude Include="Infrastructure\IDatabase.h" />
     <ClInclude Include="Infrastructure\Server.h" />
+    <ClInclude Include="Infrastructure\SqliteDatabase.h" />
     <ClInclude Include="Infrastructure\WSAInitializer.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="json_fwd.hpp" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
     <ClInclude Include="Requests\JsonRequestDeserializer.h" />
@@ -145,13 +151,20 @@
     <ClInclude Include="ServerDefenitions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\sqlite\shell.c" />
+    <ClCompile Include="..\sqlite\sqlite3.c" />
     <ClCompile Include="Handlers\LoginRequestHandler.cpp" />
+    <ClCompile Include="Handlers\MenuRequestHandler.cpp" />
     <ClCompile Include="Infrastructure\Communicator.cpp" />
     <ClCompile Include="Infrastructure\Helper.cpp" />
+    <ClCompile Include="Infrastructure\RequestHandlerFactory.cpp" />
     <ClCompile Include="Infrastructure\Server.cpp" />
+    <ClCompile Include="Infrastructure\SqliteDatabase.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
     <ClCompile Include="Requests\JsonRequestDeserializer.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />
+    <ClCompile Include="Managers\LoggedUser.cpp" />
+    <ClCompile Include="Managers\LoginManager.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
