@@ -5,7 +5,7 @@
 int main(void)
 {
 	try
-	{
+	{		
 		WSAInitializer wsaInit;
 		Server server;
 		server.run();
