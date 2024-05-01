@@ -76,40 +76,43 @@ void Communicator::startHandleRequests()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-    try
+    do
     {
-        // Read data from socket
-        const RequestId code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
-        const std::string msg = Helper::getMessageFromSocket(clientSocket);
-
-        // Initialize RequestInfo structure
-        RequestInfo request{.id = code, .receivalTime = time(nullptr)};
-        request.buffer.append_range(msg); // string to vector
-
-        // Get current handler from clients map
-        IRequestHandler* handler = this->m_clients.at(clientSocket);
-        
-        // Handle request
-        if (handler != nullptr || handler->isRequestRelevant(request))
+        try
         {
-            RequestResult result = handler->handleRequest(request); // Serialized
+            // Read data from socket
+            const RequestId code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
+            const std::string msg = Helper::getMessageFromSocket(clientSocket);
 
-            // Update handler on map
-            delete handler; // Done with old handler
-            this->m_clients[clientSocket] = result.newHandler;
+            // Initialize RequestInfo structure
+            RequestInfo request{.id = code, .receivalTime = time(nullptr)};
+            request.buffer.append_range(msg); // string to vector
 
-            Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
-            std::cout << "Operation successful\n";
+            // Get current handler from clients map
+            IRequestHandler* handler = this->m_clients.at(clientSocket);
+
+            // Handle request
+            if (handler != nullptr || handler->isRequestRelevant(request))
+            {
+                RequestResult result = handler->handleRequest(request); // Serialized
+
+                // Update handler on map
+                delete handler; // Done with old handler
+                this->m_clients[clientSocket] = result.newHandler;
+
+                Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
+                std::cout << "Operation successful\n";
+            }
+            else
+            {
+                const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{}); // TODO(mattan) use response struct?
+                Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
+                std::cout << "Operation NOT successful\n";
+            }
         }
-        else
+        catch (const std::exception& e)
         {
-            const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{}); // TODO(mattan) use response struct?
-            Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
-            std::cout << "Operation NOT successful\n";
+            std::cerr << e.what() << '\n';
         }
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    } while (true);
 }
