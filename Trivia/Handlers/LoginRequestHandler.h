@@ -11,6 +11,10 @@ public:
     bool isRequestRelevant(const RequestInfo& info) override;
     RequestResult handleRequest(const RequestInfo& info) override;
 
+    // Helper functions
+    RequestResult login(const RequestInfo& info);
+    RequestResult signup(const RequestInfo& info);
+
 private:
     RequestHandlerFactory& m_handlerFactory;
 };
