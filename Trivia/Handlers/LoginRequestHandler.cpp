@@ -1,8 +1,14 @@
+#include "../Infrastructure/RequestHandlerFactory.h"
+#include "../Requests/JsonRequestDeserializer.h"
 #include "../Responses/JsonResponseSerializer.h"
 #include "../ServerDefenitions.h"
 #include "LoginRequestHandler.h"
+#include "MenuRequestHandler.h"
 #include <stdexcept>
 
+
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
+    : m_handlerFactory(handlerFactory) {}
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info)
 {
@@ -11,21 +17,57 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 {
-    RequestResult result;
-
     switch (info.id)
     {
     case LOGIN:
-        result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{LOGIN});
-        break;
+        return this->login(info);
     case SIGNUP:
-        result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{SIGNUP});
-        break;
+        return this->signup(info);
     default:
         throw std::runtime_error("RequestInfo is not login/signup!");
     }
-    
-    result.newHandler = nullptr; // TODO(mattan) assign other handlers respectively
+}
+
+
+// HELPER FUNCTIONS
+
+
+RequestResult LoginRequestHandler::login(const RequestInfo& info)
+{
+    LoginManager& loginManager = this->m_handlerFactory.getLoginManager();
+    RequestResult result;
+
+    const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
+    if (loginManager.login(request.username, request.password))
+    {
+        result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{RESPONSE});
+        result.newHandler = new MenuRequestHandler();
+    }
+    else
+    {
+        result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Login failed"});
+        result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry login
+    }
+
+    return result;
+}
+
+RequestResult LoginRequestHandler::signup(const RequestInfo& info)
+{
+    LoginManager& loginManager = this->m_handlerFactory.getLoginManager();
+    RequestResult result;
+
+    const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);
+    if (loginManager.signup(request.username, request.password, request.email))
+    {
+        result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{RESPONSE});
+        result.newHandler = new MenuRequestHandler();
+    }
+    else
+    {
+        result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Signup failed"});
+        result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry signup
+    }
 
     return result;
 }
