@@ -16,7 +16,7 @@ Communicator* m_Communicator = nullptr;
 std::mutex Communicator::m_mutex;
 
 
-Communicator* Communicator::getInstance(RequestHandlerFactory& handlerFactory)
+Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Communicator == nullptr)
@@ -26,7 +26,7 @@ Communicator* Communicator::getInstance(RequestHandlerFactory& handlerFactory)
     return m_Communicator;
 }
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory)
+Communicator::Communicator(RequestHandlerFactory* handlerFactory)
     : m_handlerFactory(handlerFactory) {
 
     this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

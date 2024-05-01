@@ -7,7 +7,7 @@
 #include <stdexcept>
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory)
     : m_handlerFactory(handlerFactory) {}
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info)
@@ -34,7 +34,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
-    LoginManager* loginManager = this->m_handlerFactory.getLoginManager();
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
     RequestResult result;
 
     const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
@@ -54,7 +54,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
-    LoginManager* loginManager = this->m_handlerFactory.getLoginManager();
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
     RequestResult result;
 
     const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);
