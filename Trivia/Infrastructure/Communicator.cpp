@@ -1,3 +1,4 @@
+#include "../Handlers/LoginRequestHandler.h"
 #include "../Responses/JsonResponseSerializer.h"
 #include "../ServerDefenitions.h"
 #include "Communicator.h"
@@ -60,7 +61,7 @@ void Communicator::startHandleRequests()
 
             std::cout << "Client accepted. Server and client can communicate\n";
             // Add client with LoginRequestHandler to map
-            this->m_clients.emplace(clientSocket, new LoginRequestHandler);
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
 
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
