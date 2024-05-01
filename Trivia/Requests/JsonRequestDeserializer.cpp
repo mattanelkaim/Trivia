@@ -6,7 +6,6 @@
 
 using json = nlohmann::json;
 
-#include <iostream>
 LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const buffer& response)
 {
     LoginRequest request;
@@ -15,7 +14,6 @@ LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const buffer& re
     {
         // Parse string msg to JSON
         const json j = json::parse(response);
-        std::cout << j.dump() << '\n';
 
         // Store data from JSON on a LoginRequest struct
         j.at("username").get_to(request.username);
