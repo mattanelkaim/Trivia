@@ -1,5 +1,5 @@
 #include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
+#include "../ServerDefinitions.h"
 #include "MenuRequestHandler.h"
 
 

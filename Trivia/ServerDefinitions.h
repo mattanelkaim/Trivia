@@ -10,7 +10,7 @@ class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 using byte = unsigned char;
 using buffer = std::vector<byte>;
 
-#pragma region DatabaseDefenitions
+#pragma region DatabaseDefinitions
 
 /* Hey @mattany funny bunny money honey runny, Please keep this as
 * a #define and not using/constexpr/whatever other pakistani shit
@@ -21,7 +21,8 @@ constexpr std::string_view DB_FILE_NAME = "TriviaDB.sqlite";
 
 #pragma endregion
 
-#pragma region responseDefenitions
+
+#pragma region responseDefinitions
 
 // Response structs
 struct ErrorResponse
@@ -49,7 +50,7 @@ namespace JsonFields
 #pragma endregion
 
 
-#pragma region requestDefenitions
+#pragma region requestDefinitions
 
 enum RequestId : size_t
 {
@@ -87,7 +88,7 @@ struct SignupRequest
 #pragma endregion
 
 
-#pragma region protocolDefenitions
+#pragma region protocolDefinitions
 
 /* protocol template: {code}{data length}{message}
  *					   ^^^^  ^^^^^^^^^^^  ^^^^^^^
@@ -105,3 +106,6 @@ constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
 
 #pragma endregion
+
+
+#pragma region roomDefinitions
