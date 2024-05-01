@@ -39,7 +39,12 @@ struct SignupResponse
     unsigned int status;
 };
 
-constexpr std::string_view ERROR_MSG_JSON = "{message: \"ERROR\"}";
+namespace JsonFields
+{
+    constexpr std::string_view MESSAGE_FIELD = "message";
+    constexpr std::string_view STATUS_FIELD = "status";
+}
+
 
 #pragma endregion
 
