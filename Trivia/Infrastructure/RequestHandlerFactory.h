@@ -15,5 +15,5 @@ private:
 public:
     RequestHandlerFactory();
     LoginRequestHandler* createLoginRequestHandler();
-    //LoginManager& getLoginManager();
+    LoginManager& getLoginManager();
 };

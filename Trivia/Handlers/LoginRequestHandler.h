@@ -8,7 +8,6 @@ class LoginRequestHandler : public IRequestHandler
 {
 public:
     LoginRequestHandler(RequestHandlerFactory& handlerFactory);
-
     bool isRequestRelevant(const RequestInfo& info) override;
     RequestResult handleRequest(const RequestInfo& info) override;
 
