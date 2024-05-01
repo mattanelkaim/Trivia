@@ -18,7 +18,7 @@ LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const buffer& re
         std::cout << j.dump() << '\n';
 
         // Store data from JSON on a LoginRequest struct
-        j.at("usernme").get_to(request.username);
+        j.at("username").get_to(request.username);
         j.at("password").get_to(request.password);
     }
     catch (const json::parse_error& e)
