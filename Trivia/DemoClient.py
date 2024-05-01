@@ -6,6 +6,8 @@ SERVER_IP = 'localhost'
 ERROR_SOCKET_VALUE = None
 BUFFER_SIZE = 1024
 BUFFER_TEMPLATE = "{code}{msg_len}{msg}"
+LOGIN_JSON_TEMPLATE = '{{"username": "{}", "password": "{}", "email": "{}"}}'
+SIGNUP_JSON_TEMPLATE = '{{"username": "{}", "password": "{}"}}'
 MAX_MESSAGE_LENGTH_SIZE = 9999
 BYTES_RESERVED_FOR_MSG_LENGTH = 4
 LOGIN_CODE = 0
@@ -17,7 +19,7 @@ USER3: {str: str} = {'username': "test_user_3", 'password': '1234', 'email': 'a3
 
 
 def signup(user: {str: str}, sock: socket) -> None:
-    json = """{{username: "{}", password: "{}", email: "{}"}}""".format(user['username'], user['password'], user['email'])
+    json = LOGIN_JSON_TEMPLATE.format(user['username'], user['password'], user['email'])
     msg = BUFFER_TEMPLATE.format(code=SIGNUP_CODE, msg_len=get_padded_number(len(json)), msg=json)
     print(f'[CLIENT] {msg}')
     sock.send(msg.encode())
@@ -25,7 +27,7 @@ def signup(user: {str: str}, sock: socket) -> None:
 
 
 def login(user: {str: str}, sock: socket) -> None:
-    json = """{{username: "{}", password: "{}"}}""".format(user['username'], user['password'])
+    json = SIGNUP_JSON_TEMPLATE.format(user['username'], user['password'])
     msg = BUFFER_TEMPLATE.format(code=LOGIN_CODE, msg_len=get_padded_number(len(json)), msg=json)
     print(f'[CLIENT] {msg}')
     sock.send(msg.encode())
@@ -92,7 +94,7 @@ def main():
             TESTS[int(input("PLease choose which test to run:\n"
                             "1: try to log in with an unsigned user\n"
                             "2: try to sign up with a name that's already in the DB\n"
-                            "3: try to sign up twice\n"
+                            "3: try to log in twice\n"
                             "> "))](server_sock)
 
     except Exception as e:
