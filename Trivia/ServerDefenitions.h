@@ -96,8 +96,8 @@ struct SignupRequest
 
 enum messageType : byte
 {
-    RESPONSE,
-    REQUEST
+    REQUEST,
+    RESPONSE
 };
 
 constexpr auto BYTES_RESERVED_FOR_CODE = 1;
