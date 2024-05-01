@@ -86,7 +86,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
             // Initialize RequestInfo structure
             RequestInfo request{.id = code, .receivalTime = time(nullptr)};
-            request.buffer.append_range(msg); // string to vector
+            request.buffer.append_range(msg); // String to vector
 
             // Get current handler from clients map
             IRequestHandler* handler = this->m_clients.at(clientSocket);
@@ -101,13 +101,14 @@ void Communicator::handleNewClient(SOCKET clientSocket)
                 this->m_clients[clientSocket] = result.newHandler;
 
                 Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
-                std::cout << "Operation successful\n";
+                std::cout << "Operation successful\n\n";
             }
             else
             {
-                const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{}); // TODO(mattan) use response struct?
+                std::cout << "Handler is invalid!\n";
+                const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"});
                 Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
-                std::cout << "Operation NOT successful\n";
+                std::cout << "Operation NOT successful\n\n";
             }
         }
         catch (const std::exception& e)
