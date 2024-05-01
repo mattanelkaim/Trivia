@@ -8,13 +8,14 @@
 class Communicator
 {
 public:
-    Communicator();
+    Communicator() = delete;
+    Communicator(RequestHandlerFactory& handlerFactory);
     ~Communicator() noexcept;
     void startHandleRequests(); // Why is it public?
 
 private:
     std::map<SOCKET, IRequestHandler*> m_clients;
-    //RequestHandlerFactory& m_handlerFactory;
+    RequestHandlerFactory& m_handlerFactory;
     SOCKET m_serverSocket;
 
     void bindAndListen() const;

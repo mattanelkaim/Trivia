@@ -11,8 +11,9 @@ using std::to_string;
 constexpr uint16_t PORT = 7777;
 
 
-Communicator::Communicator()
-{
+Communicator::Communicator(RequestHandlerFactory& handlerFactory)
+    : m_handlerFactory(handlerFactory) {
+
     this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     
     if (this->m_serverSocket == INVALID_SOCKET)
