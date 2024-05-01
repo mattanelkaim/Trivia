@@ -21,7 +21,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db)
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    return new LoginRequestHandler(*this);
+    return new LoginRequestHandler(this);
 }
 
 LoginManager* RequestHandlerFactory::getLoginManager()
