@@ -13,7 +13,7 @@ private:
     LoginManager m_loginManager;
 
 public:
-    RequestHandlerFactory(IDatabase* db);
+    explicit RequestHandlerFactory(IDatabase* db);
     RequestHandlerFactory() = delete;
 
     LoginRequestHandler* createLoginRequestHandler();
