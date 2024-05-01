@@ -109,3 +109,15 @@ constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
 
 
 #pragma region roomDefinitions
+
+struct RoomData
+{
+    std::string name;
+    uint32_t id;
+    uint32_t maxPlayers;
+    uint32_t numOfQuestionsInGame;
+    uint32_t timePerQuestion;
+    uint32_t status;
+};
+
+#pragma endregion
