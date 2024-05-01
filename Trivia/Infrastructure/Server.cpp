@@ -5,7 +5,7 @@
 #include <thread>
 
 Server::Server()
-    : m_database(new SqliteDatabase()), m_handlerFactory(RequestHandlerFactory(m_database)), m_communicator(Communicator(this->m_handlerFactory))
+    : m_database(new SqliteDatabase()), m_handlerFactory(RequestHandlerFactory(m_database)), m_communicator(Communicator(m_handlerFactory))
 {}
 
 Server::~Server()
@@ -22,7 +22,7 @@ enum command
 
 static constexpr command hashCommands(const std::string_view& cmd)
 {
-    if (cmd == "EXIT") return EXIT;
+    if (cmd == "exit") return EXIT;
     if (cmd == "cls") return CLS;
     return INVALID_COMMAND;
 }
@@ -46,6 +46,7 @@ void Server::run()
         case INVALID_COMMAND:
             std::cerr << "Invalid command\n";
             break;
+        case EXIT:
         default:
             break;
         }
