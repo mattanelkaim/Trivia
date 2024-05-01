@@ -8,7 +8,7 @@
 class Communicator
 {
 public:
-    Communicator(RequestHandlerFactory& handlerFactory);
+    explicit Communicator(RequestHandlerFactory& handlerFactory);
     Communicator() = delete;
     ~Communicator() noexcept;
     void startHandleRequests(); // Why is it public?

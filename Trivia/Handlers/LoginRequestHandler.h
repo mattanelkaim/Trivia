@@ -7,7 +7,7 @@ class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shi
 class LoginRequestHandler : public IRequestHandler
 {
 public:
-    LoginRequestHandler(RequestHandlerFactory& handlerFactory);
+    explicit LoginRequestHandler(RequestHandlerFactory& handlerFactory);
     bool isRequestRelevant(const RequestInfo& info) override;
     RequestResult handleRequest(const RequestInfo& info) override;
 
