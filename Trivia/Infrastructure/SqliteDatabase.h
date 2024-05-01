@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../sqlite/sqlite3.h"
 #include "IDatabase.h"
 #include <string>
@@ -5,6 +7,9 @@
 class SqliteDatabase : public IDatabase
 {
 public:
+	SqliteDatabase();
+	~SqliteDatabase();
+
 	bool open() override;	
 	bool close() override;
 
@@ -21,6 +26,6 @@ private:
 	void runQuery(const std::string_view& query, const sqlite3_callback& callback, void* data) const;
 
 	// Callback functions
-	static int callbackInt(void* _data, int argc, char** argv, char** columnsNames);
-	static int callbackText(void* _data, int argc, char** argv, char** columnsNames);
+	static int callbackInt(void* destination, int rows, char** data, char** columnsNames);
+	static int callbackText(void* destination, int rows, char** data, char** columnsNames);
 };
