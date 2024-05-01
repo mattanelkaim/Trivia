@@ -16,12 +16,12 @@ public:
     Communicator() = delete;
     Communicator(Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
-    static Communicator* getInstance(RequestHandlerFactory& handlerFactory);
+    static Communicator* getInstance(RequestHandlerFactory* handlerFactory);
 
 private:
     // Members
     std::map<SOCKET, IRequestHandler*> m_clients;
-    RequestHandlerFactory& m_handlerFactory;
+    RequestHandlerFactory* m_handlerFactory;
     SOCKET m_serverSocket;
 
     // Private methods
@@ -29,7 +29,7 @@ private:
     void handleNewClient(SOCKET clientSocket);
 
     // Singleton
-    explicit Communicator(RequestHandlerFactory& handlerFactory);
+    explicit Communicator(RequestHandlerFactory* handlerFactory);
     ~Communicator() noexcept;
     inline static Communicator* m_Communicator = nullptr;
     static std::mutex m_mutex;
