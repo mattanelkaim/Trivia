@@ -6,6 +6,16 @@
 
 using std::to_string;
 
+SqliteDatabase::SqliteDatabase()
+{
+	this->open(); // TODO(mattan) construct tables in code
+}
+
+SqliteDatabase::~SqliteDatabase()
+{
+	this->close();
+}
+
 bool SqliteDatabase::open()
 {
 	if (SQLITE_OK != sqlite3_open(DB_FILE_NAME.data(), &(this->_db)))
@@ -29,7 +39,7 @@ bool SqliteDatabase::close()
 bool SqliteDatabase::doesUserExist(const std::string& username) const
 {
 	int numUsers = 0;
-	const std::string query = "SELECT COUNT(username) FROM users WHERE username = " + username;
+	const std::string query = "SELECT COUNT(username) FROM users WHERE username = '" + username + '\'';
 
 	this->runQuery(query, callbackInt, &numUsers);
 
@@ -40,7 +50,7 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
 	std::string realPassword = "";
-	const std::string query = "SELECT password FROM users WHERE username = " + username;
+	const std::string query = "SELECT password FROM users WHERE username = '" + username + '\'';
 
 	this->runQuery(query, callbackText, &realPassword);
 
@@ -49,7 +59,7 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
 {
-	this->runQuery("INSERT (username, password, email) INTO users VALUES('" + username + "', '" + password + "', '" + email + "')");
+	this->runQuery("INSERT INTO users(username, password, email) VALUES('" + username + "', '" + password + "', '" + email + "')");
 }
 
 // Helper functions
@@ -67,7 +77,7 @@ void SqliteDatabase::runQuery(const std::string_view& query, const sqlite3_callb
 	{
 		const std::string err = sql_error_msg;
 		sqlite3_free(sql_error_msg);
-		throw std::runtime_error(err);
+		throw std::runtime_error(err + " | ON query: '" + query.data() + '\'');
 	}	
 }
 
