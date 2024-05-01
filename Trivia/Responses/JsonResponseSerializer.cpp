@@ -1,21 +1,29 @@
 #include "../Infrastructure/Helper.h"
+#include "../json.hpp"
 #include "JsonResponseSerializer.h"
 #include <string>
 
+using json = nlohmann::json;
 
 buffer JsonResponseSerializer::serializeErrorResponse(const ErrorResponse& response)
 {
-    return serializeGeneralResponse(messageType::RESPONSE, ERROR_MSG_JSON.data());
+    json j;
+    j[JsonFields::MESSAGE_FIELD] = response.message;
+    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
 buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse& response)
 {
-    return serializeGeneralResponse(messageType::RESPONSE, "{status: 1}");
+    json j;
+    j[JsonFields::STATUS_FIELD] = response.status;
+    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
 buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse& response)
 {
-    return serializeGeneralResponse(messageType::RESPONSE, "{status: 1}");
+    json j;
+    j[JsonFields::STATUS_FIELD] = response.status;
+    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
 buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type, const std::string_view& json)
