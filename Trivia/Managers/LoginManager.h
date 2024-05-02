@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Infrastructure/IDatabase.h"
+#include "IDatabase.h"
 #include "LoggedUser.h"
 #include <string>
 #include <vector>

@@ -1,4 +1,4 @@
-#include "../Handlers/LoginRequestHandler.h"
+#include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db)

@@ -1,9 +1,9 @@
-#include "../Infrastructure/RequestHandlerFactory.h"
-#include "../Requests/JsonRequestDeserializer.h"
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
+#include "JsonRequestDeserializer.h"
+#include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RequestHandlerFactory.h"
+#include "ServerDefenitions.h"
 #include <stdexcept>
 
 
