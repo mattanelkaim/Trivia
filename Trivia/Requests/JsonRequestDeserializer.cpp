@@ -1,5 +1,5 @@
 #include "../json.hpp"
-#include "../ServerDefenitions.h"
+#include "../ServerDefinitions.h"
 #include "JsonRequestDeserializer.h"
 #include <stdexcept>
 #include <string>

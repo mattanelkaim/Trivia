@@ -1,6 +1,6 @@
 #include "../Handlers/LoginRequestHandler.h"
 #include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
+#include "../ServerDefinitions.h"
 #include "Communicator.h"
 #include "Helper.h"
 #include <iostream>
