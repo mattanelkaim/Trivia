@@ -48,7 +48,7 @@
     <ClInclude Include="Responses\JsonResponseSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerDefenitions.h">
+    <ClInclude Include="ServerDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Requests\JsonRequestDeserializer.h">
@@ -114,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Handlers\MenuRequestHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Infrastructure\RequestHandlerFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
