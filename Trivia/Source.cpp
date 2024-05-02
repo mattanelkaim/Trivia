@@ -5,10 +5,9 @@
 int main(void)
 {
 	try
-	{		
+	{
 		WSAInitializer wsaInit;
-		Server server;
-		server.run();
+		Server::getInstance()->run();
 	}
 	catch (const std::exception& e)
 	{

@@ -4,8 +4,25 @@
 #include <string>
 #include <thread>
 
+// Singleton
+Server* m_Server = nullptr;
+std::mutex Server::m_mutex;
+
+
+Server* Server::getInstance()
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_Server == nullptr)
+    {
+        m_Server = new Server;
+    }
+    return m_Server;
+}
+
 Server::Server()
-    : m_database(new SqliteDatabase()), m_handlerFactory(RequestHandlerFactory(m_database)), m_communicator(Communicator(m_handlerFactory))
+    : m_database(new SqliteDatabase()),
+      m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
+      m_communicator(Communicator::getInstance(m_handlerFactory))
 {}
 
 Server::~Server()
@@ -29,7 +46,7 @@ static constexpr command hashCommands(const std::string_view& cmd)
 
 void Server::run()
 {
-    std::thread t_connector(&Communicator::startHandleRequests, &(this->m_communicator));
+    std::thread t_connector(&Communicator::startHandleRequests, this->m_communicator);
     t_connector.detach();
 
     std::string userInput;
