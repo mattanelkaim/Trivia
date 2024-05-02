@@ -1,8 +1,8 @@
-#include "../Handlers/LoginRequestHandler.h"
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
 #include "Communicator.h"
 #include "Helper.h"
+#include "JsonResponseSerializer.h"
+#include "LoginRequestHandler.h"
+#include "ServerDefenitions.h"
 #include <iostream>
 #include <string>
 #include <thread>
