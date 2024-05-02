@@ -1,5 +1,5 @@
-#include "Infrastructure/Server.h"
-#include "Infrastructure/WSAInitializer.h"
+#include "Server.h"
+#include "WSAInitializer.h"
 #include <iostream>
 
 int main(void)

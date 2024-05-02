@@ -1,7 +1,9 @@
-#include "../ServerDefenitions.h"
 #include "Helper.h"
-#include <iostream>
+#include "ServerDefenitions.h"
 #include <string>
+#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN) || defined(SERVER_DEBUG_OUT)
+#include <iostream>
+#endif
 
 using std::to_string;
 
