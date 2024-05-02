@@ -21,10 +21,10 @@ uint32_t RoomManager::getRoomState(const uint32_t& roomId) const
 
 std::vector<RoomData> RoomManager::getRooms() const
 {
-	std::vector<RoomData> users;
+	std::vector<RoomData> rooms;
 	for (const auto& [_, room] : this->m_rooms)
-		users.push_back(room.getData());
-	return users;
+		rooms.push_back(room.getData());
+	return rooms;
 }
 
 Room& RoomManager::getRoom(const uint32_t& roomId)
