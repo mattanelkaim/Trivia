@@ -12,7 +12,8 @@ LoginManager* LoginManager::getInstance(IDatabase* db)
 	{
 		m_LoginManager = new LoginManager(db);
 	}
-	return m_LoginManager;}
+	return m_LoginManager;
+}
 
 LoginManager::LoginManager(IDatabase* db)
 	: m_database(db) {}
