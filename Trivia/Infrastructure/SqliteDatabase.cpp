@@ -1,5 +1,5 @@
-#include "../../sqlite/sqlite3.h"
-#include "../ServerDefenitions.h"
+#include "ServerDefenitions.h"
+#include "sqlite3.h"
 #include "SqliteDatabase.h"
 #include <stdexcept>
 #include <string>
@@ -83,7 +83,7 @@ void SqliteDatabase::runQuery(const std::string_view& query, const sqlite3_callb
 
 #pragma region CallbackFunctions
 
-int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char** columnsNames)
+int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**)
 {
 	if (rows == 1 && data[0] != nullptr)
 	{
@@ -93,7 +93,7 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**
 	return 1;
 }
 
-int SqliteDatabase::callbackText(void* destination, int rows, char** data, char** columnsNames)
+int SqliteDatabase::callbackText(void* destination, int rows, char** data, char**)
 {
 	if (rows == 1 && data[0] != nullptr)
 	{

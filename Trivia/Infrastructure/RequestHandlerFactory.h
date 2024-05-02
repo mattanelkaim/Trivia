@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Managers/LoginManager.h"
 #include "IDatabase.h"
+#include "LoginManager.h"
 #include <mutex>
 
 class LoginRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
