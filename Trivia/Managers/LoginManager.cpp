@@ -1,5 +1,19 @@
 #include "LoginManager.h"
 
+// Singleton
+LoginManager* m_LoginManager = nullptr;
+std::mutex LoginManager::m_mutex;
+
+
+LoginManager* LoginManager::getInstance(IDatabase* db)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+	if (m_LoginManager == nullptr)
+	{
+		m_LoginManager = new LoginManager(db);
+	}
+	return m_LoginManager;
+}
 
 LoginManager::LoginManager(IDatabase* db)
 	: m_database(db) {}
