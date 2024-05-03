@@ -151,11 +151,14 @@
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
     <ClInclude Include="Other\Helper.h" />
+    <ClInclude Include="Other\InvalidProtocolStructure.h" />
+    <ClInclude Include="Other\IServerException.h" />
     <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\ServerDefinitions.h" />
     <ClInclude Include="Other\sqlite3.h" />
     <ClInclude Include="Managers\Room.h" />
     <ClInclude Include="Managers\RoomManager.h" />
+    <ClInclude Include="Other\UnexpectedClientExit.h" />
     <ClInclude Include="Requests\JsonRequestDeserializer.h" />
     <ClInclude Include="Responses\JsonResponseSerializer.h" />
   </ItemGroup>
@@ -170,7 +173,9 @@
     <ClCompile Include="Managers\Room.cpp" />
     <ClCompile Include="Managers\RoomManager.cpp" />
     <ClCompile Include="Other\Helper.cpp" />
+    <ClCompile Include="Other\InvalidProtocolStructure.cpp" />
     <ClCompile Include="Other\sqlite3.c" />
+    <ClCompile Include="Other\UnexpectedClientExit.cpp" />
     <ClCompile Include="Requests\JsonRequestDeserializer.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />
     <ClCompile Include="Managers\LoggedUser.cpp" />
