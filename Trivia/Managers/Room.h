@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../ServerDefinitions.h"
 #include "LoggedUser.h"
+#include "ServerDefinitions.h"
 #include <string>
 #include <vector>
 

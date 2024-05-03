@@ -3,7 +3,7 @@
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "ServerDefenitions.h"
+#include "ServerDefinitions.h"
 #include <stdexcept>
 
 

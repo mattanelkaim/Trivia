@@ -150,7 +150,6 @@
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\json_fwd.hpp" />
-    <ClInclude Include="Other\ServerDefenitions.h" />
     <ClInclude Include="Other\sqlite3.h" />
     <ClInclude Include="Other\sqlite3ext.h" />
     <ClInclude Include="Managers\Room.h" />

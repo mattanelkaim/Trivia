@@ -2,7 +2,7 @@
 #include "Helper.h"
 #include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
-#include "ServerDefenitions.h"
+#include "ServerDefinitions.h"
 #include <iostream>
 #include <string>
 #include <thread>
