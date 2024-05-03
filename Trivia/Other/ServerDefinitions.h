@@ -114,8 +114,8 @@ struct RoomData
 {
     std::string name;
     uint32_t id;
-    uint32_t maxPlayers;
-    uint32_t numOfQuestionsInGame;
+    uint16_t maxPlayers;
+    uint16_t numOfQuestionsInGame;
     uint32_t timePerQuestion;
     uint32_t status;
 };

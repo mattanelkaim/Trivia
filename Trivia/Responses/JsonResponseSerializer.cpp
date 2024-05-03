@@ -12,21 +12,21 @@ buffer JsonResponseSerializer::serializeErrorResponse(const ErrorResponse& respo
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse& response)
+buffer JsonResponseSerializer::serializeLoginResponse(LoginResponse response)
 {
     json j;
     j[JsonFields::STATUS_FIELD] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse& response)
+buffer JsonResponseSerializer::serializeSignupResponse(SignupResponse response)
 {
     json j;
     j[JsonFields::STATUS_FIELD] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type, const std::string_view& json)
+buffer JsonResponseSerializer::serializeGeneralResponse(messageType type, std::string_view json)
 {
     buffer buff;
 

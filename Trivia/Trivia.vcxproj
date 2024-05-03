@@ -152,12 +152,12 @@
     <ClInclude Include="Managers\LoginManager.h" />
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\json.hpp" />
+    <ClInclude Include="Other\ServerDefinitions.h" />
     <ClInclude Include="Other\sqlite3.h" />
     <ClInclude Include="Managers\Room.h" />
     <ClInclude Include="Managers\RoomManager.h" />
     <ClInclude Include="Requests\JsonRequestDeserializer.h" />
     <ClInclude Include="Responses\JsonResponseSerializer.h" />
-    <ClInclude Include="ServerDefinitions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Handlers\LoginRequestHandler.cpp" />

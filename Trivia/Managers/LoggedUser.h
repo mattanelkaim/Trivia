@@ -12,6 +12,6 @@ public:
     explicit LoggedUser(const std::string& username) noexcept;
     std::string getUsername() const noexcept;
 
-    bool operator==(const std::string_view& otherUsername) const noexcept;
+    bool operator==(std::string_view otherUsername) const noexcept;
     bool operator==(const LoggedUser& other) const noexcept;
 };

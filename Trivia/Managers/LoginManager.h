@@ -11,7 +11,7 @@ class LoginManager
 public:
 	bool signup(const std::string& username, const std::string& password, const std::string& email);
 	bool login(const std::string& username, const std::string& password);
-	void logout(const std::string_view& username) noexcept;
+	void logout(std::string_view username) noexcept;
 
 	// Singleton
 	LoginManager() = delete;
@@ -25,7 +25,7 @@ private:
 	std::vector<LoggedUser> m_loggedUsers;
 
 	// Private methods
-	bool isUserLoggedIn(const std::string_view& username) const noexcept;
+	bool isUserLoggedIn(std::string_view username) const noexcept;
 
 	// Singleton
 	explicit LoginManager(IDatabase* db);
