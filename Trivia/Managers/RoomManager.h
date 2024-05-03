@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../ServerDefinitions.h"
 #include "LoggedUser.h"
 #include "Room.h"
+#include "ServerDefinitions.h"
 #include <unordered_map>
 #include <vector>
 

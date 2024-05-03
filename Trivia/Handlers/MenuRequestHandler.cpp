@@ -1,6 +1,6 @@
 #include "JsonResponseSerializer.h"
 #include "MenuRequestHandler.h"
-#include "ServerDefenitions.h"
+#include "ServerDefinitions.h"
 
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info)
