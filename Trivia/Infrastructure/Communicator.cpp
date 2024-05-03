@@ -120,7 +120,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             else
             {
                 std::cout << "Handler is invalid!\n";
-                const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"});
+                const readonly_buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"});
                 Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
                 std::cout << "Operation NOT successful\n\n";
             }
