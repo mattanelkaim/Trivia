@@ -1,5 +1,6 @@
 #include "Communicator.h"
 #include "Helper.h"
+#include "IServerException.h"
 #include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include "ServerDefinitions.h"
@@ -39,8 +40,8 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory)
 
 Communicator::~Communicator() noexcept
 {
-    for (auto& client : this->m_clients)
-        if (client.second != nullptr) delete client.second;
+    for (auto& [socket, handler] : this->m_clients)
+        if (handler != nullptr) delete handler;
 }
 
 void Communicator::bindAndListen() const
@@ -125,9 +126,22 @@ void Communicator::handleNewClient(SOCKET clientSocket)
                 std::cout << "Operation NOT successful\n\n";
             }
         }
+        catch (const IServerException& e)
+        {
+            std::cerr << "\033[31;1m" << e.what() << "\033[0m\n\n";
+            this->disconnectClient(clientSocket);
+            return; // No need to handle disconnected client
+        }
         catch (const std::exception& e)
         {
             std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
         }
     } while (true);
+}
+
+void Communicator::disconnectClient(SOCKET clientSocket)
+{
+    IRequestHandler* handler = this->m_clients.at(clientSocket);
+    if (handler != nullptr) delete handler;
+    this->m_clients.erase(clientSocket);
 }

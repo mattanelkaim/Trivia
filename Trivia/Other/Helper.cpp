@@ -1,9 +1,11 @@
 #include "Helper.h"
+#include "InvalidProtocolStructure.h"
 #include "ServerDefinitions.h"
 #include <string>
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN) || defined(SERVER_DEBUG_OUT)
 #include <iostream>
 #endif
+#include "UnexpectedClientExit.h"
 
 using std::to_string;
 
@@ -16,7 +18,7 @@ std::string Helper::getMessageFromSocket(SOCKET sc)
     }
     catch (const std::invalid_argument&)
     {
-        throw std::runtime_error("Invalid protocol structure: length"); // TODO(mattan) protocol_error
+        throw InvalidProtocolStructure("Invalid protocol structure: length");
     }
 
     return getStringFromSocket(sc, length);
@@ -30,7 +32,7 @@ int Helper::getCodeFromSocket(SOCKET sc)
     }
     catch (const std::invalid_argument&)
     {
-        throw std::runtime_error("Invalid protocol structure: code"); // TODO(mattan) protocol_error
+        throw InvalidProtocolStructure("Invalid protocol structure: code");
     }
 }
 
@@ -59,7 +61,11 @@ std::string Helper::getStringFromSocket(SOCKET sc, int bytesNum)
     if (recv(sc, data, bytesNum, 0) == INVALID_SOCKET) // flags = 0
     {
         delete[] data;
-        throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(WSAGetLastError()));
+        const int errCode = WSAGetLastError();
+        if (errCode == 10054)
+            throw UnexpectedClientExit(sc);
+        else
+            throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(errCode));
     }
 
     data[bytesNum] = '\0'; // Terminator
@@ -67,7 +73,7 @@ std::string Helper::getStringFromSocket(SOCKET sc, int bytesNum)
     delete[] data;
 
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN)
-    std::cout << "[CLIENT] " << str << '\n';
+    std::cout << "[CLIENT] " << str << "\n";
 #endif
     return str;
 }
