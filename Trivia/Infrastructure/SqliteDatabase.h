@@ -22,8 +22,8 @@ private:
 	sqlite3* _db;
 
 	// Functions to run queries on the databases
-	void runQuery(const std::string_view& query) const;
-	void runQuery(const std::string_view& query, const sqlite3_callback& callback, void* data) const;
+	void runQuery(std::string_view query) const;
+	void runQuery(std::string_view query, sqlite3_callback callback, void* data) const;
 
 	// Callback functions
 	static int callbackInt(void* destination, int rows, char** data, char** columnsNames);
