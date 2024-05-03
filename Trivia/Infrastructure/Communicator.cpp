@@ -1,8 +1,8 @@
-#include "../Handlers/LoginRequestHandler.h"
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefinitions.h"
 #include "Communicator.h"
 #include "Helper.h"
+#include "JsonResponseSerializer.h"
+#include "LoginRequestHandler.h"
+#include "ServerDefenitions.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -11,8 +11,22 @@
 using std::to_string;
 constexpr uint16_t PORT = 7777;
 
+// Singleton
+Communicator* m_Communicator = nullptr;
+std::mutex Communicator::m_mutex;
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory)
+
+Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_Communicator == nullptr)
+    {
+        m_Communicator = new Communicator(handlerFactory);
+    }
+    return m_Communicator;
+}
+
+Communicator::Communicator(RequestHandlerFactory* handlerFactory)
     : m_handlerFactory(handlerFactory) {
 
     this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

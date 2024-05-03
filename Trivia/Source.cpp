@@ -1,14 +1,13 @@
-#include "Infrastructure/Server.h"
-#include "Infrastructure/WSAInitializer.h"
+#include "Server.h"
+#include "WSAInitializer.h"
 #include <iostream>
 
 int main(void)
 {
 	try
-	{		
+	{
 		WSAInitializer wsaInit;
-		Server server;
-		server.run();
+		Server::getInstance()->run();
 	}
 	catch (const std::exception& e)
 	{

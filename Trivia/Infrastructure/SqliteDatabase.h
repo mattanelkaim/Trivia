@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../sqlite/sqlite3.h"
 #include "IDatabase.h"
+#include "sqlite3.h"
 #include <string>
 
 class SqliteDatabase : public IDatabase
