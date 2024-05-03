@@ -45,9 +45,6 @@
     <ClInclude Include="Responses\JsonResponseSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerDefinitions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Infrastructure\SqliteDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,16 +57,19 @@
     <ClInclude Include="Other\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Other\json_fwd.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Other\ServerDefenitions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Other\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Other\sqlite3ext.h">
+    <ClInclude Include="Managers\Room.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\RoomManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Requests\JsonRequestDeserializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Other\ServerDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -113,13 +113,16 @@
     <ClCompile Include="Other\Helper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Other\shell.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Other\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Infrastructure\RequestHandlerFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\Room.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\RoomManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
