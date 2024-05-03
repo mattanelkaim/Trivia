@@ -39,25 +39,14 @@
     <ClInclude Include="Managers\LoggedUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Infrastructure\Helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Infrastructure\WSAInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Responses\JsonResponseSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerDefinitions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Requests\JsonRequestDeserializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sqlite\sqlite3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sqlite\sqlite3ext.h">
+    <ClInclude Include="ServerDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Infrastructure\SqliteDatabase.h">
@@ -66,18 +55,27 @@
     <ClInclude Include="Handlers\MenuRequestHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="json.hpp">
+    <ClInclude Include="Other\Helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="json_fwd.hpp">
+    <ClInclude Include="Other\json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Other\json_fwd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Other\ServerDefenitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Other\sqlite3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Other\sqlite3ext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Infrastructure\Communicator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Infrastructure\Helper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Infrastructure\WSAInitializer.cpp">
@@ -98,12 +96,6 @@
     <ClCompile Include="Requests\JsonRequestDeserializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sqlite\shell.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sqlite\sqlite3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,6 +106,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Handlers\MenuRequestHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Infrastructure\RequestHandlerFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Other\Helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Other\shell.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Other\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Infrastructure\RequestHandlerFactory.cpp">

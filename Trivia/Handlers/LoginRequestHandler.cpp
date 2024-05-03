@@ -1,13 +1,13 @@
-#include "../Infrastructure/RequestHandlerFactory.h"
-#include "../Requests/JsonRequestDeserializer.h"
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefinitions.h"
+#include "JsonRequestDeserializer.h"
+#include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RequestHandlerFactory.h"
+#include "ServerDefenitions.h"
 #include <stdexcept>
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory)
     : m_handlerFactory(handlerFactory) {}
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info)
@@ -34,11 +34,11 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
-    LoginManager& loginManager = this->m_handlerFactory.getLoginManager();
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
     RequestResult result;
 
     const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
-    if (loginManager.login(request.username, request.password))
+    if (loginManager->login(request.username, request.password))
     {
         result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{RESPONSE});
         result.newHandler = new MenuRequestHandler();
@@ -54,11 +54,11 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
-    LoginManager& loginManager = this->m_handlerFactory.getLoginManager();
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
     RequestResult result;
 
     const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);
-    if (loginManager.signup(request.username, request.password, request.email))
+    if (loginManager->signup(request.username, request.password, request.email))
     {
         result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{RESPONSE});
         result.newHandler = new MenuRequestHandler();
