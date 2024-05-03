@@ -2,6 +2,7 @@
 #define SERVER_DEBUG_ALL // Debugging flag in Helper
 
 #include <ctime> // Used for std::time_t
+#include <span>
 #include <string>
 #include <vector>
 
@@ -9,6 +10,7 @@ class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
 using byte = unsigned char;
 using buffer = std::vector<byte>;
+using readonly_buffer = std::span<const byte>;
 
 #pragma region DatabaseDefinitions
 
