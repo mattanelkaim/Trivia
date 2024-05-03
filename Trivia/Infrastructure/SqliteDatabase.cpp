@@ -1,4 +1,4 @@
-#include "ServerDefenitions.h"
+#include "ServerDefinitions.h"
 #include "sqlite3.h"
 #include "SqliteDatabase.h"
 #include <stdexcept>

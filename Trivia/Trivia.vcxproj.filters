@@ -45,7 +45,6 @@
     <ClInclude Include="Responses\JsonResponseSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Requests\JsonRequestDeserializer.h">
     <ClInclude Include="ServerDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>

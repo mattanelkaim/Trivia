@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ServerDefenitions.h"
+#include "ServerDefinitions.h"
 
 class JsonResponseSerializer
 {

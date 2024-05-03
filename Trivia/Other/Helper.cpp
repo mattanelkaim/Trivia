@@ -1,5 +1,5 @@
 #include "Helper.h"
-#include "ServerDefenitions.h"
+#include "ServerDefinitions.h"
 #include <string>
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN) || defined(SERVER_DEBUG_OUT)
 #include <iostream>
