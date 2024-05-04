@@ -27,8 +27,8 @@ Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
     return m_Communicator;
 }
 
-Communicator::Communicator(RequestHandlerFactory* handlerFactory)
-    : m_handlerFactory(handlerFactory),
+Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
+    m_handlerFactory(handlerFactory),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
     if (this->m_serverSocket == INVALID_SOCKET)
