@@ -16,8 +16,10 @@ RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
     return m_HandlerFactory;
 }
 
-RequestHandlerFactory::RequestHandlerFactory(IDatabase* db)
-    : m_database(db), m_loginManager(LoginManager::getInstance(db)) {}
+RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
+    m_database(db),
+    m_loginManager(LoginManager::getInstance(db))
+{}
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {

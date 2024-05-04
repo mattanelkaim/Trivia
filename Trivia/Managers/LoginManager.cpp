@@ -15,8 +15,9 @@ LoginManager* LoginManager::getInstance(IDatabase* db)
 	return m_LoginManager;
 }
 
-LoginManager::LoginManager(IDatabase* db)
-	: m_database(db) {}
+LoginManager::LoginManager(IDatabase* db) :
+	m_database(db)
+{}
 
 bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {

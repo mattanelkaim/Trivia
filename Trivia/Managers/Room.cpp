@@ -1,8 +1,9 @@
 #include "Room.h"
 
 
-Room::Room(const RoomData& data)
-	: m_metadata(data) {}
+Room::Room(const RoomData& data) :
+	m_metadata(data)
+{}
 
 void Room::addUser(const LoggedUser& user)
 {
