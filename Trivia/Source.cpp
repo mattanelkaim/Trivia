@@ -1,4 +1,5 @@
 #include "Server.h"
+#include "ServerDefinitions.h"
 #include "WSAInitializer.h"
 #include <iostream>
 
@@ -11,7 +12,7 @@ int main(void)
 	}
 	catch (const std::exception& e)
 	{
-		std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
+		std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
 	}
 
 	return 0;
