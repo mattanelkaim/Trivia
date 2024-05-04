@@ -19,10 +19,10 @@ Server* Server::getInstance()
     return m_Server;
 }
 
-Server::Server()
-    : m_database(new SqliteDatabase()),
-      m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
-      m_communicator(Communicator::getInstance(m_handlerFactory))
+Server::Server() :
+    m_database(new SqliteDatabase()),
+    m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
+    m_communicator(Communicator::getInstance(m_handlerFactory))
 {}
 
 Server::~Server()
@@ -37,7 +37,7 @@ enum command
     INVALID_COMMAND
 };
 
-static constexpr command hashCommands(const std::string_view cmd)
+static constexpr command hashCommands(const std::string_view cmd) noexcept
 {
     if (cmd == "exit") return EXIT;
     if (cmd == "cls") return CLS;

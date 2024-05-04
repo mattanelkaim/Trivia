@@ -7,8 +7,9 @@
 #include <stdexcept>
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory)
-    : m_handlerFactory(handlerFactory) {}
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) :
+    m_handlerFactory(handlerFactory)
+{}
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const
 {
