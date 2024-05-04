@@ -27,7 +27,7 @@ private:
     // Private methods
     void bindAndListen() const;
     void handleNewClient(SOCKET clientSocket);
-    void disconnectClient(SOCKET clientSocket);
+    void disconnectClient(const SOCKET clientSocket);
 
     // Singleton
     explicit Communicator(RequestHandlerFactory* handlerFactory);

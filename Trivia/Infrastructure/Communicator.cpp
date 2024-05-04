@@ -139,7 +139,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
     } while (true);
 }
 
-void Communicator::disconnectClient(SOCKET clientSocket)
+void Communicator::disconnectClient(const SOCKET clientSocket)
 {
     IRequestHandler* handler = this->m_clients.at(clientSocket);
     if (handler != nullptr) delete handler;

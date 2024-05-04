@@ -38,13 +38,13 @@ int Helper::getCodeFromSocket(SOCKET sc)
 
 // receive data from socket according byteSize
 // returns the data as int
-int Helper::getIntPartFromSocket(SOCKET sc, int bytesNum)
+int Helper::getIntPartFromSocket(SOCKET sc, const int bytesNum)
 {
     return stoi(getStringFromSocket(sc, bytesNum));
 }
 
 // Return string after padding zeros if necessary
-std::string Helper::getPaddedNumber(uint32_t num, size_t digits)
+std::string Helper::getPaddedNumber(const uint32_t num, const size_t digits)
 {
     // Cannot be constexpr nor noexcept cuz to_string is kaki
     const std::string numStr = std::to_string(num);
@@ -52,7 +52,7 @@ std::string Helper::getPaddedNumber(uint32_t num, size_t digits)
 }
 
 // bytesNum is not unsigned to match recv parameter specification
-std::string Helper::getStringFromSocket(SOCKET sc, int bytesNum)
+std::string Helper::getStringFromSocket(SOCKET sc, const int bytesNum)
 {
     if (bytesNum <= 0) return "";
 
