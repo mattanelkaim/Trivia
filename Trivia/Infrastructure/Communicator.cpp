@@ -28,10 +28,9 @@ Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
 }
 
 Communicator::Communicator(RequestHandlerFactory* handlerFactory)
-    : m_handlerFactory(handlerFactory) {
-
-    this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    
+    : m_handlerFactory(handlerFactory),
+    m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
+{
     if (this->m_serverSocket == INVALID_SOCKET)
         throw std::runtime_error(__FUNCTION__ " - socket() err: " + to_string(WSAGetLastError()));
 
