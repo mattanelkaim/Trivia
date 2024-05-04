@@ -26,5 +26,5 @@ private:
     explicit RequestHandlerFactory(IDatabase* db);
     ~RequestHandlerFactory() = default;
     inline static RequestHandlerFactory* m_HandlerFactory = nullptr;
-    static std::mutex m_mutex;
+    inline static std::mutex m_mutex;
 };

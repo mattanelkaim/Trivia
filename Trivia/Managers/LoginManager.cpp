@@ -1,19 +1,5 @@
 #include "LoginManager.h"
 
-// Singleton
-LoginManager* m_LoginManager = nullptr;
-std::mutex LoginManager::m_mutex;
-
-
-LoginManager* LoginManager::getInstance(IDatabase* db)
-{
-	std::lock_guard<std::mutex> lock(m_mutex);
-	if (m_LoginManager == nullptr)
-	{
-		m_LoginManager = new LoginManager(db);
-	}
-	return m_LoginManager;
-}
 
 LoginManager::LoginManager(IDatabase* db) :
 	m_database(db)
@@ -48,4 +34,15 @@ void LoginManager::logout(const std::string_view username) noexcept
 bool LoginManager::isUserLoggedIn(const std::string_view username) const noexcept
 {
 	return std::find(m_loggedUsers.cbegin(), m_loggedUsers.cend(), username) != m_loggedUsers.cend();
+}
+
+// Singleton
+LoginManager* LoginManager::getInstance(IDatabase* db)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+	if (m_LoginManager == nullptr)
+	{
+		m_LoginManager = new LoginManager(db);
+	}
+	return m_LoginManager;
 }
