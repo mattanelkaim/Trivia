@@ -1,5 +1,3 @@
-#include "../../sqlite/sqlite3.h"
-#include "../ServerDefenitions.h"
 #include "SqliteDatabase.h"
 #include <stdexcept>
 #include <string>
