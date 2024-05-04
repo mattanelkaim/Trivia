@@ -107,7 +107,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             IRequestHandler* handler = this->m_clients.at(clientSocket);
 
             // Handle request
-            if (handler != nullptr || handler->isRequestRelevant(request))
+            if (handler != nullptr && handler->isRequestRelevant(request))
             {
                 RequestResult result = handler->handleRequest(request); // Serialized
 
