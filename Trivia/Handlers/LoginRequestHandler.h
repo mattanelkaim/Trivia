@@ -8,7 +8,7 @@ class LoginRequestHandler final : public IRequestHandler
 {
 public:
     explicit LoginRequestHandler(RequestHandlerFactory* handlerFactory);
-    bool isRequestRelevant(const RequestInfo& info) override;
+    bool isRequestRelevant(const RequestInfo& info) const override;
     RequestResult handleRequest(const RequestInfo& info) override;
 
     // Helper functions
