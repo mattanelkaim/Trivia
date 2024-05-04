@@ -31,5 +31,5 @@ private:
 	explicit LoginManager(IDatabase* db);
 	~LoginManager() = default;
 	inline static LoginManager* m_LoginManager = nullptr;
-	static std::mutex m_mutex;
+	inline static std::mutex m_mutex;
 };

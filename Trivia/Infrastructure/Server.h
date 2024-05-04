@@ -24,5 +24,5 @@ private:
     Server();
     ~Server();
     inline static Server* m_Server = nullptr;
-    static std::mutex m_mutex;
+    inline static std::mutex m_mutex;
 };

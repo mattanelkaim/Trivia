@@ -12,20 +12,6 @@
 using std::to_string;
 constexpr uint16_t PORT = 7777;
 
-// Singleton
-Communicator* m_Communicator = nullptr;
-std::mutex Communicator::m_mutex;
-
-
-Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
-{
-    std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Communicator == nullptr)
-    {
-        m_Communicator = new Communicator(handlerFactory);
-    }
-    return m_Communicator;
-}
 
 Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
     m_handlerFactory(handlerFactory),
@@ -143,4 +129,15 @@ void Communicator::disconnectClient(const SOCKET clientSocket)
     IRequestHandler* handler = this->m_clients.at(clientSocket);
     if (handler != nullptr) delete handler;
     this->m_clients.erase(clientSocket);
+}
+
+// Singleton
+Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_Communicator == nullptr)
+    {
+        m_Communicator = new Communicator(handlerFactory);
+    }
+    return m_Communicator;
 }
