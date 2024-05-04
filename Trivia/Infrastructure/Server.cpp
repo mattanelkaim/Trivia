@@ -37,7 +37,7 @@ enum command
     INVALID_COMMAND
 };
 
-static constexpr command hashCommands(std::string_view cmd)
+static constexpr command hashCommands(const std::string_view cmd)
 {
     if (cmd == "exit") return EXIT;
     if (cmd == "cls") return CLS;
