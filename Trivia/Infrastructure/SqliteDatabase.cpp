@@ -69,7 +69,7 @@ void SqliteDatabase::runQuery(std::string_view query) const
 	runQuery(query, nullptr, nullptr);
 }
 
-void SqliteDatabase::runQuery(std::string_view query, sqlite3_callback callback, void* data) const
+void SqliteDatabase::runQuery(std::string_view query, safe_callback_ptr callback, void* data) const
 {
 	char* sql_error_msg = nullptr;
 
@@ -83,7 +83,7 @@ void SqliteDatabase::runQuery(std::string_view query, sqlite3_callback callback,
 
 #pragma region CallbackFunctions
 
-int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**)
+int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**) noexcept
 {
 	if (rows == 1 && data[0] != nullptr)
 	{
@@ -93,7 +93,7 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**
 	return 1;
 }
 
-int SqliteDatabase::callbackText(void* destination, int rows, char** data, char**)
+int SqliteDatabase::callbackText(void* destination, int rows, char** data, char**) noexcept
 {
 	if (rows == 1 && data[0] != nullptr)
 	{
