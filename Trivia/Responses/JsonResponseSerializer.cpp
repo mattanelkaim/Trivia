@@ -21,14 +21,6 @@ buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse respon
 
 buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse response)
 {
-    char ch = ' ';
-    int countBigLet = 0;
-
-    if ((ch >= 'A') && (ch <= 'Z'))
-        countBigLet++;
-    else
-        countBigLet--;
-
     json j;
     j[JsonFields::STATUS_FIELD] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
