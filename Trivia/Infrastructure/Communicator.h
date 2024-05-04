@@ -33,5 +33,5 @@ private:
     explicit Communicator(RequestHandlerFactory* handlerFactory);
     ~Communicator() noexcept;
     inline static Communicator* m_Communicator = nullptr;
-    static std::mutex m_mutex;
+    inline static std::mutex m_mutex;
 };

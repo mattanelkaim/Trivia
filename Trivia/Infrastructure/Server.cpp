@@ -4,20 +4,6 @@
 #include <string>
 #include <thread>
 
-// Singleton
-Server* m_Server = nullptr;
-std::mutex Server::m_mutex;
-
-
-Server* Server::getInstance()
-{
-    std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Server == nullptr)
-    {
-        m_Server = new Server;
-    }
-    return m_Server;
-}
 
 Server::Server() :
     m_database(new SqliteDatabase()),
@@ -68,4 +54,15 @@ void Server::run()
             break;
         }
     } while (cmd != EXIT);
+}
+
+// Singleton
+Server* Server::getInstance()
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_Server == nullptr)
+    {
+        m_Server = new Server;
+    }
+    return m_Server;
 }

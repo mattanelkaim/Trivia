@@ -1,20 +1,6 @@
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
-// Singleton
-RequestHandlerFactory* m_HandlerFactory = nullptr;
-std::mutex RequestHandlerFactory::m_mutex;
-
-
-RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
-{
-    std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_HandlerFactory == nullptr)
-    {
-        m_HandlerFactory = new RequestHandlerFactory(db);
-    }
-    return m_HandlerFactory;
-}
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
     m_database(db),
@@ -29,4 +15,15 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 LoginManager* RequestHandlerFactory::getLoginManager()
 {
     return this->m_loginManager;
+}
+
+// Singleton
+RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_HandlerFactory == nullptr)
+    {
+        m_HandlerFactory = new RequestHandlerFactory(db);
+    }
+    return m_HandlerFactory;
 }
