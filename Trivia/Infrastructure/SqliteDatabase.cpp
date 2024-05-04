@@ -64,12 +64,12 @@ void SqliteDatabase::addNewUser(const std::string& username, const std::string& 
 
 // Helper functions
 
-void SqliteDatabase::runQuery(std::string_view query) const
+void SqliteDatabase::runQuery(const std::string_view query) const
 {
 	runQuery(query, nullptr, nullptr);
 }
 
-void SqliteDatabase::runQuery(std::string_view query, safe_callback_ptr callback, void* data) const
+void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const
 {
 	char* sql_error_msg = nullptr;
 

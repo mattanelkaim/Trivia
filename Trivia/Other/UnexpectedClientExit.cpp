@@ -1,6 +1,6 @@
 #include "UnexpectedClientExit.h"
 
-UnexpectedClientExit::UnexpectedClientExit(SOCKET crashedClient)
+UnexpectedClientExit::UnexpectedClientExit(const SOCKET crashedClient)
 	: IServerException("Client socket " + std::to_string(crashedClient) + " unexpectedly disconnected")
 {}
 
