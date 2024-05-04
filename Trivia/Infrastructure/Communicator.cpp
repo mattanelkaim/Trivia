@@ -85,7 +85,7 @@ void Communicator::startHandleRequests()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
+        std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
     }
 }
 
@@ -128,13 +128,13 @@ void Communicator::handleNewClient(SOCKET clientSocket)
         }
         catch (const IServerException& e)
         {
-            std::cerr << "\033[31;1m" << e.what() << "\033[0m\n\n";
+            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << "\n\n";
             this->disconnectClient(clientSocket);
             return; // No need to handle disconnected client
         }
         catch (const std::exception& e)
         {
-            std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
+            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
         }
     } while (true);
 }

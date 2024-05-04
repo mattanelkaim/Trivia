@@ -109,7 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalOptions>-Wall /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Wall /Zc:__cplusplus /W4 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ProjectDir)Handlers;$(ProjectDir)Infrastructure;$(ProjectDir)Managers;$(ProjectDir)Other;$(ProjectDir)Requests;$(ProjectDir)Responses</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

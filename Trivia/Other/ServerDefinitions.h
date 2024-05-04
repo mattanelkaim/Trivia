@@ -12,6 +12,15 @@ using byte = unsigned char;
 using buffer = std::vector<byte>;
 using readonly_buffer = std::span<const byte>;
 
+
+#pragma region IO
+
+constexpr std::string_view ANSI_RED = "\033[31;1m"; // Red and bold
+constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
+
+#pragma endregion
+
+
 #pragma region DatabaseDefinitions
 
 /* Hey @mattany funny bunny money honey runny, Please keep this as
