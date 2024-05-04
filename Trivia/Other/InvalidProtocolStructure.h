@@ -2,7 +2,7 @@
 
 #include "IServerException.h"
 
-class InvalidProtocolStructure : public IServerException
+class InvalidProtocolStructure final : public IServerException
 {
 public:
 	InvalidProtocolStructure();

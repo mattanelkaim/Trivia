@@ -3,7 +3,7 @@
 #include "IServerException.h"
 #include <WinSock2.h>
 
-class UnexpectedClientExit : public IServerException
+class UnexpectedClientExit final : public IServerException
 {
 public:
 	explicit UnexpectedClientExit(const SOCKET crashedClient);

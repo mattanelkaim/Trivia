@@ -6,7 +6,7 @@
 
 using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3_callback noexcept
 
-class SqliteDatabase : public IDatabase
+class SqliteDatabase final : public IDatabase
 {
 public:
 	SqliteDatabase();

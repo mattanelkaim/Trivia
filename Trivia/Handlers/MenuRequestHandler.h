@@ -2,7 +2,7 @@
 
 #include "IRequestHandler.h"
 
-class MenuRequestHandler : public IRequestHandler
+class MenuRequestHandler final : public IRequestHandler
 {
 public:
     bool isRequestRelevant(const RequestInfo& info) override;
