@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-LoginRequest JsonResponseDeserializer::deserializeLoginResponse(readonly_buffer response)
+LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const readonly_buffer response)
 {
     LoginRequest request;
 
@@ -31,7 +31,7 @@ LoginRequest JsonResponseDeserializer::deserializeLoginResponse(readonly_buffer 
     return request;
 }
 
-SignupRequest JsonResponseDeserializer::deserializeSignupResponse(readonly_buffer response)
+SignupRequest JsonResponseDeserializer::deserializeSignupResponse(const readonly_buffer response)
 {
     SignupRequest request;
 
