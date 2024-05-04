@@ -4,7 +4,7 @@
 
 class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
 
-class LoginRequestHandler : public IRequestHandler
+class LoginRequestHandler final : public IRequestHandler
 {
 public:
     explicit LoginRequestHandler(RequestHandlerFactory* handlerFactory);
