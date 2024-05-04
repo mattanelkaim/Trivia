@@ -10,7 +10,7 @@
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory)
     : m_handlerFactory(handlerFactory) {}
 
-bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info)
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const
 {
     return info.id == LOGIN || info.id == SIGNUP;
 }
