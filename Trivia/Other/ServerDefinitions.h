@@ -1,3 +1,5 @@
+// NOLINTBEGIN(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
+
 #pragma once
 #define SERVER_DEBUG_ALL // Debugging flag in Helper
 
@@ -116,6 +118,8 @@ constexpr auto BYTES_RESERVED_FOR_CODE = 1;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
 
+constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // Winerror constant
+
 #pragma endregion
 
 
@@ -132,3 +136,5 @@ struct RoomData
 };
 
 #pragma endregion
+
+// NOLINTEND(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)

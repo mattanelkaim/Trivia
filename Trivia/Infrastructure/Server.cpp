@@ -50,7 +50,6 @@ void Server::run()
             std::cerr << "Invalid command\n";
             break;
         case EXIT:
-        default:
             break;
         }
     } while (cmd != EXIT);
