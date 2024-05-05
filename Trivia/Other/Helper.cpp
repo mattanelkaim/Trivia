@@ -59,7 +59,7 @@ std::string Helper::getStringFromSocket(SOCKET sc, const int bytesNum)
     const size_t bufferSize = static_cast<size_t>(bytesNum);
     char* data = new char[bufferSize]; // Terminator is added later
 
-    if (recv(sc, data, bytesNum, 0) == static_cast<int>(INVALID_SOCKET)) // flags = 0
+    if (recv(sc, data, bytesNum, 0) == SOCKET_ERROR) // flags = 0
     {
         delete[] data;
         const int errCode = WSAGetLastError();
@@ -85,6 +85,6 @@ void Helper::sendData(SOCKET sc, std::string_view message)
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_OUT)
     std::cout << "[SERVER] " << message << '\n';
 #endif
-    if (send(sc, message.data(), static_cast<int>(message.size()), 0) == static_cast<int>(INVALID_SOCKET)) // flags = 0
+    if (send(sc, message.data(), static_cast<int>(message.size()), 0) == SOCKET_ERROR ) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }
