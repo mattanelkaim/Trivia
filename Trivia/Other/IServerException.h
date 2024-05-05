@@ -7,7 +7,7 @@ class IServerException : public std::exception
 {
 public:
 	IServerException() = default;
-	IServerException(const std::string& err) : m_err(err) {}
+	explicit IServerException(const std::string& err) : m_err(err) {}
 	virtual const char* what() const override = 0;
 
 protected:
