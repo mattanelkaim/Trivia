@@ -3,6 +3,7 @@
 #pragma once
 #define SERVER_DEBUG_ALL // Debugging flag in Helper
 
+#include "Other/sqlite3.h"
 #include <ctime> // Used for std::time_t
 #include <span>
 #include <string>
