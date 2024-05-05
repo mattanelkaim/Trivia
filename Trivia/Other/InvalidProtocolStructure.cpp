@@ -1,4 +1,6 @@
 #include "InvalidProtocolStructure.h"
+#include <string>
+
 
 InvalidProtocolStructure::InvalidProtocolStructure() :
 	IServerException("Invalid protocol structure!")
