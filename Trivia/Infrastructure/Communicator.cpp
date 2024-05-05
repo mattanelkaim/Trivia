@@ -38,7 +38,7 @@ void Communicator::bindAndListen() const
     serverAddr.sin_addr.s_addr = INADDR_ANY; // When there are few IPs for the machine. We will use always "INADDR_ANY"
 
     // Connects the socket and the configuration
-    if (bind(this->m_serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+    if (bind(this->m_serverSocket, reinterpret_cast<struct sockaddr*>(&serverAddr), sizeof(serverAddr)) == SOCKET_ERROR)
         throw std::runtime_error(std::format("{}  - bind() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
     // Start listening for incoming client requests
@@ -114,8 +114,9 @@ void Communicator::handleNewClient(SOCKET clientSocket)
         }
         catch (const IServerException& e)
         {
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << "\n\n";
+            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
             this->disconnectClient(clientSocket);
+            std::cout << "Disconnected client socket " << clientSocket << "\n\n";
             return; // No need to handle disconnected client
         }
         catch (const std::exception& e)
