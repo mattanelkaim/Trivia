@@ -1,11 +1,11 @@
 #include "Helper.h"
 #include "InvalidProtocolStructure.h"
 #include "ServerDefinitions.h"
+#include "UnexpectedClientExit.h"
 #include <string>
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN) || defined(SERVER_DEBUG_OUT)
 #include <iostream>
 #endif
-#include "UnexpectedClientExit.h"
 
 using std::to_string;
 
@@ -56,20 +56,20 @@ std::string Helper::getStringFromSocket(SOCKET sc, const int bytesNum)
 {
     if (bytesNum <= 0) return "";
 
-    char* data = new char[static_cast<size_t>(bytesNum) + 1]; // Allocate data for msg with terminator
+    const size_t bufferSize = static_cast<size_t>(bytesNum);
+    char* data = new char[bufferSize]; // Terminator is added later
 
-    if (recv(sc, data, bytesNum, 0) == INVALID_SOCKET) // flags = 0
+    if (recv(sc, data, bytesNum, 0) == static_cast<int>(INVALID_SOCKET)) // flags = 0
     {
         delete[] data;
         const int errCode = WSAGetLastError();
-        if (errCode == 10054)
+        if (errCode == CLIENT_CLOSED_UNEXPECTEDLY)
             throw UnexpectedClientExit(sc);
         else
             throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(errCode));
     }
 
-    data[bytesNum] = '\0'; // Terminator
-    const std::string str(data);
+    const std::string str(data, bufferSize); // Null terminator added automatically
     delete[] data;
 
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN)
@@ -85,6 +85,6 @@ void Helper::sendData(SOCKET sc, std::string_view message)
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_OUT)
     std::cout << "[SERVER] " << message << '\n';
 #endif
-    if (send(sc, message.data(), static_cast<int>(message.size()), 0) == INVALID_SOCKET) // flags = 0
+    if (send(sc, message.data(), static_cast<int>(message.size()), 0) == static_cast<int>(INVALID_SOCKET)) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }
