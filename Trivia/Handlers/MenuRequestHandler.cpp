@@ -1,9 +1,9 @@
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
+#include "JsonResponseSerializer.h"
 #include "MenuRequestHandler.h"
+#include "ServerDefinitions.h"
 
 
-bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info)
+bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const
 {
     return info.id != LOGIN && info.id != SIGNUP;
 }
