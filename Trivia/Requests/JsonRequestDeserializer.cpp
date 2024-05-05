@@ -1,13 +1,12 @@
-#include "../json.hpp"
-#include "../ServerDefenitions.h"
+#include "json.hpp"
 #include "JsonRequestDeserializer.h"
+#include "ServerDefinitions.h"
 #include <stdexcept>
 #include <string>
 
 using json = nlohmann::json;
 
-#include <iostream>
-LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const buffer& response)
+LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const readonly_buffer response)
 {
     LoginRequest request;
 
@@ -15,7 +14,6 @@ LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const buffer& re
     {
         // Parse string msg to JSON
         const json j = json::parse(response);
-        std::cout << j.dump() << '\n';
 
         // Store data from JSON on a LoginRequest struct
         j.at("username").get_to(request.username);
@@ -33,7 +31,7 @@ LoginRequest JsonResponseDeserializer::deserializeLoginResponse(const buffer& re
     return request;
 }
 
-SignupRequest JsonResponseDeserializer::deserializeSignupResponse(const buffer& response)
+SignupRequest JsonResponseDeserializer::deserializeSignupResponse(const readonly_buffer response)
 {
     SignupRequest request;
 

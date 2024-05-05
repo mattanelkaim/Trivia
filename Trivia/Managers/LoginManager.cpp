@@ -1,8 +1,9 @@
 #include "LoginManager.h"
 
 
-LoginManager::LoginManager(IDatabase* db)
-	: m_database(db) {}
+LoginManager::LoginManager(IDatabase* db) :
+	m_database(db)
+{}
 
 bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
@@ -25,12 +26,23 @@ bool LoginManager::login(const std::string& username, const std::string& passwor
 	return false; // Login failed
 }
 
-void LoginManager::logout(const std::string_view& username) noexcept
+void LoginManager::logout(const std::string_view username) noexcept
 {
 	std::erase(this->m_loggedUsers, username);
 }
 
-bool LoginManager::isUserLoggedIn(const std::string_view& username) const noexcept
+bool LoginManager::isUserLoggedIn(const std::string_view username) const noexcept
 {
 	return std::find(m_loggedUsers.cbegin(), m_loggedUsers.cend(), username) != m_loggedUsers.cend();
+}
+
+// Singleton
+LoginManager* LoginManager::getInstance(IDatabase* db)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+	if (m_LoginManager == nullptr)
+	{
+		m_LoginManager = new LoginManager(db);
+	}
+	return m_LoginManager;
 }

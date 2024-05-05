@@ -1,8 +1,9 @@
-#include "../Handlers/LoginRequestHandler.h"
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
 #include "Communicator.h"
 #include "Helper.h"
+#include "IServerException.h"
+#include "JsonResponseSerializer.h"
+#include "LoginRequestHandler.h"
+#include "ServerDefinitions.h"
 #include <iostream>
 #include <string>
 #include <thread>
@@ -12,11 +13,10 @@ using std::to_string;
 constexpr uint16_t PORT = 7777;
 
 
-Communicator::Communicator(RequestHandlerFactory& handlerFactory)
-    : m_handlerFactory(handlerFactory) {
-
-    this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    
+Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
+    m_handlerFactory(handlerFactory),
+    m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
+{
     if (this->m_serverSocket == INVALID_SOCKET)
         throw std::runtime_error(__FUNCTION__ " - socket() err: " + to_string(WSAGetLastError()));
 
@@ -25,8 +25,8 @@ Communicator::Communicator(RequestHandlerFactory& handlerFactory)
 
 Communicator::~Communicator() noexcept
 {
-    for (auto& client : this->m_clients)
-        if (client.second != nullptr) delete client.second;
+    for (auto& [socket, handler] : this->m_clients)
+        if (handler != nullptr) delete handler;
 }
 
 void Communicator::bindAndListen() const
@@ -70,7 +70,7 @@ void Communicator::startHandleRequests()
     }
     catch (const std::exception& e)
     {
-        std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
+        std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
     }
 }
 
@@ -92,7 +92,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             IRequestHandler* handler = this->m_clients.at(clientSocket);
 
             // Handle request
-            if (handler != nullptr || handler->isRequestRelevant(request))
+            if (handler != nullptr && handler->isRequestRelevant(request))
             {
                 RequestResult result = handler->handleRequest(request); // Serialized
 
@@ -106,14 +106,38 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             else
             {
                 std::cout << "Handler is invalid!\n";
-                const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"});
+                const readonly_buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"});
                 Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
                 std::cout << "Operation NOT successful\n\n";
             }
         }
+        catch (const IServerException& e)
+        {
+            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << "\n\n";
+            this->disconnectClient(clientSocket);
+            return; // No need to handle disconnected client
+        }
         catch (const std::exception& e)
         {
-            std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
+            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
         }
     } while (true);
+}
+
+void Communicator::disconnectClient(const SOCKET clientSocket)
+{
+    IRequestHandler* handler = this->m_clients.at(clientSocket);
+    if (handler != nullptr) delete handler;
+    this->m_clients.erase(clientSocket);
+}
+
+// Singleton
+Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_Communicator == nullptr)
+    {
+        m_Communicator = new Communicator(handlerFactory);
+    }
+    return m_Communicator;
 }

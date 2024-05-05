@@ -1,3 +1,5 @@
+#include "ServerDefinitions.h"
+#include "sqlite3.h"
 #include "SqliteDatabase.h"
 #include <stdexcept>
 #include <string>
@@ -62,12 +64,12 @@ void SqliteDatabase::addNewUser(const std::string& username, const std::string& 
 
 // Helper functions
 
-void SqliteDatabase::runQuery(const std::string_view& query) const
+void SqliteDatabase::runQuery(const std::string_view query) const
 {
 	runQuery(query, nullptr, nullptr);
 }
 
-void SqliteDatabase::runQuery(const std::string_view& query, const sqlite3_callback& callback, void* data) const
+void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const
 {
 	char* sql_error_msg = nullptr;
 
@@ -81,7 +83,7 @@ void SqliteDatabase::runQuery(const std::string_view& query, const sqlite3_callb
 
 #pragma region CallbackFunctions
 
-int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char** columnsNames)
+int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**) noexcept
 {
 	if (rows == 1 && data[0] != nullptr)
 	{
@@ -91,7 +93,7 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**
 	return 1;
 }
 
-int SqliteDatabase::callbackText(void* destination, int rows, char** data, char** columnsNames)
+int SqliteDatabase::callbackText(void* destination, int rows, char** data, char**) noexcept
 {
 	if (rows == 1 && data[0] != nullptr)
 	{

@@ -1,5 +1,5 @@
-#include "../Infrastructure/Helper.h"
-#include "../json.hpp"
+#include "Helper.h"
+#include "json.hpp"
 #include "JsonResponseSerializer.h"
 #include <string>
 
@@ -12,21 +12,21 @@ buffer JsonResponseSerializer::serializeErrorResponse(const ErrorResponse& respo
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse& response)
+buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse response)
 {
     json j;
     j[JsonFields::STATUS_FIELD] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse& response)
+buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse response)
 {
     json j;
     j[JsonFields::STATUS_FIELD] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type, const std::string_view& json)
+buffer JsonResponseSerializer::serializeGeneralResponse(const messageType type, const std::string_view json)
 {
     buffer buff;
 

@@ -1,10 +1,12 @@
 #pragma once
 
-#include "../ServerDefenitions.h"
 #include "IDatabase.h"
+#include "sqlite3.h"
 #include <string>
 
-class SqliteDatabase : public IDatabase
+using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3_callback noexcept
+
+class SqliteDatabase final : public IDatabase
 {
 public:
 	SqliteDatabase();
@@ -22,10 +24,10 @@ private:
 	sqlite3* _db;
 
 	// Functions to run queries on the databases
-	void runQuery(const std::string_view& query) const;
-	void runQuery(const std::string_view& query, const sqlite3_callback& callback, void* data) const;
+	void runQuery(const std::string_view query) const;
+	void runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const;
 
 	// Callback functions
-	static int callbackInt(void* destination, int rows, char** data, char** columnsNames);
-	static int callbackText(void* destination, int rows, char** data, char** columnsNames);
+	static int callbackInt(void* destination, int rows, char** data, char** columnsNames) noexcept;
+	static int callbackText(void* destination, int rows, char** data, char** columnsNames) noexcept;
 };
