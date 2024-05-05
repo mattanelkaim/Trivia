@@ -1,3 +1,5 @@
+// NOLINTBEGIN
+
 /*
 ** 2001-09-15
 **
@@ -13355,3 +13357,5 @@ struct fts5_api {
 #endif /* _FTS5_H */
 
 /******** End of fts5.h *********/
+
+// NOLINTEND
