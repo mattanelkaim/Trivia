@@ -1,3 +1,9 @@
+/*
+Things to do before shipping
+- Build with compiler optimizations (O2/O3)
+- Turn off ASan
+*/
+
 #include "Server.h"
 #include "ServerDefinitions.h"
 #include "WSAInitializer.h"
