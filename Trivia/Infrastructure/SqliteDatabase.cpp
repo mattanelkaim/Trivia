@@ -26,21 +26,16 @@ bool SqliteDatabase::open()
 
 bool SqliteDatabase::close()
 {
-    if (this->m_db != nullptr)
-    {
-        const bool isSuccess = sqlite3_close(this->m_db) == SQLITE_OK;
-        this->m_db = nullptr;
-        return isSuccess;
-    }
-
-    return true;
+    const bool isSuccess = sqlite3_close(this->m_db) == SQLITE_OK;
+    this->m_db = nullptr;
+    return isSuccess;
 }
 
 bool SqliteDatabase::doesUserExist(const std::string& username) const
 {
-    int numUsers = 0;
-    const std::string query = "SELECT COUNT(username) FROM users WHERE username = '" + username + '\'';
+    const std::string query = "SELECT COUNT(*) FROM users WHERE username = '" + username + '\'';
 
+    int numUsers;
     this->runQuery(query, callbackInt, &numUsers);
 
     return numUsers != 0;
@@ -49,9 +44,9 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 // password could be a string_view, but unfortunately it does not match base class's method signature
 bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::string& password) const
 {
-    std::string realPassword = "";
     const std::string query = "SELECT password FROM users WHERE username = '" + username + '\'';
 
+    std::string realPassword;
     this->runQuery(query, callbackText, &realPassword);
 
     return password == realPassword;
@@ -71,12 +66,12 @@ void SqliteDatabase::runQuery(const std::string_view query) const
 
 void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const
 {
-    char* sql_error_msg = nullptr;
+    char* sqlErrorMsg = nullptr;
 
-    if (SQLITE_OK != sqlite3_exec(this->m_db, query.data(), callback, data, &sql_error_msg))
+    if (sqlite3_exec(this->m_db, query.data(), callback, data, &sqlErrorMsg) != SQLITE_OK)
     {
-        const std::string err = sql_error_msg;
-        sqlite3_free(sql_error_msg);
+        const std::string err = sqlErrorMsg;
+        sqlite3_free(sqlErrorMsg);
         throw std::runtime_error(err + " | ON query: '" + query.data() + '\'');
     }
 }
