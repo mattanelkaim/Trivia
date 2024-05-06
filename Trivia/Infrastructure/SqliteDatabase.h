@@ -10,7 +10,7 @@ class SqliteDatabase final : public IDatabase
 {
 public:
     SqliteDatabase();
-    ~SqliteDatabase();
+    ~SqliteDatabase() override;
 
     bool open() override;
     bool close() override;
