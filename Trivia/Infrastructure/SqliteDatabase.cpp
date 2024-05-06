@@ -18,18 +18,18 @@ SqliteDatabase::~SqliteDatabase()
 
 bool SqliteDatabase::open()
 {
-    if (SQLITE_OK != sqlite3_open(DB_FILE_NAME.data(), &(this->_db)))
-        throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->_db)));
+    if (SQLITE_OK != sqlite3_open(DB_FILE_NAME.data(), &(this->m_db)))
+        throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->m_db)));
 
     return true;
 }
 
 bool SqliteDatabase::close()
 {
-    if (this->_db != nullptr)
+    if (this->m_db != nullptr)
     {
-        const bool isSuccess = sqlite3_close(this->_db) == SQLITE_OK;
-        this->_db = nullptr;
+        const bool isSuccess = sqlite3_close(this->m_db) == SQLITE_OK;
+        this->m_db = nullptr;
         return isSuccess;
     }
 
@@ -73,7 +73,7 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
 {
     char* sql_error_msg = nullptr;
 
-    if (SQLITE_OK != sqlite3_exec(this->_db, query.data(), callback, data, &sql_error_msg))
+    if (SQLITE_OK != sqlite3_exec(this->m_db, query.data(), callback, data, &sql_error_msg))
     {
         const std::string err = sql_error_msg;
         sqlite3_free(sql_error_msg);
