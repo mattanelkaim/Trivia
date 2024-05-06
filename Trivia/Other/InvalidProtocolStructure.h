@@ -10,4 +10,3 @@ public:
     explicit InvalidProtocolStructure(const std::string& invalidPart);
     const char* what() const override;
 };
-

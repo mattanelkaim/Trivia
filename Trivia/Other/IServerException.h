@@ -13,4 +13,3 @@ public:
 protected:
     std::string m_err;
 };
-

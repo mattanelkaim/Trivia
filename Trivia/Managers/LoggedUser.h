@@ -4,9 +4,6 @@
 
 class LoggedUser
 {
-private:
-    std::string m_username;
-
 public:
     LoggedUser() = delete;
     explicit LoggedUser(const std::string& username) noexcept;
@@ -14,4 +11,7 @@ public:
 
     bool operator==(const std::string_view otherUsername) const noexcept;
     bool operator==(const LoggedUser& other) const noexcept;
+
+private:
+    std::string m_username;
 };

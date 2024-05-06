@@ -21,7 +21,7 @@ public:
     void addNewUser(const std::string& username, const std::string& password, const std::string& email) override;
 
 private:
-    sqlite3* _db;
+    sqlite3* m_db;
 
     // Functions to run queries on the databases
     void runQuery(const std::string_view query) const;
