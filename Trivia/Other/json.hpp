@@ -1,6 +1,6 @@
 // NOLINTBEGIN
 #include <codeanalysis\warnings.h>
-#pragma warning ( disable : ALL_CODE_ANALYSIS_WARNINGS 5045 5027 4820 4626 4625 4623 4365 4514)
+#pragma warning(disable : ALL_CODE_ANALYSIS_WARNINGS 5045 5027 4820 4626 4625 4623 4365 4514)
 
 //     __ _____ _____ _____
 //  __|  |   __|     |   | |  JSON for Modern C++
