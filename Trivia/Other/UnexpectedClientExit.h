@@ -9,4 +9,3 @@ public:
     explicit UnexpectedClientExit(const SOCKET crashedClient);
     const char* what() const override;
 };
-
