@@ -11,8 +11,6 @@
 #include <WinSock2.h>
 
 using std::to_string;
-constexpr uint16_t PORT = 7777;
-
 
 Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
     m_handlerFactory(handlerFactory),
