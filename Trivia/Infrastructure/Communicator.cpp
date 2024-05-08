@@ -58,7 +58,7 @@ void Communicator::startHandleRequests()
             if (clientSocket == INVALID_SOCKET)
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
-            std::cout << "Client accepted. Server and client can communicate\n";
+            std::cout << "Client accepted (" << clientSocket << "). Server and client can communicate\n";
             // Add client with LoginRequestHandler to map
             this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
 
