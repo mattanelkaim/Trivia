@@ -77,8 +77,7 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
 }
 
 #pragma region CallbackFunctions
-
-int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**) noexcept
+int SqliteDatabase::callbackInt(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (rows == 1 && data[0] != nullptr)
     {
@@ -88,7 +87,7 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**
     return 1;
 }
 
-int SqliteDatabase::callbackText(void* destination, int rows, char** data, char**) noexcept
+int SqliteDatabase::callbackText(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (rows == 1 && data[0] != nullptr)
     {
