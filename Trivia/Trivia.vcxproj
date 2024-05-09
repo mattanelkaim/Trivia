@@ -76,6 +76,8 @@
     </PublicIncludeDirectories>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
     <ClangTidyChecks>+clang-analyzer-*, -*compat*, -clang-diagnostic-pragma-once-outside-header,</ClangTidyChecks>
+    <LinkIncremental>
+    </LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

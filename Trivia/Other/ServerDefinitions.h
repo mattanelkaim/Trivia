@@ -59,7 +59,6 @@ namespace JsonFields
     constexpr std::string_view STATUS_FIELD = "status";
 }
 
-
 #pragma endregion
 
 
@@ -81,7 +80,7 @@ struct RequestInfo
 struct RequestResult
 {
     buffer response;
-    IRequestHandler* newHandler = nullptr;
+    IRequestHandler* newHandler{nullptr};
 };
 
 // Request structs
