@@ -11,7 +11,7 @@ Server::Server() :
     m_communicator(Communicator::getInstance(m_handlerFactory))
 {}
 
-Server::~Server()
+Server::~Server() noexcept
 {
     delete this->m_database;
 }

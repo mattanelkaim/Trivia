@@ -1,7 +1,7 @@
 #include "Room.h"
 
 
-Room::Room(const RoomData& data) :
+Room::Room(const RoomData& data) noexcept :
     m_metadata(data)
 {}
 
@@ -10,7 +10,7 @@ void Room::addUser(const LoggedUser& user)
     this->m_users.push_back(user);
 }
 
-void Room::removeUser(const LoggedUser& user)
+void Room::removeUser(const LoggedUser& user) noexcept
 {
     std::erase(this->m_users, user);
 }

@@ -22,7 +22,7 @@ private:
 
     // Singleton
     Server();
-    ~Server();
+    ~Server() noexcept;
     inline static Server* m_Server = nullptr;
     inline static std::mutex m_mutex;
 };
