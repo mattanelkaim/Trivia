@@ -30,4 +30,5 @@ private:
     // Callback functions
     static int callbackInt(void* destination, int rows, char** data, char** columnsNames) noexcept;
     static int callbackText(void* destination, int rows, char** data, char** columnsNames) noexcept;
+    using ptr_thing = decltype(callbackInt);
 };

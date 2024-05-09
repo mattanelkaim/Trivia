@@ -31,5 +31,5 @@ std::vector<RoomData> RoomManager::getRooms() const
 
 Room& RoomManager::getRoom(const uint32_t roomId)
 {
-    return (this->m_rooms.at(roomId));
+    return this->m_rooms.at(roomId);
 }

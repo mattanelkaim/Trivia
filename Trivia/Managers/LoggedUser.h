@@ -6,7 +6,7 @@ class LoggedUser
 {
 public:
     LoggedUser() = delete;
-    explicit LoggedUser(const std::string& username) noexcept;
+    explicit LoggedUser(const std::string& username);
     std::string getUsername() const noexcept;
 
     bool operator==(const std::string_view otherUsername) const noexcept;
