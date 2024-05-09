@@ -63,9 +63,9 @@ std::string Helper::getStringFromSocket(SOCKET sc, const int bytesNum)
     {
         delete[] data;
         const int errCode = WSAGetLastError();
-        if (errCode == CLIENT_CLOSED_UNEXPECTEDLY)
+        if (errCode == CLIENT_CLOSED_UNEXPECTEDLY) [[unlikely]]
             throw UnexpectedClientExit(sc);
-        else
+        else [[likely]]
             throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(errCode));
     }
 
@@ -85,6 +85,6 @@ void Helper::sendData(SOCKET sc, std::string_view message)
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_OUT)
     std::cout << "[SERVER] " << message << '\n';
 #endif
-    if (send(sc, message.data(), static_cast<int>(message.size()), 0) == SOCKET_ERROR ) // flags = 0
+    if (send(sc, message.data(), static_cast<int>(message.size()), 0) == SOCKET_ERROR) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
 }

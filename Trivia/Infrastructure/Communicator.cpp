@@ -91,7 +91,7 @@ void Communicator::handleNewClient(SOCKET clientSocket) noexcept
             IRequestHandler* handler = this->m_clients.at(clientSocket);
 
             // Handle request
-            if (handler != nullptr && handler->isRequestRelevant(request))
+            if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
             {
                 RequestResult result = handler->handleRequest(request); // Serialized
 
@@ -102,7 +102,7 @@ void Communicator::handleNewClient(SOCKET clientSocket) noexcept
                 Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
                 std::cout << "Operation successful\n\n";
             }
-            else
+            else [[unlikely]]
             {
                 std::cout << "Handler is invalid!\n";
                 const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
