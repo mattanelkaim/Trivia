@@ -3,7 +3,7 @@
 #include "ServerDefinitions.h"
 
 
-bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const
+bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
     return info.id != LOGIN && info.id != SIGNUP;
 }

@@ -28,7 +28,7 @@ private:
     bool isUserLoggedIn(const std::string_view username) const noexcept;
 
     // Singleton
-    explicit LoginManager(IDatabase* db);
+    explicit LoginManager(IDatabase* db) noexcept;
     ~LoginManager() = default;
     inline static LoginManager* m_LoginManager = nullptr;
     inline static std::mutex m_mutex;

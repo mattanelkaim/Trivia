@@ -10,7 +10,7 @@ InvalidProtocolStructure::InvalidProtocolStructure(const std::string& invalidPar
     IServerException("Invalid protocol structure: " + invalidPart)
 {}
 
-const char* InvalidProtocolStructure::what() const
+const char* InvalidProtocolStructure::what() const noexcept
 {
     return this->m_err.c_str();
 }

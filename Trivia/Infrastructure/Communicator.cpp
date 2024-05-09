@@ -73,7 +73,7 @@ void Communicator::startHandleRequests()
     }
 }
 
-void Communicator::handleNewClient(SOCKET clientSocket)
+void Communicator::handleNewClient(SOCKET clientSocket) noexcept
 {
     do
     {
@@ -124,9 +124,17 @@ void Communicator::handleNewClient(SOCKET clientSocket)
     } while (true);
 }
 
-void Communicator::disconnectClient(const SOCKET clientSocket)
+void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
-    IRequestHandler* handler = this->m_clients.at(clientSocket);
+    IRequestHandler* handler;
+    try
+    {
+        handler = this->m_clients.at(clientSocket);
+    }
+    catch (const std::out_of_range&)
+    {
+        return; // Do nothing
+    }
     if (handler != nullptr) delete handler;
     this->m_clients.erase(clientSocket);
 }

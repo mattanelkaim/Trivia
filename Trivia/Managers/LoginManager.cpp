@@ -1,7 +1,7 @@
 #include "LoginManager.h"
 
 
-LoginManager::LoginManager(IDatabase* db) :
+LoginManager::LoginManager(IDatabase* db) noexcept :
     m_database(db)
 {}
 

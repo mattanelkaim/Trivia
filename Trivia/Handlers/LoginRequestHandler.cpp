@@ -7,11 +7,11 @@
 #include <stdexcept>
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) :
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept :
     m_handlerFactory(handlerFactory)
 {}
 
-bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
     return info.id == LOGIN || info.id == SIGNUP;
 }

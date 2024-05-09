@@ -4,7 +4,7 @@
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
     m_database(db),
-    m_loginManager(LoginManager::getInstance(db))
+    m_loginManager(LoginManager::getInstance(db)) // Might throw
 {}
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
@@ -12,7 +12,7 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
     return new LoginRequestHandler(this);
 }
 
-LoginManager* RequestHandlerFactory::getLoginManager()
+LoginManager* RequestHandlerFactory::getLoginManager() noexcept
 {
     return this->m_loginManager;
 }
