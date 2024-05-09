@@ -8,7 +8,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexce
     return info.id != LOGIN && info.id != SIGNUP;
 }
 
-RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info)
+RequestResult MenuRequestHandler::handleRequest([[maybe_unused]] const RequestInfo& info)
 {
     RequestResult result;
     result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Not supported yet"});
