@@ -2,8 +2,8 @@
 
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include <map>
 #include <mutex>
+#include <unordered_map>
 #include <WinSock2.h>
 
 class Communicator
@@ -20,7 +20,7 @@ public:
 
 private:
     // Members
-    std::map<SOCKET, IRequestHandler*> m_clients;
+    std::unordered_map<SOCKET, IRequestHandler*> m_clients;
     RequestHandlerFactory* m_handlerFactory;
     SOCKET m_serverSocket;
 
