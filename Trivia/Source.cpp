@@ -6,7 +6,7 @@
 int main(void)
 {
 	try
-	{
+	{			
 		WSAInitializer wsaInit;
 		Server::getInstance()->run();
 	}
