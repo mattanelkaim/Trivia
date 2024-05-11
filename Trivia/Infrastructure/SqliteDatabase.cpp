@@ -57,6 +57,71 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 	return password == realPassword;
 }
 
+std::vector<Question> SqliteDatabase::getQuestions(int) const
+{
+	return std::vector<Question>();
+}
+
+float SqliteDatabase::getPlayerAverageAnswerTime(const std::string& username) const
+{
+	const std::string query = "SELECT avg_time FROM user_scores WHERE username = '" + username + '\'';
+
+	float avgTime;
+	this->runQuery(query, callbackFloat, &avgTime);
+
+	return avgTime;
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(const std::string& username) const
+{
+	const std::string query = "SELECT num_correct FROM user_scores WHERE username = '" + username + '\'';
+
+	int numCorrect;
+	this->runQuery(query, callbackInt, &numCorrect);
+
+	return numCorrect;
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const
+{
+	const std::string query = "SELECT total_answers FROM user_scores WHERE username = '" + username + '\'';
+
+	int numTotal;
+	this->runQuery(query, callbackInt, &numTotal);
+
+	return numTotal;
+}
+
+int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const
+{
+	const std::string query = "SELECT num_games FROM user_scores WHERE username = '" + username + '\'';
+
+	int totalGames;
+	this->runQuery(query, callbackInt, &totalGames);
+
+	return totalGames;
+}
+
+float SqliteDatabase::getPlayerScore(const std::string& username) const
+{
+	const std::string query = "SELECT score FROM user_scores WHERE username = '" + username + '\'';
+
+	float score;
+	this->runQuery(query, callbackFloat, &score);
+
+	return score;
+}
+
+std::vector<int> SqliteDatabase::getHighScores() const
+{
+	const std::string query = "SELECT score FROM user_scores WHERE username = '" + username + '\'';
+
+	float score;
+	this->runQuery(query, callbackFloat, &score);
+
+	return score;
+}
+
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
 {
 	this->runQuery("INSERT INTO users(username, password, email) VALUES('" + username + "', '" + password + "', '" + email + "')");
@@ -88,6 +153,16 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, char**
 	if (rows == 1 && data[0] != nullptr)
 	{
 		*static_cast<int*>(destination) = atoi(data[0]);
+		return 0;
+	}
+	return 1;
+}
+
+int SqliteDatabase::callbackFloat(void* destination, int rows, char** data, char**) noexcept
+{
+	if (rows == 1 && data[0] != nullptr)
+	{
+		*static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
 		return 0;
 	}
 	return 1;

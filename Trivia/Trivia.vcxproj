@@ -44,7 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableASAN>false</EnableASAN>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -153,6 +153,7 @@
     <ClInclude Include="Infrastructure\WSAInitializer.h" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
+    <ClInclude Include="Managers\Question.h" />
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
     <ClInclude Include="Other\IServerException.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Infrastructure\Server.cpp" />
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
+    <ClCompile Include="Managers\Question.cpp" />
     <ClCompile Include="Managers\Room.cpp" />
     <ClCompile Include="Managers\RoomManager.cpp" />
     <ClCompile Include="Other\Helper.cpp" />
