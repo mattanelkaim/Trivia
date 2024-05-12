@@ -2,7 +2,7 @@
 #include "ServerDefinitions.h"
 #include "WSAInitializer.h"
 #include <iostream>
-
+#include "../Infrastructure/SqliteDatabase.h"
 int main(void)
 {
 	try

@@ -157,7 +157,6 @@
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
     <ClInclude Include="Other\IServerException.h" />
-    <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\ServerDefinitions.h" />
     <ClInclude Include="Other\sqlite3.h" />
     <ClInclude Include="Managers\Room.h" />
