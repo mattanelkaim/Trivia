@@ -54,74 +54,74 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 
 std::vector<Question> SqliteDatabase::getQuestions(const unsigned int numQuestions) const
 {
-	std::vector<Question> questions;
+    std::vector<Question> questions;
 
-	const std::string query = "SELECT question, correct, ans1, ans2, ans3 FROM questions LIMIT " + to_string(numQuestions);
+    const std::string query = "SELECT question, correct, ans1, ans2, ans3 FROM questions LIMIT " + to_string(numQuestions);
 
-	this->runQuery(query, callbackQuestionVector, &questions);
+    this->runQuery(query, callbackQuestionVector, &questions);
 
-	return questions;
+    return questions;
 }
 
 float SqliteDatabase::getPlayerAverageAnswerTime(const std::string& username) const
 {
-	const std::string query = "SELECT avg_time FROM user_scores WHERE username = '" + username + '\'';
+    const std::string query = "SELECT avg_time FROM user_scores WHERE username = '" + username + '\'';
 
-	float avgTime;
-	this->runQuery(query, callbackFloat, &avgTime);
+    float avgTime;
+    this->runQuery(query, callbackFloat, &avgTime);
 
-	return avgTime;
+    return avgTime;
 }
 
 int SqliteDatabase::getNumOfCorrectAnswers(const std::string& username) const
 {
-	const std::string query = "SELECT num_correct FROM user_scores WHERE username = '" + username + '\'';
+    const std::string query = "SELECT num_correct FROM user_scores WHERE username = '" + username + '\'';
 
-	int numCorrect;
-	this->runQuery(query, callbackInt, &numCorrect);
+    int numCorrect;
+    this->runQuery(query, callbackInt, &numCorrect);
 
-	return numCorrect;
+    return numCorrect;
 }
 
 int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const
 {
-	const std::string query = "SELECT total_answers FROM user_scores WHERE username = '" + username + '\'';
+    const std::string query = "SELECT total_answers FROM user_scores WHERE username = '" + username + '\'';
 
-	int numTotal;
-	this->runQuery(query, callbackInt, &numTotal);
+    int numTotal;
+    this->runQuery(query, callbackInt, &numTotal);
 
-	return numTotal;
+    return numTotal;
 }
 
 int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const
 {
-	const std::string query = "SELECT num_games FROM user_scores WHERE username = '" + username + '\'';
+    const std::string query = "SELECT num_games FROM user_scores WHERE username = '" + username + '\'';
 
-	int totalGames;
-	this->runQuery(query, callbackInt, &totalGames);
+    int totalGames;
+    this->runQuery(query, callbackInt, &totalGames);
 
-	return totalGames;
+    return totalGames;
 }
 
 #define SELECT "SELECT"
 float SqliteDatabase::getPlayerScore(const std::string& username) const
 {
-	const std::string query = "SELECT score FROM user_scores WHERE username = '" + username + '\'';	
+    const std::string query = "SELECT score FROM user_scores WHERE username = '" + username + '\'';	
 
-	float score;
-	this->runQuery(query, callbackFloat, &score);
+    float score;
+    this->runQuery(query, callbackFloat, &score);
 
-	return score;
+    return score;
 }
 
 std::vector<std::string> SqliteDatabase::getHighScores() const
 {
-	const std::string query = "SELECT name FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
+    const std::string query = "SELECT name FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
 
-	std::vector<std::string> scores;
-	this->runQuery(query, callbackStringVector, &scores);
+    std::vector<std::string> scores;
+    this->runQuery(query, callbackStringVector, &scores);
 
-	return scores;
+    return scores;
 }
 
 
@@ -162,12 +162,12 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, [[mayb
 
 int SqliteDatabase::callbackFloat(void* destination, int rows, char** data, char** ) noexcept
 {
-	if (rows == 1 && data[0] != nullptr)
-	{
-		*static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
-		return 0;
-	}
-	return 1;
+    if (rows == 1 && data[0] != nullptr)
+    {
+        *static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
+        return 0;
+    }
+    return 1;
 }
 
 int SqliteDatabase::callbackText(void* destination, int rows, char** data, char**) noexcept
@@ -182,43 +182,43 @@ int SqliteDatabase::callbackText(void* destination, int rows, char** data, char*
 
 int SqliteDatabase::callbackQuestionVector(void* destination, int rows, char** data, char**) noexcept
 {
-	try
-	{
-		auto dest = static_cast<std::vector<Question>*>(destination);
+    try
+    {
+        auto dest = static_cast<std::vector<Question>*>(destination);
 
-		constexpr unsigned int num_columns = NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1;
+        constexpr unsigned int num_columns = NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1;
 
-		for (int row = 0; row < rows; row++)
-		{
-			std::vector<std::string> possible_answers(NUM_POSSIBLE_ANSWERS_PER_QUESTION);
+        for (int row = 0; row < rows; row++)
+        {
+            std::vector<std::string> possible_answers(NUM_POSSIBLE_ANSWERS_PER_QUESTION);
 
-			for (unsigned int i = 1; i <= NUM_POSSIBLE_ANSWERS_PER_QUESTION; i++)
-				possible_answers[i] = data[row * num_columns + i];
+            for (unsigned int i = 1; i <= NUM_POSSIBLE_ANSWERS_PER_QUESTION; i++)
+                possible_answers[i] = data[row * num_columns + i];
 
-			dest->push_back({ data[row], possible_answers });
-		}
-		return 0;
-	}
-	catch (...)
-	{
-		return 1;
-	}
+            dest->push_back({ data[row], possible_answers });
+        }
+        return 0;
+    }
+    catch (...)
+    {
+        return 1;
+    }
 }
 
 int SqliteDatabase::callbackStringVector(void* destination, int rows, char** data, char**) noexcept
 {
-	try
-	{
-		auto dest = static_cast<std::vector<std::string>*>(destination);
+    try
+    {
+        auto dest = static_cast<std::vector<std::string>*>(destination);
 
-		for (int i = 0; i < NUM_TOP_SCORES; i++)
-			dest->push_back(data[i]);
+        for (int i = 0; i < NUM_TOP_SCORES; i++)
+            dest->push_back(data[i]);
 
-		return 0;
-	}
-	catch (...)
-	{
-		return 1;
-	}
+        return 0;
+    }
+    catch (...)
+    {
+        return 1;
+    }
 }
 #pragma endregion
