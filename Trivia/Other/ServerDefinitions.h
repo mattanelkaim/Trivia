@@ -1,6 +1,6 @@
 // NOLINTBEGIN(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
-
 #pragma once
+
 #define SERVER_DEBUG_ALL // Debugging flag in Helper
 
 #include <ctime> // Used for std::time_t
@@ -13,7 +13,6 @@ class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 using byte = unsigned char;
 using buffer = std::vector<byte>;
 using readonly_buffer = std::span<const byte>;
-
 
 #pragma region IO
 
@@ -31,6 +30,8 @@ constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
 * literal strings if needed. For example: '"../" DB_FILE_NAME' 
 * sincerely, daddy. */
 constexpr std::string_view DB_FILE_NAME = "TriviaDB.sqlite";
+constexpr unsigned short NUM_POSSIBLE_ANSWERS_PER_QUESTION = 4;
+constexpr unsigned short NUM_TOP_SCORES = 5;
 
 #pragma endregion
 
