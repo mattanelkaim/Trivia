@@ -11,8 +11,6 @@
 #include <WinSock2.h>
 
 using std::to_string;
-constexpr uint16_t PORT = 7777;
-
 
 Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
     m_handlerFactory(handlerFactory),
@@ -60,7 +58,7 @@ void Communicator::startHandleRequests()
             if (clientSocket == INVALID_SOCKET)
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
-            std::cout << "Client accepted. Server and client can communicate\n";
+            std::cout << "Client accepted (" << clientSocket << "). Server and client can communicate\n";
             // Add client with LoginRequestHandler to map
             this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
 
@@ -75,7 +73,7 @@ void Communicator::startHandleRequests()
     }
 }
 
-void Communicator::handleNewClient(SOCKET clientSocket)
+void Communicator::handleNewClient(SOCKET clientSocket) noexcept
 {
     do
     {
@@ -93,7 +91,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             IRequestHandler* handler = this->m_clients.at(clientSocket);
 
             // Handle request
-            if (handler != nullptr && handler->isRequestRelevant(request))
+            if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
             {
                 RequestResult result = handler->handleRequest(request); // Serialized
 
@@ -104,7 +102,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
                 Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
                 std::cout << "Operation successful\n\n";
             }
-            else
+            else [[unlikely]]
             {
                 std::cout << "Handler is invalid!\n";
                 const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
@@ -126,9 +124,17 @@ void Communicator::handleNewClient(SOCKET clientSocket)
     } while (true);
 }
 
-void Communicator::disconnectClient(const SOCKET clientSocket)
+void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
-    IRequestHandler* handler = this->m_clients.at(clientSocket);
+    IRequestHandler* handler;
+    try
+    {
+        handler = this->m_clients.at(clientSocket);
+    }
+    catch (const std::out_of_range&)
+    {
+        return; // Do nothing
+    }
     if (handler != nullptr) delete handler;
     this->m_clients.erase(clientSocket);
 }
