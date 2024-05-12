@@ -47,12 +47,12 @@ struct ErrorResponse
 
 struct LoginResponse
 {
-    unsigned int status;
+    uint32_t status;
 };
 
 struct SignupResponse
 {
-    unsigned int status;
+    uint32_t status;
 };
 
 namespace JsonFields
