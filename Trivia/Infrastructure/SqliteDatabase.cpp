@@ -184,20 +184,15 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
     {
         auto dest = static_cast<std::vector<Question>*>(destination);
 
-        const uint32_t num_columns = NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1;
+        std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
+        for (int i = 1; i < columns; ++i) // Skip index 0 (which is the actual question)
+            possibleAnswers.emplace_back(data[i]);
 
-        for (int row = 0; row < columns; ++row)
-        {
-            std::vector<std::string> possible_answers(NUM_POSSIBLE_ANSWERS_PER_QUESTION);
+        dest->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
 
-            for (uint32_t i = 1; i <= NUM_POSSIBLE_ANSWERS_PER_QUESTION; ++i)
-                possible_answers[i] = data[row * num_columns + i];
-
-            dest->emplace_back(data[row], possible_answers);
-        }
         return 0;
     }
-    catch (...)
+    catch (...) // Callbacks must be noexcept
     {
         return 1;
     }
@@ -214,7 +209,7 @@ int SqliteDatabase::callbackStringVector(void* destination, int columns, char** 
 
         return 0;
     }
-    catch (...)
+    catch (...) // Callbacks must be noexcept
     {
         return 1;
     }
