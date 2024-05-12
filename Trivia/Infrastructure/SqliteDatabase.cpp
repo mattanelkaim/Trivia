@@ -54,10 +54,9 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
 
 std::vector<Question> SqliteDatabase::getQuestions(const uint32_t numQuestions) const
 {
-    std::vector<Question> questions;
-
     const std::string query = "SELECT question, correct, ans1, ans2, ans3 FROM questions LIMIT " + to_string(numQuestions);
 
+    std::vector<Question> questions;
     this->runQuery(query, callbackQuestionVector, &questions);
 
     return questions;
@@ -103,7 +102,6 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const
     return totalGames;
 }
 
-#define SELECT "SELECT"
 float SqliteDatabase::getPlayerScore(const std::string& username) const
 {
     const std::string query = "SELECT score FROM user_scores WHERE username = '" + username + '\'';	
@@ -160,7 +158,7 @@ int SqliteDatabase::callbackInt(void* destination, int rows, char** data, [[mayb
     return 1;
 }
 
-int SqliteDatabase::callbackFloat(void* destination, int rows, char** data, char** ) noexcept
+int SqliteDatabase::callbackFloat(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (rows == 1 && data[0] != nullptr)
     {
@@ -170,7 +168,7 @@ int SqliteDatabase::callbackFloat(void* destination, int rows, char** data, char
     return 1;
 }
 
-int SqliteDatabase::callbackText(void* destination, int rows, char** data, char**) noexcept
+int SqliteDatabase::callbackText(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (rows == 1 && data[0] != nullptr)
     {
@@ -180,7 +178,7 @@ int SqliteDatabase::callbackText(void* destination, int rows, char** data, char*
     return 1;
 }
 
-int SqliteDatabase::callbackQuestionVector(void* destination, int rows, char** data, char**) noexcept
+int SqliteDatabase::callbackQuestionVector(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     try
     {
@@ -188,14 +186,14 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int rows, char** d
 
         const uint32_t num_columns = NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1;
 
-        for (int row = 0; row < rows; row++)
+        for (int row = 0; row < rows; ++row)
         {
             std::vector<std::string> possible_answers(NUM_POSSIBLE_ANSWERS_PER_QUESTION);
 
-            for (uint32_t i = 1; i <= NUM_POSSIBLE_ANSWERS_PER_QUESTION; i++)
+            for (uint32_t i = 1; i <= NUM_POSSIBLE_ANSWERS_PER_QUESTION; ++i)
                 possible_answers[i] = data[row * num_columns + i];
 
-            dest->push_back({ data[row], possible_answers });
+            dest->emplace_back(data[row], possible_answers);
         }
         return 0;
     }
@@ -205,13 +203,13 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int rows, char** d
     }
 }
 
-int SqliteDatabase::callbackStringVector(void* destination, int rows, char** data, char**) noexcept
+int SqliteDatabase::callbackStringVector(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     try
     {
         auto dest = static_cast<std::vector<std::string>*>(destination);
 
-        for (int i = 0; i < NUM_TOP_SCORES; i++)
+        for (int i = 0; i < NUM_TOP_SCORES; ++i)
             dest->push_back(data[i]);
 
         return 0;
