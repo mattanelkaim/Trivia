@@ -10,9 +10,9 @@ public:
     Question() = delete;
     Question(const std::string& question, const std::vector<std::string>& answers);
 
-    inline const std::string& getQuestion() const;
-    inline const std::vector<std::string>& getPossibleAnswers() const;
-    inline const std::string& getCorrectAnswer() const; // The correct answer will always be the first one
+    const std::string& getQuestion() const;
+    const std::vector<std::string>& getPossibleAnswers() const;
+    const std::string& getCorrectAnswer() const; // The correct answer will always be the first one
 
 private:
     const std::string m_question;
