@@ -21,13 +21,13 @@ public:
 	// Queries using callback
 	bool doesUserExist(const std::string& username) const override;
 	bool doesPasswordMatch(const std::string& username, const std::string& password) const override;
-	std::vector<Question> getQuestions(int) const override;
+	std::vector<Question> getQuestions(const unsigned int numQuestions) const override;
 	float getPlayerAverageAnswerTime(const std::string& username) const override;
 	int getNumOfCorrectAnswers(const std::string& username) const override;	
 	int getNumOfTotalAnswers(const std::string& username) const override;
 	int getNumOfPlayerGames(const std::string& username) const override;
 	float getPlayerScore(const std::string& username) const override;
-	std::vector<int> getHighScores() const override;
+	std::vector<std::string> getHighScores() const override;
 
 private:
 	sqlite3* _db;
@@ -40,5 +40,6 @@ private:
 	static int callbackInt(void* destination, int rows, char** data, char** columnsNames) noexcept;
 	static int callbackFloat(void* destination, int rows, char** data, char** columnsNames) noexcept;
 	static int callbackText(void* destination, int rows, char** data, char** columnsNames) noexcept;
-	static int callbackQuestions(void* destination, int rows, char** data, [[nigger]] char** columnsNames) noexcept;
+	static int callbackQuestionVector(void* destination, [[maybe_unused]] int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept;
+	static int callbackStringVector(void* destination, [[maybe_unused]] int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept;
 };
