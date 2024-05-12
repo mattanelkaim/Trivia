@@ -37,9 +37,9 @@ private:
     void runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const;
 
     // Callback functions
-    static int callbackInt(void* destination, int rows, char** data, char** columnsNames) noexcept;
-    static int callbackFloat(void* destination, int rows, char** data, char** columnsNames) noexcept;
-    static int callbackText(void* destination, int rows, char** data, char** columnsNames) noexcept;
-    static int callbackQuestionVector(void* destination, [[maybe_unused]] int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept;
-    static int callbackStringVector(void* destination, [[maybe_unused]] int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept;
+    static int callbackInt(void* destination, int columns, char** data, char** columnsNames) noexcept;
+    static int callbackFloat(void* destination, int columns, char** data, char** columnsNames) noexcept;
+    static int callbackText(void* destination, int columns, char** data, char** columnsNames) noexcept;
+    static int callbackQuestionVector(void* destination, [[maybe_unused]] int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
+    static int callbackStringVector(void* destination, [[maybe_unused]] int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
 };
