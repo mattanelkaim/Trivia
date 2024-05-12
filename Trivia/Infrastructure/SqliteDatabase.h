@@ -21,7 +21,7 @@ public:
     // Queries using callback
     bool doesUserExist(const std::string& username) const override;
     bool doesPasswordMatch(const std::string& username, const std::string& password) const override;
-    std::vector<Question> getQuestions(const unsigned int numQuestions) const override;
+    std::vector<Question> getQuestions(const uint32_t numQuestions) const override;
     float getPlayerAverageAnswerTime(const std::string& username) const override;
     int getNumOfCorrectAnswers(const std::string& username) const override;	
     int getNumOfTotalAnswers(const std::string& username) const override;

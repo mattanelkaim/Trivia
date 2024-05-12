@@ -52,7 +52,7 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
     return password == realPassword;
 }
 
-std::vector<Question> SqliteDatabase::getQuestions(const unsigned int numQuestions) const
+std::vector<Question> SqliteDatabase::getQuestions(const uint32_t numQuestions) const
 {
     std::vector<Question> questions;
 
@@ -186,13 +186,13 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int rows, char** d
     {
         auto dest = static_cast<std::vector<Question>*>(destination);
 
-        constexpr unsigned int num_columns = NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1;
+        const uint32_t num_columns = NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1;
 
         for (int row = 0; row < rows; row++)
         {
             std::vector<std::string> possible_answers(NUM_POSSIBLE_ANSWERS_PER_QUESTION);
 
-            for (unsigned int i = 1; i <= NUM_POSSIBLE_ANSWERS_PER_QUESTION; i++)
+            for (uint32_t i = 1; i <= NUM_POSSIBLE_ANSWERS_PER_QUESTION; i++)
                 possible_answers[i] = data[row * num_columns + i];
 
             dest->push_back({ data[row], possible_answers });
