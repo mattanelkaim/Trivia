@@ -9,11 +9,11 @@ using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3
 class SqliteDatabase final : public IDatabase
 {
 public:
-	SqliteDatabase();
-	~SqliteDatabase();
+    SqliteDatabase();
+    ~SqliteDatabase() override;
 
-	bool open() override;	
-	bool close() override;
+    bool open() override;
+    bool close() override;
 
 	// Queries without callback
 	void addNewUser(const std::string& username, const std::string& password, const std::string& email) override;
@@ -30,11 +30,11 @@ public:
 	std::vector<std::string> getHighScores() const override;
 
 private:
-	sqlite3* _db;
+    sqlite3* m_db;
 
-	// Functions to run queries on the databases
-	void runQuery(const std::string_view query) const;
-	void runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const;
+    // Functions to run queries on the databases
+    void runQuery(const std::string_view query) const;
+    void runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const;
 
 	// Callback functions
 	static int callbackInt(void* destination, int rows, char** data, char** columnsNames) noexcept;

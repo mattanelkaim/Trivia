@@ -1,5 +1,8 @@
 // NOLINTBEGIN
 
+#include <codeanalysis\warnings.h>
+#pragma warning(disable : ALL_CODE_ANALYSIS_WARNINGS 4820)
+
 /*
 ** 2001-09-15
 **

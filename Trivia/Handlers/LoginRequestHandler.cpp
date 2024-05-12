@@ -7,11 +7,11 @@
 #include <stdexcept>
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) :
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept :
     m_handlerFactory(handlerFactory)
 {}
 
-bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
     return info.id == LOGIN || info.id == SIGNUP;
 }
@@ -20,7 +20,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 {
     switch (info.id)
     {
-    case LOGIN:
+    [[likely]] case LOGIN:
         return this->login(info);
     case SIGNUP:
         return this->signup(info);
@@ -39,12 +39,12 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     RequestResult result;
 
     const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
-    if (loginManager->login(request.username, request.password))
+    if (loginManager->login(request.username, request.password)) [[likely]]
     {
         result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{RESPONSE});
         result.newHandler = new MenuRequestHandler();
     }
-    else
+    else [[unlikely]]
     {
         result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Login failed"});
         result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry login
@@ -59,12 +59,12 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     RequestResult result;
 
     const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);
-    if (loginManager->signup(request.username, request.password, request.email))
+    if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
     {
         result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{RESPONSE});
         result.newHandler = new MenuRequestHandler();
     }
-    else
+    else [[unlikely]]
     {
         result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Signup failed"});
         result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry signup

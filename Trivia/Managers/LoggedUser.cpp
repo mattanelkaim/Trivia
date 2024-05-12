@@ -1,6 +1,6 @@
 #include "LoggedUser.h"
 
-LoggedUser::LoggedUser(const std::string& username) noexcept :
+LoggedUser::LoggedUser(const std::string& username) :
     m_username(username)
 {}
 

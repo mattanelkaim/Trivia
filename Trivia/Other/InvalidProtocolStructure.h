@@ -6,8 +6,7 @@
 class InvalidProtocolStructure final : public IServerException
 {
 public:
-	InvalidProtocolStructure();
-	explicit InvalidProtocolStructure(const std::string& invalidPart);
-	const char* what() const override;
+    InvalidProtocolStructure();
+    explicit InvalidProtocolStructure(const std::string& invalidPart);
+    const char* what() const noexcept override;
 };
-

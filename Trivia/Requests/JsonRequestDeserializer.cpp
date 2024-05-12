@@ -53,6 +53,6 @@ SignupRequest JsonResponseDeserializer::deserializeSignupResponse(const readonly
     {
         throw std::runtime_error(std::string("ERROR parsing signup JSON: ") + e.what());
     }
-    
+
     return request;
 }
