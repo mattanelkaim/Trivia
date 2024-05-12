@@ -5,17 +5,17 @@ Question::Question(const std::string& question, const std::vector<std::string>& 
     m_possibleAnswers(answers)
 {}
 
-inline const std::string& Question::getQuestion() const
+const std::string& Question::getQuestion() const
 {
     return this->m_question;
 }
 
-inline const std::vector<std::string>& Question::getPossibleAnswers() const
+const std::vector<std::string>& Question::getPossibleAnswers() const
 {
     return this->m_possibleAnswers;
 }
 
-inline const std::string& Question::getCorrectAnswer() const
+const std::string& Question::getCorrectAnswer() const
 {
     return this->m_possibleAnswers.front();
 }
