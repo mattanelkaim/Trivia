@@ -7,9 +7,9 @@
 class IDatabase
 {
 public:
-	virtual ~IDatabase() = default;
-	virtual bool open() = 0;
-	virtual bool close() = 0;
+    virtual ~IDatabase() = default;
+    virtual bool open() = 0;
+    virtual bool close() = 0;
 
 	// Queries without callback
 	virtual void addNewUser(const std::string& username, const std::string& password, const std::string& email) = 0;

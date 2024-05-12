@@ -6,7 +6,6 @@
 class UnexpectedClientExit final : public IServerException
 {
 public:
-	explicit UnexpectedClientExit(const SOCKET crashedClient);
-	const char* what() const override;
+    explicit UnexpectedClientExit(const SOCKET crashedClient);
+    const char* what() const noexcept override;
 };
-

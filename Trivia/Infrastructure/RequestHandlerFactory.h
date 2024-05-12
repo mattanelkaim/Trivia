@@ -10,7 +10,7 @@ class RequestHandlerFactory
 {
 public:
     LoginRequestHandler* createLoginRequestHandler();
-    LoginManager* getLoginManager();
+    LoginManager* getLoginManager() noexcept;
 
     // Singleton
     RequestHandlerFactory() = delete;
