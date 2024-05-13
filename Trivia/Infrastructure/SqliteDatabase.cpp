@@ -7,6 +7,7 @@
 
 using std::to_string;
 
+
 SqliteDatabase::SqliteDatabase()
 {
     this->open(); // TODO(mattan) construct tables in code
@@ -181,14 +182,13 @@ int SqliteDatabase::callbackText(void* destination, int columns, char** data, [[
     return 1;
 }
 
-int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
+int SqliteDatabase::callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     try
     {
-        std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
-        std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
+        if (columns != 1) return 1; // Error
 
-        static_cast<std::vector<Question>*>(destination)->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
+        static_cast<std::vector<std::string>*>(destination)->emplace_back(data[0]);
         return 0;
     }
     catch (...) // Callbacks must be noexcept
@@ -197,15 +197,16 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
     }
 }
 
-int SqliteDatabase::callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
+int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     try
     {
-        auto dest = static_cast<std::vector<std::string>*>(destination);
+        if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1) return 1; // Error
 
-        for (int i = 0; i < NUM_TOP_SCORES; ++i)
-            dest->push_back(data[i]);
+        std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
+        std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
 
+        static_cast<std::vector<Question>*>(destination)->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
         return 0;
     }
     catch (...) // Callbacks must be noexcept
