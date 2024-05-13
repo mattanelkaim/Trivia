@@ -1,6 +1,7 @@
 #include "ServerDefinitions.h"
 #include "sqlite3.h"
 #include "SqliteDatabase.h"
+#include <iterator> // std::back_inserter
 #include <stdexcept>
 #include <string>
 
@@ -148,6 +149,8 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
 }
 
 #pragma region CallbackFunctions
+// NOLINTBEGIN(clang-diagnostic-unsafe-buffer-usage)
+
 int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns == 1 && data[0] != nullptr)
@@ -182,14 +185,10 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
 {
     try
     {
-        auto dest = static_cast<std::vector<Question>*>(destination);
-
         std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
-        for (int i = 1; i < columns; ++i) // Skip index 0 (which is the actual question)
-            possibleAnswers.emplace_back(data[i]);
+        std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
 
-        dest->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
-
+        static_cast<std::vector<Question>*>(destination)->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
         return 0;
     }
     catch (...) // Callbacks must be noexcept
@@ -214,4 +213,6 @@ int SqliteDatabase::callbackStringVector(void* destination, int columns, char** 
         return 1;
     }
 }
+
+// NOLINTEND(clang-diagnostic-unsafe-buffer-usage)
 #pragma endregion
