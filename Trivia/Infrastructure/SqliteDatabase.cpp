@@ -155,38 +155,36 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
 int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns == 1 && data[0] != nullptr)
-    {
-        *static_cast<int*>(destination) = atoi(data[0]);
-        return 0;
-    }
-    return 1;
+        return 1;
+
+    *static_cast<int*>(destination) = atoi(data[0]);
+    return 0;
 }
 
 int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns == 1 && data[0] != nullptr)
-    {
-        *static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
-        return 0;
-    }
-    return 1;
+        return 1;
+
+    *static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
+    return 0;
 }
 
 int SqliteDatabase::callbackString(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns == 1 && data[0] != nullptr)
-    {
-        *static_cast<std::string*>(destination) = data[0];
-        return 0;
-    }
-    return 1;
+        return 1;
+    
+    *static_cast<std::string*>(destination) = data[0];
+    return 0;
 }
 
 int SqliteDatabase::callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     try
     {
-        if (columns != 1) return 1; // Error
+        if (columns != 1)
+            return 1; // Error
 
         static_cast<std::vector<std::string>*>(destination)->emplace_back(data[0]);
         return 0;
@@ -201,7 +199,8 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
 {
     try
     {
-        if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1) return 1; // Error
+        if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1)
+            return 1; // Error
 
         std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
         std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
