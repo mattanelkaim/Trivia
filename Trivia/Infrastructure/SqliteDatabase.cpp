@@ -49,7 +49,7 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
     const std::string query = "SELECT password FROM users WHERE username = '" + username + '\'';
 
     std::string realPassword;
-    this->runQuery(query, callbackText, &realPassword);
+    this->runQuery(query, callbackString, &realPassword);
 
     return password == realPassword;
 }
@@ -172,7 +172,7 @@ int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [
     return 1;
 }
 
-int SqliteDatabase::callbackText(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
+int SqliteDatabase::callbackString(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns == 1 && data[0] != nullptr)
     {
