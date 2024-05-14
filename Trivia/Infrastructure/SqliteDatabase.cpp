@@ -1,10 +1,13 @@
 #include "ServerDefinitions.h"
 #include "sqlite3.h"
 #include "SqliteDatabase.h"
+#include <iterator> // std::back_inserter
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 using std::to_string;
+
 
 SqliteDatabase::SqliteDatabase()
 {
@@ -47,10 +50,81 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
     const std::string query = "SELECT password FROM users WHERE username = '" + username + '\'';
 
     std::string realPassword;
-    this->runQuery(query, callbackText, &realPassword);
+    this->runQuery(query, callbackString, &realPassword);
 
     return password == realPassword;
 }
+
+std::vector<Question> SqliteDatabase::getQuestions(const uint32_t numQuestions) const
+{
+    const std::string query = "SELECT question, correct, ans1, ans2, ans3 FROM questions LIMIT " + to_string(numQuestions);
+
+    std::vector<Question> questions;
+    this->runQuery(query, callbackQuestionVector, &questions);
+
+    return questions;
+}
+
+float SqliteDatabase::getPlayerAverageAnswerTime(const std::string& username) const
+{
+    const std::string query = "SELECT avg_time FROM user_scores WHERE username = '" + username + '\'';
+
+    float avgTime;
+    this->runQuery(query, callbackFloat, &avgTime);
+
+    return avgTime;
+}
+
+int SqliteDatabase::getNumOfCorrectAnswers(const std::string& username) const
+{
+    const std::string query = "SELECT num_correct FROM user_scores WHERE username = '" + username + '\'';
+
+    int numCorrect;
+    this->runQuery(query, callbackInt, &numCorrect);
+
+    return numCorrect;
+}
+
+int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const
+{
+    const std::string query = "SELECT total_answers FROM user_scores WHERE username = '" + username + '\'';
+
+    int numTotal;
+    this->runQuery(query, callbackInt, &numTotal);
+
+    return numTotal;
+}
+
+int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const
+{
+    const std::string query = "SELECT num_games FROM user_scores WHERE username = '" + username + '\'';
+
+    int totalGames;
+    this->runQuery(query, callbackInt, &totalGames);
+
+    return totalGames;
+}
+
+float SqliteDatabase::getPlayerScore(const std::string& username) const
+{
+    const std::string query = "SELECT score FROM user_scores WHERE username = '" + username + '\'';	
+
+    float score;
+    this->runQuery(query, callbackFloat, &score);
+
+    return score;
+}
+
+std::vector<std::string> SqliteDatabase::getHighScores() const
+{
+    const std::string query = "SELECT name FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
+
+    std::vector<std::string> scores;
+    this->runQuery(query, callbackStringVector, &scores);
+
+    return scores;
+}
+
 
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
 {
@@ -77,23 +151,69 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
 }
 
 #pragma region CallbackFunctions
-int SqliteDatabase::callbackInt(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
+// NOLINTBEGIN(clang-diagnostic-unsafe-buffer-usage)
+
+int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
-    if (rows == 1 && data[0] != nullptr)
-    {
-        *static_cast<int*>(destination) = atoi(data[0]);
-        return 0;
-    }
-    return 1;
+    if (columns == 1 && data[0] != nullptr)
+        return 1;
+
+    *static_cast<int*>(destination) = atoi(data[0]);
+    return 0;
 }
 
-int SqliteDatabase::callbackText(void* destination, int rows, char** data, [[maybe_unused]] char** columnsNames) noexcept
+int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
-    if (rows == 1 && data[0] != nullptr)
+    if (columns == 1 && data[0] != nullptr)
+        return 1;
+
+    *static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
+    return 0;
+}
+
+int SqliteDatabase::callbackString(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
+{
+    if (columns == 1 && data[0] != nullptr)
+        return 1;
+    
+    *static_cast<std::string*>(destination) = data[0];
+    return 0;
+}
+
+int SqliteDatabase::callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
+{
+    try
     {
-        *static_cast<std::string*>(destination) = data[0];
+        if (columns != 1)
+            return 1; // Error
+
+        static_cast<std::vector<std::string>*>(destination)->emplace_back(data[0]);
         return 0;
     }
-    return 1;
+    catch (...) // Callbacks must be noexcept
+    {
+        return 1;
+    }
 }
+
+int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
+{
+    try
+    {
+        if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1)
+            return 1; // Error
+
+        std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
+        std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
+
+        static_cast<std::vector<Question>*>(destination)->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
+        return 0;
+    }
+    catch (...) // Callbacks must be noexcept
+    {
+        return 1;
+    }
+}
+
+// NOLINTEND(clang-diagnostic-unsafe-buffer-usage)
 #pragma endregion
