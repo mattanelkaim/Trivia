@@ -8,7 +8,7 @@ class Question
 public:
     // Constructors
     Question() = default;
-    Question(const std::string& question, const std::vector<std::string>& answers);
+    explicit Question(const std::string& question, const std::vector<std::string>& answers);
 
     const std::string& getQuestion() const;
     const std::vector<std::string>& getPossibleAnswers() const;
