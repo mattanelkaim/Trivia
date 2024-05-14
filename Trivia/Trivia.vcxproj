@@ -155,10 +155,10 @@
     <ClInclude Include="Infrastructure\WSAInitializer.h" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
+    <ClInclude Include="Managers\Question.h" />
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
     <ClInclude Include="Other\IServerException.h" />
-    <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\ServerDefinitions.h" />
     <ClInclude Include="Other\sqlite3.h" />
     <ClInclude Include="Managers\Room.h" />
@@ -175,6 +175,7 @@
     <ClCompile Include="Infrastructure\Server.cpp" />
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
+    <ClCompile Include="Managers\Question.cpp" />
     <ClCompile Include="Managers\Room.cpp" />
     <ClCompile Include="Managers\RoomManager.cpp" />
     <ClCompile Include="Other\Helper.cpp" />
