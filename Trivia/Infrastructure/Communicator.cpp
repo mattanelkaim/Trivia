@@ -25,7 +25,7 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 Communicator::~Communicator() noexcept
 {
     for (auto& [socket, handler] : this->m_clients)
-        if (handler != nullptr) delete handler;
+        delete handler;
 }
 
 void Communicator::bindAndListen() const
@@ -135,7 +135,7 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     {
         return; // Do nothing
     }
-    if (handler != nullptr) delete handler;
+    delete handler;
     this->m_clients.erase(clientSocket);
 }
 
