@@ -4,6 +4,7 @@
 #include <iterator> // std::back_inserter
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 using std::to_string;
 
