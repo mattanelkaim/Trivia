@@ -1,11 +1,10 @@
 #pragma once
 
 #include "IDatabase.h"
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
-#include <mutex>
-#include <memory>
 
 class StatisticsManager
 {
