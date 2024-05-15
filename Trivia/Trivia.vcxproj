@@ -74,10 +74,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
-    <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <ClangTidyChecks>+clang-analyzer-*, -*compat*, -clang-diagnostic-pragma-once-outside-header,</ClangTidyChecks>
     <LinkIncremental>
     </LinkIncremental>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -156,9 +157,11 @@
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
     <ClInclude Include="Managers\Question.h" />
+    <ClInclude Include="Managers\StatisticsManager.h" />
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
     <ClInclude Include="Other\IServerException.h" />
+    <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\ServerDefinitions.h" />
     <ClInclude Include="Other\sqlite3.h" />
     <ClInclude Include="Managers\Room.h" />
@@ -178,6 +181,7 @@
     <ClCompile Include="Managers\Question.cpp" />
     <ClCompile Include="Managers\Room.cpp" />
     <ClCompile Include="Managers\RoomManager.cpp" />
+    <ClCompile Include="Managers\StatisticsManager.cpp" />
     <ClCompile Include="Other\Helper.cpp" />
     <ClCompile Include="Other\InvalidProtocolStructure.cpp" />
     <ClCompile Include="Other\UnexpectedClientExit.cpp" />
