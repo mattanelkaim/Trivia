@@ -155,7 +155,7 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
 
 int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
-    if (columns == 1 && data[0] != nullptr)
+    if (columns != 1 || data[0] == nullptr)
         return 1;
 
     *static_cast<int*>(destination) = atoi(data[0]);
@@ -164,7 +164,7 @@ int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[m
 
 int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
-    if (columns == 1 && data[0] != nullptr)
+    if (columns != 1 || data[0] == nullptr)
         return 1;
 
     *static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
@@ -173,7 +173,7 @@ int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [
 
 int SqliteDatabase::callbackString(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
-    if (columns == 1 && data[0] != nullptr)
+    if (columns != 1 || data[0] == nullptr)
         return 1;
     
     *static_cast<std::string*>(destination) = data[0];
