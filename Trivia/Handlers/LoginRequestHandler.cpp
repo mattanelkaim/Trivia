@@ -7,7 +7,7 @@
 #include <stdexcept>
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept :
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) noexcept :
     m_handlerFactory(handlerFactory)
 {}
 
@@ -35,7 +35,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
-    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
+    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     RequestResult result;
 
     const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
@@ -55,7 +55,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
-    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
+    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     RequestResult result;
 
     const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);

@@ -3,6 +3,7 @@
 #include "Communicator.h"
 #include "IDatabase.h"
 #include "RequestHandlerFactory.h"
+#include <memory>
 #include <mutex>
 
 class Server
@@ -13,16 +14,16 @@ public:
     // Singleton
     Server(Server& other) = delete;
     void operator=(const Server& other) = delete;
-    static Server* getInstance();
+    static std::unique_ptr<Server>& getInstance();
+    ~Server() noexcept;
 
 private:
     IDatabase* m_database;
-    RequestHandlerFactory* m_handlerFactory;
-    Communicator* m_communicator;
+    std::unique_ptr<RequestHandlerFactory>& m_handlerFactory;
+    std::unique_ptr<Communicator>& m_communicator;
 
     // Singleton
     Server();
-    ~Server() noexcept;
-    inline static Server* m_Server = nullptr;
+    inline static std::unique_ptr<Server> m_Server = nullptr;
     inline static std::mutex m_mutex;
 };

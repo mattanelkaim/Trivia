@@ -3,6 +3,8 @@
 #include "LoggedUser.h"
 #include "Room.h"
 #include "ServerDefinitions.h"
+#include <memory>
+#include <mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -15,6 +17,17 @@ public:
     std::vector<RoomData> getRooms() const;
     Room& getRoom(const uint32_t roomId);
 
+    // Singleton
+    RoomManager(RoomManager& other) = delete;
+    void operator=(const RoomManager& other) = delete;
+    static std::unique_ptr<RoomManager>& getInstance();
+    ~RoomManager() = default;
+
 private:
     std::unordered_map<uint32_t, Room> m_rooms;
+
+    // Singleton
+    RoomManager() noexcept = default;
+    inline static std::unique_ptr<RoomManager> m_RoomManager = nullptr;
+    inline static std::mutex m_mutex;
 };

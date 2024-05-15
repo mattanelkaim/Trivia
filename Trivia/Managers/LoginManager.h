@@ -2,6 +2,7 @@
 
 #include "IDatabase.h"
 #include "LoggedUser.h"
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -17,7 +18,8 @@ public:
     LoginManager() = delete;
     LoginManager(LoginManager& other) = delete;
     void operator=(const LoginManager& other) = delete;
-    static LoginManager* getInstance(IDatabase* db);
+    static std::unique_ptr<LoginManager>& getInstance(IDatabase* db);
+    ~LoginManager() = default;
 
 private:
     // Members
@@ -29,7 +31,6 @@ private:
 
     // Singleton
     explicit LoginManager(IDatabase* db) noexcept;
-    ~LoginManager() = default;
-    inline static LoginManager* m_LoginManager = nullptr;
+    inline static std::unique_ptr<LoginManager> m_LoginManager = nullptr;
     inline static std::mutex m_mutex;
 };
