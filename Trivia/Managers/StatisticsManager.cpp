@@ -1,14 +1,13 @@
 #include "StatisticsManager.h"
-#include <mutex>
 
-StatisticsManager* StatisticsManager::getInstance(IDatabase* db)
+std::unique_ptr<StatisticsManager>& StatisticsManager::getInstance(IDatabase* db)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Communicator == nullptr)
+    if (m_StatisticsManager == nullptr)
     {
-        m_Communicator = new Communicator(handlerFactory);
+        m_StatisticsManager = std::unique_ptr<StatisticsManager>(new StatisticsManager(db));
     }
-    return m_Communicator;    
+    return m_StatisticsManager;    
 }
 
 std::vector<std::string> StatisticsManager::getHighScore() const
