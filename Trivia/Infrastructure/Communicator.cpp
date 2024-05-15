@@ -140,12 +140,12 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 }
 
 // Singleton
-std::unique_ptr<Communicator>& Communicator::getInstance(IDatabase* db)
+Communicator* Communicator::getInstance(IDatabase* db)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Communicator == nullptr)
     {
         m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));
     }
-    return m_Communicator;
+    return m_Communicator.get();
 }

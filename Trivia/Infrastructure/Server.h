@@ -20,7 +20,7 @@ public:
 private:
     IDatabase* m_database;
     std::unique_ptr<RequestHandlerFactory>& m_handlerFactory;
-    std::unique_ptr<Communicator>& m_communicator;
+    Communicator* m_communicator;
 
     // Singleton
     Server();
