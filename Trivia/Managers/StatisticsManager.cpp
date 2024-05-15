@@ -1,5 +1,4 @@
 #include "StatisticsManager.h"
-#include <mutex>
 
 std::vector<std::string> StatisticsManager::getHighScore() const
 {
