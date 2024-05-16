@@ -1,6 +1,6 @@
 #include "StatisticsManager.h"
 
-StatisticsManager::StatisticsManager(IDatabase* db) :
+StatisticsManager::StatisticsManager(IDatabase* db) noexcept :
     m_database(db)
 {}
 

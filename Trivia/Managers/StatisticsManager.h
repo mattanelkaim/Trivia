@@ -22,10 +22,10 @@ public:
     ~StatisticsManager() noexcept = default;
 
 private:
-    IDatabase* m_database;    
+    IDatabase* m_database;
 
     // Singleton
-    explicit StatisticsManager(IDatabase* db);
+    explicit StatisticsManager(IDatabase* db) noexcept;
     inline static std::unique_ptr<StatisticsManager> m_StatisticsManager = nullptr;
     inline static std::mutex m_mutex;
 };

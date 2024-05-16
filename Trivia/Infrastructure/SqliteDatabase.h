@@ -3,6 +3,7 @@
 #include "IDatabase.h"
 #include "sqlite3.h"
 #include <string>
+#include <vector>
 
 using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3_callback noexcept
 

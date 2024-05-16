@@ -73,7 +73,7 @@ void Communicator::startHandleRequests()
     }
 }
 
-void Communicator::handleNewClient(SOCKET clientSocket) noexcept
+void Communicator::handleNewClient(SOCKET clientSocket)
 {
     do
     {
