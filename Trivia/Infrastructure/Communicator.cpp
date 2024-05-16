@@ -24,7 +24,7 @@ Communicator::Communicator(IDatabase* db) :
 
 Communicator::~Communicator() noexcept
 {
-    for (auto& [socket, handler] : this->m_clients)
+    for (auto& [_, handler] : this->m_clients)
         delete handler;
 }
 
@@ -88,7 +88,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             request.buffer.append_range(msg); // String to vector
 
             // Get current handler from clients map
-            IRequestHandler* handler = this->m_clients.at(clientSocket);
+            IRequestHandler*& handler = this->m_clients.at(clientSocket);
 
             // Handle request
             if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
@@ -96,8 +96,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
                 RequestResult result = handler->handleRequest(request); // Serialized
 
                 // Update handler on map
-                delete handler; // Done with old handler
-                this->m_clients[clientSocket] = result.newHandler;
+                delete std::exchange(handler, result.newHandler); // Done with old handler
 
                 Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
                 std::cout << "Operation successful\n\n";
