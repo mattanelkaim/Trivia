@@ -4,5 +4,5 @@ class WSAInitializer
 {
 public:
     WSAInitializer();
-    ~WSAInitializer();
+    ~WSAInitializer() noexcept;
 };
