@@ -29,7 +29,7 @@ private:
 
     // Private methods
     void bindAndListen() const;
-    void handleNewClient(SOCKET clientSocket) noexcept;
+    void handleNewClient(SOCKET clientSocket);
     void disconnectClient(const SOCKET clientSocket) noexcept;
 
     // Singleton

@@ -11,7 +11,7 @@ WSAInitializer::WSAInitializer()
         throw std::runtime_error("WSAStartup Failed: error " + std::to_string(WSAGetLastError()));
 }
 
-WSAInitializer::~WSAInitializer()
+WSAInitializer::~WSAInitializer() noexcept
 {
     // Q: why is this try necessary ?
     // A: to avoid throwing exceptions in d-tors !
