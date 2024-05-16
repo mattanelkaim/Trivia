@@ -125,17 +125,12 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
-    IRequestHandler* handler;
-    try
+    const auto client = this->m_clients.find(clientSocket);
+    if (client != this->m_clients.cend())
     {
-        handler = this->m_clients.at(clientSocket);
+        delete std::move(client->second);
+        this->m_clients.erase(clientSocket);
     }
-    catch (const std::out_of_range&)
-    {
-        return; // Do nothing
-    }
-    delete handler;
-    this->m_clients.erase(clientSocket);
 }
 
 // Singleton
