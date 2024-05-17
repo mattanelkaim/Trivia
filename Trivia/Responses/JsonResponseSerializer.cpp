@@ -5,21 +5,21 @@
 
 using json = nlohmann::json;
 
-buffer JsonResponseSerializer::serializeErrorResponse(const ErrorResponse& response)
+buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response)
 {
     json j;
     j[JsonFields::MESSAGE_FIELD] = response.message;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse response)
+buffer JsonResponseSerializer::serializeResponse(const LoginResponse response)
 {
     json j;
     j[JsonFields::STATUS_FIELD] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse response)
+buffer JsonResponseSerializer::serializeResponse(const SignupResponse response)
 {
     json j;
     j[JsonFields::STATUS_FIELD] = response.status;

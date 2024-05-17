@@ -41,12 +41,12 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     if (loginManager->login(request.username, request.password)) [[likely]]
     {
-        result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{RESPONSE});
+        result.response = JsonResponseSerializer::serializeResponse(LoginResponse{RESPONSE});
         result.newHandler = new MenuRequestHandler();
     }
     else [[unlikely]]
     {
-        result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Login failed"});
+        result.response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Login failed"});
         result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry login
     }
 
@@ -61,12 +61,12 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
     {
-        result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{RESPONSE});
+        result.response = JsonResponseSerializer::serializeResponse(SignupResponse{RESPONSE});
         result.newHandler = new MenuRequestHandler();
     }
     else [[unlikely]]
     {
-        result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Signup failed"});
+        result.response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Signup failed"});
         result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry signup
     }
 
