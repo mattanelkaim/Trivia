@@ -1,7 +1,9 @@
 #pragma once
 
+#include "IDatabase.h"
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
+#include <memory>
 #include <mutex>
 #include <unordered_map>
 #include <WinSock2.h>
@@ -16,22 +18,22 @@ public:
     Communicator() = delete;
     Communicator(Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
-    static Communicator* getInstance(RequestHandlerFactory* handlerFactory);
+    static Communicator* getInstance(IDatabase* db);
+    ~Communicator() noexcept;
 
 private:
     // Members
-    std::unordered_map<SOCKET, IRequestHandler*> m_clients;
-    RequestHandlerFactory* m_handlerFactory;
+    RequestHandlerFactory& m_handlerFactory;
     SOCKET m_serverSocket;
+    std::unordered_map<SOCKET, IRequestHandler*> m_clients;
 
     // Private methods
     void bindAndListen() const;
-    void handleNewClient(SOCKET clientSocket) noexcept;
+    void handleNewClient(SOCKET clientSocket);
     void disconnectClient(const SOCKET clientSocket) noexcept;
 
     // Singleton
-    explicit Communicator(RequestHandlerFactory* handlerFactory);
-    ~Communicator() noexcept;
-    inline static Communicator* m_Communicator = nullptr;
+    explicit Communicator(IDatabase* db);
+    inline static std::unique_ptr<Communicator> m_Communicator = nullptr;
     inline static std::mutex m_mutex;
 };
