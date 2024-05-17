@@ -8,7 +8,7 @@
 Server::Server() :
     m_database(new SqliteDatabase()),
     m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
-    m_communicator(Communicator::getInstance(m_handlerFactory))
+    m_communicator(Communicator::getInstance(m_database))
 {}
 
 Server::~Server() noexcept
@@ -56,12 +56,12 @@ void Server::run()
 }
 
 // Singleton
-Server* Server::getInstance()
+std::unique_ptr<Server>& Server::getInstance()
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Server == nullptr)
     {
-        m_Server = new Server;
+        m_Server = std::unique_ptr<Server>(new Server);
     }
     return m_Server;
 }
