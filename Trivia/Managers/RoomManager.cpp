@@ -33,3 +33,14 @@ Room& RoomManager::getRoom(const uint32_t roomId)
 {
     return this->m_rooms.at(roomId);
 }
+
+// Singleton
+std::unique_ptr<RoomManager>& RoomManager::getInstance()
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_RoomManager == nullptr)
+    {
+        m_RoomManager = std::unique_ptr<RoomManager>(new RoomManager);
+    }
+    return m_RoomManager;
+}

@@ -12,8 +12,8 @@
 
 using std::to_string;
 
-Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
-    m_handlerFactory(handlerFactory),
+Communicator::Communicator(IDatabase* db) :
+    m_handlerFactory(*RequestHandlerFactory::getInstance(db)),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
     if (this->m_serverSocket == INVALID_SOCKET)
@@ -24,7 +24,7 @@ Communicator::Communicator(RequestHandlerFactory* handlerFactory) :
 
 Communicator::~Communicator() noexcept
 {
-    for (auto& [socket, handler] : this->m_clients)
+    for (auto& [_, handler] : this->m_clients)
         delete handler;
 }
 
@@ -73,7 +73,7 @@ void Communicator::startHandleRequests()
     }
 }
 
-void Communicator::handleNewClient(SOCKET clientSocket) noexcept
+void Communicator::handleNewClient(SOCKET clientSocket)
 {
     do
     {
@@ -88,25 +88,26 @@ void Communicator::handleNewClient(SOCKET clientSocket) noexcept
             request.buffer.append_range(msg); // String to vector
 
             // Get current handler from clients map
-            IRequestHandler* handler = this->m_clients.at(clientSocket);
+            IRequestHandler*& handler = this->m_clients.at(clientSocket);
 
-            // Handle request
+            // Handle request if valid
             if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
             {
-                RequestResult result = handler->handleRequest(request); // Serialized
+                const RequestResult result = handler->handleRequest(request); // Serialized
 
-                // Update handler on map
-                delete handler; // Done with old handler
-                this->m_clients[clientSocket] = result.newHandler;
+                // Update handler in map
+                delete std::exchange(handler, result.newHandler); // Done with old handler
 
-                Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
+                // Send response to client, using string_view constructor & reinterpret_cast for performance
+                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(result.response.data()), result.response.size()));
                 std::cout << "Operation successful\n\n";
             }
             else [[unlikely]]
             {
                 std::cout << "Handler is invalid!\n";
+                // Serialize an error response and send it to the client
                 const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
-                Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
+                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(response.data()), response.size()));
                 std::cout << "Operation NOT successful\n\n";
             }
         }
@@ -126,26 +127,21 @@ void Communicator::handleNewClient(SOCKET clientSocket) noexcept
 
 void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
-    IRequestHandler* handler;
-    try
+    const auto& client = this->m_clients.find(clientSocket);
+    if (client != this->m_clients.cend())
     {
-        handler = this->m_clients.at(clientSocket);
+        delete std::move(client->second);
+        this->m_clients.erase(clientSocket);
     }
-    catch (const std::out_of_range&)
-    {
-        return; // Do nothing
-    }
-    delete handler;
-    this->m_clients.erase(clientSocket);
 }
 
 // Singleton
-Communicator* Communicator::getInstance(RequestHandlerFactory* handlerFactory)
+Communicator* Communicator::getInstance(IDatabase* db)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Communicator == nullptr)
     {
-        m_Communicator = new Communicator(handlerFactory);
+        m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));
     }
-    return m_Communicator;
+    return m_Communicator.get();
 }
