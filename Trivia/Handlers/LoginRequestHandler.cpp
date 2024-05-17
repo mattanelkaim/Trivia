@@ -35,10 +35,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
-    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     RequestResult result;
-
     const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
+
+    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     if (loginManager->login(request.username, request.password)) [[likely]]
     {
         result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{RESPONSE});
@@ -55,10 +55,10 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
-    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     RequestResult result;
-
     const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);
+
+    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
     {
         result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{RESPONSE});
