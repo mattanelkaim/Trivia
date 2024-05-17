@@ -3,7 +3,7 @@
 
 #define SERVER_DEBUG_ALL // Debugging flag in Helper
 
-#include <ctime> // Used for std::time_t
+#include <corecrt.h> // Used for time_t
 #include <span>
 #include <string>
 #include <vector>
@@ -75,7 +75,7 @@ enum RequestId : size_t
 struct RequestInfo
 {
     RequestId id{};
-    std::time_t receivalTime{};
+    time_t receivalTime{};
     buffer buffer;
 };
 
