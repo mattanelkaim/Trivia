@@ -90,22 +90,24 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             // Get current handler from clients map
             IRequestHandler*& handler = this->m_clients.at(clientSocket);
 
-            // Handle request
+            // Handle request if valid
             if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
             {
-                RequestResult result = handler->handleRequest(request); // Serialized
+                const RequestResult result = handler->handleRequest(request); // Serialized
 
-                // Update handler on map
+                // Update handler in map
                 delete std::exchange(handler, result.newHandler); // Done with old handler
 
-                Helper::sendData(clientSocket, std::string(result.response.cbegin(), result.response.cend()));
+                // Send response to client, using string_view constructor & reinterpret_cast for performance
+                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(result.response.data()), result.response.size()));
                 std::cout << "Operation successful\n\n";
             }
             else [[unlikely]]
             {
                 std::cout << "Handler is invalid!\n";
+                // Serialize an error response and send it to the client
                 const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
-                Helper::sendData(clientSocket, std::string(response.cbegin(), response.cend()));
+                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(response.data()), response.size()));
                 std::cout << "Operation NOT successful\n\n";
             }
         }
@@ -125,7 +127,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
-    const auto client = this->m_clients.find(clientSocket);
+    const auto& client = this->m_clients.find(clientSocket);
     if (client != this->m_clients.cend())
     {
         delete std::move(client->second);
