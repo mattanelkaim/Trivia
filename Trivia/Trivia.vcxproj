@@ -78,7 +78,7 @@
     <ClangTidyChecks>+clang-analyzer-*, -*compat*, -clang-diagnostic-pragma-once-outside-header,</ClangTidyChecks>
     <LinkIncremental>
     </LinkIncremental>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Trivia.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -190,6 +190,9 @@
     <ClCompile Include="Managers\LoggedUser.cpp" />
     <ClCompile Include="Managers\LoginManager.cpp" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Trivia.ruleset" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
