@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-class StatisticsManager
+class StatisticsManager final
 {
 public:
     std::vector<std::string> getHighScore() const;
