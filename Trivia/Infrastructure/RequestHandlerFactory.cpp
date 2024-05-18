@@ -12,9 +12,9 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
     return new LoginRequestHandler(*this);
 }
 
-std::unique_ptr<LoginManager>& RequestHandlerFactory::getLoginManager() noexcept
+LoginManager* RequestHandlerFactory::getLoginManager() noexcept
 {
-    return this->m_loginManager;
+    return this->m_loginManager.get();
 }
 
 // Singleton

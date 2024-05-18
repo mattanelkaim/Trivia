@@ -1,5 +1,10 @@
+#include "IDatabase.h"
 #include "LoginManager.h"
-
+#include <algorithm> // std::erase, std::find
+#include <memory>
+#include <mutex>
+#include <string>
+#include <string_view>
 
 LoginManager::LoginManager(IDatabase* db) noexcept :
     m_database(db)
@@ -39,7 +44,7 @@ bool LoginManager::isUserLoggedIn(const std::string_view username) const noexcep
 // Singleton
 std::unique_ptr<LoginManager>& LoginManager::getInstance(IDatabase* db)
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
+    const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_LoginManager == nullptr)
     {
         m_LoginManager = std::unique_ptr<LoginManager>(new LoginManager(db));

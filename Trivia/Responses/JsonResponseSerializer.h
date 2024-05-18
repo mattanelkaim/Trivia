@@ -2,6 +2,7 @@
 
 #include "json.hpp"
 #include "ServerDefinitions.h"
+#include <string_view>
 
 using json = nlohmann::json;
 
@@ -25,5 +26,5 @@ public:
     }
 
 private:
-    static buffer serializeGeneralResponse(const messageType type, const std::string_view json); // Internal helper function
+    static buffer serializeGeneralResponse(messageType type, std::string_view json); // Internal helper function
 };
