@@ -20,8 +20,8 @@ LoginManager* RequestHandlerFactory::getLoginManager() noexcept
 // Singleton
 std::unique_ptr<RequestHandlerFactory>& RequestHandlerFactory::getInstance(IDatabase* db)
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_HandlerFactory == nullptr)
+    const std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_HandlerFactory == nullptr) [[unlikely]]
     {
         m_HandlerFactory = std::unique_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
     }

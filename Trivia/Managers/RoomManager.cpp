@@ -50,7 +50,7 @@ Room& RoomManager::getRoom(const uint32_t roomId)
 std::unique_ptr<RoomManager>& RoomManager::getInstance()
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_RoomManager == nullptr)
+    if (m_RoomManager == nullptr) [[unlikely]]
     {
         m_RoomManager = std::unique_ptr<RoomManager>(new RoomManager());
     }
