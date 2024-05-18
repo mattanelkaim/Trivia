@@ -138,7 +138,7 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
 void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
     const auto& client = this->m_clients.find(clientSocket);
-    if (client != this->m_clients.cend())
+    if (client != this->m_clients.cend()) [[likely]]
     {
         delete client->second;
         this->m_clients.erase(clientSocket);
@@ -149,7 +149,7 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 Communicator* Communicator::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Communicator == nullptr)
+    if (m_Communicator == nullptr) [[unlikely]]
     {
         m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));
     }
