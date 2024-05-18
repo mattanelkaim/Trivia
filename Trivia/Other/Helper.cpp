@@ -49,14 +49,6 @@ int Helper::getIntPartFromSocket(const SOCKET sc, const int bytesNum)
     return stoi(getStringFromSocket(sc, bytesNum));
 }
 
-// Return string after padding zeros if necessary
-std::string Helper::getPaddedNumber(const uint32_t num, const size_t digits)
-{
-    // Cannot be constexpr nor noexcept cuz to_string is kaki
-    const std::string numStr = to_string(num);
-    return std::string(digits - numStr.size(), '0') + numStr;
-}
-
 // bytesNum is not unsigned to match recv parameter specification
 std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
 {
