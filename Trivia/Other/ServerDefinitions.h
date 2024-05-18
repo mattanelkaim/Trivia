@@ -134,8 +134,20 @@ struct CreateRoomResponse
 
 namespace JsonFields
 {
-    constexpr std::string_view MESSAGE_FIELD = "message";
-    constexpr std::string_view STATUS_FIELD = "status";
+    constexpr std::string_view MESSAGE = "message";
+    constexpr std::string_view STATUS = "status";
+    constexpr std::string_view ROOMS = "rooms";
+    constexpr std::string_view PLAYERS_IN_ROOM = "playersInRoom";
+    constexpr std::string_view HIGH_SCORES = "highScores";
+    constexpr std::string_view STATISTICS = "userStatistics";
+
+    namespace UserStats
+    {
+        constexpr std::string_view SCORE = "score";
+        constexpr std::string_view TOTAL_GAMES = "games";
+        constexpr std::string_view TOTAL_ANSWERS = "totalAnswers";
+        constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
+    }
 }
 
 #pragma endregion
