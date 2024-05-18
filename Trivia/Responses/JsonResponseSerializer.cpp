@@ -1,35 +1,11 @@
 #include "Helper.h"
-#include "json.hpp"
 #include "JsonResponseSerializer.h"
 #include <string>
-
-using json = nlohmann::json;
 
 buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response)
 {
     json j;
     j[JsonFields::MESSAGE] = response.message;
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
-}
-
-buffer JsonResponseSerializer::serializeResponse(const LoginResponse response)
-{
-    json j;
-    j[JsonFields::STATUS] = response.status;
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
-}
-
-buffer JsonResponseSerializer::serializeResponse(const SignupResponse response)
-{
-    json j;
-    j[JsonFields::STATUS] = response.status;
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
-}
-
-buffer JsonResponseSerializer::serializeResponse(const LogoutResponse response)
-{
-    json j;
-    j[JsonFields::STATUS] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
@@ -56,20 +32,6 @@ buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse&
 
     json j;
     j[JsonFields::PLAYERS_IN_ROOM] = names;
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
-}
-
-buffer JsonResponseSerializer::serializeResponse(const JoinRoomResponse response)
-{
-    json j;
-    j[JsonFields::STATUS] = response.status;
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
-}
-
-buffer JsonResponseSerializer::serializeResponse(const CreateRoomResponse response)
-{
-    json j;
-    j[JsonFields::STATUS] = response.status;
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
