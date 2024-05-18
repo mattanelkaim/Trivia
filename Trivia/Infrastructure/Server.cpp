@@ -58,10 +58,10 @@ void Server::run()
 // Singleton
 std::unique_ptr<Server>& Server::getInstance()
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
+    const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Server == nullptr)
     {
-        m_Server = std::unique_ptr<Server>(new Server);
+        m_Server = std::unique_ptr<Server>(new Server());
     }
     return m_Server;
 }

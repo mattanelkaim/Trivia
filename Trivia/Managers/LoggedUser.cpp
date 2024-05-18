@@ -1,10 +1,13 @@
 #include "LoggedUser.h"
+#include <string>
+#include <string_view>
+
 
 LoggedUser::LoggedUser(const std::string& username) :
     m_username(username)
 {}
 
-std::string LoggedUser::getUsername() const noexcept
+const std::string& LoggedUser::getUsername() const noexcept
 {
     return this->m_username;
 }

@@ -7,6 +7,7 @@ Things to do before shipping
 #include "Server.h"
 #include "ServerDefinitions.h"
 #include "WSAInitializer.h"
+#include <exception>
 #include <iostream>
 
 int main(void)

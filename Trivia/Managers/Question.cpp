@@ -1,4 +1,6 @@
 #include "Question.h"
+#include <string>
+#include <vector>
 
 Question::Question(const std::string& question, const std::vector<std::string>& answers) :
     m_question(question),

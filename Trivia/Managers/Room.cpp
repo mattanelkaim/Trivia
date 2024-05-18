@@ -1,4 +1,8 @@
+#include "LoggedUser.h"
 #include "Room.h"
+#include "ServerDefinitions.h"
+#include <string>
+#include <vector>
 
 
 Room::Room(const RoomData& data) noexcept :
@@ -18,8 +22,11 @@ void Room::removeUser(const LoggedUser& user) noexcept
 std::vector<std::string> Room::getAllUsers() const
 {
     std::vector<std::string> users;
+    users.reserve(this->m_users.size());
+
     for (const LoggedUser& user : this->m_users)
         users.push_back(user.getUsername());
+
     return users;
 }
 

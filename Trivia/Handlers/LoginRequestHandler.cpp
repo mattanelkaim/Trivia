@@ -1,9 +1,11 @@
 #include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
+#include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "ServerDefinitions.h"
+#include <memory>
 #include <stdexcept>
 
 
@@ -35,40 +37,42 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 
 RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
-    RequestResult result;
-    const LoginRequest request = JsonRequestDeserializer::deserializeRequest<LoginRequest>(info.buffer);
+    const auto request = JsonRequestDeserializer::deserializeRequest<LoginRequest>(info.buffer);
 
-    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
-    if (loginManager->login(request.username, request.password)) [[likely]]
+    LoginManager* loginManager = this->m_handlerFactory.getLoginManager();
+    [[likely]] if (loginManager->login(request.username, request.password))
     {
-        result.response = JsonResponseSerializer::serializeResponse(LoginResponse{RESPONSE});
-        result.newHandler = new MenuRequestHandler();
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(LoginResponse{RESPONSE}),
+            .newHandler = new MenuRequestHandler()
+        };
     }
-    else [[unlikely]]
+    else
     {
-        result.response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Login failed"});
-        result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry login
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Login failed"}),
+            .newHandler = new LoginRequestHandler(this->m_handlerFactory) // Retry login
+        };
     }
-
-    return result;
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
-    RequestResult result;
-    const SignupRequest request = JsonRequestDeserializer::deserializeRequest<SignupRequest>(info.buffer);
+    const auto request = JsonRequestDeserializer::deserializeRequest<SignupRequest>(info.buffer);
 
-    const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
-    if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
+    LoginManager* loginManager = this->m_handlerFactory.getLoginManager();
+    [[likely]] if (loginManager->signup(request.username, request.password, request.email))
     {
-        result.response = JsonResponseSerializer::serializeResponse(SignupResponse{RESPONSE});
-        result.newHandler = new MenuRequestHandler();
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(SignupResponse{RESPONSE}),
+            .newHandler = new MenuRequestHandler()
+        };
     }
-    else [[unlikely]]
+    else
     {
-        result.response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Signup failed"});
-        result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry signup
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Signup failed"}),
+            .newHandler = new LoginRequestHandler(this->m_handlerFactory) // Retry signup
+        };
     }
-
-    return result;
 }

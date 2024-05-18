@@ -3,6 +3,7 @@
 #include "LoggedUser.h"
 #include "Room.h"
 #include "ServerDefinitions.h"
+#include <cstdint>
 #include <memory>
 #include <mutex>
 #include <unordered_map>
@@ -12,10 +13,10 @@ class RoomManager
 {
 public:
     void createRoom(const LoggedUser& user, const RoomData& data);
-    void deleteRoom(const uint32_t roomId) noexcept;
-    uint32_t getRoomState(const uint32_t roomId) const;
+    void deleteRoom(uint32_t roomId) noexcept;
+    uint32_t getRoomState(uint32_t roomId) const;
     std::vector<RoomData> getRooms() const;
-    Room& getRoom(const uint32_t roomId);
+    Room& getRoom(uint32_t roomId);
 
     // Singleton
     RoomManager(RoomManager& other) = delete;

@@ -1,6 +1,7 @@
 #include "Helper.h"
 #include "JsonResponseSerializer.h"
 #include "ServerDefinitions.h"
+#include <cstddef> // size_t
 #include <cstdint>
 #include <string>
 #include <string_view>

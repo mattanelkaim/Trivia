@@ -11,7 +11,7 @@ class RequestHandlerFactory
 {
 public:
     LoginRequestHandler* createLoginRequestHandler();
-    std::unique_ptr<LoginManager>& getLoginManager() noexcept;
+    LoginManager* getLoginManager() noexcept;
 
     // Singleton
     RequestHandlerFactory() = delete;

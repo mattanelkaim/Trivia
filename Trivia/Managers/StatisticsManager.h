@@ -8,8 +8,6 @@
 
 class StatisticsManager
 {
-friend std::unique_ptr<StatisticsManager>;
-
 public:
     std::vector<std::string> getHighScore() const;
     std::vector<std::string> getUserStatistics(const std::string& username) const;

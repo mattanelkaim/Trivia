@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IRequestHandler.h"
+#include "ServerDefinitions.h"
 
 class MenuRequestHandler final : public IRequestHandler
 {

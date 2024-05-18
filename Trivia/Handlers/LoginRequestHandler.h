@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IRequestHandler.h"
+#include "ServerDefinitions.h"
 
 class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
 
