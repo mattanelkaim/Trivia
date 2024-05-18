@@ -25,6 +25,30 @@ constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
 #pragma endregion
 
 
+#pragma region protocolDefinitions
+
+/* protocol template: {code}{data length}{message}
+*                     ^^^^  ^^^^^^^^^^^  ^^^^^^^
+*                   1 byte,  4 bytes,  {data length} bytes
+*/
+
+enum messageType : byte
+{
+    REQUEST,
+    RESPONSE
+};
+
+constexpr uint16_t PORT = 7777;
+
+constexpr auto BYTES_RESERVED_FOR_CODE = 1;
+constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
+constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
+
+constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
+
+#pragma endregion
+
+
 #pragma region DatabaseDefinitions
 
 /* Hey @mattany funny bunny money honey runny, Please keep this as
@@ -37,6 +61,21 @@ constexpr uint16_t NUM_POSSIBLE_ANSWERS_PER_QUESTION = 4;
 constexpr uint16_t NUM_TOP_SCORES = 5;
 
 constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral converting shit
+
+#pragma endregion
+
+
+#pragma region roomDefinitions
+
+struct RoomData
+{
+    std::string name;
+    uint32_t id;
+    uint16_t maxPlayers;
+    uint16_t numOfQuestionsInGame;
+    uint32_t timePerQuestion;
+    uint32_t status;
+};
 
 #pragma endregion
 
@@ -59,10 +98,60 @@ struct SignupResponse
     uint32_t status;
 };
 
+struct LogoutResponse
+{
+    uint32_t status;
+};
+
+struct GetRoomsResponse
+{
+    uint32_t status;
+    std::vector<RoomData> rooms;
+};
+
+struct GetPlayersInRoomResponse
+{
+    std::vector<std::string> players;
+};
+
+struct GetHighScoreResponse
+{
+    uint32_t status;
+    std::vector<std::string> statistics;
+};
+
+struct GetPersonalStatsResponse
+{
+    uint32_t status;
+    std::vector<std::string> statistics;
+};
+
+struct JoinRoomResponse
+{
+    uint32_t status;
+};
+
+struct CreateRoomResponse
+{
+    uint32_t status;
+};
+
 namespace JsonFields
 {
-    constexpr std::string_view MESSAGE_FIELD = "message";
-    constexpr std::string_view STATUS_FIELD = "status";
+    constexpr std::string_view MESSAGE = "message";
+    constexpr std::string_view STATUS = "status";
+    constexpr std::string_view ROOMS = "rooms";
+    constexpr std::string_view PLAYERS_IN_ROOM = "playersInRoom";
+    constexpr std::string_view HIGH_SCORES = "highScores";
+    constexpr std::string_view STATISTICS = "userStatistics";
+
+    namespace UserStats
+    {
+        constexpr std::string_view SCORE = "score";
+        constexpr std::string_view TOTAL_GAMES = "games";
+        constexpr std::string_view TOTAL_ANSWERS = "totalAnswers";
+        constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
+    }
 }
 
 #pragma endregion
@@ -103,43 +192,22 @@ struct SignupRequest
     std::string email;
 };
 
-#pragma endregion
-
-
-#pragma region protocolDefinitions
-
-/* protocol template: {code}{data length}{message}
- *                     ^^^^  ^^^^^^^^^^^  ^^^^^^^
- *                   1 byte,  4 bytes,  {data length} bytes
- */
-
-enum messageType : byte
+struct GetPlayersInRoomRequest
 {
-    REQUEST,
-    RESPONSE
+    uint32_t roomId;
 };
 
-constexpr uint16_t PORT = 7777;
-
-constexpr auto BYTES_RESERVED_FOR_CODE = 1;
-constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
-constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
-
-constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
-
-#pragma endregion
-
-
-#pragma region roomDefinitions
-
-struct RoomData
+struct JoinRoomRequest
 {
-    std::string name;
-    uint32_t id;
-    uint16_t maxPlayers;
-    uint16_t numOfQuestionsInGame;
-    uint32_t timePerQuestion;
-    uint32_t status;
+    uint32_t roomId;
+};
+
+struct CreateRoomRequest
+{
+    std::string roomName;
+    uint32_t maxUsers;
+    uint32_t questionCount;
+    uint32_t answerTimeout;
 };
 
 #pragma endregion
