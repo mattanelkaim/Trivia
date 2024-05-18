@@ -185,7 +185,6 @@
     <ClCompile Include="Other\Helper.cpp" />
     <ClCompile Include="Other\InvalidProtocolStructure.cpp" />
     <ClCompile Include="Other\UnexpectedClientExit.cpp" />
-    <ClCompile Include="Requests\JsonRequestDeserializer.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />
     <ClCompile Include="Managers\LoggedUser.cpp" />
     <ClCompile Include="Managers\LoginManager.cpp" />
