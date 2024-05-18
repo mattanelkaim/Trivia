@@ -11,7 +11,7 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexce
 RequestResult MenuRequestHandler::handleRequest([[maybe_unused]] const RequestInfo& info)
 {
     RequestResult result;
-    result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Not supported yet"});
+    result.response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Not supported yet"});
     result.newHandler = new MenuRequestHandler;
     return result;
 }
