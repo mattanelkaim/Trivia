@@ -6,6 +6,6 @@
 class UnexpectedClientExit final : public ServerException
 {
 public:
-    explicit UnexpectedClientExit(const SOCKET crashedClient);
+    explicit UnexpectedClientExit(SOCKET crashedClient);
     const char* what() const noexcept override;
 };
