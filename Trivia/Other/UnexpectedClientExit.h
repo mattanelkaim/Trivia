@@ -1,9 +1,9 @@
 #pragma once
 
-#include "IServerException.h"
+#include "ServerException.h"
 #include <WinSock2.h>
 
-class UnexpectedClientExit final : public IServerException
+class UnexpectedClientExit final : public ServerException
 {
 public:
     explicit UnexpectedClientExit(const SOCKET crashedClient);

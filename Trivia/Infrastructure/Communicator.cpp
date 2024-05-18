@@ -1,9 +1,12 @@
 #include "Communicator.h"
 #include "Helper.h"
-#include "IServerException.h"
+#include "IDatabase.h"
 #include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include "ServerDefinitions.h"
+#include "ServerException.h"
+#include <ctime>
+#include <exception>
 #include <format>
 #include <iostream>
 #include <string>
@@ -111,7 +114,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
                 std::cout << "Operation NOT successful\n\n";
             }
         }
-        catch (const IServerException& e)
+        catch (const ServerException& e)
         {
             std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
             this->disconnectClient(clientSocket);

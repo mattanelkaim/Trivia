@@ -3,11 +3,11 @@
 
 
 InvalidProtocolStructure::InvalidProtocolStructure() :
-    IServerException("Invalid protocol structure!")
+    ServerException("Invalid protocol structure!")
 {}
 
 InvalidProtocolStructure::InvalidProtocolStructure(const std::string& invalidPart) :
-    IServerException("Invalid protocol structure: " + invalidPart)
+    ServerException("Invalid protocol structure: " + invalidPart)
 {}
 
 const char* InvalidProtocolStructure::what() const noexcept
