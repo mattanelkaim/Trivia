@@ -167,7 +167,7 @@
     <ClInclude Include="Managers\Room.h" />
     <ClInclude Include="Managers\RoomManager.h" />
     <ClInclude Include="Other\UnexpectedClientExit.h" />
-    <ClInclude Include="Requests\JsonRequestDeserializer.h" />
+    <ClInclude Include="Requests\JsonRequestDeserializer.hpp" />
     <ClInclude Include="Responses\JsonResponseSerializer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -185,7 +185,6 @@
     <ClCompile Include="Other\Helper.cpp" />
     <ClCompile Include="Other\InvalidProtocolStructure.cpp" />
     <ClCompile Include="Other\UnexpectedClientExit.cpp" />
-    <ClCompile Include="Requests\JsonRequestDeserializer.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />
     <ClCompile Include="Managers\LoggedUser.cpp" />
     <ClCompile Include="Managers\LoginManager.cpp" />

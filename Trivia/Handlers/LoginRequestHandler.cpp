@@ -1,4 +1,4 @@
-#include "JsonRequestDeserializer.h"
+#include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
@@ -36,7 +36,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
     RequestResult result;
-    const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
+    const LoginRequest request = JsonRequestDeserializer::deserializeRequest<LoginRequest>(info.buffer);
 
     const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     if (loginManager->login(request.username, request.password)) [[likely]]
@@ -56,7 +56,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
 RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
     RequestResult result;
-    const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);
+    const SignupRequest request = JsonRequestDeserializer::deserializeRequest<SignupRequest>(info.buffer);
 
     const std::unique_ptr<LoginManager>& loginManager = this->m_handlerFactory.getLoginManager();
     if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
