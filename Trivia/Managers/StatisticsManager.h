@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IDatabase.h"
-#include <memory>
+#include <memory> // std::unique_ptr
 #include <mutex>
 #include <string>
 #include <vector>

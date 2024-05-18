@@ -8,9 +8,15 @@
 #include <ctime>
 #include <exception>
 #include <format>
+#include <inaddr.h> // s_addr macro
 #include <iostream>
+#include <memory>
+#include <mutex>
+#include <stdexcept>
 #include <string>
+#include <string_view>
 #include <thread>
+#include <utility> // std::exchange
 #include <WinSock2.h>
 
 using std::to_string;
@@ -53,11 +59,11 @@ void Communicator::startHandleRequests()
 {
     try
     {
-        do
+        while (true)
         {
             // This accepts the client and create a specific socket from server to this client
             // The process will not continue until a client connects to the server
-            SOCKET clientSocket = accept(m_serverSocket, NULL, NULL);
+            SOCKET clientSocket = accept(m_serverSocket, nullptr, nullptr);
             if (clientSocket == INVALID_SOCKET)
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
@@ -68,7 +74,7 @@ void Communicator::startHandleRequests()
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
             handlerThread.detach();
-        } while (true);
+        }
     }
     catch (const std::exception& e)
     {
@@ -78,16 +84,16 @@ void Communicator::startHandleRequests()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-    do
+    while (true)
     {
         try
         {
             // Read data from socket
-            const RequestId code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
+            const auto code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
             const std::string msg = Helper::getMessageFromSocket(clientSocket);
 
             // Initialize RequestInfo structure
-            RequestInfo request{.id = code, .receivalTime = time(nullptr)};
+            RequestInfo request{.id = code, .receivalTime = std::time(nullptr)};
             request.buffer.append_range(msg); // String to vector
 
             // Get current handler from clients map
@@ -125,7 +131,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
         {
             std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
         }
-    } while (true);
+    }
 }
 
 void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
@@ -133,7 +139,7 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     const auto& client = this->m_clients.find(clientSocket);
     if (client != this->m_clients.cend())
     {
-        delete std::move(client->second);
+        delete client->second;
         this->m_clients.erase(clientSocket);
     }
 }
@@ -141,7 +147,7 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 // Singleton
 Communicator* Communicator::getInstance(IDatabase* db)
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
+    const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Communicator == nullptr)
     {
         m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));

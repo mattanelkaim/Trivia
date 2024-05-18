@@ -1,7 +1,10 @@
 #include "Helper.h"
 #include "json.hpp"
 #include "JsonResponseSerializer.h"
+#include "ServerDefinitions.h"
+#include <cstdint>
 #include <string>
+#include <string_view>
 
 using json = nlohmann::json;
 
