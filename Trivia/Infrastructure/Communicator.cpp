@@ -115,7 +115,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
             {
                 std::cout << "Handler is invalid!\n";
                 // Serialize an error response and send it to the client
-                const buffer response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
+                const buffer response = JsonResponseSerializer::serializeResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
                 Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(response.data()), response.size()));
                 std::cout << "Operation NOT successful\n\n";
             }

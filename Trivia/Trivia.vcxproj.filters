@@ -62,7 +62,7 @@
     <ClInclude Include="Managers\RoomManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Requests\JsonRequestDeserializer.h">
+    <ClInclude Include="Requests\JsonRequestDeserializer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Other\ServerDefinitions.h">
@@ -104,9 +104,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Handlers\LoginRequestHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Requests\JsonRequestDeserializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp">
