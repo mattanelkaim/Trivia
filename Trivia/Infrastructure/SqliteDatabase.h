@@ -25,7 +25,7 @@ public:
     // Queries using callback
     bool doesUserExist(const std::string& username) const override;
     bool doesPasswordMatch(const std::string& username, const std::string& password) const override;
-    std::vector<Question> getQuestions(const uint32_t numQuestions) const override;
+    std::vector<Question> getQuestions(uint32_t numQuestions) const override;
     float getPlayerAverageAnswerTime(const std::string& username) const override;
     int getNumOfCorrectAnswers(const std::string& username) const override;	
     int getNumOfTotalAnswers(const std::string& username) const override;
@@ -37,8 +37,8 @@ private:
     sqlite3* m_db{nullptr};
 
     // Functions to run queries on the databases
-    void runQuery(const std::string_view query) const;
-    void runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const;
+    void runQuery(std::string_view query) const;
+    void runQuery(std::string_view query, safe_callback_ptr callback, void* data) const;
 
     // Callback functions
     static int callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;

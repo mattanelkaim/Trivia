@@ -1,7 +1,9 @@
 #pragma once
 
-#include "ServerDefinitions.h"
 #include "json.hpp"
+#include "ServerDefinitions.h"
+#include <stdexcept>
+#include <string>
 
 using json = nlohmann::json;
 
@@ -13,15 +15,15 @@ public:
     template <typename T>
     static T deserializeRequest(const readonly_buffer requestBuffer)
     {
-        T request;
+        T request{};
 
-        try 
+        try
         {
             // Parse string msg to JSON
             const json j = json::parse(requestBuffer);
 
             // Store data from JSON on a struct
-            if constexpr (std::is_same_v<T, LoginRequest> || std::is_same_v<T, SignupRequest>) 
+            if constexpr (std::is_same_v<T, LoginRequest> || std::is_same_v<T, SignupRequest>)
             {
                 j.at("username").get_to(request.username);
                 j.at("password").get_to(request.password);
@@ -48,11 +50,11 @@ public:
                 throw std::runtime_error("not supported yet");
             }
         }
-        catch (const json::parse_error& e) 
+        catch (const json::parse_error& e)
         {
             throw std::runtime_error("ERROR parsing JSON response at byte " + std::to_string(e.byte));
         }
-        catch (const json::out_of_range& e) 
+        catch (const json::out_of_range& e)
         {
             throw std::runtime_error(std::string("ERROR parsing JSON: ") + e.what());
         }
