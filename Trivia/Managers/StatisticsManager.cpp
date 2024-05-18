@@ -30,7 +30,7 @@ std::vector<std::string> StatisticsManager::getUserStatistics(const std::string&
 std::unique_ptr<StatisticsManager>& StatisticsManager::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_StatisticsManager == nullptr)
+    if (m_StatisticsManager == nullptr) [[unlikely]]
     {
         m_StatisticsManager = std::unique_ptr<StatisticsManager>(new StatisticsManager(db));
     }
