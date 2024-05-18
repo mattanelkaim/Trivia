@@ -55,10 +55,12 @@ buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse&
     json j;
 
     // Sub-fields that construct the "userStatistics" outer field
-    j[JsonFields::STATISTICS][JsonFields::UserStats::SCORE] = response.statistics[0];
-    j[JsonFields::STATISTICS][JsonFields::UserStats::TOTAL_GAMES] = response.statistics[1];
-    j[JsonFields::STATISTICS][JsonFields::UserStats::TOTAL_ANSWERS] = response.statistics[2];
-    j[JsonFields::STATISTICS][JsonFields::UserStats::CORRECT_ANSWERS] = response.statistics[3];
+    using namespace JsonFields;
+    using namespace JsonFields::UserStats;
+    j[STATISTICS][SCORE] = response.statistics[0];
+    j[STATISTICS][TOTAL_GAMES] = response.statistics[1];
+    j[STATISTICS][TOTAL_ANSWERS] = response.statistics[2];
+    j[STATISTICS][CORRECT_ANSWERS] = response.statistics[3];
 
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
