@@ -1,9 +1,9 @@
 #pragma once
 
-#include "IServerException.h"
+#include "ServerException.h"
 #include <string>
 
-class InvalidProtocolStructure final : public IServerException
+class InvalidProtocolStructure final : public ServerException
 {
 public:
     InvalidProtocolStructure();
