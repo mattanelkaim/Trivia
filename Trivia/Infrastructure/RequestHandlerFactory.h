@@ -7,7 +7,7 @@
 
 class LoginRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
-class RequestHandlerFactory
+class RequestHandlerFactory final
 {
 public:
     LoginRequestHandler* createLoginRequestHandler();

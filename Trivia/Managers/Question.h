@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-class Question 
+class Question final
 {
 public:
     // Constructors

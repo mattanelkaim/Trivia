@@ -7,7 +7,7 @@
 
 using json = nlohmann::json;
 
-class JsonRequestDeserializer
+class JsonRequestDeserializer final
 {
 public:
     JsonRequestDeserializer() = delete; // This ensures that this class is never instantiated

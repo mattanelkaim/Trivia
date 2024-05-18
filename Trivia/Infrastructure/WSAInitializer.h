@@ -1,6 +1,6 @@
 #pragma once
 
-class WSAInitializer
+class WSAInitializer final
 {
 public:
     WSAInitializer();

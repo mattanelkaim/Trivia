@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-class JsonResponseSerializer
+class JsonResponseSerializer final
 {
 public:
     JsonResponseSerializer() = delete; // This ensures that this class is never instantiated

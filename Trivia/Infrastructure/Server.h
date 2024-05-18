@@ -6,7 +6,7 @@
 #include <memory>
 #include <mutex>
 
-class Server
+class Server final
 {
 public:
     void run();
