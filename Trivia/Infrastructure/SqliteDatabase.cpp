@@ -1,9 +1,14 @@
+#include "Question.h"
 #include "ServerDefinitions.h"
 #include "sqlite3.h"
 #include "SqliteDatabase.h"
+#include <algorithm> // std::copy
+#include <cstdint>
+#include <cstdlib> // std::atoi, std::atof
 #include <iterator> // std::back_inserter
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <vector>
 
 using std::to_string;
@@ -21,7 +26,7 @@ SqliteDatabase::~SqliteDatabase()
 
 bool SqliteDatabase::open()
 {
-    if (SQLITE_OK != sqlite3_open(DB_FILE_NAME.data(), &(this->m_db)))
+    if ((sqlite3_open(DB_FILE_NAME.data(), &(this->m_db))) != SQLITE_OK)
         throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->m_db)));
 
     return true;
@@ -38,7 +43,7 @@ bool SqliteDatabase::doesUserExist(const std::string& username) const
 {
     const std::string query = "SELECT COUNT(*) FROM users WHERE username = '" + username + '\'';
 
-    int numUsers;
+    int numUsers{};
     this->runQuery(query, callbackInt, &numUsers);
 
     return numUsers != 0;
@@ -69,7 +74,7 @@ float SqliteDatabase::getPlayerAverageAnswerTime(const std::string& username) co
 {
     const std::string query = "SELECT avg_time FROM user_scores WHERE username = '" + username + '\'';
 
-    float avgTime;
+    float avgTime{};
     this->runQuery(query, callbackFloat, &avgTime);
 
     return avgTime;
@@ -79,7 +84,7 @@ int SqliteDatabase::getNumOfCorrectAnswers(const std::string& username) const
 {
     const std::string query = "SELECT num_correct FROM user_scores WHERE username = '" + username + '\'';
 
-    int numCorrect;
+    int numCorrect{};
     this->runQuery(query, callbackInt, &numCorrect);
 
     return numCorrect;
@@ -89,7 +94,7 @@ int SqliteDatabase::getNumOfTotalAnswers(const std::string& username) const
 {
     const std::string query = "SELECT total_answers FROM user_scores WHERE username = '" + username + '\'';
 
-    int numTotal;
+    int numTotal{};
     this->runQuery(query, callbackInt, &numTotal);
 
     return numTotal;
@@ -99,7 +104,7 @@ int SqliteDatabase::getNumOfPlayerGames(const std::string& username) const
 {
     const std::string query = "SELECT num_games FROM user_scores WHERE username = '" + username + '\'';
 
-    int totalGames;
+    int totalGames{};
     this->runQuery(query, callbackInt, &totalGames);
 
     return totalGames;
@@ -109,7 +114,7 @@ float SqliteDatabase::getPlayerScore(const std::string& username) const
 {
     const std::string query = "SELECT score FROM user_scores WHERE username = '" + username + '\'';	
 
-    float score;
+    float score{};
     this->runQuery(query, callbackFloat, &score);
 
     return score;
@@ -158,7 +163,7 @@ int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[m
     if (columns != 1 || data[0] == nullptr)
         return 1;
 
-    *static_cast<int*>(destination) = atoi(data[0]);
+    *static_cast<int*>(destination) = std::strtol(data[0], nullptr, DECIMAL_BASE);
     return 0;
 }
 
@@ -167,7 +172,7 @@ int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [
     if (columns != 1 || data[0] == nullptr)
         return 1;
 
-    *static_cast<float*>(destination) = static_cast<float>(atof(data[0]));
+    *static_cast<float*>(destination) = std::strtof(data[0], nullptr);
     return 0;
 }
 
@@ -176,17 +181,24 @@ int SqliteDatabase::callbackString(void* destination, int columns, char** data, 
     if (columns != 1 || data[0] == nullptr)
         return 1;
     
-    *static_cast<std::string*>(destination) = data[0];
-    return 0;
+    try
+    {
+        *static_cast<std::string*>(destination) = data[0];
+        return 0;
+    }
+    catch (...) // std::bad_alloc
+    {
+        return 1;
+    }
 }
 
 int SqliteDatabase::callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
+    if (columns != 1)
+        return 1; // Error
+
     try
     {
-        if (columns != 1)
-            return 1; // Error
-
         static_cast<std::vector<std::string>*>(destination)->emplace_back(data[0]);
         return 0;
     }
@@ -198,11 +210,11 @@ int SqliteDatabase::callbackStringVector(void* destination, int columns, char** 
 
 int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
+    if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1)
+        return 1; // Error
+
     try
     {
-        if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1)
-            return 1; // Error
-
         std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
         std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
 

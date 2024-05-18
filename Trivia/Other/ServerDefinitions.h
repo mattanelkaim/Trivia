@@ -3,9 +3,11 @@
 
 #define SERVER_DEBUG_ALL // Debugging flag in Helper
 
-#include <corecrt.h> // Used for time_t
+#include <cstdint>
+#include <ctime> // Used for time_t
 #include <span>
 #include <string>
+#include <string_view>
 #include <vector>
 
 class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
@@ -33,6 +35,8 @@ constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
 constexpr std::string_view DB_FILE_NAME = "TriviaDB.sqlite";
 constexpr uint16_t NUM_POSSIBLE_ANSWERS_PER_QUESTION = 4;
 constexpr uint16_t NUM_TOP_SCORES = 5;
+
+constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral converting shit
 
 #pragma endregion
 

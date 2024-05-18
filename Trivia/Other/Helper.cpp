@@ -2,7 +2,12 @@
 #include "InvalidProtocolStructure.h"
 #include "ServerDefinitions.h"
 #include "UnexpectedClientExit.h"
+#include <cstddef> // size_t
+#include <cstdint>
+#include <stdexcept>
 #include <string>
+#include <string_view>
+#include <WinSock2.h>
 #if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN) || defined(SERVER_DEBUG_OUT)
 #include <iostream>
 #endif
@@ -11,15 +16,16 @@ using std::to_string;
 
 std::string Helper::getMessageFromSocket(SOCKET sc)
 {
-    int length;
-    try
-    {
-        length = getIntPartFromSocket(sc, BYTES_RESERVED_FOR_MSG_LEN);
-    }
-    catch (const std::invalid_argument&)
-    {
-        throw InvalidProtocolStructure("Invalid protocol structure: length");
-    }
+    const int length = [sc] { // Using IIFE
+        try
+        {
+            return getIntPartFromSocket(sc, BYTES_RESERVED_FOR_MSG_LEN);
+        }
+        catch (const std::invalid_argument&)
+        {
+            throw InvalidProtocolStructure("Invalid protocol structure: length");
+        }
+    }();
 
     return getStringFromSocket(sc, length);
 }
@@ -47,7 +53,7 @@ int Helper::getIntPartFromSocket(SOCKET sc, const int bytesNum)
 std::string Helper::getPaddedNumber(const uint32_t num, const size_t digits)
 {
     // Cannot be constexpr nor noexcept cuz to_string is kaki
-    const std::string numStr = std::to_string(num);
+    const std::string numStr = to_string(num);
     return std::string(digits - numStr.size(), '0') + numStr;
 }
 
@@ -56,7 +62,7 @@ std::string Helper::getStringFromSocket(SOCKET sc, const int bytesNum)
 {
     if (bytesNum <= 0) return "";
 
-    const size_t bufferSize = static_cast<size_t>(bytesNum);
+    const auto bufferSize = static_cast<size_t>(bytesNum);
     char* data = new char[bufferSize]; // Terminator is added later
 
     if (recv(sc, data, bytesNum, 0) == SOCKET_ERROR) // flags = 0

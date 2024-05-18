@@ -142,9 +142,12 @@
     <ClCompile Include="Managers\StatisticsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Other\ServerException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Other\IServerException.h">
+    <ClInclude Include="Other\ServerException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="Other\InvalidProtocolStructure.h">
@@ -159,5 +162,8 @@
     <ClCompile Include="Other\UnexpectedClientExit.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Trivia.ruleset" />
   </ItemGroup>
 </Project>

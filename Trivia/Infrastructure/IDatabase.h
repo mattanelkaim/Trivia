@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Question.h"
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -17,7 +18,7 @@ public:
     // Queries using callback
     virtual bool doesUserExist(const std::string& username) const = 0;
     virtual bool doesPasswordMatch(const std::string& username, const std::string& password) const = 0;
-    virtual std::vector<Question> getQuestions(const uint32_t numQuestions) const = 0;
+    virtual std::vector<Question> getQuestions(uint32_t numQuestions) const = 0;
     virtual float getPlayerAverageAnswerTime(const std::string& username) const = 0;
     virtual int getNumOfCorrectAnswers(const std::string& username) const = 0;
     virtual int getNumOfTotalAnswers(const std::string& username) const = 0;

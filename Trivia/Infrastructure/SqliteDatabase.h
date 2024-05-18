@@ -1,8 +1,11 @@
 #pragma once
 
 #include "IDatabase.h"
+#include "Question.h"
 #include "sqlite3.h"
+#include <cstdint>
 #include <string>
+#include <string_view>
 #include <vector>
 
 using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3_callback noexcept
@@ -31,7 +34,7 @@ public:
     std::vector<std::string> getHighScores() const override;
 
 private:
-    sqlite3* m_db;
+    sqlite3* m_db{nullptr};
 
     // Functions to run queries on the databases
     void runQuery(const std::string_view query) const;

@@ -74,8 +74,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
-    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <ClangTidyChecks>+clang-analyzer-*, -*compat*, -clang-diagnostic-pragma-once-outside-header,</ClangTidyChecks>
+    <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+    <ClangTidyChecks>
+    </ClangTidyChecks>
     <LinkIncremental>
     </LinkIncremental>
     <CodeAnalysisRuleSet>Trivia.ruleset</CodeAnalysisRuleSet>
@@ -160,7 +161,7 @@
     <ClInclude Include="Managers\StatisticsManager.h" />
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
-    <ClInclude Include="Other\IServerException.h" />
+    <ClInclude Include="Other\ServerException.h" />
     <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\ServerDefinitions.h" />
     <ClInclude Include="Other\sqlite3.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="Managers\StatisticsManager.cpp" />
     <ClCompile Include="Other\Helper.cpp" />
     <ClCompile Include="Other\InvalidProtocolStructure.cpp" />
+    <ClCompile Include="Other\ServerException.cpp" />
     <ClCompile Include="Other\UnexpectedClientExit.cpp" />
     <ClCompile Include="Requests\JsonRequestDeserializer.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />

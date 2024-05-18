@@ -1,4 +1,10 @@
+#include "IDatabase.h"
 #include "StatisticsManager.h"
+#include <memory>
+#include <mutex>
+#include <string>
+#include <vector>
+
 
 StatisticsManager::StatisticsManager(IDatabase* db) noexcept :
     m_database(db)
@@ -23,7 +29,7 @@ std::vector<std::string> StatisticsManager::getUserStatistics(const std::string&
 // Singleton
 std::unique_ptr<StatisticsManager>& StatisticsManager::getInstance(IDatabase* db)
 {
-    std::lock_guard<std::mutex> lock(m_mutex);
+    const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_StatisticsManager == nullptr)
     {
         m_StatisticsManager = std::unique_ptr<StatisticsManager>(new StatisticsManager(db));
