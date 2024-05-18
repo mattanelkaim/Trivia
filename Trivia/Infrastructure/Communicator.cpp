@@ -21,6 +21,7 @@
 
 using std::to_string;
 
+
 Communicator::Communicator(IDatabase* db) :
     m_handlerFactory(*RequestHandlerFactory::getInstance(db)),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
@@ -63,7 +64,7 @@ void Communicator::startHandleRequests()
         {
             // This accepts the client and create a specific socket from server to this client
             // The process will not continue until a client connects to the server
-            SOCKET clientSocket = accept(m_serverSocket, nullptr, nullptr);
+            const SOCKET clientSocket = accept(m_serverSocket, nullptr, nullptr);
             if (clientSocket == INVALID_SOCKET)
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
@@ -82,7 +83,7 @@ void Communicator::startHandleRequests()
     }
 }
 
-void Communicator::handleNewClient(SOCKET clientSocket)
+void Communicator::handleNewClient(const SOCKET clientSocket)
 {
     while (true)
     {
