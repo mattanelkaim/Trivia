@@ -40,13 +40,13 @@ Communicator::~Communicator() noexcept
 
 void Communicator::bindAndListen() const
 {
-    struct sockaddr_in serverAddr{};
+    sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET; // Must be AF_INET
     serverAddr.sin_port = htons(PORT); // Port that server will listen for
     serverAddr.sin_addr.s_addr = INADDR_ANY; // When there are few IPs for the machine. We will use always "INADDR_ANY"
 
     // Connects the socket and the configuration
-    if (bind(this->m_serverSocket, reinterpret_cast<struct sockaddr*>(&serverAddr), sizeof(serverAddr)) == SOCKET_ERROR)
+    if (bind(this->m_serverSocket, reinterpret_cast<sockaddr*>(&serverAddr), sizeof(serverAddr)) == SOCKET_ERROR)
         throw std::runtime_error(std::format("{}  - bind() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
     // Start listening for incoming client requests
