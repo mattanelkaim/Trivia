@@ -6,9 +6,11 @@
 #include <string_view>
 #include <WinSock2.h>
 
-class Helper
+class Helper final
 {
 public:
+    Helper() = delete;
+
     static std::string getStringFromSocket(SOCKET sc, int bytesNum);
     static int getIntPartFromSocket(SOCKET sc, int bytesNum);
     static std::string getMessageFromSocket(SOCKET sc); // Helper function

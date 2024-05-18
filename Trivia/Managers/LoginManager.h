@@ -8,7 +8,7 @@
 #include <string_view>
 #include <vector>
 
-class LoginManager
+class LoginManager final
 {
 public:
     bool signup(const std::string& username, const std::string& password, const std::string& email);

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-class Room
+class Room final
 {
 public:
     explicit Room(const RoomData& data) noexcept;

@@ -3,7 +3,7 @@
 #include <string>
 #include <string_view>
 
-class LoggedUser
+class LoggedUser final
 {
 public:
     LoggedUser() = delete;

@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-class RoomManager
+class RoomManager final
 {
 public:
     void createRoom(const LoggedUser& user, const RoomData& data);

@@ -8,7 +8,7 @@
 #include <unordered_map>
 #include <WinSock2.h>
 
-class Communicator
+class Communicator final
 {
 public:
     // Public methods
