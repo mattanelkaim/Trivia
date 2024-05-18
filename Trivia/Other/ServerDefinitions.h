@@ -188,5 +188,23 @@ struct SignupRequest
     std::string email;
 };
 
+struct GetPlayersInRoomRequest
+{
+    uint32_t roomId;
+};
+
+struct JoinRoomRequest
+{
+    uint32_t roomId;
+};
+
+struct CreateRoomRequest
+{
+    std::string roomName;
+    uint32_t maxUsers;
+    uint32_t questionCount;
+    uint32_t answerTimeout;
+};
+
 #pragma endregion
 // NOLINTEND(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
