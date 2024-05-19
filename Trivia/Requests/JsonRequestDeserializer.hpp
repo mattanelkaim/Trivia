@@ -6,10 +6,18 @@
 #include <stdexcept>
 #include <string>
 
-using json = nlohmann::json;
-
 namespace JsonRequestDeserializer
 {
+    using json = nlohmann::json;
+
+    /**
+     * Deserialize a JSON request buffer into a specific request type.
+     * 
+     * @tparam T The type of the request to deserialize.
+     * @param requestBuffer The buffer containing the JSON request.
+     * @return The deserialized request object.
+     * @throws std::runtime_error if there is an error parsing the JSON or if the request type is not supported.
+     */
     template <std::derived_from<Request> T>
     static T deserializeRequest(const readonly_buffer requestBuffer)
     {

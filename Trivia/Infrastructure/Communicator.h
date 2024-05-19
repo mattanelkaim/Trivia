@@ -8,6 +8,28 @@
 #include <unordered_map>
 #include <WinSock2.h>
 
+/**
+* @class Communicator
+* @brief This class is responsible for handling communication between the server and its clients.
+* 
+* The Communicator class uses the Winsock API to create a server socket and listen for incoming client connections.
+* When a client connects, the Communicator creates a new socket for communication with that client,
+* and starts a new thread to handle the client's requests.
+* 
+* The Communicator uses a RequestHandlerFactory to create request handlers for handling the clients' requests. 
+* Each client has its own request handler, which is stored in a map that associates each client's socket with its request handler.
+* 
+* The Communicator is a singleton, meaning there can be only one instance of it in the application. 
+* You can get the singleton instance by calling the static getInstance() method.
+* 
+* @note This class is not copyable or movable.
+* 
+* @example
+* 
+* IDatabase* db = new SqliteDatabase();
+* Communicator* communicator = Communicator::getInstance(db);
+* communicator->startHandleRequests();
+*/
 class Communicator final
 {
 public:
@@ -66,11 +88,6 @@ private:
     */
     void handleNewClient(SOCKET clientSocket);
 
-    /**
-    * @brief Disconnects a client from the server.
-    * 
-    * @param clientSocket The socket of the client to disconnect.
-    */
     void disconnectClient(SOCKET clientSocket) noexcept;
 
     /*######################################
