@@ -10,11 +10,11 @@ Things to do before shipping
 #include <exception>
 #include <iostream>
 
-int main(void)
+int main()
 {
     try
     {
-        WSAInitializer wsaInit;
+        const WSAInitializer wsaInit;
         Server::getInstance()->run();
     }
     catch (const std::exception& e)
