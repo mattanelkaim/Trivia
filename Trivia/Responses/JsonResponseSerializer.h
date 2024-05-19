@@ -4,10 +4,10 @@
 #include "ServerDefinitions.h"
 #include <string_view>
 
-using json = nlohmann::json;
-
 namespace JsonResponseSerializer
 {
+    using json = nlohmann::json;
+
     // Helper function
     buffer serializeGeneralResponse(messageType type, std::string_view json);
 
