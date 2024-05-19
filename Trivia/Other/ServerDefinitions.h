@@ -1,5 +1,6 @@
 // NOLINTBEGIN(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
 #pragma once
+#pragma warning(disable: 4820) // Padding added after data member
 
 #define SERVER_DEBUG_ALL // Debugging flag in Helper
 
