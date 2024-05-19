@@ -16,8 +16,12 @@ public:
     SqliteDatabase();
     ~SqliteDatabase() override;
 
-    bool open() override;
-    bool close() override;
+    /*######################################
+    ############ PUBLIC METHODS ############
+    ######################################*/
+
+    bool openDB() override;
+    bool closeDB() override;
 
     // Queries without callback
     void addNewUser(const std::string& username, const std::string& password, const std::string& email) override;
