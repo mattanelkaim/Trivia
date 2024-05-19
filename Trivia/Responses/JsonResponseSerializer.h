@@ -17,8 +17,14 @@ namespace JsonResponseSerializer
     buffer serializeResponse(const GetHighScoreResponse& response);
     buffer serializeResponse(const GetPersonalStatsResponse& response);
 
-    template <typename T>
-    buffer serializeResponse(const T& response)    
+    /**
+     * Serializes a general response that isn't covered in other overloads of this function,
+     * with a status field.
+     *
+     * @param response The response object to be serialized.
+     * @return The serialized response as a buffer.
+     */
+    buffer serializeResponse(const auto& response) requires requires { response.status;  }
     {
         json j;
         j[JsonFields::STATUS] = response.status;
