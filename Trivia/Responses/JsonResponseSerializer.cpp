@@ -52,11 +52,12 @@ buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& res
 
 buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse& response)
 {
+    using namespace JsonFields;
+    using namespace JsonFields::UserStats;
+
     json j;
 
     // Sub-fields that construct the "userStatistics" outer field
-    using namespace JsonFields;
-    using namespace JsonFields::UserStats;
     j[STATISTICS][SCORE] = response.statistics[0];
     j[STATISTICS][TOTAL_GAMES] = response.statistics[1];
     j[STATISTICS][TOTAL_ANSWERS] = response.statistics[2];
