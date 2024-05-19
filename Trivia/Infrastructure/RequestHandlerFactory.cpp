@@ -1,11 +1,22 @@
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
+#include "LoginManager.h"
+#include "IDatabase.h"
+#include "RoomManager.h"
+#include "StatisticsManager.h"
 
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
     m_database(db),
-    m_loginManager(LoginManager::getInstance(db)) // Might throw
+    m_loginManager(LoginManager::getInstance(db)), // Might throw
+    m_roomManager(RoomManager::getInstance()), //...
+    m_statisticsManager(StatisticsManager::getInstance(db)) //...
 {}
+
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& loggedUser)
+{
+    return nullptr;
+}
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
@@ -15,6 +26,16 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 LoginManager* RequestHandlerFactory::getLoginManager() noexcept
 {
     return this->m_loginManager.get();
+}
+
+StatisticsManager* RequestHandlerFactory::getStatisticsManager() noexcept
+{
+    return this->m_statisticsManager.get();
+}
+
+RoomManager* RequestHandlerFactory::getRoomManager() noexcept
+{
+    return this->m_roomManager.get();
 }
 
 // Singleton

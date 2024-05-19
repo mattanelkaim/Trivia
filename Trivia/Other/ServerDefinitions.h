@@ -151,8 +151,8 @@ namespace JsonFields
         constexpr std::string_view TOTAL_GAMES = "games";
         constexpr std::string_view TOTAL_ANSWERS = "totalAnswers";
         constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
-    }
-}
+    } //namesapce UserStats
+} //namesapce JsonFields
 
 #pragma endregion
 
@@ -162,7 +162,10 @@ namespace JsonFields
 enum RequestId : size_t
 {
     LOGIN,
-    SIGNUP
+    SIGNUP,
+    GET_PLAYERS_IN_ROOM,
+    JOIN_ROOM,
+    CREATE_ROOM
 };
 
 struct RequestInfo

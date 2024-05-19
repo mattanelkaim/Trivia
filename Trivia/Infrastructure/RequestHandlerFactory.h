@@ -2,6 +2,9 @@
 
 #include "IDatabase.h"
 #include "LoginManager.h"
+#include "RoomManager.h"
+#include "StatisticsManager.h"
+#include "MenuRequestHandler.h"
 #include <memory>
 #include <mutex>
 
@@ -10,8 +13,14 @@ class LoginRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 class RequestHandlerFactory final
 {
 public:
+    // methods
+    MenuRequestHandler* createMenuRequestHandler(const LoggedUser& loggedUser);
     LoginRequestHandler* createLoginRequestHandler();
+
+    // getters
     LoginManager* getLoginManager() noexcept;
+    StatisticsManager* getStatisticsManager() noexcept;
+    RoomManager* getRoomManager() noexcept;
 
     // Singleton
     RequestHandlerFactory() = delete;
@@ -23,6 +32,8 @@ public:
 private:
     IDatabase* m_database;
     std::unique_ptr<LoginManager>& m_loginManager;
+    std::unique_ptr<RoomManager>& m_roomManager;
+    std::unique_ptr<StatisticsManager>& m_statisticsManager;
 
     // Singleton
     explicit RequestHandlerFactory(IDatabase* db);

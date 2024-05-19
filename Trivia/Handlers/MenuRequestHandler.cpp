@@ -5,7 +5,7 @@
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
-    return true; // info.id != LOGIN && info.id != SIGNUP;
+    return info.id != LOGIN && info.id != SIGNUP;
 }
 
 RequestResult MenuRequestHandler::handleRequest([[maybe_unused]] const RequestInfo& info)
