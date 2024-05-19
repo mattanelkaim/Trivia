@@ -16,15 +16,15 @@ using std::to_string;
 
 SqliteDatabase::SqliteDatabase()
 {
-    this->open(); // TODO(mattan) construct tables in code
+    this->openDB(); // TODO(mattan) construct tables in code
 }
 
 SqliteDatabase::~SqliteDatabase()
 {
-    this->close();
+    this->closeDB();
 }
 
-bool SqliteDatabase::open()
+bool SqliteDatabase::openDB()
 {
     if ((sqlite3_open(DB_FILE_NAME.data(), &(this->m_db))) != SQLITE_OK)
         throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->m_db)));
@@ -32,7 +32,7 @@ bool SqliteDatabase::open()
     return true;
 }
 
-bool SqliteDatabase::close()
+bool SqliteDatabase::closeDB()
 {
     const bool isSuccess = sqlite3_close(this->m_db) == SQLITE_OK;
     this->m_db = nullptr;
