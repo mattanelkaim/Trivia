@@ -2,6 +2,7 @@
 
 #include "json.hpp"
 #include "ServerDefinitions.h"
+#include <concepts>
 #include <stdexcept>
 #include <string>
 
@@ -12,7 +13,7 @@ class JsonRequestDeserializer final
 public:
     JsonRequestDeserializer() = delete; // This ensures that this class is never instantiated
 
-    template <typename T>
+    template <std::derived_from<Request> T>
     static T deserializeRequest(const readonly_buffer requestBuffer)
     {
         T request{};
@@ -23,27 +24,26 @@ public:
             const json j = json::parse(requestBuffer);
 
             // Store data from JSON on a struct
-            if constexpr (std::is_same_v<T, LoginRequest> || std::is_same_v<T, SignupRequest>)
+            if constexpr (std::same_as<T, LoginRequest> || std::same_as<T, SignupRequest>)
             {
                 j.at("username").get_to(request.username);
                 j.at("password").get_to(request.password);
 
-                if constexpr (std::is_same_v<T, SignupRequest>)
+                if constexpr (std::same_as<T, SignupRequest>)
                 {
                     j.at("email").get_to(request.email);
                 }
             }
-            else if constexpr (std::is_same_v<T, GetPlayersInRoomRequest> || std::is_same_v<T, JoinRoomRequest>)
-            {
-                j.at("roomId").get_to(request.roomId);
-            }
-            else if constexpr (std::is_same_v<T, CreateRoomRequest>) /* it is OK to use "else if" in this case instead of just "else" because this whole if - else block is precompiled,
-                                                                        also it is more readable like this */
+            else if constexpr (std::same_as<T, CreateRoomRequest>)
             {
                 j.at("roomName").get_to(request.roomName);
                 j.at("maxUsers").get_to(request.maxUsers);
                 j.at("questionCount").get_to(request.questionCount);
                 j.at("answerTimeout").get_to(request.answerTimeout);
+            }
+            else if constexpr (requires{ T::roomId; }) // Either GetPlayersInRoomRequest or JoinRoomRequest
+            {
+                j.at("roomId").get_to(request.roomId);
             }
             else
             {

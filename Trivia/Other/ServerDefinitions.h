@@ -172,37 +172,39 @@ struct RequestInfo
     buffer buffer;
 };
 
-struct RequestResult
+struct Request {}; // Empty struct to inherit from
+
+struct RequestResult : Request
 {
     buffer response;
     IRequestHandler* newHandler{nullptr};
 };
 
 // Request structs
-struct LoginRequest
+struct LoginRequest : Request
 {
     std::string username;
     std::string password;
 };
 
-struct SignupRequest
+struct SignupRequest : Request
 {
     std::string username;
     std::string password;
     std::string email;
 };
 
-struct GetPlayersInRoomRequest
+struct GetPlayersInRoomRequest : Request
 {
     uint32_t roomId;
 };
 
-struct JoinRoomRequest
+struct JoinRoomRequest : Request
 {
     uint32_t roomId;
 };
 
-struct CreateRoomRequest
+struct CreateRoomRequest : Request
 {
     std::string roomName;
     uint32_t maxUsers;
