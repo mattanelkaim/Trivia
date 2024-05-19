@@ -8,8 +8,16 @@
 class Room final
 {
 public:
-    explicit Room(const RoomData& data) noexcept;
+    /*######################################
+    ############# CONSTRUCTORS #############
+    ######################################*/
+
     Room() = delete;
+    explicit Room(const RoomData& data) noexcept;
+
+    /*######################################
+    ############ PUBLIC METHODS ############
+    ######################################*/
 
     void addUser(const LoggedUser& user);
     void removeUser(const LoggedUser& user) noexcept;
@@ -17,6 +25,10 @@ public:
     const RoomData& getData() const noexcept;
 
 private:
+    /*######################################
+    ################ MEMBERS ###############
+    ######################################*/
+
     RoomData m_metadata;
     std::vector<LoggedUser> m_users;
 };
