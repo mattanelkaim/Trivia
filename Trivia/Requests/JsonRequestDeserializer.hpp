@@ -8,11 +8,8 @@
 
 using json = nlohmann::json;
 
-class JsonRequestDeserializer final
+namespace JsonRequestDeserializer
 {
-public:
-    JsonRequestDeserializer() = delete; // This ensures that this class is never instantiated
-
     template <std::derived_from<Request> T>
     static T deserializeRequest(const readonly_buffer requestBuffer)
     {
