@@ -6,25 +6,22 @@
 
 using json = nlohmann::json;
 
-class JsonResponseSerializer final
+namespace JsonResponseSerializer
 {
-public:
-    JsonResponseSerializer() = delete; // This ensures that this class is never instantiated
+    // Helper function
+    buffer serializeGeneralResponse(messageType type, std::string_view json);
 
-    static buffer serializeResponse(const ErrorResponse& response);
-    static buffer serializeResponse(const GetRoomsResponse& response);
-    static buffer serializeResponse(const GetPlayersInRoomResponse& response);
-    static buffer serializeResponse(const GetHighScoreResponse& response);
-    static buffer serializeResponse(const GetPersonalStatsResponse& response);
+    buffer serializeResponse(const ErrorResponse& response);
+    buffer serializeResponse(const GetRoomsResponse& response);
+    buffer serializeResponse(const GetPlayersInRoomResponse& response);
+    buffer serializeResponse(const GetHighScoreResponse& response);
+    buffer serializeResponse(const GetPersonalStatsResponse& response);
 
     template <typename T>
-    static buffer serializeResponse(const T& response)    
+    buffer serializeResponse(const T& response)    
     {
         json j;
         j[JsonFields::STATUS] = response.status;
         return serializeGeneralResponse(messageType::RESPONSE, j.dump());
     }
-
-private:
-    static buffer serializeGeneralResponse(messageType type, std::string_view json); // Internal helper function
-};
+}; // namespace JsonResponseSerializer
