@@ -8,22 +8,22 @@
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
+    MenuRequestHandler() = default;
     bool isRequestRelevant(const RequestInfo& info) const noexcept override;
     RequestResult handleRequest(const RequestInfo& info) override;
 
 private:    
-    RequestResult handleRequest(RequestInfo);
-    RequestResult signout(RequestInfo);
-    RequestResult getRooms(RequestInfo);
-    RequestResult getPlayersInRoom(RequestInfo);
-    RequestResult getPersonalStats(RequestInfo);
-    RequestResult getHighScore(RequestInfo);
-    RequestResult joinRoom(RequestInfo);
-    RequestResult createRoom(RequestInfo);
+    RequestResult logout(const RequestInfo& info);
+    RequestResult getRooms (const RequestInfo& info);
+    RequestResult getPlayersInRoom(const RequestInfo& info);
+    RequestResult getPersonalStats(const RequestInfo& info);
+    RequestResult getHighScore(const RequestInfo& info);
+    RequestResult joinRoom(const RequestInfo& info);
+    RequestResult createRoom(const RequestInfo& info);
 
         // Members
     LoggedUser m_user;
-    std::unique_ptr<RequestHandlerFactory>& m_handlerFactory;
+    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
 
 
 
