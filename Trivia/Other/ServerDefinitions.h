@@ -2,8 +2,6 @@
 #pragma once
 #pragma warning(disable: 4820) // Padding added after data member
 
-#define SERVER_DEBUG_ALL // Debugging flag in Helper
-
 #include <cstdint>
 #include <ctime> // Used for time_t
 #include <span>
@@ -20,8 +18,20 @@ using readonly_buffer = std::span<const byte>;
 
 #pragma region IO
 
-constexpr std::string_view ANSI_RED = "\033[31;1m"; // Red and bold
-constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
+#define SERVER_DEBUG true // Used in Helper
+#define OUTPUT_COLORS true
+
+#if OUTPUT_COLORS
+    constexpr std::string_view ANSI_RED    = "\033[31;1m"; // Red and bold
+    constexpr std::string_view ANSI_GREEN  = "\033[32;1m"; // Green and bold
+    constexpr std::string_view ANSI_BLUE   = "\033[34;1m"; // Blue and bold
+    constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
+#else
+    constexpr std::string_view ANSI_RED;
+    constexpr std::string_view ANSI_GREEN;
+    constexpr std::string_view ANSI_BLUE;
+    constexpr std::string_view ANSI_NORMAL;
+#endif
 
 #pragma endregion
 

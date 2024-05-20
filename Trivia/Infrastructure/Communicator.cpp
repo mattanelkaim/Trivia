@@ -68,7 +68,7 @@ void Communicator::startHandleRequests()
             if (clientSocket == INVALID_SOCKET)
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
-            std::cout << "Client accepted (" << clientSocket << "). Server and client can communicate\n";
+            std::cout << ANSI_GREEN << "Client accepted (" << clientSocket << ")\n" << ANSI_NORMAL;
             // Add client with LoginRequestHandler to map
             this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
 
@@ -125,7 +125,7 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
         {
             std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
             this->disconnectClient(clientSocket);
-            std::cout << "Disconnected client socket " << clientSocket << "\n\n";
+            std::cout << ANSI_BLUE << "Disconnected client socket " << clientSocket << "\n\n" << ANSI_NORMAL;
             return; // No need to handle disconnected client
         }
         catch (const std::exception& e)
