@@ -26,8 +26,7 @@ namespace JsonResponseSerializer
      */
     buffer serializeResponse(const auto& response) requires requires { response.status;  }
     {
-        json j;
-        j[JsonFields::STATUS] = response.status;
+        const json j{{JsonFields::STATUS, response.status}};
         return serializeGeneralResponse(messageType::RESPONSE, j.dump());
     }
 }; // namespace JsonResponseSerializer
