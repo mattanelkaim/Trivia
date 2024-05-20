@@ -40,14 +40,14 @@ namespace JsonRequestDeserializer
                 return T{
                     .username = j["username"],
                     .password = j["password"],
-                    .email = j["email"]
+                    .email    = j["email"]
                 };
             }
             else if constexpr (std::same_as<T, CreateRoomRequest>)
             {
                 return T{
-                    .roomName = j["roomName"],
-                    .maxUsers = j["maxUsers"],
+                    .roomName      = j["roomName"],
+                    .maxUsers      = j["maxUsers"],
                     .questionCount = j["questionCount"],
                     .answerTimeout = j["answerTimeout"]
                 };
