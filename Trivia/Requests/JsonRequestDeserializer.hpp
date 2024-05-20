@@ -19,7 +19,7 @@ namespace JsonRequestDeserializer
      * @throws std::runtime_error if there is an error parsing the JSON or if the request type is not supported.
      */
     template <std::derived_from<Request> T>
-    static T deserializeRequest(const readonly_buffer requestBuffer)
+    T deserializeRequest(const readonly_buffer requestBuffer)
     {
         T request{};
 
