@@ -14,7 +14,7 @@ public:
     // Singleton
     Server(Server& other) = delete;
     void operator=(const Server& other) = delete;
-    static std::shared_ptr<Server>& getInstance();
+    static std::shared_ptr<Server> getInstance();
     ~Server() noexcept;
 
 private:
