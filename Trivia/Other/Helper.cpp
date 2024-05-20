@@ -3,12 +3,11 @@
 #include "ServerDefinitions.h"
 #include "UnexpectedClientExit.h"
 #include <cstddef> // size_t
-#include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <WinSock2.h>
-#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN) || defined(SERVER_DEBUG_OUT)
+#if SERVER_DEBUG
 #include <iostream>
 #endif
 
@@ -70,7 +69,7 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
     const std::string str(data, bufferSize); // Null terminator added automatically
     delete[] data;
 
-#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN)
+#if SERVER_DEBUG
     std::cout << "[CLIENT] " << str << "\n";
 #endif
     return str;
@@ -80,7 +79,7 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
 // this is private function
 void Helper::sendData(const SOCKET sc, const std::string_view message)
 {
-#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_OUT)
+#if SERVER_DEBUG
     std::cout << "[SERVER] " << message << '\n';
 #endif
     if (send(sc, message.data(), static_cast<int>(message.size()), 0) == SOCKET_ERROR) // flags = 0
