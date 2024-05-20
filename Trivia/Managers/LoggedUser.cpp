@@ -16,8 +16,3 @@ bool LoggedUser::operator==(const std::string_view otherUsername) const noexcept
 {
     return this->m_username == otherUsername;
 }
-
-bool LoggedUser::operator==(const LoggedUser& other) const noexcept
-{
-    return this->m_username == other.m_username;
-}
