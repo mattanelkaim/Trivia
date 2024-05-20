@@ -14,16 +14,16 @@ public:
     // Singleton
     Server(Server& other) = delete;
     void operator=(const Server& other) = delete;
-    static std::unique_ptr<Server>& getInstance();
+    static std::shared_ptr<Server>& getInstance();
     ~Server() noexcept;
 
 private:
     IDatabase* m_database;
-    std::unique_ptr<RequestHandlerFactory>& m_handlerFactory;
+    std::shared_ptr<RequestHandlerFactory>& m_handlerFactory;
     Communicator* m_communicator;
 
     // Singleton
     Server();
-    inline static std::unique_ptr<Server> m_Server = nullptr;
+    inline static std::shared_ptr<Server> m_Server = nullptr;
     inline static std::mutex m_mutex;
 };

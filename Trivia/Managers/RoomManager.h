@@ -21,7 +21,7 @@ public:
     // Singleton
     RoomManager(RoomManager& other) = delete;
     void operator=(const RoomManager& other) = delete;
-    static std::unique_ptr<RoomManager>& getInstance();
+    static std::shared_ptr<RoomManager>& getInstance();
     ~RoomManager() = default;
 
 private:
@@ -29,6 +29,6 @@ private:
 
     // Singleton
     RoomManager() noexcept = default;
-    inline static std::unique_ptr<RoomManager> m_RoomManager = nullptr;
+    inline static std::shared_ptr<RoomManager> m_RoomManager = nullptr;
     inline static std::mutex m_mutex;
 };

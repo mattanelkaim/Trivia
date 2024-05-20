@@ -42,7 +42,6 @@ constexpr uint16_t PORT = 7777;
 
 constexpr auto BYTES_RESERVED_FOR_CODE = 1;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
-constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
 
 constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
 
@@ -165,7 +164,10 @@ enum RequestId : size_t
     SIGNUP,
     GET_PLAYERS_IN_ROOM,
     JOIN_ROOM,
-    CREATE_ROOM
+    CREATE_ROOM,
+    GET_ROOMS,
+    GET_STATISTICS,
+    LOGOUT
 };
 
 struct RequestInfo

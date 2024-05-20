@@ -26,17 +26,17 @@ public:
     RequestHandlerFactory() = delete;
     RequestHandlerFactory(RequestHandlerFactory& other) = delete;
     void operator=(const RequestHandlerFactory& other) = delete;
-    static std::unique_ptr<RequestHandlerFactory>& getInstance(IDatabase* db);
+    static std::shared_ptr<RequestHandlerFactory>& getInstance(IDatabase* db);
     ~RequestHandlerFactory() = default;
 
 private:
     IDatabase* m_database;
-    std::unique_ptr<LoginManager>& m_loginManager;
-    std::unique_ptr<RoomManager>& m_roomManager;
-    std::unique_ptr<StatisticsManager>& m_statisticsManager;
+    std::shared_ptr<LoginManager>& m_loginManager;
+    std::shared_ptr<RoomManager>& m_roomManager;
+    std::shared_ptr<StatisticsManager>& m_statisticsManager;
 
     // Singleton
     explicit RequestHandlerFactory(IDatabase* db);
-    inline static std::unique_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
+    inline static std::shared_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
     inline static std::mutex m_mutex;
 };
