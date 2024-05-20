@@ -56,7 +56,7 @@ void Server::run()
 }
 
 // Singleton
-std::shared_ptr<Server>& Server::getInstance()
+std::shared_ptr<Server> Server::getInstance()
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Server == nullptr)
