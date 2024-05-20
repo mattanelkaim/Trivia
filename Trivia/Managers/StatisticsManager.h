@@ -16,7 +16,7 @@ public:
     StatisticsManager() = delete;
     StatisticsManager(const StatisticsManager& other) = delete;
     void operator=(const StatisticsManager& other) = delete;          
-    static std::unique_ptr<StatisticsManager>& getInstance(IDatabase* db);
+    static std::shared_ptr<StatisticsManager>& getInstance(IDatabase* db);
     ~StatisticsManager() noexcept = default;
 
 private:
@@ -24,6 +24,6 @@ private:
 
     // Singleton
     explicit StatisticsManager(IDatabase* db) noexcept;
-    inline static std::unique_ptr<StatisticsManager> m_StatisticsManager = nullptr;
+    inline static std::shared_ptr<StatisticsManager> m_StatisticsManager = nullptr;
     inline static std::mutex m_mutex;
 };
