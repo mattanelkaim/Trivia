@@ -1,21 +1,31 @@
 #pragma once
 
-
-#include "../Managers/LoginManager.h"
 #include "IDatabase.h"
+#include "LoginManager.h"
+#include <memory>
+#include <mutex>
 
 class LoginRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
-class RequestHandlerFactory
+class RequestHandlerFactory final
 {
+public:
+    LoginRequestHandler* createLoginRequestHandler();
+    LoginManager* getLoginManager() noexcept;
+
+    // Singleton
+    RequestHandlerFactory() = delete;
+    RequestHandlerFactory(RequestHandlerFactory& other) = delete;
+    void operator=(const RequestHandlerFactory& other) = delete;
+    static std::unique_ptr<RequestHandlerFactory>& getInstance(IDatabase* db);
+    ~RequestHandlerFactory() = default;
+
 private:
     IDatabase* m_database;
-    LoginManager m_loginManager;
+    std::unique_ptr<LoginManager>& m_loginManager;
 
-public:
+    // Singleton
     explicit RequestHandlerFactory(IDatabase* db);
-    RequestHandlerFactory() = delete;
-
-    LoginRequestHandler* createLoginRequestHandler();
-    LoginManager& getLoginManager();
+    inline static std::unique_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
+    inline static std::mutex m_mutex;
 };
