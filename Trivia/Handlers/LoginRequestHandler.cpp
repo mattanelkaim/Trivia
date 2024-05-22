@@ -1,3 +1,4 @@
+#include "InvalidProtocolStructure.h"
 #include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
 #include "LoginManager.h"
@@ -6,6 +7,9 @@
 #include "RequestHandlerFactory.h"
 #include "ServerDefinitions.h"
 #include <stdexcept>
+#if SERVER_DEBUG
+#include <iostream>
+#endif
 
 
 LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) noexcept :
@@ -19,14 +23,27 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexc
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
 {
-    switch (info.id)
+    try
     {
-    [[likely]] case LOGIN:
-        return this->login(info);
-    case SIGNUP:
-        return this->signup(info);
-    default:
-        throw std::runtime_error("RequestInfo is not login/signup!");
+        switch (info.id)
+        {
+        [[likely]] case LOGIN:
+            return this->login(info);
+        case SIGNUP:
+            return this->signup(info);
+        default:
+            throw std::runtime_error("RequestInfo is not login/signup!");
+        }
+    }
+    catch (const InvalidProtocolStructure& e)
+    {
+        if constexpr (SERVER_DEBUG)
+            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+        
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
+            .newHandler = nullptr
+        };
     }
 }
 
@@ -42,7 +59,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     if (loginManager->login(request.username, request.password)) [[likely]]
     {
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(LoginResponse{RESPONSE}),
+            .response = JsonResponseSerializer::serializeResponse(LoginResponse{OK}),
             .newHandler = new MenuRequestHandler()
         };
     }
@@ -50,7 +67,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Login failed"}),
-            .newHandler = new LoginRequestHandler(this->m_handlerFactory) // Retry login
+            .newHandler = nullptr // Retry login
         };
     }
 }
@@ -63,7 +80,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
     {
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(SignupResponse{RESPONSE}),
+            .response = JsonResponseSerializer::serializeResponse(SignupResponse{OK}),
             .newHandler = new MenuRequestHandler()
         };
     }
@@ -71,7 +88,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Signup failed"}),
-            .newHandler = new LoginRequestHandler(this->m_handlerFactory) // Retry signup
+            .newHandler = nullptr // Retry signup
         };
     }
 }
