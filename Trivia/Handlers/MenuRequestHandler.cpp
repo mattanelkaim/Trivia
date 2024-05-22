@@ -43,39 +43,41 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info)
     }
 }
 
-RequestResult MenuRequestHandler::logout(const RequestInfo& info)
+RequestResult MenuRequestHandler::logout([[maybe_unused]] const RequestInfo& info)
 {
     return RequestResult{ .response = JsonResponseSerializer::serializeResponse(LogoutResponse{RESPONSE}),
                           .newHandler = nullptr };
 }
 
-RequestResult MenuRequestHandler::getRooms(const RequestInfo& info)
+RequestResult MenuRequestHandler::getRooms([[maybe_unused]] const RequestInfo& info)
 {
-    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{RESPONSE}),
-                          .newHandler = nullptr};
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{RESPONSE, RoomManager::getInstance()->getRooms()}),
+                          .newHandler = this };
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info)
+RequestResult MenuRequestHandler::getPlayersInRoom([[maybe_unused]] const RequestInfo& info)
 {
-    return RequestResult();
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{RoomManager::getInstance()->getRooms()}),
+                          .newHandler = this };
 }
 
-RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& info)
+RequestResult MenuRequestHandler::getPersonalStats([[maybe_unused]] const RequestInfo& info)
 {
-    return RequestResult();
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{RoomManager::getInstance()->getRooms()}),
+                          .newHandler = this };
 }
 
-RequestResult MenuRequestHandler::getHighScore(const RequestInfo& info)
-{
-    return RequestResult();
-}
-
-RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info)
+RequestResult MenuRequestHandler::getHighScore([[maybe_unused]] const RequestInfo& info)
 {
     return RequestResult();
 }
 
-RequestResult MenuRequestHandler::createRoom(const RequestInfo& info)
+RequestResult MenuRequestHandler::joinRoom([[maybe_unused]] const RequestInfo& info)
+{
+    return RequestResult();
+}
+
+RequestResult MenuRequestHandler::createRoom([[maybe_unused]] const RequestInfo& info)
 {
     return RequestResult();
 }
