@@ -188,7 +188,6 @@
     <ClCompile Include="Other\ServerException.cpp" />
     <ClCompile Include="Other\UnexpectedClientExit.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />
-    <ClCompile Include="Managers\LoggedUser.cpp" />
     <ClCompile Include="Managers\LoginManager.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>

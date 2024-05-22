@@ -109,9 +109,6 @@
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Managers\LoggedUser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Managers\LoginManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
