@@ -1,5 +1,6 @@
 #pragma once
 
+#include "InvalidProtocolStructure.h"
 #include "json.hpp"
 #include "ServerDefinitions.h"
 #include <concepts>
@@ -31,30 +32,30 @@ namespace JsonRequestDeserializer
             if constexpr (std::same_as<T, LoginRequest>)
             {
                 return T{
-                    .username = j["username"],
-                    .password = j["password"]
+                    .username = j.at("username"),
+                    .password = j.at("password")
                 };
             }
             else if constexpr (std::same_as<T, SignupRequest>)
             {
                 return T{
-                    .username = j["username"],
-                    .password = j["password"],
-                    .email    = j["email"]
+                    .username = j.at("username"),
+                    .password = j.at("password"),
+                    .email    = j.at("email")
                 };
             }
             else if constexpr (std::same_as<T, CreateRoomRequest>)
             {
                 return T{
-                    .roomName      = j["roomName"],
-                    .maxUsers      = j["maxUsers"],
-                    .questionCount = j["questionCount"],
-                    .answerTimeout = j["answerTimeout"]
+                    .roomName      = j.at("roomName"),
+                    .maxUsers      = j.at("maxUsers"),
+                    .questionCount = j.at("questionCount"),
+                    .answerTimeout = j.at("answerTimeout")
                 };
             }
             else if constexpr (requires{ T::roomId; }) // Either GetPlayersInRoomRequest or JoinRoomRequest
             {
-                return T{.roomId = j["roomId"]};
+                return T{.roomId = j.at("roomId")};
             }
             else
             {
@@ -67,7 +68,7 @@ namespace JsonRequestDeserializer
         }
         catch (const json::out_of_range& e)
         {
-            throw std::runtime_error(std::string("ERROR parsing JSON: ") + e.what());
+            throw InvalidProtocolStructure(std::string("ERROR parsing JSON: ") + e.what());
         }
     }
 }; // namespace JsonRequestDeserializer
