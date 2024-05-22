@@ -19,8 +19,8 @@ public:
 
 private:
     IDatabase* m_database;
-    std::shared_ptr<RequestHandlerFactory>& m_handlerFactory;
-    Communicator* m_communicator;
+    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
+    std::shared_ptr<Communicator> m_communicator;
 
     // Singleton
     Server();
