@@ -74,12 +74,12 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
     delete[] data;
 
 #if PRINT_IO
-    std::cout << "[CLIENT] " << str << "\n";
+    std::cout << "[CLIENT (" << sc << ")] " << str << "\n";
 #endif
     return str;
 }
 
-void Helper::sendData(const SOCKET sc, const buffer message)
+void Helper::sendData(const SOCKET sc, const buffer& message)
 {
     sendData(sc, std::string_view(reinterpret_cast<const char*>(message.data()), message.size()));
 }
@@ -87,7 +87,7 @@ void Helper::sendData(const SOCKET sc, const buffer message)
 void Helper::sendData(const SOCKET sc, const std::string_view message)
 {
 #if PRINT_IO
-    std::cout << "[SERVER] " << message << '\n';
+    std::cout << "[SERVER -> " << sc << "] " << message << '\n';
 #endif
     if (send(sc, message.data(), static_cast<int>(message.size()), 0) == SOCKET_ERROR) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));

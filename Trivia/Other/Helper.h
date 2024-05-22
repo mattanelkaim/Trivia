@@ -42,7 +42,7 @@ namespace Helper
      * @brief Convenience wrapper
      * @throws std::runtime_error
      */
-    void sendData(SOCKET sc, buffer message);
+    void sendData(SOCKET sc, const buffer& message);
 
     /**
      * @throws std::runtime_error
