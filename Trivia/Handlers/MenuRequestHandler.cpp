@@ -1,17 +1,17 @@
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
+#include "JsonResponseSerializer.h"
 #include "MenuRequestHandler.h"
+#include "ServerDefinitions.h"
 
 
-bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info)
+bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
-    return info.id != LOGIN && info.id != SIGNUP;
+    return true; // info.id != LOGIN && info.id != SIGNUP;
 }
 
-RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info)
+RequestResult MenuRequestHandler::handleRequest([[maybe_unused]] const RequestInfo& info)
 {
-    RequestResult result;
-    result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Not supported yet"});
-    result.newHandler = new MenuRequestHandler;
-    return result;
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Not supported yet"}),
+        .newHandler = new MenuRequestHandler()
+    };
 }
