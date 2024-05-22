@@ -41,14 +41,18 @@ int Helper::getCodeFromSocket(const SOCKET sc)
     }
 }
 
-// receive data from socket according byteSize
-// returns the data as int
 int Helper::getIntPartFromSocket(const SOCKET sc, const int bytesNum)
 {
-    return stoi(getStringFromSocket(sc, bytesNum));
+    try
+    {
+        return std::stoi(getStringFromSocket(sc, bytesNum));
+    }
+    catch (const std::out_of_range&) // Might be thrown from stoi
+    {
+        throw InvalidProtocolStructure("Invalid protocol structure: expected int");
+    }
 }
 
-// bytesNum is not unsigned to match recv parameter specification
 std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
 {
     if (bytesNum <= 0) return "";
@@ -75,8 +79,11 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
     return str;
 }
 
-// send data to socket
-// this is private function
+void Helper::sendData(const SOCKET sc, const buffer message)
+{
+    sendData(sc, std::string_view(reinterpret_cast<const char*>(message.data()), message.size()));
+}
+
 void Helper::sendData(const SOCKET sc, const std::string_view message)
 {
 #if PRINT_IO
