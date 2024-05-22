@@ -18,8 +18,9 @@ using readonly_buffer = std::span<const byte>;
 
 #pragma region IO
 
-#define SERVER_DEBUG true // Used in Helper
+#define PRINT_IO true // Used in Helper
 #define OUTPUT_COLORS true
+#define SERVER_DEBUG true
 
 #if OUTPUT_COLORS
     constexpr std::string_view ANSI_RED    = "\033[31;1m"; // Red and bold
@@ -42,12 +43,6 @@ using readonly_buffer = std::span<const byte>;
 *                     ^^^^  ^^^^^^^^^^^  ^^^^^^^
 *                   1 byte,  4 bytes,  {data length} bytes
 */
-
-enum messageType : byte
-{
-    REQUEST,
-    RESPONSE
-};
 
 constexpr uint16_t PORT = 7777;
 
@@ -92,6 +87,12 @@ struct RoomData
 
 
 #pragma region responseDefinitions
+
+enum ResponseCode
+{
+    ERR, // ERROR won't compile
+    OK
+};
 
 // Response structs
 struct ErrorResponse
@@ -167,13 +168,12 @@ namespace JsonFields
 
 #pragma endregion
 
-
 #pragma region requestDefinitions
 
-enum RequestId : size_t
+enum RequestId
 {
     LOGIN,
-    SIGNUP
+    SIGNUP,
 };
 
 struct RequestInfo

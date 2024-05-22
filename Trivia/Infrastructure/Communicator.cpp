@@ -103,10 +103,13 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
             // Handle request if valid
             if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
             {
+                puts("Handeling request...");
+
                 const RequestResult result = handler->handleRequest(request); // Serialized
 
                 // Update handler in map
-                delete std::exchange(handler, result.newHandler); // Done with old handler
+                if (result.newHandler != nullptr) [[unlikely]]
+                    delete std::exchange(handler, result.newHandler); // Done with old handler
 
                 // Send response to client, using string_view constructor & reinterpret_cast for performance
                 Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(result.response.data()), result.response.size()));

@@ -8,7 +8,7 @@
 buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response)
 {
     const json j{{JsonFields::MESSAGE, response.message}};
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+    return serializeGeneralResponse(ResponseCode::ERR, j.dump());
 }
 
 buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response)
@@ -20,7 +20,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& respons
     rooms.resize(rooms.size() - 2); // Delete last 2 chars (", ")
 
     const json j{{JsonFields::ROOMS, rooms}};
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
 buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse& response)
@@ -32,7 +32,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse&
     players.resize(players.size() - 2); // Delete last 2 chars (", ")
 
     const json j{{JsonFields::PLAYERS_IN_ROOM, players}};
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
 buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response)
@@ -43,7 +43,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& res
     for (size_t i = 0; i < NUM_TOP_SCORES; ++i)
         j[JsonFields::HIGH_SCORES][i + 1] = (i < response.statistics.size()) ? response.statistics[i] : "None";
 
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
 buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse& response)
@@ -61,11 +61,11 @@ buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse&
         }}
     };
 
-    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
 
-buffer JsonResponseSerializer::serializeGeneralResponse(const messageType type, const std::string_view json)
+buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type, const std::string_view json)
 {
     buffer buff;
 

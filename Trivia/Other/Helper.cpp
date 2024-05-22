@@ -7,7 +7,7 @@
 #include <string>
 #include <string_view>
 #include <WinSock2.h>
-#if SERVER_DEBUG
+#if PRINT_IO
 #include <iostream>
 #endif
 
@@ -69,7 +69,7 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
     const std::string str(data, bufferSize); // Null terminator added automatically
     delete[] data;
 
-#if SERVER_DEBUG
+#if PRINT_IO
     std::cout << "[CLIENT] " << str << "\n";
 #endif
     return str;
@@ -79,7 +79,7 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
 // this is private function
 void Helper::sendData(const SOCKET sc, const std::string_view message)
 {
-#if SERVER_DEBUG
+#if PRINT_IO
     std::cout << "[SERVER] " << message << '\n';
 #endif
     if (send(sc, message.data(), static_cast<int>(message.size()), 0) == SOCKET_ERROR) // flags = 0
