@@ -16,13 +16,13 @@ public:
     RequestResult handleRequest(const RequestInfo& info) override;
 
 private:    
-    RequestResult logout(const RequestInfo& info);
-    RequestResult getRooms (const RequestInfo& info);
-    RequestResult getPlayersInRoom(const RequestInfo& info);
-    RequestResult getPersonalStats(const RequestInfo& info);
-    RequestResult getHighScore(const RequestInfo& info);
-    RequestResult joinRoom(const RequestInfo& info);
-    RequestResult createRoom(const RequestInfo& info);
+    RequestResult logout([[maybe_unused]] const RequestInfo& info);
+    RequestResult getRooms ([[maybe_unused]] const RequestInfo& info);
+    RequestResult getPlayersInRoom([[maybe_unused]] const RequestInfo& info);
+    RequestResult getPersonalStats([[maybe_unused]] const RequestInfo& info);
+    RequestResult getHighScore([[maybe_unused]] const RequestInfo& info);
+    RequestResult joinRoom([[maybe_unused]] const RequestInfo& info);
+    RequestResult createRoom([[maybe_unused]] const RequestInfo& info);
 
         // Members
     LoggedUser m_user;
