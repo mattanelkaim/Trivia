@@ -10,6 +10,7 @@
 #include <mutex>
 
 class LoginRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
+class MenuRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
 class RequestHandlerFactory final
 {
