@@ -14,7 +14,6 @@
 #include <mutex>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 #include <thread>
 #include <utility> // std::exchange
 #include <WinSock2.h>
@@ -34,8 +33,11 @@ Communicator::Communicator(IDatabase* db) :
 
 Communicator::~Communicator() noexcept
 {
-    for (auto& [_, handler] : this->m_clients)
+    for (auto& [client, handler] : this->m_clients)
+    {
+        this->disconnectClient(client);
         delete handler;
+    }
 }
 
 void Communicator::bindAndListen() const
@@ -103,24 +105,20 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
             // Handle request if valid
             if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
             {
-                puts("Handeling request...");
-
                 const RequestResult result = handler->handleRequest(request); // Serialized
 
                 // Update handler in map
                 if (result.newHandler != nullptr) [[unlikely]]
                     delete std::exchange(handler, result.newHandler); // Done with old handler
 
-                // Send response to client, using string_view constructor & reinterpret_cast for performance
-                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(result.response.data()), result.response.size()));
+                // Send response back to client
+                Helper::sendData(clientSocket, result.response);
                 std::cout << "Operation successful\n\n";
             }
             else [[unlikely]]
             {
-                std::cout << "Handler is invalid!\n";
                 // Serialize an error response and send it to the client
-                const buffer response = JsonResponseSerializer::serializeResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
-                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(response.data()), response.size()));
+                Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"VERY ERRORY ERROR"}));
                 std::cout << "Operation NOT successful\n\n";
             }
         }
@@ -140,6 +138,15 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
 
 void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
+    // Send a goodbye message to the client if possible
+    try
+    {
+        Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"You got disconnected! L bozo"}));
+    }
+    catch (const std::runtime_error&) {} // Ignore if socket is invalid
+    {}
+
+    // Delete client from map and free memory
     const auto& client = this->m_clients.find(clientSocket);
     if (client != this->m_clients.cend()) [[likely]]
     {
