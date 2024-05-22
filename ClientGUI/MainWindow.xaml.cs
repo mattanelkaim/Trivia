@@ -17,6 +17,7 @@ namespace ClientGUI
         {
             InitializeComponent();
             this.LoginSubmit.Click += new RoutedEventHandler(LoginSubmit_Click);
+            Communicator.Connect();
         }
 
         private void LoginSubmit_Click(object sender, RoutedEventArgs e)
