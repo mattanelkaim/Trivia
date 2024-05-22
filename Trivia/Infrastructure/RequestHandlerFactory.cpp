@@ -39,7 +39,7 @@ RoomManager* RequestHandlerFactory::getRoomManager() noexcept
 }
 
 // Singleton
-std::shared_ptr<RequestHandlerFactory>& RequestHandlerFactory::getInstance(IDatabase* db)
+std::shared_ptr<RequestHandlerFactory> RequestHandlerFactory::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_HandlerFactory == nullptr) [[unlikely]]
