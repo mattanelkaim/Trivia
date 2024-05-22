@@ -16,6 +16,22 @@ namespace ClientGUI
         public MainWindow()
         {
             InitializeComponent();
+            this.LoginSubmit.Click += new RoutedEventHandler(LoginSubmit_Click);
+        }
+
+        private void LoginSubmit_Click(object sender, RoutedEventArgs e)
+        {
+            string username = this.Username.Text;
+            string password = this.Password.Text;
+
+            if (username == "admin" && password == "admin")
+            {
+                MessageBox.Show("Login Successful");
+            }
+            else
+            {
+                MessageBox.Show("Login Failed");
+            }
         }
     }
 }
