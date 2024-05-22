@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.Json;
 
 namespace ClientGUI
 {
@@ -17,22 +18,27 @@ namespace ClientGUI
         {
             InitializeComponent();
             this.LoginSubmit.Click += new RoutedEventHandler(LoginSubmit_Click);
-            Communicator.Connect();
+
+            try
+            {
+                Communicator.Connect();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Connection failed: " + e.Message);
+            }
         }
 
         private void LoginSubmit_Click(object sender, RoutedEventArgs e)
         {
-            string username = this.Username.Text;
-            string password = this.Password.Text;
+            string json = JsonSerializer.Serialize(new { username = this.Username.Text, password = this.Password.Text });
 
-            if (username == "admin" && password == "admin")
-            {
-                MessageBox.Show("Login Successful");
-            }
-            else
-            {
-                MessageBox.Show("Login Failed");
-            }
+            string msg = Helper.Serialize(json, Helper.MessageType.Login);
+            MessageBox.Show("Sending: " + msg);
+            Communicator.Send(msg);
+
+            string response = Communicator.Receive();
+            MessageBox.Show("Received: " + response);
         }
     }
 }
