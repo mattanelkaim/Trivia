@@ -5,42 +5,54 @@
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
-    return info.id != LOGIN && info.id != SIGNUP && info.id != LOGOUT;
+    return info.id != LOGIN && info.id != SIGNUP && info.id;
 }
 
-RequestResult MenuRequestHandler::handleRequest([[maybe_unused]] const RequestInfo& info)
+RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info)
 {
-    if (!this->isRequestRelevant(info))
-        return RequestResult{.response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Not supported yet"}),
-                             .newHandler = nullptr };
-
-    // if the request is relevant
     switch (info.id)
     {
-    case GET_PLAYERS_IN_ROOM:
-        return this->getPlayersInRoom(info);
-        break;
+        case GET_PLAYERS_IN_ROOM:
+            return this->getPlayersInRoom(info);
+            //break;
 
-    case JOIN_ROOM:
-        return this->joinRoom(info);
-        break;
+        case JOIN_ROOM:
+            return this->joinRoom(info);
+            //break;
             
-    case CREATE_ROOM:
-        return this->createRoom(info);
-        break;
+        case CREATE_ROOM:
+            return this->createRoom(info);
+            //break;
 
-    case GET_ROOMS:
-        return this->getRooms(info);
-        break;
+        case GET_ROOMS:
+            return this->getRooms(info);
+            //break;
 
-    case GET_STATISTICS:
-        return this->getPersonalStats(info);
-        break;
+        case GET_STATISTICS:
+            return this->getPersonalStats(info);
+            //break;
 
-    case SIGNOUT:
-        return this->signout(info);
-        break;       
+        case LOGOUT:
+            return this->logout(info);
+            //break;  
+
+        default:
+            return RequestResult{ .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Not supported yet"}),
+                                  .newHandler = nullptr };
+            //break;
     }
+}
+
+RequestResult MenuRequestHandler::logout(const RequestInfo& info)
+{
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(LogoutResponse{RESPONSE}),
+                          .newHandler = nullptr };
+}
+
+RequestResult MenuRequestHandler::getRooms(const RequestInfo& info)
+{
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{RESPONSE}),
+                          .newHandler = };
 }
 
 
