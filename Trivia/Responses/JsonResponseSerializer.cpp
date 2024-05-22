@@ -1,32 +1,71 @@
-#include "../Infrastructure/Helper.h"
-#include "../json.hpp"
+#include "Helper.h"
 #include "JsonResponseSerializer.h"
+#include "ServerDefinitions.h"
+#include <cstddef> // size_t
 #include <string>
+#include <string_view>
 
-using json = nlohmann::json;
-
-buffer JsonResponseSerializer::serializeErrorResponse(const ErrorResponse& response)
+buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response)
 {
-    json j;
-    j[JsonFields::MESSAGE_FIELD] = response.message;
+    const json j{{JsonFields::MESSAGE, response.message}};
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeLoginResponse(const LoginResponse& response)
+buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response)
 {
-    json j;
-    j[JsonFields::STATUS_FIELD] = response.status;
+    // Join all string fields with a delimiter
+    std::string rooms;
+    for (const RoomData& room : response.rooms)
+        rooms += room.name + ", ";
+    rooms.resize(rooms.size() - 2); // Delete last 2 chars (", ")
+
+    const json j{{JsonFields::ROOMS, rooms}};
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeSignupResponse(const SignupResponse& response)
+buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse& response)
 {
-    json j;
-    j[JsonFields::STATUS_FIELD] = response.status;
+    // Join all strings with a delimiter
+    std::string players;
+    for (const std::string& room : response.players)
+        players += room + ", ";
+    players.resize(players.size() - 2); // Delete last 2 chars (", ")
+
+    const json j{{JsonFields::PLAYERS_IN_ROOM, players}};
     return serializeGeneralResponse(messageType::RESPONSE, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type, const std::string_view& json)
+buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response)
+{
+    json j;
+    
+    // Fill json with inner fields, or with "None" if non-existent
+    for (size_t i = 0; i < NUM_TOP_SCORES; ++i)
+        j[JsonFields::HIGH_SCORES][i + 1] = (i < response.statistics.size()) ? response.statistics[i] : "None";
+
+    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+}
+
+buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse& response)
+{
+    using namespace JsonFields;
+    using namespace JsonFields::UserStats;
+
+    // Sub-fields that construct the "userStatistics" outer field
+    const json j{
+        {STATISTICS, {
+            {SCORE,           response.statistics[0]},
+            {TOTAL_GAMES,     response.statistics[1]},
+            {TOTAL_ANSWERS,   response.statistics[2]},
+            {CORRECT_ANSWERS, response.statistics[3]}
+        }}
+    };
+
+    return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+}
+
+
+buffer JsonResponseSerializer::serializeGeneralResponse(const messageType type, const std::string_view json)
 {
     buffer buff;
 
@@ -34,7 +73,7 @@ buffer JsonResponseSerializer::serializeGeneralResponse(const messageType& type,
     buff.append_range(std::to_string(type));
 
     // Pushing the JSON's length to the buffer
-    buff.append_range(Helper::getPaddedNumber(static_cast<uint32_t>(json.length()), BYTES_RESERVED_FOR_MSG_LEN));
+    buff.append_range(Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN));
 
     // Pushing the actual message to the buffer
     buff.append_range(json);
