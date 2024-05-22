@@ -52,7 +52,32 @@ RequestResult MenuRequestHandler::logout(const RequestInfo& info)
 RequestResult MenuRequestHandler::getRooms(const RequestInfo& info)
 {
     return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{RESPONSE}),
-                          .newHandler = };
+                          .newHandler = nullptr};
+}
+
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info)
+{
+    return RequestResult();
+}
+
+RequestResult MenuRequestHandler::getPersonalStats(const RequestInfo& info)
+{
+    return RequestResult();
+}
+
+RequestResult MenuRequestHandler::getHighScore(const RequestInfo& info)
+{
+    return RequestResult();
+}
+
+RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info)
+{
+    return RequestResult();
+}
+
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& info)
+{
+    return RequestResult();
 }
 
 

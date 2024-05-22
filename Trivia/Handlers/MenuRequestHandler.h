@@ -5,6 +5,9 @@
 #include "LoggedUser.h"
 #include "RequestHandlerFactory.h"
 
+class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
+
+
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
