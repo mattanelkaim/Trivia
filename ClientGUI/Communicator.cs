@@ -11,7 +11,7 @@ namespace ClientGUI
     {
         static private TcpClient client;
         static private NetworkStream stream;
-        static private string IP = "127.0.0.0";
+        static private string IP = "127.0.0.1"; // Loopback
         static private short port = 7777;
 
         public static void Connect()
