@@ -2,7 +2,6 @@
 
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
-#include <string>
 #include <vector>
 
 class Room final
@@ -21,8 +20,8 @@ public:
 
     void addUser(const LoggedUser& user);
     void removeUser(const LoggedUser& user) noexcept;
-    std::vector<std::string> getAllUsers() const;
     const RoomData& getData() const noexcept;
+    const std::vector<LoggedUser>& getAllUsers() const noexcept;
 
 private:
     /*######################################
