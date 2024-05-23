@@ -22,6 +22,7 @@ public:
     * @param password The password of the new user.
     * @param email The email of the new user.
     * @return true if the user was successfully registered, false if the username already exists.
+    * @throws InvalidSQL
     */
     bool signup(const std::string& username, const std::string& password, const std::string& email);
 
@@ -31,6 +32,7 @@ public:
     * @param username The username of the user.
     * @param password The password of the user.
     * @return true if the login was successful, false otherwise.
+    * @throws InvalidSQL
     */
     bool login(const std::string& username, const std::string& password);
 
