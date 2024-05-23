@@ -1,10 +1,11 @@
 #include "IDatabase.h"
 #include "LoginManager.h"
-#include <algorithm> // std::erase, std::find
+#include <algorithm> // std::find
 #include <memory>
 #include <mutex>
 #include <string>
 #include <string_view>
+#include <vector> // std::erase
 
 LoginManager::LoginManager(IDatabase* db) noexcept :
     m_database(db)

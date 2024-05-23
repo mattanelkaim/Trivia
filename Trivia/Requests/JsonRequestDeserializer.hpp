@@ -17,9 +17,8 @@ namespace JsonRequestDeserializer
      * @tparam T The type of the request to deserialize.
      * @param requestBuffer The buffer containing the JSON request.
      * @return The deserialized request object.
-     * @throws std::runtime_error if there is an error parsing the JSON or if the request type is not supported.
+     * @throws InvalidProtocolStructure
      */
-
     template <std::derived_from<Request> T>
     T deserializeRequest(const readonly_buffer requestBuffer)
     {
@@ -59,12 +58,12 @@ namespace JsonRequestDeserializer
             }
             else
             {
-                throw std::runtime_error("not supported yet");
+                throw InvalidProtocolStructure("not supported yet");
             }
         }
         catch (const json::parse_error& e)
         {
-            throw std::runtime_error("ERROR parsing JSON response at byte " + std::to_string(e.byte));
+            throw InvalidProtocolStructure("ERROR parsing JSON response at byte " + std::to_string(e.byte));
         }
         catch (const json::out_of_range& e)
         {

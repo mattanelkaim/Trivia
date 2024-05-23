@@ -1,4 +1,3 @@
-#include "InvalidProtocolStructure.h"
 #include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
 #include "LoginManager.h"
@@ -6,7 +5,7 @@
 #include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "ServerDefinitions.h"
-#include <stdexcept>
+#include "ServerException.h"
 #if SERVER_DEBUG
 #include <iostream>
 #endif
@@ -21,7 +20,7 @@ bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexc
     return info.id == LOGIN || info.id == SIGNUP;
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexcept
 {
     try
     {
@@ -32,10 +31,10 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
         case SIGNUP:
             return this->signup(info);
         default:
-            throw std::runtime_error("RequestInfo is not login/signup!");
+            throw InvalidProtocolStructure("RequestInfo is not login/signup!");
         }
     }
-    catch (const InvalidProtocolStructure& e)
+    catch (const ServerException& e) // Either InvalidProtocolStructure or InvalidSQL
     {
         if constexpr (SERVER_DEBUG)
             std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
