@@ -33,21 +33,38 @@ public:
     ############ PUBLIC METHODS ############
     ######################################*/
 
+    // @throws std::runtime_error
     bool openDB() override;
     bool closeDB() override;
 
-    // Queries without callback
+    // @throws InvalidSQL
     void addNewUser(const std::string& username, const std::string& password, const std::string& email) override;
 
-    // Queries using callback
+    // @throws InvalidSQL
     bool doesUserExist(const std::string& username) const override;
+
+    // @throws InvalidSQL
     bool doesPasswordMatch(const std::string& username, const std::string& password) const override;
+
+    // @throws InvalidSQL
     std::vector<Question> getQuestions(uint32_t numQuestions) const override;
+
+    // @throws InvalidSQL
     float getPlayerAverageAnswerTime(const std::string& username) const override;
-    int getNumOfCorrectAnswers(const std::string& username) const override;	
+
+    // @throws InvalidSQL
+    int getNumOfCorrectAnswers(const std::string& username) const override;
+
+    // @throws InvalidSQL
     int getNumOfTotalAnswers(const std::string& username) const override;
+
+    // @throws InvalidSQL
     int getNumOfPlayerGames(const std::string& username) const override;
+
+    // @throws InvalidSQL
     float getPlayerScore(const std::string& username) const override;
+
+    // @throws InvalidSQL
     std::vector<std::string> getHighScores() const override;
 
 private:
