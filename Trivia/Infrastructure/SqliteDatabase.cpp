@@ -1,3 +1,4 @@
+#include "InvalidSQL.h"
 #include "Question.h"
 #include "ServerDefinitions.h"
 #include "sqlite3.h"
@@ -151,7 +152,7 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
     {
         const std::string err = sqlErrorMsg;
         sqlite3_free(sqlErrorMsg);
-        throw std::runtime_error(err + " | ON query: '" + query.data() + '\'');
+        throw InvalidSQL(err + " | ON query: '" + query.data() + '\'');
     }
 }
 

@@ -9,7 +9,7 @@ namespace JsonResponseSerializer
     using json = nlohmann::json;
 
     // Helper function
-    buffer serializeGeneralResponse(messageType type, std::string_view json);
+    buffer serializeGeneralResponse(ResponseCode type, std::string_view json);
 
     buffer serializeResponse(const ErrorResponse& response);
     buffer serializeResponse(const GetRoomsResponse& response);
@@ -27,6 +27,6 @@ namespace JsonResponseSerializer
     buffer serializeResponse(const auto& response) requires requires { response.status;  }
     {
         const json j{{JsonFields::STATUS, response.status}};
-        return serializeGeneralResponse(messageType::RESPONSE, j.dump());
+        return serializeGeneralResponse(ResponseCode::OK, j.dump());
     }
 }; // namespace JsonResponseSerializer
