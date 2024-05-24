@@ -94,8 +94,8 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
             const std::string msg = Helper::getMessageFromSocket(clientSocket);
 
             // Initialize RequestInfo structure
-            RequestInfo request{.id = code, .receivalTime = std::time(nullptr)};
-            request.buffer.append_range(msg); // String to vector
+            const RequestInfo request{.id = code, .receivalTime = std::time(nullptr),
+                                      .buffer{std::from_range, msg}}; // String to vector
 
             // Get current handler from clients map
             IRequestHandler*& handler = this->m_clients.at(clientSocket);

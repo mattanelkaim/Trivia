@@ -67,10 +67,15 @@ buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse&
 
 buffer JsonResponseSerializer::serializeGeneralResponse(const messageType type, const std::string_view json)
 {
+    const std::string typeStr = std::to_string(type);
+    
+    // Note: Using std::from_range constructor would be inefficient because of string concatenations
+    // Reserve the buffer's size to avoid reallocations
     buffer buff;
+    buff.reserve(typeStr.length() + BYTES_RESERVED_FOR_MSG_LEN + json.length());
 
     // The first byte is the response code
-    buff.append_range(std::to_string(type));
+    buff.append_range(typeStr);
 
     // Pushing the JSON's length to the buffer
     buff.append_range(Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN));
