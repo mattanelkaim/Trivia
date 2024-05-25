@@ -165,5 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Trivia.ruleset" />
+    <None Include=".clang-tidy" />
   </ItemGroup>
 </Project>
