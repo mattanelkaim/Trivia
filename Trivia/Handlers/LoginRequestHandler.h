@@ -12,7 +12,7 @@ public:
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    explicit LoginRequestHandler(RequestHandlerFactory& handlerFactory) noexcept;
+    explicit LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept;
     bool isRequestRelevant(const RequestInfo& info) const noexcept override;
     RequestResult handleRequest(const RequestInfo& info) noexcept override;
     
@@ -39,5 +39,5 @@ public:
     LoginRequestHandler operator=(const LoginRequestHandler& other) = delete;
 
 private:
-    RequestHandlerFactory& m_handlerFactory;
+    RequestHandlerFactory* m_handlerFactory;
 };

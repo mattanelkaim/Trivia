@@ -17,7 +17,7 @@ public:
     RequestHandlerFactory() = delete;
     RequestHandlerFactory(const RequestHandlerFactory& other) = delete;
     void operator=(const RequestHandlerFactory& other) = delete;
-    static std::unique_ptr<RequestHandlerFactory>& getInstance(IDatabase* db);
+    static std::shared_ptr<RequestHandlerFactory> getInstance(IDatabase* db);
     ~RequestHandlerFactory() = default;
 
 private:
@@ -26,6 +26,6 @@ private:
 
     // Singleton
     explicit RequestHandlerFactory(IDatabase* db);
-    inline static std::unique_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
+    inline static std::shared_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
     inline static std::mutex m_mutex;
 };

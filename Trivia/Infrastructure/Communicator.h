@@ -22,7 +22,7 @@
 * The Communicator is a singleton, meaning there can be only one instance of it in the application. 
 * You can get the singleton instance by calling the static getInstance() method.
 * 
-* @note This class is not copyable or movable.
+* @note This class is not copy-able or movable.
 * 
 * @example
 * 
@@ -62,7 +62,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    RequestHandlerFactory& m_handlerFactory;
+    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
     SOCKET m_serverSocket;
     std::unordered_map<SOCKET, IRequestHandler*> m_clients;
 

@@ -22,7 +22,7 @@ using std::to_string;
 
 
 Communicator::Communicator(IDatabase* db) :
-    m_handlerFactory(*RequestHandlerFactory::getInstance(db)),
+    m_handlerFactory(RequestHandlerFactory::getInstance(db)),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
     if (this->m_serverSocket == INVALID_SOCKET)
@@ -72,7 +72,7 @@ void Communicator::startHandleRequests()
 
             std::cout << ANSI_GREEN << "Client accepted (" << clientSocket << ")\n" << ANSI_NORMAL;
             // Add client with LoginRequestHandler to map
-            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory.get()));
 
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
