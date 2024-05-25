@@ -25,7 +25,7 @@ public:
     ############### SINGLETON ##############
     ######################################*/
     
-    Server(Server& other) = delete;
+    Server(const Server& other) = delete;
     void operator=(const Server& other) = delete;
     static std::unique_ptr<Server>& getInstance();
     ~Server() noexcept;

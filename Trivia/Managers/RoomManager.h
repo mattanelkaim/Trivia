@@ -48,7 +48,7 @@ public:
     ############### SINGLETON ##############
     ######################################*/
 
-    RoomManager(RoomManager& other) = delete;
+    RoomManager(const RoomManager& other) = delete;
     void operator=(const RoomManager& other) = delete;
     static std::unique_ptr<RoomManager>& getInstance();
     ~RoomManager() = default;

@@ -52,7 +52,7 @@ public:
     ######################################*/
 
     Communicator() = delete;
-    Communicator(Communicator& other) = delete;
+    Communicator(const Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
     static Communicator* getInstance(IDatabase* db);
     ~Communicator() noexcept;
