@@ -163,8 +163,8 @@ namespace JsonFields
         constexpr std::string_view TOTAL_GAMES = "games";
         constexpr std::string_view TOTAL_ANSWERS = "totalAnswers";
         constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
-    }
-}
+    } // namespace UserStats
+} // namespace JsonFields
 
 #pragma endregion
 
