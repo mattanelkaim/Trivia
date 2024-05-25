@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ServerException.h"
 #include <string>
 

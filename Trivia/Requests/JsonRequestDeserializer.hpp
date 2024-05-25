@@ -4,7 +4,6 @@
 #include "json.hpp"
 #include "ServerDefinitions.h"
 #include <concepts>
-#include <stdexcept>
 #include <string>
 
 namespace JsonRequestDeserializer
