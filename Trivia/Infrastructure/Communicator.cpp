@@ -93,11 +93,12 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
         {
             // Read data from socket
             const auto code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
-            const std::string msg = Helper::getMessageFromSocket(clientSocket);
+            // msg is a temporary object that will be moved to the RequestInfo structure
+            std::string msg = Helper::getMessageFromSocket(clientSocket);
 
             // Initialize RequestInfo structure
             const RequestInfo request{.id = code, .receivalTime = std::time(nullptr),
-                                      .buffer{std::from_range, msg}}; // String to vector
+                                      .buffer{std::from_range, std::move(msg)}}; // String to vector
 
             // Get current handler from clients map
             IRequestHandler*& handler = this->m_clients.at(clientSocket);
@@ -143,14 +144,14 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     {
         Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"You got disconnected! L bozo"}));
     }
-    catch (const std::runtime_error&) {} // Ignore if socket is invalid
-    {}
+    catch (const std::runtime_error&)
+    {} // Ignore if socket is invalid
 
-    // Delete client from map and free memory
+    // Delete client from map and free handler memory
     const auto& client = this->m_clients.find(clientSocket);
     if (client != this->m_clients.cend()) [[likely]]
     {
-        delete client->second;
+        delete client->second; // Delete handler
         this->m_clients.erase(clientSocket);
     }
 }

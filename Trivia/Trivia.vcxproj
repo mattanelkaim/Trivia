@@ -194,6 +194,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".clang-tidy" />
     <None Include="Trivia.ruleset" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

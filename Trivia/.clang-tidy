@@ -6,6 +6,7 @@ Checks: >
   -altera-unroll-loops,
   -android-cloexec-socket,
   -bugprone-easily-swappable-parameters,
+  -bugprone-empty-catch,
   -clang-diagnostic-pragma-once-outside-header,
   -cppcoreguidelines-owning-memory,
   -cppcoreguidelines-pro-bounds-pointer-arithmetic,
