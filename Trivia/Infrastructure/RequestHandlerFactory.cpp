@@ -1,3 +1,5 @@
+#include "IDatabase.h"
+#include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
@@ -9,7 +11,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    return new LoginRequestHandler(*this);
+    return new LoginRequestHandler(this);
 }
 
 LoginManager* RequestHandlerFactory::getLoginManager() noexcept
@@ -18,12 +20,13 @@ LoginManager* RequestHandlerFactory::getLoginManager() noexcept
 }
 
 // Singleton
-std::unique_ptr<RequestHandlerFactory>& RequestHandlerFactory::getInstance(IDatabase* db)
+std::shared_ptr<RequestHandlerFactory> RequestHandlerFactory::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_HandlerFactory == nullptr) [[unlikely]]
     {
-        m_HandlerFactory = std::unique_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
+        m_HandlerFactory = std::shared_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
     }
     return m_HandlerFactory;
 }
+

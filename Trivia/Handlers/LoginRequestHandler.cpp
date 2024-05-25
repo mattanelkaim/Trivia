@@ -11,7 +11,7 @@
 #endif
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory) noexcept :
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept :
     m_handlerFactory(handlerFactory)
 {}
 
@@ -54,7 +54,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
     const auto request = JsonRequestDeserializer::deserializeRequest<LoginRequest>(info.buffer);
 
-    LoginManager* loginManager = this->m_handlerFactory.getLoginManager();
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
     if (loginManager->login(request.username, request.password)) [[likely]]
     {
         return RequestResult{
@@ -75,7 +75,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
     const auto request = JsonRequestDeserializer::deserializeRequest<SignupRequest>(info.buffer);
 
-    LoginManager* loginManager = this->m_handlerFactory.getLoginManager();
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
     if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
     {
         return RequestResult{
