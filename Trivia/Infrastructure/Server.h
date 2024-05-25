@@ -36,7 +36,7 @@ private:
     ######################################*/
 
     IDatabase* m_database;
-    std::unique_ptr<RequestHandlerFactory>& m_handlerFactory;
+    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
     Communicator* m_communicator;
 
     /*######################################
