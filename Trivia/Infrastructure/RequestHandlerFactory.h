@@ -15,7 +15,7 @@ public:
 
     // Singleton
     RequestHandlerFactory() = delete;
-    RequestHandlerFactory(RequestHandlerFactory& other) = delete;
+    RequestHandlerFactory(const RequestHandlerFactory& other) = delete;
     void operator=(const RequestHandlerFactory& other) = delete;
     static std::unique_ptr<RequestHandlerFactory>& getInstance(IDatabase* db);
     ~RequestHandlerFactory() = default;

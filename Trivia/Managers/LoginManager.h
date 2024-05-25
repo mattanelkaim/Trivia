@@ -43,7 +43,7 @@ public:
     ######################################*/
 
     LoginManager() = delete;
-    LoginManager(LoginManager& other) = delete;
+    LoginManager(const LoginManager& other) = delete;
     void operator=(const LoginManager& other) = delete;
     static std::unique_ptr<LoginManager>& getInstance(IDatabase* db);
     ~LoginManager() = default;
