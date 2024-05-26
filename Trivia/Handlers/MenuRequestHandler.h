@@ -16,13 +16,13 @@ public:
     RequestResult handleRequest(const RequestInfo& info) override;
 
 private:    
-    RequestResult logout([[maybe_unused]] const RequestInfo& info) noexcept;
-    RequestResult getRooms([[maybe_unused]] const RequestInfo& info) noexcept;
-    RequestResult getPlayersInRoom([[maybe_unused]] const RequestInfo& info) noexcept;
-    RequestResult getPersonalStats([[maybe_unused]] const RequestInfo& info) noexcept;
-    RequestResult getHighScore([[maybe_unused]] const RequestInfo& info) noexcept;
-    RequestResult joinRoom([[maybe_unused]] const RequestInfo& info) noexcept;
-    RequestResult createRoom([[maybe_unused]] const RequestInfo& info) noexcept;
+    RequestResult logout([[maybe_unused]] const RequestInfo& info) const noexcept;
+    RequestResult getRooms([[maybe_unused]] const RequestInfo& info) const noexcept;
+    RequestResult getPlayersInRoom([[maybe_unused]] const RequestInfo& info) const noexcept;
+    RequestResult getPersonalStats([[maybe_unused]] const RequestInfo& info) const noexcept;
+    RequestResult getHighScore([[maybe_unused]] const RequestInfo& info) const noexcept;
+    RequestResult joinRoom(const RequestInfo& info) const noexcept;
+    RequestResult createRoom(const RequestInfo& info) const noexcept;
 
     // Members    
     std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
