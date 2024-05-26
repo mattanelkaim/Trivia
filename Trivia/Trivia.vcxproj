@@ -161,6 +161,7 @@
     <ClInclude Include="Managers\StatisticsManager.h" />
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
+    <ClInclude Include="Other\InvalidSQL.h" />
     <ClInclude Include="Other\ServerException.h" />
     <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\ServerDefinitions.h" />
@@ -185,14 +186,15 @@
     <ClCompile Include="Managers\StatisticsManager.cpp" />
     <ClCompile Include="Other\Helper.cpp" />
     <ClCompile Include="Other\InvalidProtocolStructure.cpp" />
+    <ClCompile Include="Other\InvalidSQL.cpp" />
     <ClCompile Include="Other\ServerException.cpp" />
     <ClCompile Include="Other\UnexpectedClientExit.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />
-    <ClCompile Include="Managers\LoggedUser.cpp" />
     <ClCompile Include="Managers\LoginManager.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".clang-tidy" />
     <None Include="Trivia.ruleset" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

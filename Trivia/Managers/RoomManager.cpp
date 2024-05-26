@@ -12,9 +12,9 @@
 
 void RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
 {
-    const auto emplaced = this->m_rooms.try_emplace(data.id, data); // Returns pair of iterator and bool isSuccessful
+    const auto [addedRoom, isEmplaced] = this->m_rooms.try_emplace(data.id, data); // Returns pair of iterator and bool isSuccessful
 
-    if (!emplaced.second) // Not emplaced successfully
+    if (!isEmplaced) // Not emplaced successfully
         throw std::runtime_error("Room with id " + std::to_string(data.id) + " already exists");
 
     emplaced.first->second.addUser(user); // Add to room the room creator
@@ -37,7 +37,7 @@ std::vector<RoomData> RoomManager::getRooms() const
     rooms.reserve(this->m_rooms.size());
 
     for (const auto& [_, room] : this->m_rooms)
-        rooms.push_back(room.getData());
+        rooms.emplace_back(room.getData());
 
     return rooms;
 }

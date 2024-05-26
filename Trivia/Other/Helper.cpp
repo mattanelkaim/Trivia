@@ -3,12 +3,11 @@
 #include "ServerDefinitions.h"
 #include "UnexpectedClientExit.h"
 #include <cstddef> // size_t
-#include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <WinSock2.h>
-#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN) || defined(SERVER_DEBUG_OUT)
+#if PRINT_IO
 #include <iostream>
 #endif
 
@@ -42,14 +41,18 @@ int Helper::getCodeFromSocket(const SOCKET sc)
     }
 }
 
-// receive data from socket according byteSize
-// returns the data as int
 int Helper::getIntPartFromSocket(const SOCKET sc, const int bytesNum)
 {
-    return stoi(getStringFromSocket(sc, bytesNum));
+    try
+    {
+        return std::stoi(getStringFromSocket(sc, bytesNum));
+    }
+    catch (const std::out_of_range&) // Might be thrown from stoi
+    {
+        throw InvalidProtocolStructure("Invalid protocol structure: expected int");
+    }
 }
 
-// bytesNum is not unsigned to match recv parameter specification
 std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
 {
     if (bytesNum <= 0) return "";
@@ -70,18 +73,21 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
     const std::string str(data, bufferSize); // Null terminator added automatically
     delete[] data;
 
-#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_IN)
-    std::cout << "[CLIENT] " << str << "\n";
+#if PRINT_IO
+    std::cout << "[CLIENT (" << sc << ")] " << str << "\n";
 #endif
     return str;
 }
 
-// send data to socket
-// this is private function
+void Helper::sendData(const SOCKET sc, const buffer& message)
+{
+    sendData(sc, std::string_view(reinterpret_cast<const char*>(message.data()), message.size()));
+}
+
 void Helper::sendData(const SOCKET sc, const std::string_view message)
 {
-#if defined(SERVER_DEBUG_ALL) || defined(SERVER_DEBUG_OUT)
-    std::cout << "[SERVER] " << message << '\n';
+#if PRINT_IO
+    std::cout << "[SERVER -> " << sc << "] " << message << '\n';
 #endif
     if (send(sc, message.data(), static_cast<int>(message.size()), 0) == SOCKET_ERROR) // flags = 0
         throw std::runtime_error("Error while sending message to client. Error: " + to_string(WSAGetLastError()));
