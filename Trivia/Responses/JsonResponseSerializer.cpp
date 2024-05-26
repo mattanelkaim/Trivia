@@ -11,7 +11,7 @@ buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response)
     return serializeGeneralResponse(ResponseCode::ERR, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response)
+buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response) 
 {
     // Join all string fields with a delimiter
     std::string rooms;
@@ -52,13 +52,17 @@ buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse&
     using namespace JsonFields::UserStats;
 
     // Sub-fields that construct the "userStatistics" outer field
-    const json j{
-        {STATISTICS, {
-            {SCORE,           response.statistics[0]},
-            {TOTAL_GAMES,     response.statistics[1]},
-            {TOTAL_ANSWERS,   response.statistics[2]},
-            {CORRECT_ANSWERS, response.statistics[3]}
-        }}
+    const json j
+    {
+        {
+            STATISTICS,
+            {
+                {SCORE,           response.statistics[0]},
+                {TOTAL_GAMES,     response.statistics[1]},
+                {TOTAL_ANSWERS,   response.statistics[2]},
+                {CORRECT_ANSWERS, response.statistics[3]}
+            }
+        }
     };
 
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
@@ -69,11 +73,11 @@ buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type,
 {
     // Directly constructing the buffer for efficiency
     return {std::from_range,
-        // The first byte is the response code
-        std::to_string(type) +
-        // Pushing the JSON's length to the buffer
-        Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) +
-        // Pushing the actual message to the buffer
-        json.data()
-    };
+            // The first byte is the response code
+            std::to_string(type) + \
+            // Pushing the JSON's length to the buffer
+            Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) + \
+            // Pushing the actual message to the buffer
+            json.data()
+            };
 }
