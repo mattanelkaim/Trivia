@@ -1,3 +1,5 @@
+#include "IDatabase.h"
+#include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "LoginManager.h"
@@ -20,7 +22,7 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const Logged
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
-    return new LoginRequestHandler(*this);
+    return new LoginRequestHandler(this);
 }
 
 LoginManager* RequestHandlerFactory::getLoginManager() noexcept
@@ -48,3 +50,4 @@ std::shared_ptr<RequestHandlerFactory> RequestHandlerFactory::getInstance(IDatab
     }
     return m_HandlerFactory;
 }
+
