@@ -43,7 +43,7 @@ public:
     * @return A reference to the room.
     */
     Room& getRoom(uint32_t roomId);
-    inline static uint32_t getNextRoomId() { return roomIdCounter + 1; };
+    inline static uint32_t getNextRoomId() noexcept;
 
     /*######################################
     ############### SINGLETON ##############
