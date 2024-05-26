@@ -47,6 +47,11 @@ Room& RoomManager::getRoom(const uint32_t roomId)
     return this->m_rooms.at(roomId);
 }
 
+inline uint32_t RoomManager::getNextRoomId() noexcept
+{
+    return roomIdCounter + 1;
+}
+
 // Singleton
 std::shared_ptr<RoomManager> RoomManager::getInstance()
 {
