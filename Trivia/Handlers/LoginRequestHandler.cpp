@@ -43,7 +43,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(LoginResponse{RESPONSE}),
-            .newHandler = new MenuRequestHandler()
+            .newHandler = m_handlerFactory.createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]
@@ -64,7 +64,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(SignupResponse{RESPONSE}),
-            .newHandler = new MenuRequestHandler()
+            .newHandler = m_handlerFactory.createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]
