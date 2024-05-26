@@ -15,7 +15,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-    return new MenuRequestHandler(this->m_database);
+    return new MenuRequestHandler(this->m_database, user);
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
