@@ -16,7 +16,7 @@ class RequestHandlerFactory final
 {
 public:
     // methods
-    MenuRequestHandler* createMenuRequestHandler(const LoggedUser& loggedUser);
+    MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
     LoginRequestHandler* createLoginRequestHandler();
 
     // getters
