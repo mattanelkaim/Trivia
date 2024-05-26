@@ -58,8 +58,8 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     if (loginManager->login(request.username, request.password)) [[likely]]
     {
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(LoginResponse{RESPONSE}),
-            .newHandler = m_handlerFactory.createMenuRequestHandler(request.username)
+            .response = JsonResponseSerializer::serializeResponse(LoginResponse{OK}),
+            .newHandler = m_handlerFactory->createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]
@@ -79,8 +79,8 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
     {
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(SignupResponse{RESPONSE}),
-            .newHandler = m_handlerFactory.createMenuRequestHandler(request.username)
+            .response = JsonResponseSerializer::serializeResponse(SignupResponse{OK}),
+            .newHandler = m_handlerFactory->createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]
