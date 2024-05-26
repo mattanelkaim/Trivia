@@ -13,9 +13,9 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
     m_statisticsManager(StatisticsManager::getInstance(db)) //...
 {}
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& loggedUser)
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-    return nullptr;
+    return new MenuRequestHandler(this->m_database);
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
