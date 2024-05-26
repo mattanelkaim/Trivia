@@ -83,13 +83,25 @@ RequestResult MenuRequestHandler::getHighScore([[maybe_unused]] const RequestInf
 
 RequestResult MenuRequestHandler::joinRoom([[maybe_unused]] const RequestInfo& info)
 {
+    // adding the user to the room specified in the request buffer
+    RoomManager::getInstance()->getRoom(JsonRequestDeserializer::deserializeRequest<JoinRoomRequest>(info.buffer).roomId).addUser(m_user);
+
     return RequestResult{ .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{RESPONSE}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)};
 }
 
 RequestResult MenuRequestHandler::createRoom([[maybe_unused]] const RequestInfo& info)
 {
-    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(CreateRoomRequest{RESPONSE}),
+    CreateRoomRequest request = JsonRequestDeserializer::deserializeRequest<CreateRoomRequest>(info.buffer);
+    // creating a room as specifies in the request buffer
+    RoomManager::getInstance()->createRoom(m_user, { .name = request.roomName,
+                                                     .id = RoomManager::getNextRoomId(),
+                                                     .maxPlayers = (unsigned short)request.maxUsers,
+                                                     .numOfQuestionsInGame = (unsigned short)request.questionCount,
+                                                     .timePerQuestion = request.answerTimeout,
+                                                     .status = 1
+                                                   });
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{RESPONSE}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) };
 }
 
