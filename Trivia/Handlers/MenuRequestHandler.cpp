@@ -51,57 +51,57 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info)
     }
 }
 
-RequestResult MenuRequestHandler::logout([[maybe_unused]] const RequestInfo& info) noexcept
+RequestResult MenuRequestHandler::logout([[maybe_unused]] const RequestInfo& info) const noexcept
 {    
-    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(LogoutResponse{RESPONSE}),
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(LogoutResponse{OK}),
                           .newHandler = nullptr };
 }
 
-RequestResult MenuRequestHandler::getRooms([[maybe_unused]] const RequestInfo& info) noexcept
+RequestResult MenuRequestHandler::getRooms([[maybe_unused]] const RequestInfo& info) const noexcept
 {
-    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{RESPONSE, this->m_roomManager->getRooms()}),
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{OK, this->m_roomManager->getRooms()}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)};
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom([[maybe_unused]] const RequestInfo& info) noexcept
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) const noexcept
 {    
     return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{this->m_roomManager->getRoom(JsonRequestDeserializer::deserializeRequest<GetPlayersInRoomRequest>(info.buffer).roomId).getAllUsers()}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) };
 }
 
-RequestResult MenuRequestHandler::getPersonalStats([[maybe_unused]] const RequestInfo& info) noexcept
+RequestResult MenuRequestHandler::getPersonalStats([[maybe_unused]] const RequestInfo& info) const noexcept
 {
     return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{this->m_statisticsManager->getUserStatistics(m_user)}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) };
 }
 
-RequestResult MenuRequestHandler::getHighScore([[maybe_unused]] const RequestInfo& info) noexcept
+RequestResult MenuRequestHandler::getHighScore([[maybe_unused]] const RequestInfo& info) const noexcept
 {
-    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{RESPONSE, this->m_statisticsManager->getHighScore()}),
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{OK, this->m_statisticsManager->getHighScore()}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) };
 }
 
-RequestResult MenuRequestHandler::joinRoom([[maybe_unused]] const RequestInfo& info) noexcept
+RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const noexcept
 {
     // adding the user to the room specified in the request buffer
     RoomManager::getInstance()->getRoom(JsonRequestDeserializer::deserializeRequest<JoinRoomRequest>(info.buffer).roomId).addUser(m_user);
 
-    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{RESPONSE}),
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{OK}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)};
 }
 
-RequestResult MenuRequestHandler::createRoom([[maybe_unused]] const RequestInfo& info) noexcept
+RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const noexcept
 {
-    CreateRoomRequest request = JsonRequestDeserializer::deserializeRequest<CreateRoomRequest>(info.buffer);
+    const CreateRoomRequest request = JsonRequestDeserializer::deserializeRequest<CreateRoomRequest>(info.buffer);
     // creating a room as specifies in the request buffer
     RoomManager::getInstance()->createRoom(m_user, { .name = request.roomName,
                                                      .id = RoomManager::getNextRoomId(),
-                                                     .maxPlayers = (unsigned short)request.maxUsers,
-                                                     .numOfQuestionsInGame = (unsigned short)request.questionCount,
+                                                     .maxPlayers = request.maxUsers,
+                                                     .numOfQuestionsInGame = request.questionCount,
                                                      .timePerQuestion = request.answerTimeout,
                                                      .status = 1
                                                    });
-    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{RESPONSE}),
+    return RequestResult{ .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{OK}),
                           .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) };
 }
 

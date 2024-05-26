@@ -223,8 +223,8 @@ struct JoinRoomRequest : Request
 struct CreateRoomRequest : Request
 {
     std::string roomName;
-    uint32_t maxUsers;
-    uint32_t questionCount;
+    uint16_t maxUsers;
+    uint16_t questionCount;
     uint32_t answerTimeout;
 };
 
