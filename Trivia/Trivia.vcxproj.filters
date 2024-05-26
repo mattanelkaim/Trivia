@@ -71,20 +71,23 @@
     <ClInclude Include="Other\sqlite3.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="Managers\Question.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Managers\StatisticsManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Managers\Question.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Managers\StatisticsManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Other\json.hpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\Question.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\StatisticsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\Question.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\StatisticsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Other\InvalidSQL.h">
+      <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,9 +110,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Managers\LoggedUser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Managers\LoginManager.cpp">
@@ -142,6 +142,9 @@
     <ClCompile Include="Other\ServerException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
+    <ClCompile Include="Other\InvalidSQL.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Other\ServerException.h">
@@ -162,5 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Trivia.ruleset" />
+    <None Include=".clang-tidy" />
   </ItemGroup>
 </Project>

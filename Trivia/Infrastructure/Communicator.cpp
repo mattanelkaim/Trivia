@@ -14,7 +14,6 @@
 #include <mutex>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 #include <thread>
 #include <utility> // std::exchange
 #include <WinSock2.h>
@@ -23,7 +22,7 @@ using std::to_string;
 
 
 Communicator::Communicator(IDatabase* db) :
-    m_handlerFactory(*RequestHandlerFactory::getInstance(db)),
+    m_handlerFactory(RequestHandlerFactory::getInstance(db)),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
     if (this->m_serverSocket == INVALID_SOCKET)
@@ -34,8 +33,11 @@ Communicator::Communicator(IDatabase* db) :
 
 Communicator::~Communicator() noexcept
 {
-    for (auto& [_, handler] : this->m_clients)
+    for (auto& [client, handler] : this->m_clients)
+    {
+        this->disconnectClient(client);
         delete handler;
+    }
 }
 
 void Communicator::bindAndListen() const
@@ -68,9 +70,9 @@ void Communicator::startHandleRequests()
             if (clientSocket == INVALID_SOCKET)
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
-            std::cout << "Client accepted (" << clientSocket << "). Server and client can communicate\n";
+            std::cout << ANSI_GREEN << "Client accepted (" << clientSocket << ")\n" << ANSI_NORMAL;
             // Add client with LoginRequestHandler to map
-            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory.get()));
 
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
@@ -91,11 +93,12 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
         {
             // Read data from socket
             const auto code = static_cast<RequestId>(Helper::getCodeFromSocket(clientSocket));
-            const std::string msg = Helper::getMessageFromSocket(clientSocket);
+            // msg is a temporary object that will be moved to the RequestInfo structure
+            std::string msg = Helper::getMessageFromSocket(clientSocket);
 
             // Initialize RequestInfo structure
-            RequestInfo request{.id = code, .receivalTime = std::time(nullptr)};
-            request.buffer.append_range(msg); // String to vector
+            const RequestInfo request{.id = code, .receivalTime = std::time(nullptr),
+                                      .buffer{std::from_range, std::move(msg)}}; // String to vector
 
             // Get current handler from clients map
             IRequestHandler*& handler = this->m_clients.at(clientSocket);
@@ -106,18 +109,17 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
                 const RequestResult result = handler->handleRequest(request); // Serialized
 
                 // Update handler in map
-                delete std::exchange(handler, result.newHandler); // Done with old handler
+                if (result.newHandler != nullptr) [[unlikely]]
+                    delete std::exchange(handler, result.newHandler); // Done with old handler
 
-                // Send response to client, using string_view constructor & reinterpret_cast for performance
-                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(result.response.data()), result.response.size()));
+                // Send response back to client
+                Helper::sendData(clientSocket, result.response);
                 std::cout << "Operation successful\n\n";
             }
             else [[unlikely]]
             {
-                std::cout << "Handler is invalid!\n";
                 // Serialize an error response and send it to the client
-                const buffer response = JsonResponseSerializer::serializeResponse(ErrorResponse{"VERY ERRORY ERROR"}); // MUST BE buffer AND NOT readonly_buffer
-                Helper::sendData(clientSocket, std::string_view(reinterpret_cast<const char*>(response.data()), response.size()));
+                Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"VERY ERRORY ERROR"}));
                 std::cout << "Operation NOT successful\n\n";
             }
         }
@@ -125,7 +127,7 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
         {
             std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
             this->disconnectClient(clientSocket);
-            std::cout << "Disconnected client socket " << clientSocket << "\n\n";
+            std::cout << ANSI_BLUE << "Disconnected client socket " << clientSocket << "\n\n" << ANSI_NORMAL;
             return; // No need to handle disconnected client
         }
         catch (const std::exception& e)
@@ -137,10 +139,19 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
 
 void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 {
+    // Send a goodbye message to the client if possible
+    try
+    {
+        Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"You got disconnected! L bozo"}));
+    }
+    catch (const std::runtime_error&)
+    {} // Ignore if socket is invalid
+
+    // Delete client from map and free handler memory
     const auto& client = this->m_clients.find(clientSocket);
     if (client != this->m_clients.cend()) [[likely]]
     {
-        delete client->second;
+        delete client->second; // Delete handler
         this->m_clients.erase(clientSocket);
     }
 }

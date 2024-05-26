@@ -8,17 +8,36 @@ class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shi
 class LoginRequestHandler final : public IRequestHandler
 {
 public:
-    explicit LoginRequestHandler(RequestHandlerFactory& handlerFactory) noexcept;
+    /*######################################
+    ############ PUBLIC METHODS ############
+    ######################################*/
+
+    explicit LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept;
     bool isRequestRelevant(const RequestInfo& info) const noexcept override;
-    RequestResult handleRequest(const RequestInfo& info) override;
+    RequestResult handleRequest(const RequestInfo& info) noexcept override;
     
-    // Helper functions
+    /*######################################
+    ############ HELPER METHODS ############
+    ######################################*/
+
+    /**
+     * @throws InvalidProtocolStructure
+     * @throws InvalidSQL
+     */
     RequestResult login(const RequestInfo& info);
+
+    /**
+    * @throws InvalidProtocolStructure
+    * @throws InvalidSQL
+    */
     RequestResult signup(const RequestInfo& info);
 
-    // Avoid shitty compiler warnings
+    /*######################################
+    #### AVOID SHITTY COMPILER WARNINGS ####
+    ######################################*/
+
     LoginRequestHandler operator=(const LoginRequestHandler& other) = delete;
 
 private:
-    RequestHandlerFactory& m_handlerFactory;
+    RequestHandlerFactory* m_handlerFactory;
 };

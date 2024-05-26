@@ -1,7 +1,12 @@
+#include "Communicator.h"
+#include "RequestHandlerFactory.h"
 #include "Server.h"
 #include "SqliteDatabase.h"
 #include <iostream>
+#include <memory>
+#include <mutex>
 #include <string>
+#include <string_view>
 #include <thread>
 
 
@@ -36,7 +41,7 @@ void Server::run()
     t_connector.detach();
 
     std::string userInput;
-    command cmd;
+    command cmd{};
     do
     {
         std::cin >> userInput;

@@ -1,7 +1,6 @@
 // NOLINTBEGIN(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
 #pragma once
-
-#define SERVER_DEBUG_ALL // Debugging flag in Helper
+#pragma warning(disable: 4820) // Padding added after data member
 
 #include <cstdint>
 #include <ctime> // Used for time_t
@@ -19,8 +18,21 @@ using readonly_buffer = std::span<const byte>;
 
 #pragma region IO
 
-constexpr std::string_view ANSI_RED = "\033[31;1m"; // Red and bold
-constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
+#define PRINT_IO true // Used in Helper
+#define OUTPUT_COLORS true
+#define SERVER_DEBUG true
+
+#if OUTPUT_COLORS
+    constexpr std::string_view ANSI_RED    = "\033[31;1m"; // Red and bold
+    constexpr std::string_view ANSI_GREEN  = "\033[32;1m"; // Green and bold
+    constexpr std::string_view ANSI_BLUE   = "\033[34;1m"; // Blue and bold
+    constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
+#else
+    constexpr std::string_view ANSI_RED;
+    constexpr std::string_view ANSI_GREEN;
+    constexpr std::string_view ANSI_BLUE;
+    constexpr std::string_view ANSI_NORMAL;
+#endif
 
 #pragma endregion
 
@@ -31,12 +43,6 @@ constexpr std::string_view ANSI_NORMAL = "\033[0m"; // Resets back to default
 *                     ^^^^  ^^^^^^^^^^^  ^^^^^^^
 *                   1 byte,  4 bytes,  {data length} bytes
 */
-
-enum messageType : byte
-{
-    REQUEST,
-    RESPONSE
-};
 
 constexpr uint16_t PORT = 7777;
 
@@ -80,6 +86,12 @@ struct RoomData
 
 
 #pragma region responseDefinitions
+
+enum ResponseCode
+{
+    ERR, // ERROR won't compile
+    OK
+};
 
 // Response structs
 struct ErrorResponse
@@ -150,15 +162,14 @@ namespace JsonFields
         constexpr std::string_view TOTAL_GAMES = "games";
         constexpr std::string_view TOTAL_ANSWERS = "totalAnswers";
         constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
-    } //namesapce UserStats
-} //namesapce JsonFields
+    } // namespace UserStats
+} // namespace JsonFields
 
 #pragma endregion
 
-
 #pragma region requestDefinitions
 
-enum RequestId : size_t
+enum RequestId
 {
     LOGIN,
     SIGNUP,
