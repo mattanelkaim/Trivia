@@ -13,16 +13,16 @@ class MenuRequestHandler final : public IRequestHandler
 public:
     explicit MenuRequestHandler(IDatabase* db, const LoggedUser& user);
     bool isRequestRelevant(const RequestInfo& info) const noexcept override;
-    RequestResult handleRequest(const RequestInfo& info) override;    
+    RequestResult handleRequest(const RequestInfo& info) override;
 
 private:    
-    RequestResult logout([[maybe_unused]] const RequestInfo& info);
-    RequestResult getRooms ([[maybe_unused]] const RequestInfo& info);
-    RequestResult getPlayersInRoom([[maybe_unused]] const RequestInfo& info);
-    RequestResult getPersonalStats([[maybe_unused]] const RequestInfo& info);
-    RequestResult getHighScore([[maybe_unused]] const RequestInfo& info);
-    RequestResult joinRoom([[maybe_unused]] const RequestInfo& info);
-    RequestResult createRoom([[maybe_unused]] const RequestInfo& info);
+    RequestResult logout([[maybe_unused]] const RequestInfo& info) noexcept;
+    RequestResult getRooms([[maybe_unused]] const RequestInfo& info) noexcept;
+    RequestResult getPlayersInRoom([[maybe_unused]] const RequestInfo& info) noexcept;
+    RequestResult getPersonalStats([[maybe_unused]] const RequestInfo& info) noexcept;
+    RequestResult getHighScore([[maybe_unused]] const RequestInfo& info) noexcept;
+    RequestResult joinRoom([[maybe_unused]] const RequestInfo& info) noexcept;
+    RequestResult createRoom([[maybe_unused]] const RequestInfo& info) noexcept;
 
     // Members    
     std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
