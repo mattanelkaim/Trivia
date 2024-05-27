@@ -4,7 +4,6 @@
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
-#include <memory>
 #include <RoomManager.h>
 #include <StatisticsManager.h>
 

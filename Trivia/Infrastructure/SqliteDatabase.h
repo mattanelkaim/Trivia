@@ -27,7 +27,7 @@ public:
     * 
     * This destructor closes the database.
     */
-    ~SqliteDatabase() override;
+    ~SqliteDatabase() noexcept override;
 
     /*######################################
     ############ PUBLIC METHODS ############
@@ -35,7 +35,7 @@ public:
 
     // @throws std::runtime_error
     bool openDB() override;
-    bool closeDB() override;
+    bool closeDB() noexcept override;
 
     // @throws InvalidSQL
     void addNewUser(const std::string& username, const std::string& password, const std::string& email) override;
@@ -78,7 +78,10 @@ private:
     ############ PRIVATE METHODS ###########
     ######################################*/
 
+    // @throws InvalidSQL
     void runQuery(std::string_view query) const;
+
+    // @throws InvalidSQL
     void runQuery(std::string_view query, safe_callback_ptr callback, void* data) const;
 
     /*######################################
