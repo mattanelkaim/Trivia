@@ -12,13 +12,13 @@ public:
     ######################################*/
 
     Room() = delete;
-    explicit Room(const RoomData& data) noexcept;
+    explicit Room(RoomData data) noexcept;
 
     /*######################################
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    void addUser(const LoggedUser& user);
+    void addUser(const LoggedUser& user) noexcept;
     void removeUser(const LoggedUser& user) noexcept;
     const RoomData& getData() const noexcept;
     const std::vector<LoggedUser>& getAllUsers() const noexcept;

@@ -80,6 +80,11 @@ struct RoomData
     uint16_t numOfQuestionsInGame;
     uint32_t timePerQuestion;
     uint32_t status;
+    enum RoomStatus
+    {
+        OPEN,
+        CLOSED,
+    };
 };
 
 #pragma endregion
@@ -90,7 +95,7 @@ struct RoomData
 enum ResponseCode
 {
     ERR, // ERROR won't compile
-    OK
+    OK,
 };
 
 // Response structs
@@ -178,7 +183,8 @@ enum RequestId
     CREATE_ROOM,
     GET_ROOMS,
     GET_STATISTICS,
-    LOGOUT
+    GET_HIGHSCORE,
+    LOGOUT,
 };
 
 struct RequestInfo
