@@ -18,7 +18,7 @@ public:
     * @param question The question text.
     * @param answers A vector of possible answers. The correct answer should be the first one in the vector.
     */
-    explicit Question(const std::string& question, const std::vector<std::string>& answers);
+    explicit Question(std::string question, const std::vector<std::string>& answers);
 
     /*######################################
     ############ PUBLIC METHODS ############

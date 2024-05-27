@@ -7,5 +7,5 @@ class InvalidProtocolStructure final : public ServerException
 {
 public:
     InvalidProtocolStructure() noexcept;
-    explicit InvalidProtocolStructure(const std::string& query);
+    explicit InvalidProtocolStructure(const std::string& query) noexcept;
 };
