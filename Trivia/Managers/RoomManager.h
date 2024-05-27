@@ -55,7 +55,7 @@ public:
 
     RoomManager(const RoomManager& other) = delete;
     void operator=(const RoomManager& other) = delete;
-    static std::shared_ptr<RoomManager> getInstance();
+    static RoomManager* getInstance();
     ~RoomManager() = default;
 
 private:

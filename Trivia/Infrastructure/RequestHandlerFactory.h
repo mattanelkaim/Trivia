@@ -35,7 +35,7 @@ public:
     RequestHandlerFactory() = delete;
     RequestHandlerFactory(const RequestHandlerFactory& other) = delete;
     void operator=(const RequestHandlerFactory& other) = delete;
-    static std::shared_ptr<RequestHandlerFactory> getInstance(IDatabase* db);
+    static RequestHandlerFactory* getInstance(IDatabase* db);
     ~RequestHandlerFactory() = default;
 
 private:

@@ -27,12 +27,12 @@ std::vector<std::string> StatisticsManager::getUserStatistics(const std::string&
 }
 
 // Singleton
-std::shared_ptr<StatisticsManager> StatisticsManager::getInstance(IDatabase* db)
+StatisticsManager* StatisticsManager::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_StatisticsManager == nullptr) [[unlikely]]
     {
         m_StatisticsManager = std::shared_ptr<StatisticsManager>(new StatisticsManager(db));
     }
-    return m_StatisticsManager;
+    return m_StatisticsManager.get();
 }

@@ -45,7 +45,7 @@ public:
     LoginManager() = delete;
     LoginManager(const LoginManager& other) = delete;
     void operator=(const LoginManager& other) = delete;
-    static std::shared_ptr<LoginManager> getInstance(IDatabase* db);
+    static LoginManager* getInstance(IDatabase* db);
     ~LoginManager() = default;
 
 private:

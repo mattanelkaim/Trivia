@@ -54,7 +54,7 @@ public:
     Communicator() = delete;
     Communicator(const Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
-    static std::shared_ptr<Communicator> getInstance(IDatabase* db);
+    static Communicator* getInstance(IDatabase* db);
     ~Communicator() noexcept;
 
 private:
