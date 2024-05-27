@@ -48,7 +48,6 @@ constexpr uint16_t PORT = 7777;
 
 constexpr auto BYTES_RESERVED_FOR_CODE = 1;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
-constexpr auto JSON_OFFSET = BYTES_RESERVED_FOR_MSG_LEN + 1; // + msg code
 
 constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
 
@@ -81,6 +80,11 @@ struct RoomData
     uint16_t numOfQuestionsInGame;
     uint32_t timePerQuestion;
     uint32_t status;
+    enum RoomStatus
+    {
+        OPEN,
+        CLOSED,
+    };
 };
 
 #pragma endregion
@@ -91,7 +95,7 @@ struct RoomData
 enum ResponseCode
 {
     ERR, // ERROR won't compile
-    OK
+    OK,
 };
 
 // Response structs
@@ -174,6 +178,13 @@ enum RequestId
 {
     LOGIN,
     SIGNUP,
+    GET_PLAYERS_IN_ROOM,
+    JOIN_ROOM,
+    CREATE_ROOM,
+    GET_ROOMS,
+    GET_STATISTICS,
+    GET_HIGHSCORE,
+    LOGOUT,
 };
 
 struct RequestInfo
@@ -218,8 +229,8 @@ struct JoinRoomRequest : Request
 struct CreateRoomRequest : Request
 {
     std::string roomName;
-    uint32_t maxUsers;
-    uint32_t questionCount;
+    uint16_t maxUsers;
+    uint16_t questionCount;
     uint32_t answerTimeout;
 };
 

@@ -49,7 +49,7 @@ namespace Helper
      */
     void sendData(SOCKET sc, std::string_view message);
 
-    std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits)
+    std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
     {
         // Return string after padding zeros if necessary
         const std::string numStr = std::to_string(num);
