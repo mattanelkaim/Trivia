@@ -5,12 +5,101 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Trivia" Height="450" Width="800">
     <Grid>
-        <Grid HorizontalAlignment="Center">
-            <TextBox Name="Username" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Width="120" Margin="10,40,0,0"/>
-            <TextBox Name="Password" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Width="120" Margin="10,70,0,0"/>
-            <Button Name="LoginSubmit" Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,100,0,0"/>
+        <TextBlock Name="Title"
+                   Text="Our Sexy Trivia"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center"
+                   Margin="0,40,0,0"
+                   FontSize="40"
+                   FontWeight="Bold"/>
+        
+        <Grid HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+            <!--Moves up on field focus-->
+            <TextBlock Name="UsernameTextBlock"
+                       Text="Username"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="23,17,0,0"
+                       FontSize="12"
+                       FontWeight="SemiBold"/>
+            
+            <TextBox Name="UsernameField"
+                     Height="25"
+                     Width="200"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Margin="0,15,0,0"
+                     Padding="23,0,0,0"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     GotFocus="Username_GotFocus"
+                     LostFocus="Username_LostFocus"
+                     MaxLength="16">
+                <TextBox.Background>
+                    <ImageBrush ImageSource="Images/user.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </TextBox.Background>
+            </TextBox>
+            
+            <!--Moves up on field focus-->
+            <TextBlock Name="PasswordTextBlock"
+                       Text="Password"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="23,64,0,0"
+                       FontSize="12"
+                       FontWeight="SemiBold"/>
+            
+            <PasswordBox Name="PasswordField"
+                         Height="25"
+                         Width="200"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Margin="0,62,0,0"
+                         Padding="23,0,0,0"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         GotFocus="Password_GotFocus"
+                         LostFocus="Password_LostFocus"
+                         MaxLength="8">
+                <PasswordBox.Background>
+                    <ImageBrush ImageSource="Images/password.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </PasswordBox.Background>
+            </PasswordBox>
+            
+            <Button Name="LoginSubmit"
+                    Content="LOGIN"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Width="100"
+                    Margin="0,120,0,0"
+                    Padding="0,10,0,10"
+                    BorderBrush="DarkGray"
+                    BorderThickness="1.5"
+                    FontSize="13"
+                    FontWeight="Black"
+                    Cursor="Hand">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
     </Grid>
 </Window>
