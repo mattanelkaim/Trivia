@@ -2,8 +2,6 @@
 #include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "LoginManager.h"
-#include "IDatabase.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
 
@@ -46,7 +44,7 @@ RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_HandlerFactory == nullptr) [[unlikely]]
     {
-        m_HandlerFactory = std::shared_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
+        m_HandlerFactory = std::unique_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
     }
     return m_HandlerFactory.get();
 }

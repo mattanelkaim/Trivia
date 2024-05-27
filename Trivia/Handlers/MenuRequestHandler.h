@@ -33,9 +33,9 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
-    std::shared_ptr<RoomManager> m_roomManager;
-    std::shared_ptr<StatisticsManager> m_statisticsManager;
+    RequestHandlerFactory* m_handlerFactory;
+    RoomManager* m_roomManager;
+    StatisticsManager* m_statisticsManager;
     const LoggedUser m_user;
 
     /*######################################

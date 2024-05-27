@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IDatabase.h"
-#include <memory> // std::unique_ptr
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -56,6 +56,6 @@ private:
     ######################################*/
 
     explicit StatisticsManager(IDatabase* db) noexcept;
-    inline static std::shared_ptr<StatisticsManager> m_StatisticsManager = nullptr;
+    inline static std::unique_ptr<StatisticsManager> m_StatisticsManager = nullptr;
     inline static std::mutex m_mutex;
 };

@@ -44,15 +44,15 @@ private:
     ######################################*/
 
     IDatabase* m_database;
-    std::shared_ptr<LoginManager> m_loginManager;
-    std::shared_ptr<RoomManager> m_roomManager;
-    std::shared_ptr<StatisticsManager> m_statisticsManager;
+    LoginManager* m_loginManager;
+    RoomManager* m_roomManager;
+    StatisticsManager* m_statisticsManager;
 
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
 
     explicit RequestHandlerFactory(IDatabase* db);
-    inline static std::shared_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
+    inline static std::unique_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
     inline static std::mutex m_mutex;
 };

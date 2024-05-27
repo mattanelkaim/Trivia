@@ -36,14 +36,14 @@ private:
     ######################################*/
 
     IDatabase* m_database;
-    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
-    std::shared_ptr<Communicator> m_communicator;
+    RequestHandlerFactory* m_handlerFactory;
+    Communicator* m_communicator;
 
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
     
     Server();
-    inline static std::shared_ptr<Server> m_Server = nullptr;
+    inline static std::unique_ptr<Server> m_Server = nullptr;
     inline static std::mutex m_mutex;
 };

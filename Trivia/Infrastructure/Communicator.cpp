@@ -162,7 +162,7 @@ Communicator* Communicator::getInstance(IDatabase* db)
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Communicator == nullptr) [[unlikely]]
     {
-        m_Communicator = std::shared_ptr<Communicator>(new Communicator(db));
+        m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));
     }
     return m_Communicator.get();
 }

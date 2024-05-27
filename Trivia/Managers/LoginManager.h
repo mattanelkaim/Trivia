@@ -67,6 +67,6 @@ private:
     ######################################*/
 
     explicit LoginManager(IDatabase* db) noexcept;
-    inline static std::shared_ptr<LoginManager> m_LoginManager = nullptr;
+    inline static std::unique_ptr<LoginManager> m_LoginManager = nullptr;
     inline static std::mutex m_mutex;
 };
