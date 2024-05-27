@@ -15,15 +15,20 @@ namespace ClientGUI
 {
     public partial class MainWindow : Window
     {
+        public string Username { get; set; } = "";
+        public string Password { private get; set; } = "";
+
+
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = this;
             this.LoginSubmit.Click += new RoutedEventHandler(LoginSubmit_Click);
 
 
             try
             {
-                Communicator.Connect();
+                //Communicator.Connect();
             }
             catch (Exception e)
             {
@@ -33,7 +38,7 @@ namespace ClientGUI
 
         private void LoginSubmit_Click(object sender, RoutedEventArgs e)
         {
-            string json = JsonSerializer.Serialize(new { username = this.UsernameField.Text, password = this.PasswordField.Password });
+            string json = JsonSerializer.Serialize(new { username = Username, password = Password });
 
             string msg = Helper.Serialize(json, Helper.MessageType.Login);
             MessageBox.Show("[Sending]: " + msg);
@@ -56,11 +61,11 @@ namespace ClientGUI
 
         private void Username_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (this.UsernameField.Text.Length == 0)
+            if (Username.Length == 0)
             {
                 ThicknessAnimation animation = new()
                 {
-                    To = new Thickness(23, 17, 0, 0),
+                    To = new Thickness(28, 22, 0, 0),
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
@@ -72,7 +77,7 @@ namespace ClientGUI
         {
             ThicknessAnimation animation = new()
             {
-                To = new Thickness(2, 47, 0, 0),
+                To = new Thickness(2, 50, 0, 0),
                 Duration = TimeSpan.FromMilliseconds(200),
                 EasingFunction = new QuarticEase()
             };
@@ -81,16 +86,36 @@ namespace ClientGUI
 
         private void Password_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (this.PasswordField.Password.Length == 0)
+            if (Password.Length == 0)
             {
                 ThicknessAnimation animation = new()
                 {
-                    To = new Thickness(23, 64, 0, 0),
+                    To = new Thickness(28, 73, 0, 0),
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
                 this.PasswordTextBlock.BeginAnimation(MarginProperty, animation);
             }
+        }
+
+        private void Password_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            Password = PasswordField.Password;
+            // TODO(mattan): Add password validation
+        }
+
+        private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            PasswordTextBox.Text = Password;
+            PasswordTextBox.Visibility = Visibility.Visible;
+            PasswordField.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            PasswordField.Password = Password;
+            PasswordTextBox.Visibility = Visibility.Collapsed;
+            PasswordField.Visibility = Visibility.Visible;
         }
     }
 }
