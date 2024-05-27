@@ -25,17 +25,17 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 
 LoginManager* RequestHandlerFactory::getLoginManager() noexcept
 {
-    return this->m_loginManager.get();
+    return this->m_loginManager;
 }
 
 StatisticsManager* RequestHandlerFactory::getStatisticsManager() noexcept
 {
-    return this->m_statisticsManager.get();
+    return this->m_statisticsManager;
 }
 
 RoomManager* RequestHandlerFactory::getRoomManager() noexcept
 {
-    return this->m_roomManager.get();
+    return this->m_roomManager;
 }
 
 // Singleton

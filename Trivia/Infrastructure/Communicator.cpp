@@ -72,7 +72,7 @@ void Communicator::startHandleRequests()
 
             std::cout << ANSI_GREEN << "Client accepted (" << clientSocket << ")\n" << ANSI_NORMAL;
             // Add client with LoginRequestHandler to map
-            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory.get()));
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
 
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
