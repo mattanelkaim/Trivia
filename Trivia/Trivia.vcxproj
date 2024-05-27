@@ -118,6 +118,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>-Wall /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ProjectDir)Handlers;$(ProjectDir)Infrastructure;$(ProjectDir)Managers;$(ProjectDir)Other;$(ProjectDir)Requests;$(ProjectDir)Responses</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

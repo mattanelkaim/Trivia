@@ -9,13 +9,13 @@ namespace JsonResponseSerializer
     using json = nlohmann::json;
 
     // Helper function
-    buffer serializeGeneralResponse(ResponseCode type, std::string_view json);
+    buffer serializeGeneralResponse(ResponseCode type, std::string_view json) noexcept;
 
-    buffer serializeResponse(const ErrorResponse& response);
-    buffer serializeResponse(const GetRoomsResponse& response);
-    buffer serializeResponse(const GetPlayersInRoomResponse& response);
-    buffer serializeResponse(const GetHighScoreResponse& response);
-    buffer serializeResponse(const GetPersonalStatsResponse& response);
+    buffer serializeResponse(const ErrorResponse& response) noexcept;
+    buffer serializeResponse(const GetRoomsResponse& response) noexcept;
+    buffer serializeResponse(const GetPlayersInRoomResponse& response) noexcept;
+    buffer serializeResponse(const GetHighScoreResponse& response) noexcept;
+    buffer serializeResponse(const GetPersonalStatsResponse& response) noexcept;
 
     /**
      * Serializes a general response that isn't covered in other overloads of this function,
@@ -24,7 +24,7 @@ namespace JsonResponseSerializer
      * @param response The response object to be serialized.
      * @return The serialized response as a buffer.
      */
-    buffer serializeResponse(const auto& response) requires requires { response.status;  }
+    buffer serializeResponse(const auto& response) noexcept requires requires { response.status;  } // NOLINT
     {
         const json j{{JsonFields::STATUS, response.status}};
         return serializeGeneralResponse(ResponseCode::OK, j.dump());

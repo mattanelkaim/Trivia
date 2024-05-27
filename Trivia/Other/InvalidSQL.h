@@ -7,5 +7,5 @@ class InvalidSQL : public ServerException
 {
 public:
     InvalidSQL() = delete;
-    explicit InvalidSQL(const std::string& query);
+    explicit InvalidSQL(const std::string& query) noexcept;
 };
