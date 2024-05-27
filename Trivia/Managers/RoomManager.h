@@ -56,7 +56,7 @@ public:
     RoomManager(const RoomManager& other) = delete;
     void operator=(const RoomManager& other) = delete;
     static RoomManager* getInstance();
-    ~RoomManager() = default;
+    ~RoomManager() noexcept = default;
 
 private:
     /*######################################

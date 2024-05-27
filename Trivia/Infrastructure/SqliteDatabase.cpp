@@ -20,7 +20,7 @@ SqliteDatabase::SqliteDatabase()
     this->openDB(); // TODO(mattan) construct tables in code
 }
 
-SqliteDatabase::~SqliteDatabase()
+SqliteDatabase::~SqliteDatabase() noexcept
 {
     this->closeDB();
 }
@@ -33,7 +33,7 @@ bool SqliteDatabase::openDB()
     return true;
 }
 
-bool SqliteDatabase::closeDB()
+bool SqliteDatabase::closeDB() noexcept
 {
     const bool isSuccess = sqlite3_close(this->m_db) == SQLITE_OK;
     this->m_db = nullptr;

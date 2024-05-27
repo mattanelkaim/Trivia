@@ -1,9 +1,10 @@
 #include "Question.h"
 #include <string>
+#include <utility> // std::move
 #include <vector>
 
-Question::Question(const std::string& question, const std::vector<std::string>& answers) :
-    m_question(question),
+Question::Question(std::string question, const std::vector<std::string>& answers) :
+    m_question(std::move(question)),
     m_possibleAnswers(answers)
 {}
 
