@@ -5,37 +5,53 @@
 #include <string>
 #include <string_view>
 
-buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response)
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) noexcept
 {
-    const json j{{JsonFields::MESSAGE, response.message}};
-    return serializeGeneralResponse(ResponseCode::ERR, j.dump());
+    try
+    {
+        const json j{{JsonFields::MESSAGE, response.message}};
+        return serializeGeneralResponse(ResponseCode::ERR, j.dump());
+    }
+    catch (const nlohmann::json_abi_v3_11_3::detail::type_error& e)
+    {
+        return serializeGeneralResponse(ResponseCode::ERR, e.what());
+    }
 }
 
-buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response)
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response) noexcept
 {
     // Join all string fields with a delimiter
     std::string rooms;
-    for (const RoomData& room : response.rooms)
-        rooms += room.name + ", ";
-    rooms.resize(rooms.size() - 2); // Delete last 2 chars (", ")
+    if (!response.rooms.empty()) // Avoid resizing to a negative size
+    {
+        for (const RoomData& room : response.rooms)
+            rooms += room.name + ", ";
+        rooms.resize(rooms.size() - 2); // Delete last 2 chars (", ")
+    }
 
     const json j{{JsonFields::ROOMS, rooms}};
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse& response)
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse& response) noexcept
 {
     // Join all strings with a delimiter
     std::string players;
-    for (const std::string& room : response.players)
-        players += room + ", ";
-    players.resize(players.size() - 2); // Delete last 2 chars (", ")
+    if (!response.players.empty()) // Avoid resizing to a negative size
+    {
+        for (const std::string& room : response.players)
+            players += room + ", ";
+        players.resize(players.size() - 2); // Delete last 2 chars (", ")
+    }
 
     const json j{{JsonFields::PLAYERS_IN_ROOM, players}};
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response)
+buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response) noexcept
 {
     json j;
     
@@ -46,34 +62,40 @@ buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& res
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
-buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse& response)
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse& response) noexcept
 {
     using namespace JsonFields;
     using namespace JsonFields::UserStats;
 
     // Sub-fields that construct the "userStatistics" outer field
-    const json j{
-        {STATISTICS, {
-            {SCORE,           response.statistics[0]},
-            {TOTAL_GAMES,     response.statistics[1]},
-            {TOTAL_ANSWERS,   response.statistics[2]},
-            {CORRECT_ANSWERS, response.statistics[3]}
-        }}
+    const json j
+    {
+        {
+            STATISTICS,
+            {
+                {SCORE,           response.statistics[0]},
+                {TOTAL_GAMES,     response.statistics[1]},
+                {TOTAL_ANSWERS,   response.statistics[2]},
+                {CORRECT_ANSWERS, response.statistics[3]}
+            }
+        }
     };
 
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
 
-buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type, const std::string_view json)
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
+buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type, const std::string_view json) noexcept
 {
     // Directly constructing the buffer for efficiency
     return {std::from_range,
-        // The first byte is the response code
-        std::to_string(type) +
-        // Pushing the JSON's length to the buffer
-        Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) +
-        // Pushing the actual message to the buffer
-        json.data()
-    };
+            // The first byte is the response code
+            std::to_string(type) + \
+            // Pushing the JSON's length to the buffer
+            Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) + \
+            // Pushing the actual message to the buffer
+            json.data()
+            };
 }

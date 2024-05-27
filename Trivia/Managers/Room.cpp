@@ -1,14 +1,15 @@
 #include "LoggedUser.h"
 #include "Room.h"
 #include "ServerDefinitions.h"
+#include <utility> // std::move
 #include <vector>
 
-
-Room::Room(const RoomData& data) noexcept :
-    m_metadata(data)
+Room::Room(RoomData data) noexcept :
+    m_metadata(std::move(data))
 {}
 
-void Room::addUser(const LoggedUser& user)
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
+void Room::addUser(const LoggedUser& user) noexcept
 {
     this->m_users.push_back(user);
 }

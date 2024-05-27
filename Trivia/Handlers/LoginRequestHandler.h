@@ -8,30 +8,15 @@ class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shi
 class LoginRequestHandler final : public IRequestHandler
 {
 public:
+    explicit LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept;
+
     /*######################################
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    explicit LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept;
     bool isRequestRelevant(const RequestInfo& info) const noexcept override;
     RequestResult handleRequest(const RequestInfo& info) noexcept override;
     
-    /*######################################
-    ############ HELPER METHODS ############
-    ######################################*/
-
-    /**
-     * @throws InvalidProtocolStructure
-     * @throws InvalidSQL
-     */
-    RequestResult login(const RequestInfo& info);
-
-    /**
-    * @throws InvalidProtocolStructure
-    * @throws InvalidSQL
-    */
-    RequestResult signup(const RequestInfo& info);
-
     /*######################################
     #### AVOID SHITTY COMPILER WARNINGS ####
     ######################################*/
@@ -40,4 +25,20 @@ public:
 
 private:
     RequestHandlerFactory* m_handlerFactory;
+
+    /*######################################
+    ############ HELPER METHODS ############
+    ######################################*/
+
+    /**
+    * @throws InvalidProtocolStructure
+    * @throws InvalidSQL
+    */
+    RequestResult login(const RequestInfo& info);
+
+    /**
+    * @throws InvalidProtocolStructure
+    * @throws InvalidSQL
+    */
+    RequestResult signup(const RequestInfo& info);
 };

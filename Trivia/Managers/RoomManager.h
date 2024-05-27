@@ -21,6 +21,7 @@ public:
     * 
     * @param user The user who is creating the room.
     * @param data The metadata of the room.
+    * @throws ServerException If the room already exists.
     */
     void createRoom(const LoggedUser& user, const RoomData& data);
 
@@ -31,18 +32,22 @@ public:
     * 
     * @param roomId The ID of the room.
     * @return The state of the room.
+    * @throws ServerException If the room does not exist.
     */
     uint32_t getRoomState(uint32_t roomId) const;
 
-    std::vector<RoomData> getRooms() const;
+    std::vector<RoomData> getRooms() const noexcept;
 
     /**
     * @brief Returns a reference to a room.
     * 
     * @param roomId The ID of the room.
     * @return A reference to the room.
+    * @throws ServerException If the room does not exist.
     */
     Room& getRoom(uint32_t roomId);
+
+    static uint32_t getNextRoomId() noexcept;
 
     /*######################################
     ############### SINGLETON ##############
@@ -50,7 +55,7 @@ public:
 
     RoomManager(const RoomManager& other) = delete;
     void operator=(const RoomManager& other) = delete;
-    static std::unique_ptr<RoomManager>& getInstance();
+    static RoomManager* getInstance();
     ~RoomManager() = default;
 
 private:
@@ -59,6 +64,7 @@ private:
     ######################################*/
 
     std::unordered_map<uint32_t, Room> m_rooms;
+    inline static uint32_t roomIdCounter = 0;
 
     /*######################################
     ############### SINGLETON ##############
