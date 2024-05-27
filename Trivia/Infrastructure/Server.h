@@ -27,7 +27,7 @@ public:
     
     Server(const Server& other) = delete;
     void operator=(const Server& other) = delete;
-    static std::unique_ptr<Server>& getInstance();
+    static Server* getInstance();
     ~Server() noexcept;
 
 private:
@@ -36,7 +36,7 @@ private:
     ######################################*/
 
     IDatabase* m_database;
-    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
+    RequestHandlerFactory* m_handlerFactory;
     Communicator* m_communicator;
 
     /*######################################

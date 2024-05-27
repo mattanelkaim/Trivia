@@ -6,8 +6,8 @@
 class ServerException : public std::exception
 {
 public:
-    ServerException() = default;
-    explicit ServerException(const std::string& err);
+    ServerException() noexcept = default;
+    explicit ServerException(std::string err) noexcept;
     const char* what() const noexcept override;
 
 protected:

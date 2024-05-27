@@ -43,12 +43,12 @@ bool LoginManager::isUserLoggedIn(const std::string_view username) const noexcep
 }
 
 // Singleton
-std::unique_ptr<LoginManager>& LoginManager::getInstance(IDatabase* db)
+LoginManager* LoginManager::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_LoginManager == nullptr) [[unlikely]]
     {
         m_LoginManager = std::unique_ptr<LoginManager>(new LoginManager(db));
     }
-    return m_LoginManager;
+    return m_LoginManager.get();
 }

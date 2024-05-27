@@ -62,7 +62,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
+    RequestHandlerFactory* m_handlerFactory;
     SOCKET m_serverSocket;
     std::unordered_map<SOCKET, IRequestHandler*> m_clients;
 

@@ -1,8 +1,9 @@
 #include "ServerException.h"
 #include <string>
+#include <utility> // std::move
 
-ServerException::ServerException(const std::string& err) :
-    m_err(err)
+ServerException::ServerException(std::string err) noexcept :
+    m_err(std::move(err))
 {}
 
 const char* ServerException::what() const noexcept

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IDatabase.h"
-#include <memory> // std::unique_ptr
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -19,6 +19,7 @@ public:
     * This method retrieves the high scores from the database and returns them in a vector.
     * 
     * @return A vector of strings representing the high scores of all users.
+    * @throws InvalidSQL
     */
     std::vector<std::string> getHighScore() const;
 
@@ -29,6 +30,7 @@ public:
     * 
     * @param username The username of the user whose statistics are to be retrieved.
     * @return A vector of strings representing the user's statistics.
+    * @throws InvalidSQL
     */
     std::vector<std::string> getUserStatistics(const std::string& username) const;
 
@@ -39,7 +41,7 @@ public:
     StatisticsManager() = delete;
     StatisticsManager(const StatisticsManager& other) = delete;
     void operator=(const StatisticsManager& other) = delete;          
-    static std::unique_ptr<StatisticsManager>& getInstance(IDatabase* db);
+    static StatisticsManager* getInstance(IDatabase* db);
     ~StatisticsManager() noexcept = default;
 
 private:
