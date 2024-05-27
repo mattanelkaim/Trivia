@@ -50,51 +50,83 @@ namespace ClientGUI
 
         private void Username_GotFocus(object sender, RoutedEventArgs e)
         {
-            ThicknessAnimation animation = new()
+            ThicknessAnimation marginAnimation = new()
             {
                 To = new Thickness(2, 0, 0, 0),
                 Duration = TimeSpan.FromMilliseconds(200),
                 EasingFunction = new QuarticEase()
             };
-            this.UsernameTextBlock.BeginAnimation(MarginProperty, animation);
+            this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+            DoubleAnimation fontSizeAnimation = new()
+            {
+                To = 12,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
         }
 
         private void Username_LostFocus(object sender, RoutedEventArgs e)
         {
             if (Username.Length == 0)
             {
-                ThicknessAnimation animation = new()
+                ThicknessAnimation marginAnimation = new()
                 {
                     To = new Thickness(28, 22, 0, 0),
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
-                this.UsernameTextBlock.BeginAnimation(MarginProperty, animation);
+                this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+                DoubleAnimation fontSizeAnimation = new()
+                {
+                    To = 16,
+                    Duration = TimeSpan.FromMilliseconds(200),
+                    EasingFunction = new QuarticEase()
+                };
+                this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
             }
         }
 
         private void Password_GotFocus(object sender, RoutedEventArgs e)
         {
-            ThicknessAnimation animation = new()
+            ThicknessAnimation marginAnimation = new()
             {
-                To = new Thickness(2, 50, 0, 0),
+                To = new Thickness(2, 54, 0, 0),
                 Duration = TimeSpan.FromMilliseconds(200),
                 EasingFunction = new QuarticEase()
             };
-            this.PasswordTextBlock.BeginAnimation(MarginProperty, animation);
+            this.PasswordTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+            DoubleAnimation fontSizeAnimation = new()
+            {
+                To = 12,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            this.PasswordTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
         }
 
         private void Password_LostFocus(object sender, RoutedEventArgs e)
         {
             if (Password.Length == 0)
             {
-                ThicknessAnimation animation = new()
+                ThicknessAnimation marginAnimation = new()
                 {
                     To = new Thickness(28, 73, 0, 0),
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
-                this.PasswordTextBlock.BeginAnimation(MarginProperty, animation);
+                this.PasswordTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+                DoubleAnimation fontSizeAnimation = new()
+                {
+                    To = 16,
+                    Duration = TimeSpan.FromMilliseconds(200),
+                    EasingFunction = new QuarticEase()
+                };
+                this.PasswordTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
             }
         }
 
