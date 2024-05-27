@@ -157,12 +157,12 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 }
 
 // Singleton
-std::shared_ptr<Communicator> Communicator::getInstance(IDatabase* db)
+Communicator* Communicator::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Communicator == nullptr) [[unlikely]]
     {
         m_Communicator = std::shared_ptr<Communicator>(new Communicator(db));
     }
-    return m_Communicator;
+    return m_Communicator.get();
 }

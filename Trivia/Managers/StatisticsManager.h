@@ -41,7 +41,7 @@ public:
     StatisticsManager() = delete;
     StatisticsManager(const StatisticsManager& other) = delete;
     void operator=(const StatisticsManager& other) = delete;          
-    static std::shared_ptr<StatisticsManager> getInstance(IDatabase* db);
+    static StatisticsManager* getInstance(IDatabase* db);
     ~StatisticsManager() noexcept = default;
 
 private:
