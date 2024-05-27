@@ -41,13 +41,13 @@ RoomManager* RequestHandlerFactory::getRoomManager() noexcept
 }
 
 // Singleton
-std::shared_ptr<RequestHandlerFactory> RequestHandlerFactory::getInstance(IDatabase* db)
+RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_HandlerFactory == nullptr) [[unlikely]]
     {
         m_HandlerFactory = std::shared_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
     }
-    return m_HandlerFactory;
+    return m_HandlerFactory.get();
 }
 
