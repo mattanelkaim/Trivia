@@ -29,7 +29,6 @@
             <TextBox Name="UsernameField"
                      Height="30"
                      Width="200"
-                     TextWrapping="Wrap"
                      VerticalAlignment="Top"
                      HorizontalAlignment="Center"
                      VerticalContentAlignment="Center"
@@ -39,6 +38,7 @@
                      BorderThickness="0,0,0,2"
                      FontSize="16"
                      MaxLength="16"
+                     TextWrapping="NoWrap"
                      Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Username_GotFocus"
                      LostFocus="Username_LostFocus">
@@ -98,6 +98,7 @@
                      BorderBrush="DarkGray" 
                      BorderThickness="0,0,0,2"
                      FontSize="16"
+                     TextWrapping="NoWrap"
                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Password_GotFocus"
                      LostFocus="Password_LostFocus"
