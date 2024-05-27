@@ -24,7 +24,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& respons
 {
     // Join all string fields with a delimiter
     std::string rooms;
-    if (!response.rooms.empty()) // Avoid resizing to a negative size
+    if (!response.rooms.empty()) [[unlikely]] // Avoid resizing to a negative size
     {
         for (const RoomData& room : response.rooms)
             rooms += room.name + ", ";
@@ -40,7 +40,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse&
 {
     // Join all strings with a delimiter
     std::string players;
-    if (!response.players.empty()) // Avoid resizing to a negative size
+    if (!response.players.empty()) [[unlikely]] // Avoid resizing to a negative size
     {
         for (const std::string& room : response.players)
             players += room + ", ";
@@ -90,12 +90,13 @@ buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse&
 buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type, const std::string_view json) noexcept
 {
     // Directly constructing the buffer for efficiency
-    return {std::from_range,
-            // The first byte is the response code
-            std::to_string(type) + \
-            // Pushing the JSON's length to the buffer
-            Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) + \
-            // Pushing the actual message to the buffer
-            json.data()
-            };
+    return {
+        std::from_range,
+        // The first byte is the response code
+        std::to_string(type) +
+        // Pushing the JSON's length to the buffer
+        Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) +
+        // Pushing the actual message to the buffer
+        json.data()
+    };
 }
