@@ -34,11 +34,11 @@ namespace ClientGUI
             string json = JsonSerializer.Serialize(new { username = this.Username.Text, password = this.Password.Text });
 
             string msg = Helper.Serialize(json, Helper.MessageType.Login);
-            MessageBox.Show("Sending: " + msg);
+            MessageBox.Show("[Sending]: " + msg);
             Communicator.Send(msg);
 
             string response = Communicator.Receive();
-            MessageBox.Show("Received: " + response);
+            MessageBox.Show("[Received]: " + response);
         }
     }
 }

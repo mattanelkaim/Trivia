@@ -1,73 +1,97 @@
-#include "../Infrastructure/RequestHandlerFactory.h"
-#include "../Requests/JsonRequestDeserializer.h"
-#include "../Responses/JsonResponseSerializer.h"
-#include "../ServerDefenitions.h"
+#pragma warning(disable: 4061) // Enumerator in switch of enum is not explicitly handled by a case label
+
+#include "InvalidProtocolStructure.h"
+#include "JsonRequestDeserializer.hpp"
+#include "JsonResponseSerializer.h"
+#include "LoginManager.h"
 #include "LoginRequestHandler.h"
-#include "MenuRequestHandler.h"
-#include <stdexcept>
+#include "RequestHandlerFactory.h"
+#include "ServerDefinitions.h"
+#include "ServerException.h"
+#if SERVER_DEBUG
+#include <iostream>
+#endif
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory& handlerFactory)
-    : m_handlerFactory(handlerFactory) {}
+LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept :
+    m_handlerFactory(handlerFactory)
+{}
 
-bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info)
+bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
     return info.id == LOGIN || info.id == SIGNUP;
 }
 
-RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info)
+RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexcept
 {
-    switch (info.id)
+    try
     {
-    case LOGIN:
-        return this->login(info);
-    case SIGNUP:
-        return this->signup(info);
-    default:
-        throw std::runtime_error("RequestInfo is not login/signup!");
+        switch (info.id)
+        {
+        [[likely]] case LOGIN:
+            return this->login(info);
+        case SIGNUP:
+            return this->signup(info);
+        default:
+            throw InvalidProtocolStructure("Request is not relevant to LoginRequestHandler!");
+        }
+    }
+    catch (const ServerException& e) // Either InvalidProtocolStructure or InvalidSQL
+    {
+        if constexpr (SERVER_DEBUG)
+            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+        
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
+            .newHandler = nullptr
+        };
     }
 }
 
 
-// HELPER FUNCTIONS
+/*######################################
+############ HELPER METHODS ############
+######################################*/
 
 
 RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
-    LoginManager& loginManager = this->m_handlerFactory.getLoginManager();
-    RequestResult result;
+    const auto request = JsonRequestDeserializer::deserializeRequest<LoginRequest>(info.buffer);
 
-    const LoginRequest request = JsonResponseDeserializer::deserializeLoginResponse(info.buffer);
-    if (loginManager.login(request.username, request.password))
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
+    if (loginManager->login(request.username, request.password)) [[likely]]
     {
-        result.response = JsonResponseSerializer::serializeLoginResponse(LoginResponse{RESPONSE});
-        result.newHandler = new MenuRequestHandler();
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(LoginResponse{OK}),
+            .newHandler = m_handlerFactory->createMenuRequestHandler(request.username)
+        };
     }
-    else
+    else [[unlikely]]
     {
-        result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Login failed"});
-        result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry login
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Login failed"}),
+            .newHandler = nullptr // Retry login
+        };
     }
-
-    return result;
 }
 
 RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
-    LoginManager& loginManager = this->m_handlerFactory.getLoginManager();
-    RequestResult result;
+    const auto request = JsonRequestDeserializer::deserializeRequest<SignupRequest>(info.buffer);
 
-    const SignupRequest request = JsonResponseDeserializer::deserializeSignupResponse(info.buffer);
-    if (loginManager.signup(request.username, request.password, request.email))
+    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
+    if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
     {
-        result.response = JsonResponseSerializer::serializeSignupResponse(SignupResponse{RESPONSE});
-        result.newHandler = new MenuRequestHandler();
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(SignupResponse{OK}),
+            .newHandler = m_handlerFactory->createMenuRequestHandler(request.username)
+        };
     }
-    else
+    else [[unlikely]]
     {
-        result.response = JsonResponseSerializer::serializeErrorResponse(ErrorResponse{"Signup failed"});
-        result.newHandler = new LoginRequestHandler(this->m_handlerFactory); // Retry signup
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Signup failed"}),
+            .newHandler = nullptr // Retry signup
+        };
     }
-
-    return result;
 }
