@@ -13,9 +13,14 @@ namespace ClientGUI
 
         public enum MessageType
         {
-            Error,
             Login,
             Register,
+        }
+
+        public enum ResponseType
+        {
+            Error,
+            OK,
         }
 
 
