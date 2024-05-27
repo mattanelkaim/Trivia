@@ -11,6 +11,10 @@ namespace ClientGUI
         public static readonly ushort BYTES_RESERVED_FOR_CODE = 1;
         public static readonly ushort BYTES_RESERVED_FOR_MSG_LEN = 4;
 
+        // Also in Login window xaml
+        public static readonly ushort MAX_PASSWORD_LENGTH = 8;
+        public static readonly ushort MAX_USERNAME_LENGTH = 16;
+
         public enum MessageType
         {
             Login,
