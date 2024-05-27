@@ -62,7 +62,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    std::shared_ptr<RequestHandlerFactory> m_handlerFactory;
+    RequestHandlerFactory* m_handlerFactory;
     SOCKET m_serverSocket;
     std::unordered_map<SOCKET, IRequestHandler*> m_clients;
 
@@ -95,6 +95,6 @@ private:
     ######################################*/
 
     explicit Communicator(IDatabase* db);
-    inline static std::shared_ptr<Communicator> m_Communicator = nullptr;
+    inline static std::unique_ptr<Communicator> m_Communicator = nullptr;
     inline static std::mutex m_mutex;
 };

@@ -71,6 +71,6 @@ private:
     ######################################*/
 
     RoomManager() noexcept = default;
-    inline static std::shared_ptr<RoomManager> m_RoomManager = nullptr;
+    inline static std::unique_ptr<RoomManager> m_RoomManager = nullptr;
     inline static std::mutex m_mutex;
 };
