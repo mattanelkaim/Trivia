@@ -46,7 +46,7 @@ public:
     LoginManager(const LoginManager& other) = delete;
     void operator=(const LoginManager& other) = delete;
     static LoginManager* getInstance(IDatabase* db);
-    ~LoginManager() = default;
+    ~LoginManager() noexcept = default;
 
 private:
     /*######################################

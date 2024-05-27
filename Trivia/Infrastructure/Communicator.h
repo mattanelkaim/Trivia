@@ -94,6 +94,7 @@ private:
     ############### SINGLETON ##############
     ######################################*/
 
+    // @throws std::runtime_error When connection setup fails.
     explicit Communicator(IDatabase* db);
     inline static std::unique_ptr<Communicator> m_Communicator = nullptr;
     inline static std::mutex m_mutex;

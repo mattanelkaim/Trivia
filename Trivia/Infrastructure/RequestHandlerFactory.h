@@ -36,7 +36,7 @@ public:
     RequestHandlerFactory(const RequestHandlerFactory& other) = delete;
     void operator=(const RequestHandlerFactory& other) = delete;
     static RequestHandlerFactory* getInstance(IDatabase* db);
-    ~RequestHandlerFactory() = default;
+    ~RequestHandlerFactory() noexcept = default;
 
 private:
     /*######################################
