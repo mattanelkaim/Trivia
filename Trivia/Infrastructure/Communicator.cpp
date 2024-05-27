@@ -25,7 +25,7 @@ Communicator::Communicator(IDatabase* db) :
     m_handlerFactory(RequestHandlerFactory::getInstance(db)),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
-    if (this->m_serverSocket == INVALID_SOCKET)
+    if (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(this->m_serverSocket == INVALID_SOCKET))
         throw std::runtime_error(std::format("{}  - socket() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
     this->bindAndListen();

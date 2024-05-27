@@ -1,8 +1,10 @@
+#pragma warning(disable: 4061) // Enumerator in switch of enum is not explicitly handled by a case label
+
+#include "InvalidProtocolStructure.h"
 #include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
 #include "LoginManager.h"
 #include "LoginRequestHandler.h"
-#include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
@@ -31,7 +33,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexce
         case SIGNUP:
             return this->signup(info);
         default:
-            throw InvalidProtocolStructure("RequestInfo is not login/signup!");
+            throw InvalidProtocolStructure("Request is not relevant to LoginRequestHandler!");
         }
     }
     catch (const ServerException& e) // Either InvalidProtocolStructure or InvalidSQL
@@ -47,7 +49,9 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexce
 }
 
 
-// HELPER FUNCTIONS
+/*######################################
+############ HELPER METHODS ############
+######################################*/
 
 
 RequestResult LoginRequestHandler::login(const RequestInfo& info)

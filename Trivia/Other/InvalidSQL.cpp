@@ -2,6 +2,6 @@
 #include "ServerException.h"
 #include <string>
 
-InvalidSQL::InvalidSQL(const std::string& query) :
+InvalidSQL::InvalidSQL(const std::string& query) noexcept :
     ServerException(query)
 {}
