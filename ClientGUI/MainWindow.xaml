@@ -14,7 +14,7 @@
                    Margin="0,40,0,0"
                    FontSize="40"
                    FontWeight="Bold"/>
-        
+
         <Grid HorizontalAlignment="Center"
               VerticalAlignment="Center">
             <!--Moves up on field focus-->
@@ -22,24 +22,26 @@
                        Text="Username"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Margin="23,17,0,0"
-                       FontSize="12"
+                       Margin="28,22,0,0"
+                       FontSize="16"
                        FontWeight="SemiBold"/>
-            
+
             <TextBox Name="UsernameField"
-                     Height="25"
+                     Height="30"
                      Width="200"
                      TextWrapping="Wrap"
                      VerticalAlignment="Top"
                      HorizontalAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Margin="0,15,0,0"
-                     Padding="23,0,0,0"
+                     Margin="0,20,0,0"
+                     Padding="28,0,0,0"
                      BorderBrush="DarkGray"
                      BorderThickness="0,0,0,2"
+                     FontSize="16"
+                     MaxLength="16"
+                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Username_GotFocus"
-                     LostFocus="Username_LostFocus"
-                     MaxLength="16">
+                     LostFocus="Username_LostFocus">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/user.png"
                                 Stretch="Uniform"
@@ -49,29 +51,31 @@
                                 Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
             </TextBox>
-            
+
             <!--Moves up on field focus-->
             <TextBlock Name="PasswordTextBlock"
                        Text="Password"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Margin="23,64,0,0"
-                       FontSize="12"
+                       Margin="28,73,0,0"
+                       FontSize="16"
                        FontWeight="SemiBold"/>
-            
+
             <PasswordBox Name="PasswordField"
-                         Height="25"
+                         Height="30"
                          Width="200"
                          VerticalAlignment="Top"
                          HorizontalAlignment="Center"
                          VerticalContentAlignment="Center"
-                         Margin="0,62,0,0"
-                         Padding="23,0,0,0"
+                         Margin="0,70,0,0"
+                         Padding="28,0,0,0"
                          BorderBrush="DarkGray"
                          BorderThickness="0,0,0,2"
+                         FontSize="16"
                          GotFocus="Password_GotFocus"
                          LostFocus="Password_LostFocus"
-                         MaxLength="8">
+                         MaxLength="8"
+                         PasswordChanged="Password_PasswordChanged">
                 <PasswordBox.Background>
                     <ImageBrush ImageSource="Images/password.png"
                                 Stretch="Uniform"
@@ -81,7 +85,56 @@
                                 Viewport="0.01,0.1,1,0.8"/>
                 </PasswordBox.Background>
             </PasswordBox>
-            
+
+            <!--Will be swapped with PasswordBox on password reveal-->
+            <TextBox Name="PasswordTextBox" 
+                     Height="30" 
+                     Width="200" 
+                     VerticalAlignment="Top" 
+                     HorizontalAlignment="Center" 
+                     VerticalContentAlignment="Center" 
+                     Margin="0,70,0,0" 
+                     Padding="28,0,0,0" 
+                     BorderBrush="DarkGray" 
+                     BorderThickness="0,0,0,2"
+                     FontSize="16"
+                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Password_GotFocus"
+                     LostFocus="Password_LostFocus"
+                     Visibility="Collapsed">
+                <TextBox.Background>
+                    <ImageBrush ImageSource="Images/password.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </TextBox.Background>
+            </TextBox>
+
+            <CheckBox Name="ShowPasswordCheckBox"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      Margin="0,72,5,0"
+                      Checked="ShowPasswordCheckBox_Checked"
+                      Unchecked="ShowPasswordCheckBox_Unchecked">
+                <CheckBox.Template>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Image Name="image" Width="30" Height="30" Margin="0,-6"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="image" Property="Source" Value="Images/eyesClosed.png"/>
+                                <Setter TargetName="image" Property="ToolTip" Value="Hide password"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="image" Property="Source" Value="Images/eyesOpen.png"/>
+                                <Setter TargetName="image" Property="ToolTip" Value="Show password"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </CheckBox.Template>
+            </CheckBox>
+
             <Button Name="LoginSubmit"
                     Content="LOGIN"
                     HorizontalAlignment="Center"
