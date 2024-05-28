@@ -28,11 +28,12 @@ namespace ClientGUI
 
             try
             {
-                //Communicator.Connect();
+                Communicator.Connect();
             }
             catch (Exception e)
             {
-                MessageBox.Show("Connection failed: " + e.Message);
+                MessageBox.Show("Connection failed: " + e.Message + "\nPlease try again later.");
+                System.Windows.Application.Current.Shutdown();
             }
         }
 
