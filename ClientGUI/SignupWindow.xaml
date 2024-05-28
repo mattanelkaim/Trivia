@@ -5,67 +5,89 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientGUI"
         mc:Ignorable="d"
-        Title="SignupWindow" Height="450" Width="800">
+        Title="Trivia" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="293*"/>
-            <ColumnDefinition Width="508*"/>
-        </Grid.ColumnDefinitions>
         <TextBlock Text="Join Trivia"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Center"
-               Margin="0,40,0,0"
-               FontSize="40"
-               FontWeight="Bold" Grid.ColumnSpan="2"/>
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center"
+                   Margin="0,40,0,0"
+                   FontSize="40"
+                   FontWeight="Bold"/>
 
-        <StackPanel HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="8,134,0,0" Grid.Column="1">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,40,0,0">
             <!--Moves up on field focus-->
             <TextBlock Name="UsernameTextBlock"
-                   Text="Username"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="28,23,0,-28"
-                   FontSize="16"
-                   FontWeight="SemiBold"/>
+                       Text="Username"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="28,23,0,-28"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
 
             <TextBox Name="UsernameField"
-                 Height="30"
-                 Width="200"
-                 VerticalAlignment="Top"
-                 HorizontalAlignment="Center"
-                 VerticalContentAlignment="Center"
-                 Margin="0,5,0,10"
-                 Padding="28,0,0,0"
-                 BorderBrush="DarkGray"
-                 BorderThickness="0,0,0,2"
-                 FontSize="16"
-                 MaxLength="16"
-                 TextWrapping="NoWrap"
-                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                 GotFocus="Username_GotFocus"
-                 LostFocus="Username_LostFocus">
+                     Height="30"
+                     Width="200"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,10"
+                     Padding="28,0,0,0"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     FontSize="16"
+                     MaxLength="16"
+                     TextWrapping="NoWrap"
+                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Username_GotFocus"
+                     LostFocus="Username_LostFocus">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/user.png"
-                            Stretch="Uniform"
-                            AlignmentX="Left"
-                            AlignmentY="Center"
-                            ViewportUnits="RelativeToBoundingBox"
-                            Viewport="0.01,0.1,1,0.8"/>
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
             </TextBox>
 
             <!--Moves up on field focus-->
             <TextBlock Name="PasswordTextBlock"
-                   Text="Password"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="28,23,0,-28"
-                   FontSize="16"
-                   FontWeight="SemiBold"/>
+                       Text="Password"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="28,23,0,-28"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
 
             <PasswordBox Name="PasswordField"
+                         Height="30"
+                         Width="200"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Margin="0,5,0,0"
+                         Padding="28,0,0,0"
+                         BorderBrush="DarkGray"
+                         BorderThickness="0,0,0,2"
+                         FontSize="16"
+                         GotFocus="Password_GotFocus"
+                         LostFocus="Password_LostFocus"
+                         MaxLength="8"
+                         PasswordChanged="Password_PasswordChanged">
+                <PasswordBox.Background>
+                    <ImageBrush ImageSource="Images/password.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </PasswordBox.Background>
+            </PasswordBox>
+
+            <!--Will be swapped with PasswordBox on password reveal-->
+            <TextBox Name="PasswordTextBox"
                      Height="30"
                      Width="200"
                      VerticalAlignment="Top"
@@ -76,89 +98,29 @@
                      BorderBrush="DarkGray"
                      BorderThickness="0,0,0,2"
                      FontSize="16"
+                     MaxLength="8"
+                     TextWrapping="NoWrap"
+                     Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Password_GotFocus"
                      LostFocus="Password_LostFocus"
-                     MaxLength="8"
-                     PasswordChanged="Password_PasswordChanged">
-                <PasswordBox.Background>
-                    <ImageBrush ImageSource="Images/password.png"
-                            Stretch="Uniform"
-                            AlignmentX="Left"
-                            AlignmentY="Center"
-                            ViewportUnits="RelativeToBoundingBox"
-                            Viewport="0.01,0.1,1,0.8"/>
-                </PasswordBox.Background>
-            </PasswordBox>
-
-            <!--Will be swapped with PasswordBox on password reveal-->
-            <TextBox Name="PasswordTextBox"
-                 Height="30"
-                 Width="200"
-                 VerticalAlignment="Top"
-                 HorizontalAlignment="Center"
-                 VerticalContentAlignment="Center"
-                 Margin="0,5,0,0"
-                 Padding="28,0,0,0"
-                 BorderBrush="DarkGray"
-                 BorderThickness="0,0,0,2"
-                 FontSize="16"
-                 TextWrapping="NoWrap"
-                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                 GotFocus="Password_GotFocus"
-                 LostFocus="Password_LostFocus"
-                 Visibility="Collapsed">
+                     Visibility="Collapsed">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/password.png"
-                            Stretch="Uniform"
-                            AlignmentX="Left"
-                            AlignmentY="Center"
-                            ViewportUnits="RelativeToBoundingBox"
-                            Viewport="0.01,0.1,1,0.8"/>
-                </TextBox.Background>
-            </TextBox>
-
-            <!--Moves up on field focus-->
-            <TextBlock Name="EmailTextBlock"
-               Text="Email"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               Margin="28,33,0,-28"
-               FontSize="16"
-               FontWeight="SemiBold"/>
-
-            <TextBox Name="EmailField"
-                Height="30"
-                Width="200"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Center"
-                VerticalContentAlignment="Center"
-                Margin="0, 5,0,10"
-                Padding="28,0,0,0"
-                BorderBrush="DarkGray"
-                BorderThickness="0,0,0,2"
-                FontSize="16"
-                MaxLength="16"
-                TextWrapping="NoWrap"
-                Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                GotFocus="Email_GotFocus"
-                LostFocus="Email_LostFocus">
-                <TextBox.Background>
-                    <ImageBrush ImageSource="Images/email.png"
-                Stretch="Uniform"
-                AlignmentX="Left"
-                AlignmentY="Center"
-                ViewportUnits="RelativeToBoundingBox"
-                Viewport="0.01,0.1,1,0.8"/>
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
             </TextBox>
 
             <CheckBox Name="ShowPasswordCheckBox"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Top"
-                  Margin="0,-96,6,0"
-                  Cursor="Hand"
-                  Checked="ShowPasswordCheckBox_Checked"
-                  Unchecked="ShowPasswordCheckBox_Unchecked" RenderTransformOrigin="0.46,1.81">
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      Margin="0,-26,6,0"
+                      Cursor="Hand"
+                      Checked="ShowPasswordCheckBox_Checked"
+                      Unchecked="ShowPasswordCheckBox_Unchecked">
                 <CheckBox.Template>
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <Image Name="image" Width="30" Height="30" Margin="0,-6"/>
@@ -176,19 +138,53 @@
                 </CheckBox.Template>
             </CheckBox>
 
-            <Button Name="LoginSubmit"
-                Content="SIGNUP"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Margin="0,30,0,0"
-                Padding="40,8,40,8"
-                Background="MediumBlue"
-                Foreground="White"
-                BorderBrush="DarkGray"
-                BorderThickness="0.5"
-                FontSize="16"
-                FontWeight="Bold"
-                Cursor="Hand">
+            <!--Moves up on field focus-->
+            <TextBlock Name="EmailTextBlock"
+                       Text="Email"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="28,23,0,-28"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
+
+            <TextBox Name="EmailField"
+                     Height="30"
+                     Width="200"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Margin="0,5,0,10"
+                     Padding="28,0,0,0"
+                     BorderBrush="DarkGray"
+                     BorderThickness="0,0,0,2"
+                     FontSize="16"
+                     TextWrapping="NoWrap"
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Email_GotFocus"
+                     LostFocus="Email_LostFocus">
+                <TextBox.Background>
+                    <ImageBrush ImageSource="Images/email.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </TextBox.Background>
+            </TextBox>
+
+            <Button Name="SignupSubmit"
+                    Content="SIGNUP"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,30,0,0"
+                    Padding="40,8,40,8"
+                    Background="MediumBlue"
+                    Foreground="White"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0.5"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Cursor="Hand">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="23"/>
@@ -196,26 +192,26 @@
                 </Button.Resources>
             </Button>
 
-            <StackPanel Margin="0,10,0,0" HorizontalAlignment="Center" Orientation="Horizontal">
-
+            <StackPanel Margin="0,10,0,0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
                 <TextBlock Text="Already have an account? "
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Margin="0,0,0,0"
-                       FontSize="12"
-                       FontWeight="SemiBold"/>
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Margin="0,0,0,0"
+                           FontSize="12"
+                           FontWeight="SemiBold"/>
 
-                <TextBlock Name="JoinLink"
-                       Text="Login"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Margin="0,0,0,0"
-                       FontSize="12"
-                       FontWeight="Bold"
-                       Foreground="MediumBlue"
-                       Cursor="Hand"/>
+                <TextBlock Name="SigninLink"
+                           Text="Sign in"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Margin="0,0,0,0"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Foreground="MediumBlue"
+                           Cursor="Hand"/>
             </StackPanel>
-
         </StackPanel>
     </Grid>
 </Window>

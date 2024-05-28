@@ -23,24 +23,12 @@ namespace ClientGUI
     {
         public string Username { get; set; } = "";
         public string Password { private get; set; } = "";
-
         public string Email { get; set; } = "";
+
         public SignupWindow()
         {
             InitializeComponent();
             this.DataContext = this;
-            this.LoginSubmit.Click += new RoutedEventHandler(LoginSubmit_Click);
-
-
-            try
-            {
-                Communicator.Connect();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Connection failed: " + e.Message + "\nPlease try again later.");
-                System.Windows.Application.Current.Shutdown();
-            }
         }
 
         private void LoginSubmit_Click(object sender, RoutedEventArgs e)
