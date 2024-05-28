@@ -17,15 +17,15 @@ using System.Windows.Shapes;
 namespace ClientGUI
 {
     /// <summary>
-    /// Interaction logic for SignupWindow.xaml
+    /// Interaction logic for SignupPage.xaml
     /// </summary>
-    public partial class SignupWindow : Window
+    public partial class SignupPage : Page
     {
         public string Username { get; set; } = "";
         public string Password { private get; set; } = "";
         public string Email { get; set; } = "";
 
-        public SignupWindow()
+        public SignupPage()
         {
             InitializeComponent();
             this.DataContext = this;
@@ -177,7 +177,7 @@ namespace ClientGUI
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
-                this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+                this.EmailTextBlock.BeginAnimation(MarginProperty, marginAnimation);
 
                 DoubleAnimation fontSizeAnimation = new()
                 {
@@ -185,8 +185,13 @@ namespace ClientGUI
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
-                this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+                this.EmailTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
             }
+        }
+
+        private void LoginLink_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new LoginPage());
         }
     }
 }
