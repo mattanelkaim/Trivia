@@ -73,7 +73,7 @@ namespace ClientGUI
             {
                 ThicknessAnimation marginAnimation = new()
                 {
-                    To = new Thickness(28, 22, 0, 0),
+                    To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
@@ -93,7 +93,7 @@ namespace ClientGUI
         {
             ThicknessAnimation marginAnimation = new()
             {
-                To = new Thickness(2, 54, 0, 0),
+                To = new Thickness(2, 0, 0, 0),
                 Duration = TimeSpan.FromMilliseconds(200),
                 EasingFunction = new QuarticEase()
             };
@@ -114,7 +114,7 @@ namespace ClientGUI
             {
                 ThicknessAnimation marginAnimation = new()
                 {
-                    To = new Thickness(28, 73, 0, 0),
+                    To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
