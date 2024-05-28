@@ -7,16 +7,20 @@
         mc:Ignorable="d"
         Title="Trivia" Height="450" Width="800">
     <Grid>
-        <TextBlock Text="Our Sexy Trivia"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="293*"/>
+            <ColumnDefinition Width="508*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Log Into Trivia"
                    VerticalAlignment="Top"
-                   HorizontalAlignment="Center"
-                   Margin="0,40,0,0"
+                   HorizontalAlignment="Left"
+                   Margin="259,40,0,0"
                    FontSize="40"
-                   FontWeight="Bold"/>
+                   FontWeight="Bold" Grid.ColumnSpan="2"/>
 
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Margin="0,40,0,0">
+        <StackPanel HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="8,134,0,0" Grid.Column="1">
             <!--Moves up on field focus-->
             <TextBlock Name="UsernameTextBlock"
                        Text="Username"
@@ -165,7 +169,7 @@
                            Margin="0,0,0,0"
                            FontSize="12"
                            FontWeight="SemiBold"/>
-                
+
                 <TextBlock Name="JoinLink"
                            Text="Join now"
                            HorizontalAlignment="Center"
@@ -174,7 +178,8 @@
                            FontSize="12"
                            FontWeight="Bold"
                            Foreground="MediumBlue"
-                           Cursor="Hand"/>
+                           Cursor="Hand"
+                           MouseDown="JoinLink_Click"/>
             </StackPanel>
 
         </StackPanel>
