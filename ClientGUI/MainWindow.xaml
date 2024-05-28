@@ -116,7 +116,8 @@
             <CheckBox Name="ShowPasswordCheckBox"
                       HorizontalAlignment="Right"
                       VerticalAlignment="Top"
-                      Margin="0,-25,5,0"
+                      Margin="0,-26,6,0"
+                      Cursor="Hand"
                       Checked="ShowPasswordCheckBox_Checked"
                       Unchecked="ShowPasswordCheckBox_Unchecked">
                 <CheckBox.Template>
@@ -140,17 +141,18 @@
                     Content="LOGIN"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Width="100"
-                    Margin="0,40,0,0"
-                    Padding="0,10,0,10"
+                    Margin="0,30,0,0"
+                    Padding="40,8,40,8"
+                    Background="MediumBlue"
+                    Foreground="White"
                     BorderBrush="DarkGray"
-                    BorderThickness="1.5"
-                    FontSize="13"
-                    FontWeight="Black"
+                    BorderThickness="0.5"
+                    FontSize="16"
+                    FontWeight="Bold"
                     Cursor="Hand">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="20"/>
+                        <Setter Property="CornerRadius" Value="23"/>
                     </Style>
                 </Button.Resources>
             </Button>
@@ -162,7 +164,7 @@
                            VerticalAlignment="Top"
                            Margin="0,0,0,0"
                            FontSize="12"
-                           FontWeight="Bold"/>
+                           FontWeight="SemiBold"/>
                 
                 <TextBlock Name="JoinLink"
                            Text="Join now"
@@ -170,8 +172,9 @@
                            VerticalAlignment="Top"
                            Margin="0,0,0,0"
                            FontSize="12"
-                           FontWeight="Heavy"
-                           />
+                           FontWeight="Bold"
+                           Foreground="MediumBlue"
+                           Cursor="Hand"/>
             </StackPanel>
 
         </StackPanel>
