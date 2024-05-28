@@ -169,11 +169,11 @@ namespace ClientGUI
 
         private void Email_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Username.Length == 0)
+            if (Password.Length == 0)
             {
                 ThicknessAnimation marginAnimation = new()
                 {
-                    To = new Thickness(28, 33, 0, -38), // -38 to overlap with field, 33 to save space above (save 5 for fontSize change)
+                    To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
