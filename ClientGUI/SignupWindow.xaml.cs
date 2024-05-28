@@ -1,25 +1,31 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Text.Json;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace ClientGUI
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for SignupWindow.xaml
+    /// </summary>
+    public partial class SignupWindow : Window
     {
         public string Username { get; set; } = "";
         public string Password { private get; set; } = "";
 
-
-        public MainWindow()
+        public string Email { get; set; } = "";
+        public SignupWindow()
         {
             InitializeComponent();
             this.DataContext = this;
@@ -40,10 +46,7 @@ namespace ClientGUI
         private void LoginSubmit_Click(object sender, RoutedEventArgs e)
         {
             if (this.Username == string.Empty || this.Password == string.Empty)
-            { 
                 MessageBox.Show("One or more of the fields is empty!");
-                return;
-            }
 
             string json = JsonSerializer.Serialize(new { username = Username, password = Password });
 
@@ -75,6 +78,47 @@ namespace ClientGUI
         }
 
         private void Username_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Username.Length == 0)
+            {
+                ThicknessAnimation marginAnimation = new()
+                {
+                    To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
+                    Duration = TimeSpan.FromMilliseconds(200),
+                    EasingFunction = new QuarticEase()
+                };
+                this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+                DoubleAnimation fontSizeAnimation = new()
+                {
+                    To = 16,
+                    Duration = TimeSpan.FromMilliseconds(200),
+                    EasingFunction = new QuarticEase()
+                };
+                this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+            }
+        }
+
+        private void Email_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ThicknessAnimation marginAnimation = new()
+            {
+                To = new Thickness(2, 0, 0, 0),
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            this.EmailTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+            DoubleAnimation fontSizeAnimation = new()
+            {
+                To = 12,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            this.EmailTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+        }
+
+        private void Email_LostFocus(object sender, RoutedEventArgs e)
         {
             if (Username.Length == 0)
             {
@@ -155,13 +199,6 @@ namespace ClientGUI
             PasswordField.Password = Password;
             PasswordTextBox.Visibility = Visibility.Collapsed;
             PasswordField.Visibility = Visibility.Visible;
-        }
-
-        private void JoinLink_Click(object sender, RoutedEventArgs e) 
-        {
-            SignupWindow signupWindow = new();
-            Close();
-            _ = signupWindow.ShowDialog();
         }
     }
 }
