@@ -87,47 +87,6 @@ namespace ClientGUI
             }
         }
 
-        private void Email_GotFocus(object sender, RoutedEventArgs e)
-        {
-            ThicknessAnimation marginAnimation = new()
-            {
-                To = new Thickness(2, 0, 0, 0),
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuarticEase()
-            };
-            this.EmailTextBlock.BeginAnimation(MarginProperty, marginAnimation);
-
-            DoubleAnimation fontSizeAnimation = new()
-            {
-                To = 12,
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuarticEase()
-            };
-            this.EmailTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
-        }
-
-        private void Email_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Username.Length == 0)
-            {
-                ThicknessAnimation marginAnimation = new()
-                {
-                    To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
-                    Duration = TimeSpan.FromMilliseconds(200),
-                    EasingFunction = new QuarticEase()
-                };
-                this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
-
-                DoubleAnimation fontSizeAnimation = new()
-                {
-                    To = 16,
-                    Duration = TimeSpan.FromMilliseconds(200),
-                    EasingFunction = new QuarticEase()
-                };
-                this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
-            }
-        }
-
         private void Password_GotFocus(object sender, RoutedEventArgs e)
         {
             ThicknessAnimation marginAnimation = new()
@@ -187,6 +146,47 @@ namespace ClientGUI
             PasswordField.Password = Password;
             PasswordTextBox.Visibility = Visibility.Collapsed;
             PasswordField.Visibility = Visibility.Visible;
+        }
+
+        private void Email_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ThicknessAnimation marginAnimation = new()
+            {
+                To = new Thickness(2, 0, 0, 0),
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            this.EmailTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+            DoubleAnimation fontSizeAnimation = new()
+            {
+                To = 12,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            this.EmailTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+        }
+
+        private void Email_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Username.Length == 0)
+            {
+                ThicknessAnimation marginAnimation = new()
+                {
+                    To = new Thickness(28, 33, 0, -38), // -38 to overlap with field, 33 to save space above (save 5 for fontSize change)
+                    Duration = TimeSpan.FromMilliseconds(200),
+                    EasingFunction = new QuarticEase()
+                };
+                this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+
+                DoubleAnimation fontSizeAnimation = new()
+                {
+                    To = 16,
+                    Duration = TimeSpan.FromMilliseconds(200),
+                    EasingFunction = new QuarticEase()
+                };
+                this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+            }
         }
     }
 }
