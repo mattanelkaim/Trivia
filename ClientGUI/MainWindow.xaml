@@ -7,20 +7,16 @@
         mc:Ignorable="d"
         Title="Trivia" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="293*"/>
-            <ColumnDefinition Width="508*"/>
-        </Grid.ColumnDefinitions>
         <TextBlock Text="Log Into Trivia"
                    VerticalAlignment="Top"
-                   HorizontalAlignment="Left"
-                   Margin="259,40,0,0"
+                   HorizontalAlignment="Center"
+                   Margin="0,40,0,0"
                    FontSize="40"
-                   FontWeight="Bold" Grid.ColumnSpan="2"/>
+                   FontWeight="Bold"/>
 
-        <StackPanel HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="8,134,0,0" Grid.Column="1">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="0,40,0,0">
             <!--Moves up on field focus-->
             <TextBlock Name="UsernameTextBlock"
                        Text="Username"
@@ -102,6 +98,7 @@
                      BorderBrush="DarkGray"
                      BorderThickness="0,0,0,2"
                      FontSize="16"
+                     MaxLength="8"
                      TextWrapping="NoWrap"
                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Password_GotFocus"
@@ -161,8 +158,9 @@
                 </Button.Resources>
             </Button>
 
-            <StackPanel Margin="0,10,0,0" HorizontalAlignment="Center" Orientation="Horizontal">
-
+            <StackPanel Margin="0,10,0,0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
                 <TextBlock Text="New to our Trivia? "
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
@@ -181,7 +179,6 @@
                            Cursor="Hand"
                            MouseDown="JoinLink_Click"/>
             </StackPanel>
-
         </StackPanel>
     </Grid>
 </Window>
