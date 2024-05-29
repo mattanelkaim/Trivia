@@ -19,78 +19,106 @@
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Margin="0,0,0,0"
-                    Orientation="Vertical">
-                
-            <Button Name="CreateRoomButton"
-                    Content="Create New Room"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Padding="2"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Foreground="MediumBlue"
-                    BorderThickness="0"
-                    Background="#00000000"
-                    Cursor="Hand"
-                    Click="CreateRoom_Click"/>
+                    Orientation="Vertical"
+                    Margin="10,0,0,0">
 
-            <Button Name="JoinRoomButton"
-                    Content="Join A Room"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Padding="2"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Foreground="MediumBlue"
-                    BorderThickness="0"
-                    Background="#00000000"
-                    Cursor="Hand"
-                    Click="CreateRoom_Click"/>
-
-            <Button Name="SignupSubmit"
-                Content="SIGNUP"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Margin="0,30,0,0"
-                Padding="40,8,40,8"
-                Background="MediumBlue"
-                Foreground="White"
-                BorderBrush="DarkGray"
-                BorderThickness="0.5"
-                FontSize="16"
-                FontWeight="Bold"
-                Cursor="Hand"
-                Click="SignupSubmit_Click">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="23"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-
-            <StackPanel Margin="0,10,0,0"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
-                <TextBlock Text="Already have an account? "
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       Margin="0,0,0,0"
-                       FontSize="12"
-                       FontWeight="SemiBold"/>
-
-                <Button Name="SigninLink"
-                        Content="Sign in"
-                        HorizontalAlignment="Center"
+            <StackPanel HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Padding="0"
-                        FontSize="12"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,10">
+                
+                <Image Source="Images/create.png"
+                       Width="30"
+                       VerticalAlignment="Bottom"/>
+                
+                <Button Name="CreateRoomButton"
+                        Content="Create New Room"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Padding="2"
+                        FontSize="22"
                         FontWeight="Bold"
                         Foreground="MediumBlue"
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
-                        Click="LoginLink_Click"/>
+                        Click="CreateRoom_Click"/>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,10">
+
+                <Image Source="Images/meeting.png"
+                       Width="30"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Left"/>
+
+                <Button Name="JoinRoomButton"
+                        Content="Join Room"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Padding="2"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="MediumBlue"
+                        BorderThickness="0"
+                        Background="#00000000"
+                        Cursor="Hand"
+                        Click="CreateRoom_Click"
+                        Margin="3,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,10">
+
+                <Image Source="Images/stats.png"
+                       Width="30"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Left"/>
+
+                <Button Name="StatisticsButton"
+                        Content="View Statistics"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Padding="2"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="MediumBlue"
+                        BorderThickness="0"
+                        Background="#00000000"
+                        Cursor="Hand"
+                        Click="CreateRoom_Click"
+                        Margin="3,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,10">
+
+                <Image Source="Images/leave.png"
+                       Width="25"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Margin="5,0,0,0"/>
+
+                <Button Name="LogoutButton"
+                        Content="Logout :("
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Padding="2"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="MediumBlue"
+                        BorderThickness="0"
+                        Background="#00000000"
+                        Cursor="Hand"
+                        Click="CreateRoom_Click"
+                        Margin="3,0,0,0"/>
             </StackPanel>
         </StackPanel>
     </Grid>
