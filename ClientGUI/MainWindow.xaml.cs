@@ -20,11 +20,10 @@ namespace ClientGUI
         {
             InitializeComponent();
             this.DataContext = this;
-            Loaded += MainWindow_Loaded;
 
             try
             {
-                Communicator.Connect();
+                //Communicator.Connect();
             }
             catch (Exception e)
             {
