@@ -14,13 +14,13 @@
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Margin="0,40,0,0"
-                   FontSize="40"
+                   FontSize="45"
                    FontWeight="Bold"/>
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Orientation="Vertical"
-                    Margin="10,0,0,0">
+                    Margin="0,0,0,0">
 
             <StackPanel HorizontalAlignment="Left"
                         VerticalAlignment="Top"
@@ -30,7 +30,7 @@
                 <Image Source="Images/create.png"
                        Width="30"
                        VerticalAlignment="Bottom"/>
-                
+
                 <Button Name="CreateRoomButton"
                         Content="Create New Room"
                         HorizontalAlignment="Center"

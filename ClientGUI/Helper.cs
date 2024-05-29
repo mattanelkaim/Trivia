@@ -49,6 +49,5 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
-        public static 
     }
 }
