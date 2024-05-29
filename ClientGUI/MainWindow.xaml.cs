@@ -15,7 +15,6 @@ namespace ClientGUI
 {
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
@@ -40,6 +39,7 @@ namespace ClientGUI
                 new HighscorePage.Highscore() { Username = "SecONd", Score = 4 },
                 new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
             ]));
+            this.Title = "Trivia - Highscores"; // Update title to current page
         }
     }
 }
