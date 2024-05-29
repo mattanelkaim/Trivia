@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientGUI"
         mc:Ignorable="d"
-        Title="Trivia" Height="450" Width="800">
+        Title="Trivia" Height="450" Width="800"
+        Loaded="MainWindow_Loaded">
     <Frame Name="MainFrame" NavigationUIVisibility="Hidden"/>
 </Window>
