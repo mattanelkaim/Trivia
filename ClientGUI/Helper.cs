@@ -19,6 +19,13 @@ namespace ClientGUI
         {
             Login,
             Register,
+            GetPlayersInRoom,
+            JoinRoom,
+            CreateRoom,
+            GetRooms,
+            GetStatistics,
+            GetHighscore,
+            Logout
         }
 
         public enum ResponseType
@@ -39,7 +46,9 @@ namespace ClientGUI
             // Example for a login request (without spaces of course): 0 0038 {"username":"Mattan","password":"Gil"}
             string serializedCode = ((int)code).ToString().PadLeft(BYTES_RESERVED_FOR_CODE, '0');
             string serializedLen = content.Length.ToString().PadLeft(BYTES_RESERVED_FOR_MSG_LEN, '0');
-            return serializedCode + serializedLen + content;
+            return serializedCode + serializedLen + content; 
         }
+
+        public static 
     }
 }
