@@ -24,7 +24,7 @@ namespace ClientGUI
 
             try
             {
-                //Communicator.Connect();
+                Communicator.Connect();
             }
             catch (Exception e)
             {
