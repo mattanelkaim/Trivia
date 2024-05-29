@@ -49,85 +49,95 @@ namespace ClientGUI
             MessageBox.Show("[Received]: " + response);
         }
 
-        private void Username_GotFocus(object sender, RoutedEventArgs e)
+        private void Field_GotFocus(object sender, RoutedEventArgs e)
         {
-            ThicknessAnimation marginAnimation = new()
-            {
-                To = new Thickness(2, 0, 0, 0),
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuarticEase()
-            };
-            this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+            TextBlock textBlock;
 
-            DoubleAnimation fontSizeAnimation = new()
+            // Determine which field is focused
+            if (sender is TextBox textBox) // Insantiates variable textBox
             {
-                To = 12,
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuarticEase()
-            };
-            this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
-        }
-
-        private void Username_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (Username.Length == 0)
-            {
-                ThicknessAnimation marginAnimation = new()
+                if (textBox.Name.Contains("Username"))
                 {
-                    To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
-                    Duration = TimeSpan.FromMilliseconds(200),
-                    EasingFunction = new QuarticEase()
-                };
-                this.UsernameTextBlock.BeginAnimation(MarginProperty, marginAnimation);
-
-                DoubleAnimation fontSizeAnimation = new()
+                    textBlock = this.UsernameTextBlock;
+                }
+                else if (textBox.Text.Contains("Password"))
                 {
-                    To = 16,
-                    Duration = TimeSpan.FromMilliseconds(200),
-                    EasingFunction = new QuarticEase()
-                };
-                this.UsernameTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+                    textBlock = this.PasswordTextBlock;
+                }
+                else return; // Not a field we care about
             }
-        }
+            else if (sender is PasswordBox)
+            {
+                textBlock = this.PasswordTextBlock;
+            }
+            else return; // Not a field we care about
 
-        private void Password_GotFocus(object sender, RoutedEventArgs e)
-        {
+            // Animate position (margin)
             ThicknessAnimation marginAnimation = new()
             {
                 To = new Thickness(2, 0, 0, 0),
                 Duration = TimeSpan.FromMilliseconds(200),
                 EasingFunction = new QuarticEase()
             };
-            this.PasswordTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+            textBlock.BeginAnimation(MarginProperty, marginAnimation);
 
+            // Animate font size
             DoubleAnimation fontSizeAnimation = new()
             {
                 To = 12,
                 Duration = TimeSpan.FromMilliseconds(200),
                 EasingFunction = new QuarticEase()
             };
-            this.PasswordTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+            textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
         }
 
-        private void Password_LostFocus(object sender, RoutedEventArgs e)
+        private void Field_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Password.Length == 0)
+            TextBlock textBlock;
+            string fieldValue;
+
+            // Determine which field is focused
+            if (sender is TextBox textBox) // Insantiates variable textBox
             {
+                if (textBox.Name.Contains("Username"))
+                {
+                    textBlock = this.UsernameTextBlock;
+                    fieldValue = Username;
+                }
+                else if (textBox.Text.Contains("Password"))
+                {
+                    textBlock = this.PasswordTextBlock;
+                    fieldValue = Password;
+                }
+                else return; // Not a field we care about
+            }
+            else if (sender is PasswordBox)
+            {
+                textBlock = this.PasswordTextBlock;
+                fieldValue = Password;
+            }
+            else return; // Not a field we care about
+
+            // Animate only if field is empty
+            if (fieldValue.Length == 0)
+            {
+                // Animate position (margin)
                 ThicknessAnimation marginAnimation = new()
                 {
                     To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
-                this.PasswordTextBlock.BeginAnimation(MarginProperty, marginAnimation);
+                textBlock.BeginAnimation(MarginProperty, marginAnimation);
 
+                // Animate font size
                 DoubleAnimation fontSizeAnimation = new()
                 {
                     To = 16,
                     Duration = TimeSpan.FromMilliseconds(200),
                     EasingFunction = new QuarticEase()
                 };
-                this.PasswordTextBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+                textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
             }
         }
 
@@ -154,6 +164,7 @@ namespace ClientGUI
         private void JoinLink_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new SignupPage());
+            this.Title = "Trivia - Sign Up"; // Update title to current page
         }
     }
 }
