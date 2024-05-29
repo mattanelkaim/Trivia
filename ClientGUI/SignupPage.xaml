@@ -185,7 +185,8 @@
                     BorderThickness="0.5"
                     FontSize="16"
                     FontWeight="Bold"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    Click="SignupSubmit_Click">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="23"/>

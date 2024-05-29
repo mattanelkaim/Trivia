@@ -31,14 +31,14 @@ namespace ClientGUI
             this.DataContext = this;
         }
 
-        private void LoginSubmit_Click(object sender, RoutedEventArgs e)
+        private void SignupSubmit_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Username == string.Empty || this.Password == string.Empty)
+            if (this.Username == string.Empty || this.Password == string.Empty || this.Email == string.Empty )
                 MessageBox.Show("One or more of the fields is empty!");
 
-            string json = JsonSerializer.Serialize(new { username = Username, password = Password });
+            string json = JsonSerializer.Serialize(new { username = Username, password = Password, email = Email });
 
-            string msg = Helper.Serialize(json, Helper.MessageType.Login);
+            string msg = Helper.Serialize(json, Helper.MessageType.Register);
             MessageBox.Show("[Sending]: " + msg);
             Communicator.Send(msg);
 
