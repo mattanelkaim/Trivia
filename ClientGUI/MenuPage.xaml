@@ -41,8 +41,7 @@
                         Foreground="MediumBlue"
                         BorderThickness="0"
                         Background="#00000000"
-                        Cursor="Hand"
-                        Click="CreateRoom_Click"/>
+                        Cursor="Hand"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left"
@@ -66,7 +65,6 @@
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
-                        Click="CreateRoom_Click"
                         Margin="3,0,0,0"/>
             </StackPanel>
 
@@ -91,7 +89,6 @@
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
-                        Click="CreateRoom_Click"
                         Margin="3,0,0,0"/>
             </StackPanel>
 
@@ -117,7 +114,6 @@
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
-                        Click="CreateRoom_Click"
                         Margin="3,0,0,0"/>
             </StackPanel>
         </StackPanel>
