@@ -9,18 +9,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\create.png" />
     <None Remove="Images\email.png" />
     <None Remove="Images\eyesClosed.png" />
     <None Remove="Images\eyesOpen.png" />
+    <None Remove="Images\leave.png" />
+    <None Remove="Images\meeting.png" />
     <None Remove="Images\password.png" />
+    <None Remove="Images\stats.png" />
     <None Remove="Images\user.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\create.png" />
     <Resource Include="Images\email.png" />
     <Resource Include="Images\eyesClosed.png" />
     <Resource Include="Images\eyesOpen.png" />
+    <Resource Include="Images\leave.png" />
+    <Resource Include="Images\meeting.png" />
     <Resource Include="Images\password.png" />
+    <Resource Include="Images\stats.png" />
     <Resource Include="Images\user.png" />
   </ItemGroup>
 
