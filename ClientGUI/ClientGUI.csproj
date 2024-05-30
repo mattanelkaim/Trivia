@@ -17,6 +17,7 @@
     <None Remove="Images\gold.png" />
     <None Remove="Images\leave.png" />
     <None Remove="Images\meeting.png" />
+    <None Remove="Images\name.png" />
     <None Remove="Images\password.png" />
     <None Remove="Images\silver.png" />
     <None Remove="Images\stats.png" />
@@ -32,6 +33,7 @@
     <Resource Include="Images\gold.png" />
     <Resource Include="Images\leave.png" />
     <Resource Include="Images\meeting.png" />
+    <Resource Include="Images\name.png" />
     <Resource Include="Images\password.png" />
     <Resource Include="Images\silver.png" />
     <Resource Include="Images\stats.png" />

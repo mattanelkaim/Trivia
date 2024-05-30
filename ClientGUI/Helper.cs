@@ -8,6 +8,8 @@ namespace ClientGUI
 {
     internal class Helper
     {
+        #region protocolHelper
+
         public static readonly ushort BYTES_RESERVED_FOR_CODE = 1;
         public static readonly ushort BYTES_RESERVED_FOR_MSG_LEN = 4;
 
@@ -49,5 +51,13 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
+        #endregion protocolHelper
+
+
+        #region XAMLMethodsHelper
+
+            
+
+        #endregion XAMLMethodsHelper
     }
 }
