@@ -10,6 +10,18 @@
       Background="White">
 
     <Grid>
+
+        <Button Background="Transparent"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderBrush="Transparent"
+                Margin="10,10,0,0"
+                Click="HomeButton_Click">
+            <Button.Content>
+                <Image Source="Images/home.png" 
+                       Width="30"/>
+            </Button.Content>
+        </Button>
         <TextBlock Text="Host Your Own Room!"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
@@ -20,7 +32,7 @@
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Orientation="Vertical"
-                    Margin="0,0,0,0">
+                    Margin="0,55,0,0">
 
             <!--Moves up on field focus-->
             <TextBlock  Name="RoomNameTextBlock"
@@ -86,7 +98,7 @@
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
 
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/name.png"
+                    <ImageBrush ImageSource="Images/group.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -124,7 +136,7 @@
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
 
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/name.png"
+                    <ImageBrush ImageSource="Images/questions.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -162,7 +174,7 @@
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">  
 
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/name.png"
+                    <ImageBrush ImageSource="Images/timeout.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -171,6 +183,30 @@
                 </TextBox.Background>
 
             </TextBox>
+
+            <Button Name="CreateSubmit"
+                    Content="CREATE"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,30,0,0"
+                    Padding="40,8,40,8"
+                    Background="MediumBlue"
+                    Foreground="White"
+                    BorderBrush="DarkGray"
+                    BorderThickness="0.5"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Cursor="Hand"
+                    Click="CreateSubmit_Click">
+                
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="23"/>
+                    </Style>
+                </Button.Resources>
+                
+            </Button>
+            
         </StackPanel>
     </Grid>
 </Page>
