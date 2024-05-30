@@ -24,5 +24,10 @@ namespace ClientGUI
         {
             InitializeComponent();
         }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new MenuPage());
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace ClientGUI
     public partial class CreateRoomPage : Page
     {
         public string RoomName { get; set; } = "";
-        public string MaxPlayers { private get; set; } = "";
+        public string MaxPlayers { get; set; } = "";
         public string QuestionCount { get; set; } = "";
         public string QuestionTimeout { get; set; } = "";
 
