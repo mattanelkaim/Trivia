@@ -15,12 +15,16 @@
     <None Remove="Images\eyesClosed.png" />
     <None Remove="Images\eyesOpen.png" />
     <None Remove="Images\gold.png" />
+    <None Remove="Images\group.png" />
+    <None Remove="Images\home.png" />
     <None Remove="Images\leave.png" />
     <None Remove="Images\meeting.png" />
     <None Remove="Images\name.png" />
     <None Remove="Images\password.png" />
+    <None Remove="Images\questions.png" />
     <None Remove="Images\silver.png" />
     <None Remove="Images\stats.png" />
+    <None Remove="Images\timeout.png" />
     <None Remove="Images\user.png" />
   </ItemGroup>
 
@@ -31,12 +35,16 @@
     <Resource Include="Images\eyesClosed.png" />
     <Resource Include="Images\eyesOpen.png" />
     <Resource Include="Images\gold.png" />
+    <Resource Include="Images\group.png" />
+    <Resource Include="Images\home.png" />
     <Resource Include="Images\leave.png" />
     <Resource Include="Images\meeting.png" />
     <Resource Include="Images\name.png" />
     <Resource Include="Images\password.png" />
+    <Resource Include="Images\questions.png" />
     <Resource Include="Images\silver.png" />
     <Resource Include="Images\stats.png" />
+    <Resource Include="Images\timeout.png" />
     <Resource Include="Images\user.png" />
   </ItemGroup>
 
