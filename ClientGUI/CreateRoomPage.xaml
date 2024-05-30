@@ -22,17 +22,18 @@
                        Width="30"/>
             </Button.Content>
         </Button>
+        
         <TextBlock Text="Host Your Own Room!"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
-                   Margin="0,40,0,0"
+                   Margin="0,30,0,0"
                    FontSize="45"
                    FontWeight="Bold"/>
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Orientation="Vertical"
-                    Margin="0,55,0,0">
+                    Margin="0,80,0,0">
 
             <!--Moves up on field focus-->
             <TextBlock  Name="RoomNameTextBlock"
@@ -96,18 +97,18 @@
                         GotFocus="Field_GotFocus"
                         LostFocus="Field_LostFocus"
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
-
+                
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/group.png"
-                                Stretch="Uniform"
-                                AlignmentX="Left"
-                                AlignmentY="Center"
-                                ViewportUnits="RelativeToBoundingBox"
-                                Viewport="0.01,0.1,1,0.8"/>
+                    Stretch="Uniform"
+                    AlignmentX="Left"
+                    AlignmentY="Center"
+                    ViewportUnits="RelativeToBoundingBox"
+                    Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
 
             </TextBox>
-
+            
             <!--Moves up on field focus-->
             <TextBlock  Name="QuestionCountTextBlock"
                         Text="Number of Questions"
