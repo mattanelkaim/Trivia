@@ -38,6 +38,16 @@ namespace ClientGUI
             e.Handled = System.Text.RegularExpressions.Regex.IsMatch(e.Text, "!0^[0-9]+$"); // only allow numerical inputs
         }
 
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new MenuPage());
+        }
+
+        private void CreateSubmit_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO implement functionality
+        }
+
         private void Field_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBlock textBlock;
@@ -137,6 +147,11 @@ namespace ClientGUI
                 };
                 textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
