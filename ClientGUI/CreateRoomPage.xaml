@@ -70,7 +70,7 @@
                                 Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
             </TextBox>
-
+            
             <!--Moves up on field focus-->
             <TextBlock  Name="MaxPlayersTextBlock"
                         Text="Max Players"
