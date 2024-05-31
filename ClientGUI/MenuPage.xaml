@@ -41,7 +41,8 @@
                         Foreground="MediumBlue"
                         BorderThickness="0"
                         Background="#00000000"
-                        Cursor="Hand"/>
+                        Cursor="Hand"
+                        Click="CreateRoom_Click"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left"
@@ -65,7 +66,8 @@
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
-                        Margin="3,0,0,0"/>
+                        Margin="3,0,0,0"
+                        Click="JoinRoom_Click"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left"
@@ -89,7 +91,8 @@
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
-                        Margin="3,0,0,0"/>
+                        Margin="3,0,0,0"
+                        Click="ViewStats_Click"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left"
@@ -114,7 +117,8 @@
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
-                        Margin="3,0,0,0"/>
+                        Margin="3,0,0,0"
+                        Click="Logout_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>
