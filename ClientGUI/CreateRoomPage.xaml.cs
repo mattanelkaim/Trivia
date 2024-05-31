@@ -146,10 +146,5 @@ namespace ClientGUI
                 textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

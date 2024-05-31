@@ -33,7 +33,7 @@ namespace ClientGUI
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.NavigationService.Navigate(new CreateRoomPage());
+            this.MainFrame.NavigationService.Navigate(new LoginPage());
             this.Title = "Trivia";
         }
     }
