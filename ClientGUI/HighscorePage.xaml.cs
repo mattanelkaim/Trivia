@@ -28,21 +28,21 @@ namespace ClientGUI
             public int Score { get; set; }
         }
 
-        public Highscore[] highscores { get; } = new Highscore[3];
+        public Highscore[] Highscores { get; } = new Highscore[3];
 
 
         public HighscorePage(Highscore[] sortedHighscores)
         {
-            if (sortedHighscores.Length != this.highscores.Length)
+            if (sortedHighscores.Length != this.Highscores.Length)
             {
-                throw new ArgumentException("Invalid array length. Expected an array with " + this.highscores.Length + " elements.");
+                throw new ArgumentException("Invalid array length. Expected an array with " + this.Highscores.Length + " elements.");
             }
             DataContext = this;
-            this.highscores = sortedHighscores;
+            this.Highscores = sortedHighscores;
             InitializeComponent();
         }
 
-        private void Unblur_Text(object sender, RoutedEventArgs e)
+        private void Unblur_Text(object sender, RoutedEventArgs? e)
         {
             DoubleAnimation unblurAnimation = new ()
             {

@@ -25,22 +25,22 @@ namespace ClientGUI
             InitializeComponent();
         }
 
-        private void CreateRoom_Click(object sender, RoutedEventArgs e)
+        private void CreateRoom_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new CreateRoomPage());
         }
 
-        private void JoinRoom_Click(object sender, RoutedEventArgs e)
+        private void JoinRoom_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new JoinRoomPage());
         }
 
-        private void ViewStats_Click(object sender, RoutedEventArgs e)
+        private void ViewStats_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new PersonalStatsPage());
         }
 
-        private void Logout_Click(object sender, RoutedEventArgs e)
+        private void Logout_Click(object sender, RoutedEventArgs? e)
         {
             int randomNumber = new Random().Next(1, 5);
 
