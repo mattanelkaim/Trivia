@@ -1,19 +1,26 @@
-#include "Infrastructure/Server.h"
-#include "Infrastructure/WSAInitializer.h"
+/*
+Things to do before shipping
+- Build with compiler optimizations (O2/O3)
+- Turn off ASan
+*/
+
+#include "Server.h"
+#include "ServerDefinitions.h"
+#include "WSAInitializer.h"
+#include <exception>
 #include <iostream>
 
-int main(void)
+int main()
 {
-	try
-	{		
-		WSAInitializer wsaInit;
-		Server server;
-		server.run();
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << "\033[31;1m" << e.what() << "\033[0m\n";
-	}
+    try
+    {
+        const WSAInitializer wsaInit;
+        Server::getInstance()->run();
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+    }
 
-	return 0;
+    return 0;
 }
