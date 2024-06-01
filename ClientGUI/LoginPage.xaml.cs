@@ -22,16 +22,20 @@ namespace ClientGUI
     /// </summary>
     public partial class LoginPage : Page
     {
-        public string Username { get; set; } = "";
+        public string Username { get; set; }
         public string Password { private get; set; } = "";
 
-        public LoginPage()
+        public LoginPage(string Username = "")
         {
             InitializeComponent();
             this.DataContext = this;
+
+            this.Username = Username;
+            if (Username != string.Empty)
+                Field_GotFocus(UsernameField, null);
         }
 
-        private void LoginSubmit_Click(object sender, RoutedEventArgs e)
+        private void LoginSubmit_Click(object sender, RoutedEventArgs? e)
         {
             if (this.Username == string.Empty || this.Password == string.Empty)
             {
@@ -49,7 +53,7 @@ namespace ClientGUI
             MessageBox.Show("[Received]: " + response);
         }
 
-        private void Field_GotFocus(object sender, RoutedEventArgs e)
+        private void Field_GotFocus(object sender, RoutedEventArgs? e)
         {
             TextBlock textBlock;
 
@@ -91,7 +95,7 @@ namespace ClientGUI
             textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
         }
 
-        private void Field_LostFocus(object sender, RoutedEventArgs e)
+        private void Field_LostFocus(object sender, RoutedEventArgs? e)
         {
             TextBlock textBlock;
             string fieldValue;
@@ -141,29 +145,29 @@ namespace ClientGUI
             }
         }
 
-        private void Password_PasswordChanged(object sender, RoutedEventArgs e)
+        private void Password_PasswordChanged(object sender, RoutedEventArgs? e)
         {
             Password = PasswordField.Password;
             // TODO(mattan): Add password validation
         }
 
-        private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs? e)
         {
             PasswordTextBox.Text = Password;
             PasswordTextBox.Visibility = Visibility.Visible;
             PasswordField.Visibility = Visibility.Collapsed;
         }
 
-        private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs? e)
         {
             PasswordField.Password = Password;
             PasswordTextBox.Visibility = Visibility.Collapsed;
             PasswordField.Visibility = Visibility.Visible;
         }
 
-        private void JoinLink_Click(object sender, RoutedEventArgs e)
+        private void JoinLink_Click(object sender, RoutedEventArgs? e)
         {
-            this.NavigationService.Navigate(new SignupPage());
+            this.NavigationService.Navigate(new SignupPage(Username));
             this.Title = "Trivia - Sign Up"; // Update title to current page
         }
     }

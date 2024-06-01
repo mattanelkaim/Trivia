@@ -21,17 +21,21 @@ namespace ClientGUI
     /// </summary>
     public partial class SignupPage : Page
     {
-        public string Username { get; set; } = "";
+        public string Username { get; set; }
         public string Password { private get; set; } = "";
         public string Email { get; set; } = "";
 
-        public SignupPage()
+        public SignupPage(string Username = "")
         {
             InitializeComponent();
             this.DataContext = this;
+
+            this.Username = Username;
+            if (Username != string.Empty)
+                Field_GotFocus(UsernameField, null);
         }
 
-        private void SignupSubmit_Click(object sender, RoutedEventArgs e)
+        private void SignupSubmit_Click(object sender, RoutedEventArgs? e)
         {
             if (this.Username == string.Empty || this.Password == string.Empty || this.Email == string.Empty )
                 MessageBox.Show("One or more of the fields is empty!");
@@ -46,7 +50,7 @@ namespace ClientGUI
             MessageBox.Show("[Received]: " + response);
         }
 
-        private void Field_GotFocus(object sender, RoutedEventArgs e)
+        private void Field_GotFocus(object sender, RoutedEventArgs? e)
         {
             TextBlock textBlock;
 
@@ -92,7 +96,7 @@ namespace ClientGUI
             textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
         }
 
-        private void Field_LostFocus(object sender, RoutedEventArgs e)
+        private void Field_LostFocus(object sender, RoutedEventArgs? e)
         {
             TextBlock textBlock;
             string fieldValue;
@@ -147,29 +151,29 @@ namespace ClientGUI
             }
         }
 
-        private void Password_PasswordChanged(object sender, RoutedEventArgs e)
+        private void Password_PasswordChanged(object sender, RoutedEventArgs? e)
         {
             Password = PasswordField.Password;
             // TODO(mattan): Add password validation
         }
 
-        private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs? e)
         {
             PasswordTextBox.Text = Password;
             PasswordTextBox.Visibility = Visibility.Visible;
             PasswordField.Visibility = Visibility.Collapsed;
         }
 
-        private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs? e)
         {
             PasswordField.Password = Password;
             PasswordTextBox.Visibility = Visibility.Collapsed;
             PasswordField.Visibility = Visibility.Visible;
         }
 
-        private void LoginLink_Click(object sender, RoutedEventArgs e)
+        private void LoginLink_Click(object sender, RoutedEventArgs? e)
         {
-            this.NavigationService.Navigate(new LoginPage());
+            this.NavigationService.Navigate(new LoginPage(Username));
         }
     }
 }
