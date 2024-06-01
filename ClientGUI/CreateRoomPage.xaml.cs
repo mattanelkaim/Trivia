@@ -27,15 +27,19 @@ namespace ClientGUI
         public string QuestionCount { get; set; } = "";
         public string QuestionTimeout { get; set; } = "";
 
+        [System.Text.RegularExpressions.GeneratedRegex("[1-9]\\d*")] // Only allow numbers greater than 0
+        private static partial System.Text.RegularExpressions.Regex MyRegex();
+
         public CreateRoomPage()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
 
         private void NumberOnlyTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = System.Text.RegularExpressions.Regex.IsMatch(e.Text, "!0^[0-9]+$"); // only allow numerical inputs
+            e.Handled = !MyRegex().IsMatch(((TextBox)sender).Text + e.Text); // Check input after concatenating current text with new input
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
@@ -50,28 +54,25 @@ namespace ClientGUI
 
         private void Field_GotFocus(object sender, RoutedEventArgs e)
         {
+            TextBox textBox = (TextBox)sender;
             TextBlock textBlock;
 
             // Determine which field is focused
-            if (sender is TextBox textBox) // Insantiates variable textBox
+            if (textBox.Name.Contains("RoomName"))
             {
-                if (textBox.Name.Contains("RoomName"))
-                {
-                    textBlock = this.RoomNameTextBlock;
-                }
-                else if (textBox.Text.Contains("MaxPlayers"))
-                {
-                    textBlock = this.MaxPlayersTextBlock;
-                }
-                else if (textBox.Name.Contains("QuestionCount"))
-                {
-                    textBlock = this.QuestionCountTextBlock;
-                }
-                else if (textBox.Name.Contains("QuestionTimeout"))
-                {
-                    textBlock = this.QuestionTimeoutTextBlock;
-                }
-                else return; // Not a field we care about
+                textBlock = this.RoomNameTextBlock;
+            }
+            else if (textBox.Name.Contains("MaxPlayers"))
+            {
+                textBlock = this.MaxPlayersTextBlock;
+            }
+            else if (textBox.Name.Contains("QuestionCount"))
+            {
+                textBlock = this.QuestionCountTextBlock;
+            }
+            else if (textBox.Name.Contains("QuestionTimeout"))
+            {
+                textBlock = this.QuestionTimeoutTextBlock;
             }
             else return; // Not a field we care about
 
@@ -96,33 +97,30 @@ namespace ClientGUI
 
         private void Field_LostFocus(object sender, RoutedEventArgs e)
         {
+            TextBox textBox = (TextBox)sender;
             TextBlock textBlock;
             string fieldValue;
 
             // Determine which field is focused
-            if (sender is TextBox textBox) // Insantiates variable textBox
+            if (textBox.Name.Contains("RoomName"))
             {
-                if (textBox.Name.Contains("RoomName"))
-                {
-                    textBlock = this.RoomNameTextBlock;
-                    fieldValue = RoomName;
-                }
-                else if (textBox.Text.Contains("MaxPlayers"))
-                {
-                    textBlock = this.MaxPlayersTextBlock;
-                    fieldValue = MaxPlayers;
-                }
-                else if (textBox.Name.Contains("QuestionCount"))
-                {
-                    textBlock = this.QuestionCountTextBlock;
-                    fieldValue = QuestionCount;
-                }
-                else if (textBox.Name.Contains("QuestionTimeout"))
-                {
-                    textBlock = this.QuestionTimeoutTextBlock;
-                    fieldValue = QuestionTimeout;
-                }
-                else return; // Not a field we care about
+                textBlock = this.RoomNameTextBlock;
+                fieldValue = RoomName;
+            }
+            else if (textBox.Name.Contains("MaxPlayers"))
+            {
+                textBlock = this.MaxPlayersTextBlock;
+                fieldValue = MaxPlayers;
+            }
+            else if (textBox.Name.Contains("QuestionCount"))
+            {
+                textBlock = this.QuestionCountTextBlock;
+                fieldValue = QuestionCount;
+            }
+            else if (textBox.Name.Contains("QuestionTimeout"))
+            {
+                textBlock = this.QuestionTimeoutTextBlock;
+                fieldValue = QuestionTimeout;
             }
             else return; // Not a field we care about
 
@@ -147,11 +145,6 @@ namespace ClientGUI
                 };
                 textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
