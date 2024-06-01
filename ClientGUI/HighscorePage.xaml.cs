@@ -30,7 +30,12 @@ namespace ClientGUI
 
         public Highscore[] highscores { get; } = new Highscore[3];
 
-
+        //this.MainFrame.NavigationService.Navigate(new HighscorePage(
+        //[
+        //    new HighscorePage.Highscore() { Username = "first", Score = 539 },
+        //    new HighscorePage.Highscore() { Username = "SecONd", Score = 4 },
+        //    new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
+        //]));
         public HighscorePage(Highscore[] sortedHighscores)
         {
             if (sortedHighscores.Length != this.highscores.Length)
