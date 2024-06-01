@@ -24,5 +24,63 @@ namespace ClientGUI
         {
             InitializeComponent();
         }
+
+        private void CreateRoom_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new CreateRoomPage());
+        }
+
+        private void JoinRoom_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new JoinRoomPage());
+        }
+
+        private void ViewStats_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new PersonalStatsPage());
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            int randomNumber = new Random().Next(1, 5);
+
+            switch (randomNumber)
+            {
+                case 1:
+                    MessageBox.Show("Hahahahaha nice try babe");
+                    break;
+                case 2:
+                    MessageBox.Show("You CANNOT leave :)");
+                    break;
+                case 3:
+                    MessageBoxResult result;
+                    do
+                    {
+                        result = MessageBox.Show("Are you sure you want to logout?", "Not today honey", MessageBoxButton.YesNo, MessageBoxImage.Stop);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            MessageBox.Show("You can't leave me that easily");
+                        }
+                        else break;
+                    }
+                    while (true);
+
+                    do
+                    {
+                        result = MessageBox.Show("That's right baby. Now whose your daddy?", "Not today honey", MessageBoxButton.YesNo, MessageBoxImage.Stop);
+                        if (result == MessageBoxResult.No)
+                        {
+                            MessageBox.Show("Imagine being stuck in a washing machine...");
+                        }
+                        else break;
+                    }
+                    while (true);
+
+                    break;
+                case 4:
+                    MessageBox.Show("An error occurred while logging out. Please contact support.");
+                    break;
+            }
+        }
     }
 }
