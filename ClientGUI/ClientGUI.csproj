@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Images\bronze.png" />
+    <None Remove="Images\closed.png" />
     <None Remove="Images\create.png" />
     <None Remove="Images\email.png" />
     <None Remove="Images\eyesClosed.png" />
@@ -20,6 +21,7 @@
     <None Remove="Images\leave.png" />
     <None Remove="Images\meeting.png" />
     <None Remove="Images\name.png" />
+    <None Remove="Images\open.png" />
     <None Remove="Images\password.png" />
     <None Remove="Images\questions.png" />
     <None Remove="Images\silver.png" />
@@ -30,6 +32,7 @@
 
   <ItemGroup>
     <Resource Include="Images\bronze.png" />
+    <Resource Include="Images\closed.png" />
     <Resource Include="Images\create.png" />
     <Resource Include="Images\email.png" />
     <Resource Include="Images\eyesClosed.png" />
@@ -40,6 +43,7 @@
     <Resource Include="Images\leave.png" />
     <Resource Include="Images\meeting.png" />
     <Resource Include="Images\name.png" />
+    <Resource Include="Images\open.png" />
     <Resource Include="Images\password.png" />
     <Resource Include="Images\questions.png" />
     <Resource Include="Images\silver.png" />
