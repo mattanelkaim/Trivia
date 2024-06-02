@@ -22,7 +22,7 @@ namespace ClientGUI
 
             try
             {
-                Communicator.Connect();
+                //Communicator.Connect();
             }
             catch (Exception e)
             {
@@ -33,14 +33,14 @@ namespace ClientGUI
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.NavigationService.Navigate(new HighscorePage(
-            [
-                new HighscorePage.Highscore() { Username = "first", Score = 539 },
-                new HighscorePage.Highscore() { Username = "SecONd", Score = 4 },
-                new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
-            ]));
+            //this.MainFrame.NavigationService.Navigate(new HighscorePage(
+            //[
+            //    new HighscorePage.Highscore() { Username = "first", Score = 539 },
+            //    new HighscorePage.Highscore() { Username = "SecONd", Score = 4 },
+            //    new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
+            //]));
 
-            //this.MainFrame.NavigationService.Navigate(new LoginPage());
+            this.MainFrame.NavigationService.Navigate(new MenuPage());
             this.Title = "Trivia";
         }
     }
