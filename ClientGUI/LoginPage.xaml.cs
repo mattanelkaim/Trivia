@@ -64,7 +64,7 @@ namespace ClientGUI
                 {
                     textBlock = this.UsernameTextBlock;
                 }
-                else if (textBox.Text.Contains("Password"))
+                else if (textBox.Name.Contains("Password"))
                 {
                     textBlock = this.PasswordTextBlock;
                 }
@@ -108,7 +108,7 @@ namespace ClientGUI
                     textBlock = this.UsernameTextBlock;
                     fieldValue = Username;
                 }
-                else if (textBox.Text.Contains("Password"))
+                else if (textBox.Name.Contains("Password"))
                 {
                     textBlock = this.PasswordTextBlock;
                     fieldValue = Password;
