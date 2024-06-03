@@ -78,7 +78,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
             std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
 
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{e.what()}),
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
             .newHandler = nullptr
         };
     }
