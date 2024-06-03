@@ -37,17 +37,27 @@ namespace ClientGUI
 
         private void SignupSubmit_Click(object sender, RoutedEventArgs? e)
         {
-            if (this.Username == string.Empty || this.Password == string.Empty || this.Email == string.Empty )
+            // validating input
+            if (this.Username == string.Empty || this.Password == string.Empty || this.Email == string.Empty)
+            {
                 MessageBox.Show("One or more of the fields is empty!");
+                return;
+            }
 
-            string json = JsonSerializer.Serialize(new { username = Username, password = Password, email = Email });
+            string responseBuffer = Helper.SendMessage(new { username = Username, password = Password, email = Email }, Helper.MessageType.Register);
 
-            string msg = Helper.Serialize(json, Helper.MessageType.Register);
-            MessageBox.Show("[Sending]: " + msg);
-            Communicator.Send(msg);
-
-            string response = Communicator.Receive();
-            MessageBox.Show("[Received]: " + response);
+            if (responseBuffer[0] == Helper.ToChar(Helper.ResponseType.OK))
+            {
+                if (responseBuffer[15] == Helper.ToChar(Helper.ResponseType.OK))
+                    this.NavigationService.Navigate(new MenuPage());
+                else // Helper.ResponseType.USERNAME_ALREADY_EXISTS
+                    MessageBox.Show("Username or Email are already taken");
+            }
+            else
+            {
+                throw new Exception(); // If this happens then there is a problem with the client
+                                       // I didnt know which exception to throw
+            }
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs? e)
