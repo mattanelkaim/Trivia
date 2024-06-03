@@ -49,13 +49,21 @@
                     <StackPanel VerticalAlignment="Top"
                                 HorizontalAlignment="Left"
                                 Orientation="Horizontal">
-                        
-                        <Image Source="Images/open.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="30"
-                               ToolTip="Room is open!"
-                               Cursor="Help"/>
+
+                        <Button Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                ToolTip="Enter this room!"
+                                Cursor="Help">
+                            
+                            <Button.Content>
+                                <Image Source="Images/enter.png" 
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Width="25"/>
+                            </Button.Content>
+                            
+                        </Button>
 
                         <Image Source="Images/name.png" 
                                HorizontalAlignment="Left"
@@ -110,13 +118,14 @@
                     <StackPanel VerticalAlignment="Top"
                                 HorizontalAlignment="Left"
                                 Orientation="Horizontal">
-
+                                                
                         <Image Source="Images/closed.png" 
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               Width="30"
-                               Height="30"
-                               ToolTip="Room is closed!"/>
+                               Width="25"
+                               Height="25"
+                               ToolTip="Room is closed!"
+                               Margin="1,0,0,0"/>
 
                         <Image Source="Images/name.png" 
                                HorizontalAlignment="Left"
