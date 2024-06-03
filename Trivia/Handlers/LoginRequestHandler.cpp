@@ -69,7 +69,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     else [[unlikely]]
     {
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Login failed"}),
+            .response = JsonResponseSerializer::serializeResponse(LoginResponse{LOGIN_FAILED}),
             .newHandler = nullptr // Retry login
         };
     }
