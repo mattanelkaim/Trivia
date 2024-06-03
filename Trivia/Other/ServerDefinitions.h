@@ -97,6 +97,7 @@ enum ResponseCode
 {
     ERR, // ERROR won't compile
     OK,
+    LOGIN_FAILED,
 };
 
 // Response structs
@@ -107,22 +108,22 @@ struct ErrorResponse
 
 struct LoginResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct SignupResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct LogoutResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct GetRoomsResponse
 {
-    uint32_t status;
+    ResponseCode status;
     std::vector<RoomData> rooms;
 };
 
@@ -133,24 +134,24 @@ struct GetPlayersInRoomResponse
 
 struct GetHighScoreResponse
 {
-    uint32_t status;
+    ResponseCode status;
     std::vector<std::string> statistics;
 };
 
 struct GetPersonalStatsResponse
 {
-    uint32_t status;
+    ResponseCode status;
     std::vector<std::string> statistics;
 };
 
 struct JoinRoomResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct CreateRoomResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 namespace JsonFields
