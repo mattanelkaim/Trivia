@@ -100,6 +100,32 @@
                         Orientation="Horizontal"
                         Margin="0,0,0,10">
 
+                <Image Source="Images/trophy.png"
+                       Width="30"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Left"/>
+
+                <Button Name="LeaderboardButton"
+                        Content="View Leaderboard"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Padding="2"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Foreground="MediumBlue"
+                        BorderThickness="0"
+                        Background="#00000000"
+                        Cursor="Hand"
+                        Margin="3,0,0,0"
+                        Click="ViewLeaderboard_Click"/>
+                
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal"
+                        Margin="0,0,0,10">
+
                 <Image Source="Images/leave.png"
                        Width="25"
                        VerticalAlignment="Center"
@@ -119,6 +145,7 @@
                         Cursor="Hand"
                         Margin="3,0,0,0"
                         Click="Logout_Click"/>
+                
             </StackPanel>
         </StackPanel>
     </Grid>
