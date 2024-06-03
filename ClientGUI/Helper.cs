@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -11,7 +12,7 @@ namespace ClientGUI
     {
         #region protocolHelper
 
-#if false
+#if true
     public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
     public static void _DEBUG_SHOW(string message) {}
@@ -56,7 +57,21 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
-        public static char toChar(ResponseType rt)
+        public static string SendMessage(object structTosend, MessageType code)
+        {
+            string json = JsonSerializer.Serialize(structTosend);
+
+            string msg = Helper.Serialize(json, code);
+            Helper._DEBUG_SHOW("[Sending]: " + msg);
+            Communicator.Send(msg);
+
+            string responseBuffer = Communicator.Receive();
+            Helper._DEBUG_SHOW("[Received]: " + responseBuffer);
+
+            return responseBuffer;
+        }
+
+        public static char ToChar(ResponseType rt)
         {
             return (char)((int)rt + '0');
         }
