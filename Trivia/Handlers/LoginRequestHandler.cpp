@@ -90,7 +90,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     else [[unlikely]]
     {
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Signup failed"}),
+            .response = JsonResponseSerializer::serializeResponse(SignupResponse{USERNAME_ALREADY_EXISTS}),
             .newHandler = nullptr // Retry signup
         };
     }
