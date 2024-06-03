@@ -40,7 +40,7 @@ namespace ClientGUI
             this.NavigationService.Navigate(new PersonalStatsPage());
         }
 
-        private void Leaderboard_Click(object sender, RoutedEventArgs e)
+        private void ViewLeaderboard_Click(object sender, RoutedEventArgs e)
         {
             // this.NavigationService.Navigate(new LeaderboardPage()); // TODO remove comment @MattanElkaim
         }
