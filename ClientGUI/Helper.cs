@@ -11,7 +11,7 @@ namespace ClientGUI
     {
         #region protocolHelper
 
-#if true
+#if false
     public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
     public static void _DEBUG_SHOW(string message) {}
@@ -36,7 +36,9 @@ namespace ClientGUI
         public enum ResponseType
         {
             Error,
-            OK,
+            OK,            
+            LOGIN_FAILED,            
+            USERNAME_ALREADY_EXISTS
         }
 
 
@@ -54,7 +56,12 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
-#endregion protocolHelper
+        public static char toChar(ResponseType rt)
+        {
+            return (char)((int)rt + '0');
+        }
+
+        #endregion protocolHelper
 
 
         #region XAMLMethodsHelper
