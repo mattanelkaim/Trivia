@@ -139,7 +139,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
         .maxPlayers = request.maxUsers,
         .numOfQuestionsInGame = request.questionCount,
         .timePerQuestion = request.answerTimeout,
-        .status = RoomData::RoomStatus::OPEN
+        .status = RoomStatus::OPEN
     });
 
     return RequestResult{

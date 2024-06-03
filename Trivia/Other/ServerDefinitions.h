@@ -72,6 +72,12 @@ constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral co
 
 #pragma region roomDefinitions
 
+enum RoomStatus
+{
+    OPEN,
+    CLOSED,
+};
+
 struct RoomData
 {
     std::string name;
@@ -79,12 +85,7 @@ struct RoomData
     uint16_t maxPlayers;
     uint16_t numOfQuestionsInGame;
     uint32_t timePerQuestion;
-    uint32_t status;
-    enum RoomStatus
-    {
-        OPEN,
-        CLOSED,
-    };
+    RoomStatus status;
 };
 
 #pragma endregion
