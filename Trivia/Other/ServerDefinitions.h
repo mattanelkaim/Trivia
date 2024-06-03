@@ -97,7 +97,10 @@ enum ResponseCode
 {
     ERR, // ERROR won't compile
     OK,
+    // Login
     LOGIN_FAILED,
+    // Signup
+    USERNAME_ALREADY_EXISTS
 };
 
 // Response structs
