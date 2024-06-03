@@ -46,11 +46,16 @@ namespace ClientGUI
             string json = JsonSerializer.Serialize(new { username = Username, password = Password });
 
             string msg = Helper.Serialize(json, Helper.MessageType.Login);
-            MessageBox.Show("[Sending]: " + msg);
+            Helper._DEBUG_SHOW("[Sending]: " + msg);
             Communicator.Send(msg);
 
             string response = Communicator.Receive();
-            MessageBox.Show("[Received]: " + response);
+            Helper._DEBUG_SHOW("[Received]: " + response);
+
+            if (response[0] == (int)Helper.ResponseType.OK + 48) 
+            {
+
+            }
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs? e)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ClientGUI
 {
@@ -10,12 +11,14 @@ namespace ClientGUI
     {
         #region protocolHelper
 
+#if true
+    public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
+#else
+    public static void _DEBUG_SHOW(string message) {}
+#endif
+
         public static readonly ushort BYTES_RESERVED_FOR_CODE = 1;
         public static readonly ushort BYTES_RESERVED_FOR_MSG_LEN = 4;
-
-        // Also in Login window xaml
-        public static readonly ushort MAX_PASSWORD_LENGTH = 8;
-        public static readonly ushort MAX_USERNAME_LENGTH = 16;
 
         public enum MessageType
         {
@@ -51,12 +54,15 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
-        #endregion protocolHelper
+#endregion protocolHelper
 
 
         #region XAMLMethodsHelper
 
-            
+        // Also in Login window xaml
+        public static readonly ushort MAX_PASSWORD_LENGTH = 8;
+        public static readonly ushort MAX_USERNAME_LENGTH = 16;
+
 
         #endregion XAMLMethodsHelper
     }
