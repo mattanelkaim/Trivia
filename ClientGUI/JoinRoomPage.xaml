@@ -103,7 +103,7 @@
 
                         <TextBlock Text="20" 
                                    VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
+                                   Margin="3,0,10,0"/>
 
                     </StackPanel>
 
@@ -164,7 +164,7 @@
 
                         <TextBlock Text="30" 
                                    VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
+                                   Margin="3,0,10,0"/>
 
                     </StackPanel>
                 </StackPanel>
