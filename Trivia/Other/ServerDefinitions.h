@@ -98,7 +98,7 @@ enum ResponseCode
     ERR, // ERROR won't compile
     OK,
     // Login
-    LOGIN_FAILED = 9,
+    LOGIN_FAILED,
     // Signup
     USERNAME_ALREADY_EXISTS
 };
