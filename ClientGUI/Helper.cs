@@ -12,7 +12,7 @@ namespace ClientGUI
     {
         #region protocolHelper
 
-#if true
+#if false
     public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
     public static void _DEBUG_SHOW(string message) {}
