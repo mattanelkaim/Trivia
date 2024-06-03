@@ -97,7 +97,7 @@ RequestResult MenuRequestHandler::logout() const noexcept
 RequestResult MenuRequestHandler::getPersonalStats() const
 {
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{this->m_statisticsManager->getUserStatistics(m_user)}),
+        .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{OK, this->m_statisticsManager->getUserStatistics(m_user)}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
