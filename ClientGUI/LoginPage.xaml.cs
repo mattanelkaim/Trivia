@@ -49,12 +49,20 @@ namespace ClientGUI
             Helper._DEBUG_SHOW("[Sending]: " + msg);
             Communicator.Send(msg);
 
-            string response = Communicator.Receive();
-            Helper._DEBUG_SHOW("[Received]: " + response);
+            string responseBuffer = Communicator.Receive();
+            Helper._DEBUG_SHOW("[Received]: " + responseBuffer);
 
-            if (response[0] == (int)Helper.ResponseType.OK + 48) 
+            if (responseBuffer[0] == Helper.toChar(Helper.ResponseType.OK)) 
             {
-
+                if (responseBuffer[15] == Helper.toChar(Helper.ResponseType.OK))
+                    this.NavigationService.Navigate(new MenuPage());
+                else // Helper.ResponseType.LOGIN_FAILED
+                    MessageBox.Show("Incorrect username or password");
+            }
+            else
+            {
+                throw new Exception(); // If this happens then there is a problem with the client
+                                       // I didnt know which exception to throw
             }
         }
 
