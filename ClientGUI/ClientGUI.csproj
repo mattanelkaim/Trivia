@@ -27,6 +27,7 @@
     <None Remove="Images\silver.png" />
     <None Remove="Images\stats.png" />
     <None Remove="Images\timeout.png" />
+    <None Remove="Images\trophy.png" />
     <None Remove="Images\user.png" />
   </ItemGroup>
 
@@ -49,6 +50,7 @@
     <Resource Include="Images\silver.png" />
     <Resource Include="Images\stats.png" />
     <Resource Include="Images\timeout.png" />
+    <Resource Include="Images\trophy.png" />
     <Resource Include="Images\user.png" />
   </ItemGroup>
 
