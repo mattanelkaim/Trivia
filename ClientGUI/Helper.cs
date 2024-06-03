@@ -32,10 +32,13 @@ namespace ClientGUI
 
         public enum ResponseType
         {
-            Error,
+            ERR, // ERROR won't compile
             OK,
+            // Login
+            LOGIN_FAILED,
+            // Signup
+            USERNAME_ALREADY_EXISTS
         }
-
 
         /// <summary>
         /// Serializes a JSON message with its code and length.
