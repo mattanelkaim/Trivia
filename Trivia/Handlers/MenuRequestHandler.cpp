@@ -25,6 +25,11 @@ MenuRequestHandler::MenuRequestHandler(IDatabase* db, LoggedUser user) :
     m_user(std::move(user))
 {}
 
+MenuRequestHandler::~MenuRequestHandler()
+{
+    this->logout();
+}
+
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
     return info.id == GET_PLAYERS_IN_ROOM || info.id == JOIN_ROOM || \

@@ -13,6 +13,7 @@ class MenuRequestHandler final : public IRequestHandler
 {
 public:
     explicit MenuRequestHandler(IDatabase* db, LoggedUser user);
+    ~MenuRequestHandler();
 
     /*######################################
     ############ PUBLIC METHODS ############
