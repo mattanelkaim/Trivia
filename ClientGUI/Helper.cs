@@ -12,7 +12,7 @@ namespace ClientGUI
     {
         #region protocolHelper
 
-#if false
+#if true // to debug
     public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
     public static void _DEBUG_SHOW(string message) {}
@@ -21,7 +21,7 @@ namespace ClientGUI
         public static readonly ushort BYTES_RESERVED_FOR_CODE = 1;
         public static readonly ushort BYTES_RESERVED_FOR_MSG_LEN = 4;
 
-        public enum MessageType
+        public enum RequestType
         {
             Login,
             Register,
@@ -49,7 +49,7 @@ namespace ClientGUI
         /// <param name="content">The content (in JSON format) to be serialized.</param>
         /// <param name="code">The code (message type) to be serialized.</param>
         /// <returns>The serialized message.</returns>
-        public static string Serialize(string content, MessageType code)
+        public static string Serialize(string content, RequestType code)
         {
             // Example for a login request (without spaces of course): 0 0038 {"username":"Mattan","password":"Gil"}
             string serializedCode = ((int)code).ToString().PadLeft(BYTES_RESERVED_FOR_CODE, '0');
@@ -57,7 +57,7 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
-        public static string SendMessage(object structTosend, MessageType code)
+        public static string SendMessage(object structTosend, RequestType code)
         {
             string json = JsonSerializer.Serialize(structTosend);
 

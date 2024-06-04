@@ -42,7 +42,9 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
-                        FontWeight="SemiBold"/>
+                        FontWeight="SemiBold"
+                        Cursor="Help"
+                        ToolTip="Mustn't be empty"/>
 
             <TextBox    Name="RoomNameField"
                         Height="30"
@@ -78,7 +80,9 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
-                        FontWeight="SemiBold"/>
+                        FontWeight="SemiBold"
+                        Cursor="Help"
+                        ToolTip="0 &lt; Must be ≤ 10"/>
 
             <TextBox    Name="MaxPlayersField"
                         Height="30"
@@ -116,7 +120,9 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
-                        FontWeight="SemiBold"/>
+                        FontWeight="SemiBold"
+                        Cursor="Help"
+                        ToolTip="0 &lt; Must be ≤ 10"/>
 
             <TextBox    Name="QuestionCountField"
                         Height="30"
@@ -154,7 +160,9 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
-                        FontWeight="SemiBold"/>
+                        FontWeight="SemiBold"
+                        Cursor="Help"
+                        ToolTip="5 ≤ Must be ≤ 60"/>
 
             <TextBox    Name="QuestionTimeoutField"
                         Height="30"

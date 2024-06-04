@@ -43,7 +43,7 @@ namespace ClientGUI
                 return;
             }
 
-            string responseBuffer = Helper.SendMessage(new {username =  this.Username, password = this.Password}, Helper.MessageType.Login);
+            string responseBuffer = Helper.SendMessage(new {username =  this.Username, password = this.Password}, Helper.RequestType.Login);
 
             if (responseBuffer[0] == Helper.ToChar(Helper.ResponseType.OK)) 
             {
