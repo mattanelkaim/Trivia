@@ -9,6 +9,11 @@
       Title="ScoreboardPage"
       Background="White">
 
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
+
     <Grid>
         <Button Background="Transparent"
                 HorizontalAlignment="Left"
@@ -19,18 +24,18 @@
 
             <Button.Content>
                 <Image Source="Images/home.png" 
-               Width="30"/>
+                       Width="30"/>
             </Button.Content>
 
         </Button>
-        
-        <TextBlock Text="Scoreboard"
+
+        <TextBlock Text="SCOREBOARD"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Margin="0,40,0,0"
                    FontSize="45"
-                   FontWeight="Bold"/>
-
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
 
         <Border Width="300"
                 BorderThickness="1"

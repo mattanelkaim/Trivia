@@ -6,21 +6,27 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="LoginPage">
+      Title="LoginPage"
+      Background="White">
 
-    <Page.Background>
+    <!--<Page.Background>
         <ImageBrush ImageSource="Images/scoreboard.jpg"
                     Stretch="UniformToFill"/>
-    </Page.Background>
+    </Page.Background>-->
 
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
 
     <Grid>
-        <TextBlock Text="Log Into Trivia"
+        <TextBlock Text="LOG INTO TRIVIA"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Margin="0,40,0,0"
                    FontSize="40"
-                   FontWeight="Bold"/>
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -158,6 +164,7 @@
                     BorderThickness="0.5"
                     FontSize="16"
                     FontWeight="Bold"
+                    FontFamily="{StaticResource Babapro}"
                     Cursor="Hand"
                     Click="LoginSubmit_Click">
                 <Button.Resources>
