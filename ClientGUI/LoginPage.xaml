@@ -6,9 +6,13 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="LoginPage"
-      Background="White">
+      Title="LoginPage">
 
+    <Page.Background>
+        <ImageBrush ImageSource="Images/scoreboard.jpg"
+                    Stretch="UniformToFill"></ImageBrush>
+    </Page.Background>
+    
     <Grid>
         <TextBlock Text="Log Into Trivia"
                    VerticalAlignment="Top"
