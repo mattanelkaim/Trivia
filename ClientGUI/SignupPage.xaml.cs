@@ -185,5 +185,11 @@ namespace ClientGUI
         {
             this.NavigationService.Navigate(new LoginPage(Username));
         }
+
+        private void Field_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                SignupSubmit_Click(sender, e);
+        }
     }
 }
