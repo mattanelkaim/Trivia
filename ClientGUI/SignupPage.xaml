@@ -7,14 +7,20 @@
       mc:Ignorable="d"
       Title="Trivia" Height="450" Width="800"
       Background="White">
-    
+
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
+
     <Grid>
-        <TextBlock Text="Join Trivia"
+        <TextBlock Text="JOIN OUR TRIVIA"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Margin="0,40,0,0"
                    FontSize="40"
-                   FontWeight="Bold"/>
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"

@@ -9,8 +9,12 @@
       Title="CreateRoomPage"
       Background="White">
 
-    <Grid>
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
 
+    <Grid>
         <Button Background="Transparent"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -23,12 +27,13 @@
             </Button.Content>
         </Button>
         
-        <TextBlock Text="Host Your Own Room!"
+        <TextBlock Text="HOST YOUR OWN ROOM!"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Margin="0,30,0,0"
                    FontSize="45"
-                   FontWeight="Bold"/>
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -205,17 +210,16 @@
                     BorderThickness="0.5"
                     FontSize="16"
                     FontWeight="Bold"
+                    FontFamily="{StaticResource Babapro}"
                     Cursor="Hand"
                     Click="CreateSubmit_Click">
-                
+
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="23"/>
                     </Style>
                 </Button.Resources>
-                
             </Button>
-            
         </StackPanel>
     </Grid>
 </Page>
