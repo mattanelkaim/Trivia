@@ -25,6 +25,7 @@
     <None Remove="Images\open.png" />
     <None Remove="Images\password.png" />
     <None Remove="Images\questions.png" />
+    <None Remove="Images\scoreboard.jpg" />
     <None Remove="Images\silver.png" />
     <None Remove="Images\stats.png" />
     <None Remove="Images\timeout.png" />
@@ -48,6 +49,7 @@
     <Resource Include="Images\name.png" />
     <Resource Include="Images\password.png" />
     <Resource Include="Images\questions.png" />
+    <Resource Include="Images\scoreboard.jpg" />
     <Resource Include="Images\silver.png" />
     <Resource Include="Images\stats.png" />
     <Resource Include="Images\timeout.png" />

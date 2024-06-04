@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace ClientGUI
 {
     /// <summary>
-    /// Interaction logic for JoinRoomPage.xaml
+    /// Interaction logic for ScoreboardPage.xaml
     /// </summary>
-    public partial class JoinRoomPage : Page
+    public partial class ScoreboardPage : Page
     {
-        public JoinRoomPage()
+        public ScoreboardPage()
         {
             InitializeComponent();
-        }
-
-        private void HomeButton_Click(object sender, RoutedEventArgs? e)
-        {
-            this.NavigationService.Navigate(new MenuPage());
         }
     }
 }
