@@ -43,19 +43,19 @@ namespace ClientGUI
                 return;
             }
 
-            string responseBuffer = Helper.SendMessage(new {username =  this.Username, password = this.Password}, Helper.RequestType.Login);
+            Helper.ResponseType status = Helper.SendLoginRequest(this.Username, this.Password);
 
-            if (responseBuffer[0] == Helper.ToChar(Helper.ResponseType.OK)) 
+            switch (status)
             {
-                if (responseBuffer[15] == Helper.ToChar(Helper.ResponseType.OK))
+                case Helper.ResponseType.OK:
                     this.NavigationService.Navigate(new MenuPage());
-                else // Helper.ResponseType.LOGIN_FAILED
+                    break;
+                case Helper.ResponseType.LOGIN_FAILED:
                     MessageBox.Show("Incorrect username or password");
-            }
-            else
-            {
-                throw new Exception(); // If this happens then there is a problem with the client
-                                       // I didnt know which exception to throw
+                    break;
+                default:
+                    MessageBox.Show("Login failed");
+                    break;
             }
         }
 
