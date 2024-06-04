@@ -9,6 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\BabaPro-Bold.ttf" />
+    <None Remove="Fonts\BabaPro.ttf" />
+    <None Remove="Fonts\Good Timing.otf" />
     <None Remove="Images\bronze.png" />
     <None Remove="Images\closed.png" />
     <None Remove="Images\create.png" />
@@ -34,6 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\BabaPro.ttf" />
+    <Resource Include="Fonts\Good Timing.otf" />
     <Resource Include="Images\bronze.png" />
     <Resource Include="Images\closed.png" />
     <Resource Include="Images\create.png" />
