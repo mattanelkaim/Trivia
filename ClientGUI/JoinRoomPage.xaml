@@ -28,7 +28,7 @@
         <TextBlock Text="Join A Room"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
-                   Margin="0,40,0,0"
+                   Margin="0,20,0,0"
                    FontSize="45"
                    FontWeight="Bold"/>
         
@@ -37,40 +37,145 @@
                 BorderThickness="1"
                 BorderBrush="Black"
                 Margin="0,70,0,0">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                
                 <StackPanel x:Name="RoomsStackPanel" 
                             Orientation="Vertical">
+                    
                     <!-- Dynamically added items will go here -->
-                    <Image Source="Images/user.png"
-                           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
-                    <Image Source="Images/user.png"
-           Width="50"/>
+                    
+                    <StackPanel VerticalAlignment="Top"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+
+                        <Button Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                ToolTip="Enter this room!"
+                                Cursor="Help">
+                            
+                            <Button.Content>
+                                <Image Source="Images/enter.png" 
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Width="25"/>
+                            </Button.Content>
+                            
+                        </Button>
+
+                        <Image Source="Images/name.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Room name"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="somename" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0"/>
+
+                        <Image Source="Images/group.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Number of players in room"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="6 / 10" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0"/>
+
+                        <Image Source="Images/questions.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Number of questions"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="7" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0"/>
+
+                        <Image Source="Images/timeout.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Senconds per question"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="20" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,10,0"/>
+
+                    </StackPanel>
+
+                    <StackPanel VerticalAlignment="Top"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                                                
+                        <Image Source="Images/closed.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="25"
+                               Height="25"
+                               ToolTip="Room is closed!"
+                               Margin="1,0,0,0"/>
+
+                        <Image Source="Images/name.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Room name"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="somename2" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0"/>
+
+                        <Image Source="Images/group.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Number of players in room"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="5 / 5" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0"/>
+
+                        <Image Source="Images/questions.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Number of questions"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="10" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0"/>
+
+                        <Image Source="Images/timeout.png" 
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Width="20"
+                               ToolTip="Senconds per question"
+                               Margin="15,0,0,0"
+                               Cursor="Help"/>
+
+                        <TextBlock Text="30" 
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,10,0"/>
+
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </Border>

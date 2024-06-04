@@ -40,7 +40,12 @@ namespace ClientGUI
             this.NavigationService.Navigate(new PersonalStatsPage());
         }
 
-        private void Logout_Click(object sender, RoutedEventArgs? e)
+        private void ViewLeaderboard_Click(object sender, RoutedEventArgs e)
+        {
+            // this.NavigationService.Navigate(new LeaderboardPage()); // TODO remove comment @MattanElkaim
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
         {
             int randomNumber = new Random().Next(1, 5);
 
