@@ -41,7 +41,7 @@ namespace ClientGUI
             //    new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
             //]));
 
-            this.MainFrame.NavigationService.Navigate(new JoinRoomPage());
+            this.MainFrame.NavigationService.Navigate(new MenuPage());
             this.Title = "Trivia";
         }
     }
