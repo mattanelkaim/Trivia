@@ -42,7 +42,6 @@ namespace ClientGUI
             USERNAME_ALREADY_EXISTS
         }
 
-
         /// <summary>
         /// Serializes a JSON message with its code and length.
         /// </summary>
@@ -71,13 +70,63 @@ namespace ClientGUI
             return responseBuffer;
         }
 
-        public static char ToChar(ResponseType rt)
-        {
-            return (char)((int)rt + '0');
-        }
-
         #endregion protocolHelper
 
+
+        #region specificRequests
+
+        public struct Response
+        {
+            public ResponseType code;
+            public string content;
+        }
+
+        // Just a helper method to deserialize the response
+        public class ResponseWithStatus
+        {
+            public int status { get; set; } // MUST HAVE A GETTER AND SETTER ELSE THIS SHITTY DESIRIALIZER WON'T WORK
+        }
+
+        public static Response ExtractResponse(string response)
+        {
+            int responseCode = int.Parse(response[..BYTES_RESERVED_FOR_CODE]); // Idk what fucking syntax that is but it works
+            int msgLen = int.Parse(response.Substring(BYTES_RESERVED_FOR_CODE, BYTES_RESERVED_FOR_MSG_LEN));
+            string jsonResponse = response.Substring(BYTES_RESERVED_FOR_CODE + BYTES_RESERVED_FOR_MSG_LEN, msgLen);
+
+            return new Response { code = (ResponseType)responseCode, content = jsonResponse };
+        }
+
+        public static ResponseType SendLoginRequest(string Username, string Password)
+        {
+            string rawResponse = SendMessage(new { username = Username, password = Password }, RequestType.Login);
+            
+            Response response = ExtractResponse(rawResponse);
+
+            if (response.code != ResponseType.OK)
+            {
+                throw new Exception(); // TODO: Throw a more specific exception
+            }
+
+            // Ideally expects {"status":1}
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        public static ResponseType SendSignupRequest(string Username, string Password, string Email)
+        {
+            string rawResponse = SendMessage(new { username = Username, password = Password, email = Email }, RequestType.Register);
+
+            Response response = ExtractResponse(rawResponse);
+
+            if (response.code != ResponseType.OK)
+            {
+                throw new Exception(); // TODO: Throw a more specific exception
+            }
+
+            // Ideally expects {"status":1}
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        #endregion specificRequests
 
         #region XAMLMethodsHelper
 

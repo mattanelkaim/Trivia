@@ -44,19 +44,19 @@ namespace ClientGUI
                 return;
             }
 
-            string responseBuffer = Helper.SendMessage(new { username = Username, password = Password, email = Email }, Helper.RequestType.Register);
+            Helper.ResponseType status = Helper.SendSignupRequest(this.Username, this.Password, this.Email);
 
-            if (responseBuffer[0] == Helper.ToChar(Helper.ResponseType.OK))
+            switch (status)
             {
-                if (responseBuffer[15] == Helper.ToChar(Helper.ResponseType.OK))
+                case Helper.ResponseType.OK:
                     this.NavigationService.Navigate(new MenuPage());
-                else // Helper.ResponseType.USERNAME_ALREADY_EXISTS
-                    MessageBox.Show("Username or Email are already taken");
-            }
-            else
-            {
-                throw new Exception(); // If this happens then there is a problem with the client
-                                       // I didnt know which exception to throw
+                    break;
+                case Helper.ResponseType.USERNAME_ALREADY_EXISTS:
+                    MessageBox.Show("Username already exists");
+                    break;
+                default:
+                    MessageBox.Show("Signup failed");
+                    break;
             }
         }
 
