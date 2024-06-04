@@ -42,7 +42,7 @@ namespace ClientGUI
 
         private void ViewLeaderboard_Click(object sender, RoutedEventArgs e)
         {
-            // this.NavigationService.Navigate(new LeaderboardPage()); // TODO remove comment @MattanElkaim
+            this.NavigationService.Navigate(new ScoreboardPage()); // TODO remove comment @MattanElkaim // TODO remove the previous comment @Gil-Yelkin
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
