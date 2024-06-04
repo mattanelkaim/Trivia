@@ -10,9 +10,10 @@
 
     <Page.Background>
         <ImageBrush ImageSource="Images/scoreboard.jpg"
-                    Stretch="UniformToFill"></ImageBrush>
+                    Stretch="UniformToFill"/>
     </Page.Background>
-    
+
+
     <Grid>
         <TextBlock Text="Log Into Trivia"
                    VerticalAlignment="Top"
