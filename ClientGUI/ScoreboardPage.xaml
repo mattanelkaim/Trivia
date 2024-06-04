@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ScoreboardPage">
+      Title="ScoreboardPage"
+      Background="White">
 
     <Grid>
-        
+        <Image Source="Images/scoreboard.jpg"/>
     </Grid>
 </Page>
