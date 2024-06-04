@@ -55,7 +55,8 @@
                      TextWrapping="NoWrap"
                      Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Field_GotFocus"
-                     LostFocus="Field_LostFocus">
+                     LostFocus="Field_LostFocus"
+                     KeyDown="Field_KeyDown">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/user.png"
                                 Stretch="Uniform"
@@ -86,9 +87,10 @@
                          BorderBrush="DarkGray"
                          BorderThickness="0,0,0,2"
                          FontSize="16"
+                         MaxLength="8"
                          GotFocus="Field_GotFocus"
                          LostFocus="Field_LostFocus"
-                         MaxLength="8"
+                         KeyDown="Field_KeyDown"
                          PasswordChanged="Password_PasswordChanged">
                 <PasswordBox.Background>
                     <ImageBrush ImageSource="Images/password.png"
@@ -117,6 +119,7 @@
                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Field_GotFocus"
                      LostFocus="Field_LostFocus"
+                     KeyDown="Field_KeyDown"
                      Visibility="Collapsed">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/password.png"
