@@ -176,5 +176,11 @@ namespace ClientGUI
             this.NavigationService.Navigate(new SignupPage(Username));
             this.Title = "Trivia - Sign Up"; // Update title to current page
         }
+
+        private void Field_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                LoginSubmit_Click(sender, e);
+        }
     }
 }
