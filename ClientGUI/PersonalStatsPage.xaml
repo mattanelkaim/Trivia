@@ -50,7 +50,7 @@
             <StackPanel Grid.Row="0"
                         Grid.Column="0"
                         VerticalAlignment="Center">
-                <TextBlock Text="54"
+                <TextBlock Text="{Binding Score}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            FontWeight="Black"/>
@@ -63,9 +63,9 @@
             </StackPanel>
 
             <StackPanel Grid.Row="0"
-                    Grid.Column="1"
-                    VerticalAlignment="Center">
-                <TextBlock Text="3"
+                        Grid.Column="1"
+                        VerticalAlignment="Center">
+                <TextBlock Text="{Binding Games}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            FontWeight="Black"/>
@@ -78,9 +78,9 @@
             </StackPanel>
 
             <StackPanel Grid.Row="1"
-                    Grid.Column="0"
-                    VerticalAlignment="Center">
-                <TextBlock Text="11"
+                        Grid.Column="0"
+                        VerticalAlignment="Center">
+                <TextBlock Text="{Binding TotalAnswers}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            FontWeight="Black"/>
@@ -93,11 +93,11 @@
             </StackPanel>
 
             <StackPanel Name="Accuracy"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    ToolTip="3 total correct&#x0a;8 total incorrect">
-                <TextBlock Text="69"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        ToolTip="3 total correct&#x0a;8 total incorrect">
+                <TextBlock Text="{Binding AccuracyStr}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            FontWeight="Black"/>
