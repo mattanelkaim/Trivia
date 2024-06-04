@@ -9,8 +9,11 @@
       Title="JoinRoomPage"
       Background="White">
 
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
     <Grid>
-
         <Button Background="Transparent"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -25,12 +28,13 @@
             
         </Button>
 
-        <TextBlock Text="Join A Room"
+        <TextBlock Text="JOIN A ROOM"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"
                    FontSize="45"
-                   FontWeight="Bold"/>
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
 
         <Grid Width="500"
               VerticalAlignment="Top"

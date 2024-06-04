@@ -9,6 +9,11 @@
       Title="PersonalStatsPage"
       Background="White">
 
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
+
     <Grid>
         <Button Background="Transparent"
                 HorizontalAlignment="Left"
@@ -22,11 +27,12 @@
             </Button.Content>
         </Button>
         
-        <TextBlock Text="Personal Stats"
+        <TextBlock Text="PERSONAL STATS"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    FontSize="50"
                    FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"
                    Margin="0,20,0,0"/>
 
         <Grid Height="350"
