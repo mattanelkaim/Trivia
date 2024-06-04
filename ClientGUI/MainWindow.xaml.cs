@@ -33,7 +33,6 @@ namespace ClientGUI
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs? e)
         {
-            this.MainFrame.NavigationService.Navigate(new ScoreboardPage());
             //this.MainFrame.NavigationService.Navigate(new HighscorePage(
             //[
             //    new HighscorePage.Highscore() { Username = "first", Score = 539 },
@@ -41,7 +40,7 @@ namespace ClientGUI
             //    new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
             //]));
 
-            this.MainFrame.NavigationService.Navigate(new LoginPage());
+            this.MainFrame.NavigationService.Navigate(new PersonalStatsPage());
             this.Title = "Trivia";
         }
     }
