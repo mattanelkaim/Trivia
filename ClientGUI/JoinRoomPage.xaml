@@ -128,10 +128,6 @@
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        
                         <Button Grid.Column="0"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
@@ -208,10 +204,6 @@
                             <ColumnDefinition Width="110"/>
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
 
                         <Button Grid.Column="0"
                                 Background="Transparent"
