@@ -25,6 +25,11 @@ MenuRequestHandler::MenuRequestHandler(IDatabase* db, LoggedUser user) :
     m_user(std::move(user))
 {}
 
+MenuRequestHandler::~MenuRequestHandler()
+{
+    this->logout();
+}
+
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
     return info.id == GET_PLAYERS_IN_ROOM || info.id == JOIN_ROOM || \
@@ -78,7 +83,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
             std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
 
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{e.what()}),
+            .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
             .newHandler = nullptr
         };
     }
@@ -97,7 +102,7 @@ RequestResult MenuRequestHandler::logout() const noexcept
 RequestResult MenuRequestHandler::getPersonalStats() const
 {
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{this->m_statisticsManager->getUserStatistics(m_user)}),
+        .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{OK, this->m_statisticsManager->getUserStatistics(m_user)}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
@@ -139,7 +144,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
         .maxPlayers = request.maxUsers,
         .numOfQuestionsInGame = request.questionCount,
         .timePerQuestion = request.answerTimeout,
-        .status = RoomData::RoomStatus::OPEN
+        .status = RoomStatus::OPEN
     });
 
     return RequestResult{

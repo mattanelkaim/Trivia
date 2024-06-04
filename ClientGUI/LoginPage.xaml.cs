@@ -43,14 +43,20 @@ namespace ClientGUI
                 return;
             }
 
-            string json = JsonSerializer.Serialize(new { username = Username, password = Password });
+            string responseBuffer = Helper.SendMessage(new {username =  this.Username, password = this.Password}, Helper.MessageType.Login);
 
-            string msg = Helper.Serialize(json, Helper.MessageType.Login);
-            MessageBox.Show("[Sending]: " + msg);
-            Communicator.Send(msg);
-
-            string response = Communicator.Receive();
-            MessageBox.Show("[Received]: " + response);
+            if (responseBuffer[0] == Helper.ToChar(Helper.ResponseType.OK)) 
+            {
+                if (responseBuffer[15] == Helper.ToChar(Helper.ResponseType.OK))
+                    this.NavigationService.Navigate(new MenuPage());
+                else // Helper.ResponseType.LOGIN_FAILED
+                    MessageBox.Show("Incorrect username or password");
+            }
+            else
+            {
+                throw new Exception(); // If this happens then there is a problem with the client
+                                       // I didnt know which exception to throw
+            }
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs? e)

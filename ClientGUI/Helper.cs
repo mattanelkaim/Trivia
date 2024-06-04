@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ClientGUI
 {
@@ -10,12 +12,14 @@ namespace ClientGUI
     {
         #region protocolHelper
 
+#if false
+    public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
+#else
+    public static void _DEBUG_SHOW(string message) {}
+#endif
+
         public static readonly ushort BYTES_RESERVED_FOR_CODE = 1;
         public static readonly ushort BYTES_RESERVED_FOR_MSG_LEN = 4;
-
-        // Also in Login window xaml
-        public static readonly ushort MAX_PASSWORD_LENGTH = 8;
-        public static readonly ushort MAX_USERNAME_LENGTH = 16;
 
         public enum MessageType
         {
@@ -33,7 +37,9 @@ namespace ClientGUI
         public enum ResponseType
         {
             Error,
-            OK,
+            OK,            
+            LOGIN_FAILED,            
+            USERNAME_ALREADY_EXISTS
         }
 
 
@@ -51,12 +57,34 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
+        public static string SendMessage(object structTosend, MessageType code)
+        {
+            string json = JsonSerializer.Serialize(structTosend);
+
+            string msg = Helper.Serialize(json, code);
+            Helper._DEBUG_SHOW("[Sending]: " + msg);
+            Communicator.Send(msg);
+
+            string responseBuffer = Communicator.Receive();
+            Helper._DEBUG_SHOW("[Received]: " + responseBuffer);
+
+            return responseBuffer;
+        }
+
+        public static char ToChar(ResponseType rt)
+        {
+            return (char)((int)rt + '0');
+        }
+
         #endregion protocolHelper
 
 
         #region XAMLMethodsHelper
 
-            
+        // Also in Login window xaml
+        public static readonly ushort MAX_PASSWORD_LENGTH = 8;
+        public static readonly ushort MAX_USERNAME_LENGTH = 16;
+
 
         #endregion XAMLMethodsHelper
     }
