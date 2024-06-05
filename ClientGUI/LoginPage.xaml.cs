@@ -43,14 +43,20 @@ namespace ClientGUI
                 return;
             }
 
-            string json = JsonSerializer.Serialize(new { username = Username, password = Password });
+            Helper.ResponseType status = Helper.SendLoginRequest(this.Username, this.Password);
 
-            string msg = Helper.Serialize(json, Helper.MessageType.Login);
-            MessageBox.Show("[Sending]: " + msg);
-            Communicator.Send(msg);
-
-            string response = Communicator.Receive();
-            MessageBox.Show("[Received]: " + response);
+            switch (status)
+            {
+                case Helper.ResponseType.OK:
+                    this.NavigationService.Navigate(new MenuPage());
+                    break;
+                case Helper.ResponseType.LOGIN_FAILED:
+                    MessageBox.Show("Incorrect username or password");
+                    break;
+                default:
+                    MessageBox.Show("Login failed");
+                    break;
+            }
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs? e)
@@ -64,7 +70,7 @@ namespace ClientGUI
                 {
                     textBlock = this.UsernameTextBlock;
                 }
-                else if (textBox.Text.Contains("Password"))
+                else if (textBox.Name.Contains("Password"))
                 {
                     textBlock = this.PasswordTextBlock;
                 }
@@ -108,7 +114,7 @@ namespace ClientGUI
                     textBlock = this.UsernameTextBlock;
                     fieldValue = Username;
                 }
-                else if (textBox.Text.Contains("Password"))
+                else if (textBox.Name.Contains("Password"))
                 {
                     textBlock = this.PasswordTextBlock;
                     fieldValue = Password;
@@ -169,6 +175,12 @@ namespace ClientGUI
         {
             this.NavigationService.Navigate(new SignupPage(Username));
             this.Title = "Trivia - Sign Up"; // Update title to current page
+        }
+
+        private void Field_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                LoginSubmit_Click(sender, e);
         }
     }
 }

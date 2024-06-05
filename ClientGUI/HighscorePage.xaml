@@ -20,7 +20,7 @@
                            Margin="0,0,0,4"
                            FontSize="20"
                            FontWeight="Bold"
-                           Text="{Binding highscores[1].Username}"
+                           Text="{Binding Highscores[1].Username}"
                            MouseEnter="Unblur_Text">
                     <TextBlock.Effect>
                         <BlurEffect Radius="12"/>
@@ -51,7 +51,7 @@
                                    FontWeight="SemiBold"/>
                         <TextBlock FontSize="16"
                                    FontWeight="Bold"
-                                   Text="{Binding highscores[1].Score}"/>
+                                   Text="{Binding Highscores[1].Score}"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -63,7 +63,7 @@
                            Margin="0,0,0,4"
                            FontSize="20"
                            FontWeight="Bold"
-                           Text="{Binding highscores[0].Username}"
+                           Text="{Binding Highscores[0].Username}"
                            MouseEnter="Unblur_Text">
                     <TextBlock.Effect>
                         <BlurEffect Radius="12"/>
@@ -95,7 +95,7 @@
                                    FontWeight="SemiBold"/>
                         <TextBlock FontSize="16"
                                    FontWeight="Bold"
-                                   Text="{Binding highscores[0].Score}"/>
+                                   Text="{Binding Highscores[0].Score}"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -107,7 +107,7 @@
                            Margin="0,0,0,4"
                            FontSize="20"
                            FontWeight="Bold"
-                           Text="{Binding highscores[2].Username}"
+                           Text="{Binding Highscores[2].Username}"
                            MouseEnter="Unblur_Text">
                     <TextBlock.Effect>
                         <BlurEffect Radius="12"/>
@@ -138,7 +138,7 @@
                                    FontWeight="SemiBold"/>
                         <TextBlock FontSize="16"
                                    FontWeight="Bold"
-                                   Text="{Binding highscores[2].Score}"/>
+                                   Text="{Binding Highscores[2].Score}"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
