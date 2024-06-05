@@ -25,24 +25,24 @@ namespace ClientGUI
             InitializeComponent();
         }
 
-        private void CreateRoom_Click(object sender, RoutedEventArgs e)
+        private void CreateRoom_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new CreateRoomPage());
         }
 
-        private void JoinRoom_Click(object sender, RoutedEventArgs e)
+        private void JoinRoom_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new JoinRoomPage());
         }
 
-        private void ViewStats_Click(object sender, RoutedEventArgs e)
+        private void ViewStats_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new PersonalStatsPage());
         }
 
-        private void Leaderboard_Click(object sender, RoutedEventArgs e)
+        private void ViewLeaderboard_Click(object sender, RoutedEventArgs e)
         {
-            // this.NavigationService.Navigate(new LeaderboardPage()); // TODO remove comment @MattanElkaim
+            this.NavigationService.Navigate(new ScoreboardPage()); // TODO remove comment @MattanElkaim // TODO remove the previous comment @Gil-Yelkin
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)

@@ -9,13 +9,24 @@
       Title="LoginPage"
       Background="White">
 
+    <!--<Page.Background>
+        <ImageBrush ImageSource="Images/scoreboard.jpg"
+                    Stretch="UniformToFill"/>
+    </Page.Background>-->
+
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
+
     <Grid>
-        <TextBlock Text="Log Into Trivia"
+        <TextBlock Text="LOG INTO TRIVIA"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Margin="0,40,0,0"
                    FontSize="40"
-                   FontWeight="Bold"/>
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
 
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -44,7 +55,8 @@
                      TextWrapping="NoWrap"
                      Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Field_GotFocus"
-                     LostFocus="Field_LostFocus">
+                     LostFocus="Field_LostFocus"
+                     KeyDown="Field_KeyDown">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/user.png"
                                 Stretch="Uniform"
@@ -75,9 +87,10 @@
                          BorderBrush="DarkGray"
                          BorderThickness="0,0,0,2"
                          FontSize="16"
+                         MaxLength="8"
                          GotFocus="Field_GotFocus"
                          LostFocus="Field_LostFocus"
-                         MaxLength="8"
+                         KeyDown="Field_KeyDown"
                          PasswordChanged="Password_PasswordChanged">
                 <PasswordBox.Background>
                     <ImageBrush ImageSource="Images/password.png"
@@ -106,6 +119,7 @@
                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
                      GotFocus="Field_GotFocus"
                      LostFocus="Field_LostFocus"
+                     KeyDown="Field_KeyDown"
                      Visibility="Collapsed">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/password.png"
@@ -153,6 +167,7 @@
                     BorderThickness="0.5"
                     FontSize="16"
                     FontWeight="Bold"
+                    FontFamily="{StaticResource Babapro}"
                     Cursor="Hand"
                     Click="LoginSubmit_Click">
                 <Button.Resources>

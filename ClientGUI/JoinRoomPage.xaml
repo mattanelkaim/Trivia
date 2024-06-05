@@ -9,8 +9,11 @@
       Title="JoinRoomPage"
       Background="White">
 
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
     <Grid>
-
         <Button Background="Transparent"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -24,149 +27,254 @@
             </Button.Content>
             
         </Button>
-        
-        <TextBlock Text="Join A Room"
+
+        <TextBlock Text="JOIN A ROOM"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"
                    FontSize="45"
-                   FontWeight="Bold"/>
-        
-        <Border Height="300"
-                Width="400"
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
+
+        <Grid Width="500"
+              VerticalAlignment="Top"
+              Margin="0,116,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Image Source="Images/name.png" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Width="20"
+                       ToolTip="Room name"
+                       Cursor="Help"/>
+                <TextBlock Text="NAME" 
+                           VerticalAlignment="Center"
+                           Margin="3,0,0,0"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Image Source="Images/group.png" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Width="20"
+                       ToolTip="Number of players in room"
+                       Cursor="Help"/>
+                <TextBlock Text="PLAYERS" 
+                           VerticalAlignment="Center"
+                           Margin="3,0,0,0"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Image Source="Images/questions.png"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Width="20"
+                       ToolTip="Number of questions"
+                       Cursor="Help"/>
+                <TextBlock Text="QUESTIONS"
+                           VerticalAlignment="Center"
+                           Margin="1,0,0,0"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="4"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Image Source="Images/timeout.png" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Width="20"
+                       ToolTip="Senconds per question"
+                       Cursor="Help"/>
+                <TextBlock Text="TIMEOUT"
+                           VerticalAlignment="Center"
+                           Margin="3,0,0,0"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+        </Grid>
+
+        <Border Height="216"
+                Width="500"
                 BorderThickness="1"
                 BorderBrush="Black"
-                Margin="0,70,0,0">
-            
+                Margin="0,140,0,0"
+                VerticalAlignment="Top">
+
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Auto">
                 
-                <StackPanel x:Name="RoomsStackPanel" 
+                <StackPanel x:Name="RoomsStackPanel"
                             Orientation="Vertical">
                     
                     <!-- Dynamically added items will go here -->
-                    
-                    <StackPanel VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                Orientation="Horizontal">
+
+                    <Grid Background="Transparent">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                ToolTip="Enter this room!"
+                                Cursor="Help">
+                            
+                            <Button.Content>
+                                <Image Source="Images/enter.png" 
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Width="25"/>
+                            </Button.Content>
+                            
+                        </Button>
                         
-                        <Image Source="Images/open.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="30"
-                               ToolTip="Room is open!"
-                               Cursor="Help"/>
-
-                        <Image Source="Images/name.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Room name"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
-
-                        <TextBlock Text="somename" 
+                        <TextBlock Grid.Column="1"
+                                   Height="27"
+                                   Text="somename"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
                                    VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
+                                   Background="#99E9E9E9"/>
 
-                        <Image Source="Images/group.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Number of players in room"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
+                        <TextBlock Grid.Column="2"
+                                   Height="27"
+                                   Text="6 / 10"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"/>
 
-                        <TextBlock Text="6 / 10" 
+                        <TextBlock Grid.Column="3"
+                                   Height="27"
+                                   Text="7"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
                                    VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
+                                   Background="#99E9E9E9"/>
+                        
+                        <TextBlock Grid.Column="4"
+                                   Height="27"
+                                   Text="20"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"/>
 
-                        <Image Source="Images/questions.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Number of questions"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
+                        <Grid.Triggers>
+                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation To="#80ADD8FF" 
+                                    Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                    Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation To="Transparent" 
+                                    Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                    Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Grid.Triggers>
+                    </Grid>
 
-                        <TextBlock Text="7" 
+                    <Grid Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                ToolTip="Enter this room!"
+                                Cursor="Help">
+
+                            <Button.Content>
+                                <Image Source="Images/closed.png" 
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Width="25"/>
+                            </Button.Content>
+                        </Button>
+
+                        <TextBlock Grid.Column="1"
+                                   Height="27"
+                                   Text="myRoom2"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
                                    VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
+                                   Background="#99E9E9E9"/>
 
-                        <Image Source="Images/timeout.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Senconds per question"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
+                        <TextBlock Grid.Column="2"
+                                   Height="27"
+                                   Text="5 / 5"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"/>
 
-                        <TextBlock Text="20" 
+                        <TextBlock Grid.Column="3"
+                                   Height="27"
+                                   Text="10"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
                                    VerticalAlignment="Center"
-                                   Margin="3,0,10,0"/>
+                                   Background="#99E9E9E9"/>
 
-                    </StackPanel>
+                        <TextBlock Grid.Column="4"
+                                   Height="27"
+                                   Text="30"
+                                   Padding="10,3,0,0"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"/>
 
-                    <StackPanel VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                Orientation="Horizontal">
-
-                        <Image Source="Images/closed.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="30"
-                               Height="30"
-                               ToolTip="Room is closed!"/>
-
-                        <Image Source="Images/name.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Room name"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
-
-                        <TextBlock Text="somename2" 
-                                   VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
-
-                        <Image Source="Images/group.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Number of players in room"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
-
-                        <TextBlock Text="5 / 5" 
-                                   VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
-
-                        <Image Source="Images/questions.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Number of questions"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
-
-                        <TextBlock Text="10" 
-                                   VerticalAlignment="Center"
-                                   Margin="3,0,0,0"/>
-
-                        <Image Source="Images/timeout.png" 
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Width="20"
-                               ToolTip="Senconds per question"
-                               Margin="15,0,0,0"
-                               Cursor="Help"/>
-
-                        <TextBlock Text="30" 
-                                   VerticalAlignment="Center"
-                                   Margin="3,0,10,0"/>
-
-                    </StackPanel>
+                        <Grid.Triggers>
+                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation To="#80ADD8FF" 
+                                    Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                    Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation To="Transparent" 
+                                    Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                                    Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Grid.Triggers>
+                    </Grid>
                 </StackPanel>
             </ScrollViewer>
         </Border>

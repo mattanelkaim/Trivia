@@ -37,17 +37,27 @@ namespace ClientGUI
 
         private void SignupSubmit_Click(object sender, RoutedEventArgs? e)
         {
-            if (this.Username == string.Empty || this.Password == string.Empty || this.Email == string.Empty )
+            // validating input
+            if (this.Username == string.Empty || this.Password == string.Empty || this.Email == string.Empty)
+            {
                 MessageBox.Show("One or more of the fields is empty!");
+                return;
+            }
 
-            string json = JsonSerializer.Serialize(new { username = Username, password = Password, email = Email });
+            Helper.ResponseType status = Helper.SendSignupRequest(this.Username, this.Password, this.Email);
 
-            string msg = Helper.Serialize(json, Helper.MessageType.Register);
-            MessageBox.Show("[Sending]: " + msg);
-            Communicator.Send(msg);
-
-            string response = Communicator.Receive();
-            MessageBox.Show("[Received]: " + response);
+            switch (status)
+            {
+                case Helper.ResponseType.OK:
+                    this.NavigationService.Navigate(new MenuPage());
+                    break;
+                case Helper.ResponseType.USERNAME_ALREADY_EXISTS:
+                    MessageBox.Show("Username already exists");
+                    break;
+                default:
+                    MessageBox.Show("Signup failed");
+                    break;
+            }
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs? e)
@@ -61,7 +71,7 @@ namespace ClientGUI
                 {
                     textBlock = this.UsernameTextBlock;
                 }
-                else if (textBox.Text.Contains("Password"))
+                else if (textBox.Name.Contains("Password"))
                 {
                     textBlock = this.PasswordTextBlock;
                 }
@@ -109,7 +119,7 @@ namespace ClientGUI
                     textBlock = this.UsernameTextBlock;
                     fieldValue = Username;
                 }
-                else if (textBox.Text.Contains("Password"))
+                else if (textBox.Name.Contains("Password"))
                 {
                     textBlock = this.PasswordTextBlock;
                     fieldValue = Password;
@@ -174,6 +184,12 @@ namespace ClientGUI
         private void LoginLink_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new LoginPage(Username));
+        }
+
+        private void Field_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                SignupSubmit_Click(sender, e);
         }
     }
 }

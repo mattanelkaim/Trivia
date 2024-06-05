@@ -9,10 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\BabaPro-Bold.ttf" />
+    <None Remove="Fonts\BabaPro.ttf" />
+    <None Remove="Fonts\Good Timing.otf" />
     <None Remove="Images\bronze.png" />
     <None Remove="Images\closed.png" />
     <None Remove="Images\create.png" />
     <None Remove="Images\email.png" />
+    <None Remove="Images\enter.png" />
     <None Remove="Images\eyesClosed.png" />
     <None Remove="Images\eyesOpen.png" />
     <None Remove="Images\gold.png" />
@@ -24,6 +28,7 @@
     <None Remove="Images\open.png" />
     <None Remove="Images\password.png" />
     <None Remove="Images\questions.png" />
+    <None Remove="Images\scoreboard.jpg" />
     <None Remove="Images\silver.png" />
     <None Remove="Images\stats.png" />
     <None Remove="Images\timeout.png" />
@@ -32,10 +37,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Fonts\BabaPro.ttf" />
+    <Resource Include="Fonts\Good Timing.otf" />
     <Resource Include="Images\bronze.png" />
     <Resource Include="Images\closed.png" />
     <Resource Include="Images\create.png" />
     <Resource Include="Images\email.png" />
+    <Resource Include="Images\enter.png" />
     <Resource Include="Images\eyesClosed.png" />
     <Resource Include="Images\eyesOpen.png" />
     <Resource Include="Images\gold.png" />
@@ -44,9 +52,9 @@
     <Resource Include="Images\leave.png" />
     <Resource Include="Images\meeting.png" />
     <Resource Include="Images\name.png" />
-    <Resource Include="Images\open.png" />
     <Resource Include="Images\password.png" />
     <Resource Include="Images\questions.png" />
+    <Resource Include="Images\scoreboard.jpg" />
     <Resource Include="Images\silver.png" />
     <Resource Include="Images\stats.png" />
     <Resource Include="Images\timeout.png" />
