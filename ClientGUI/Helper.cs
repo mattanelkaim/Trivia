@@ -84,9 +84,14 @@ namespace ClientGUI
         }
 
         // Just a helper method to deserialize the response
-        public class ResponseWithStatus
+        public struct ResponseWithStatus
         {
             public int status { get; set; } // MUST HAVE A GETTER AND SETTER ELSE THIS SHITTY DESIRIALIZER WON'T WORK
+        }
+
+        public struct PersonalStatsResponse
+        {
+            public PersonalStatsPage.PersonalStats userStatistics { get; set; }
         }
 
         public static Response ExtractResponse(string response)
@@ -126,6 +131,21 @@ namespace ClientGUI
 
             // Ideally expects {"status":1}
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        public static PersonalStatsResponse SendPersonalStatsRequest()
+        {
+            string rawResponse = SendMessage(new {}, RequestType.GetStatistics);
+
+            Response response = ExtractResponse(rawResponse);
+
+            if (response.code != ResponseType.OK)
+            {
+                throw new Exception(); // TODO: Throw a more specific exception
+            }
+
+            // Expects {"userStatistics":{"correctAnswers":"7","games":"3","score":"3.416667","totalAnswers":"11"}}
+            return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
         }
 
         #endregion specificRequests
