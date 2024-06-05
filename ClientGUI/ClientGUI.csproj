@@ -54,7 +54,6 @@
     <Resource Include="Images\name.png" />
     <Resource Include="Images\password.png" />
     <Resource Include="Images\questions.png" />
-    <Resource Include="Images\scoreboard.jpg" />
     <Resource Include="Images\silver.png" />
     <Resource Include="Images\stats.png" />
     <Resource Include="Images\timeout.png" />
