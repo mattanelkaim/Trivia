@@ -49,7 +49,14 @@ namespace ClientGUI
 
         private void CreateSubmit_Click(object sender, RoutedEventArgs e)
         {
-            // TODO implement functionality
+            // validating input
+            if (this.RoomName == String.Empty || !(Int32.Parse(this.MaxPlayers) > 0 && Int32.Parse(this.MaxPlayers) <= 10) || !(Int32.Parse(this.QuestionCount) > 0 && Int32.Parse(this.QuestionCount) <= 10) || !(Int32.Parse(this.QuestionTimeout) > 0 && Int32.Parse(this.QuestionTimeout) <= 60))
+            {
+                MessageBox.Show("One or more of the fields are out of bounds!");
+                return;
+            }
+
+            string responseBuffer = Helper.SendMessage(new {roomName = RoomName, maxUsers = MaxPlayers, questionCount = QuestionCount, answerTimeout = QuestionTimeout}, Helper.RequestType.CreateRoom);
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs e)
