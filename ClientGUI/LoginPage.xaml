@@ -6,13 +6,12 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="LoginPage"
-      Background="White">
+      Title="LoginPage">
 
-    <!--<Page.Background>
-        <ImageBrush ImageSource="Images/scoreboard.jpg"
+    <Page.Background>
+        <ImageBrush ImageSource="Images/background.jpg"
                     Stretch="UniformToFill"/>
-    </Page.Background>-->
+    </Page.Background>
 
     <Page.Resources>
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
@@ -26,6 +25,7 @@
                    Margin="0,40,0,0"
                    FontSize="40"
                    FontWeight="Bold"
+                   Foreground="White"
                    FontFamily="{StaticResource Babapro}"/>
 
         <StackPanel HorizontalAlignment="Center"
@@ -38,6 +38,7 @@
                        VerticalAlignment="Top"
                        Margin="28,23,0,-28"
                        FontSize="16"
+                       Foreground="White"
                        FontWeight="SemiBold"/>
 
             <TextBox Name="UsernameField"
@@ -51,6 +52,7 @@
                      BorderBrush="DarkGray"
                      BorderThickness="0,0,0,2"
                      FontSize="16"
+                     Foreground="White"
                      MaxLength="16"
                      TextWrapping="NoWrap"
                      Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
@@ -58,7 +60,7 @@
                      LostFocus="Field_LostFocus"
                      KeyDown="Field_KeyDown">
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/user.png"
+                    <ImageBrush ImageSource="Images/White/user.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -74,6 +76,7 @@
                        VerticalAlignment="Top"
                        Margin="28,23,0,-28"
                        FontSize="16"
+                       Foreground="White"
                        FontWeight="SemiBold"/>
 
             <PasswordBox Name="PasswordField"
@@ -87,13 +90,14 @@
                          BorderBrush="DarkGray"
                          BorderThickness="0,0,0,2"
                          FontSize="16"
+                         Foreground="White"
                          MaxLength="8"
                          GotFocus="Field_GotFocus"
                          LostFocus="Field_LostFocus"
                          KeyDown="Field_KeyDown"
                          PasswordChanged="Password_PasswordChanged">
                 <PasswordBox.Background>
-                    <ImageBrush ImageSource="Images/password.png"
+                    <ImageBrush ImageSource="Images/White/password.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -114,6 +118,7 @@
                      BorderBrush="DarkGray"
                      BorderThickness="0,0,0,2"
                      FontSize="16"
+                     Foreground="White"
                      MaxLength="8"
                      TextWrapping="NoWrap"
                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
@@ -122,7 +127,7 @@
                      KeyDown="Field_KeyDown"
                      Visibility="Collapsed">
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/password.png"
+                    <ImageBrush ImageSource="Images/White/password.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -143,11 +148,11 @@
                         <Image Name="image" Width="30" Height="30" Margin="0,-6"/>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="image" Property="Source" Value="Images/eyesClosed.png"/>
+                                <Setter TargetName="image" Property="Source" Value="Images/White/eyesClosed.png"/>
                                 <Setter TargetName="image" Property="ToolTip" Value="Hide password"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="image" Property="Source" Value="Images/eyesOpen.png"/>
+                                <Setter TargetName="image" Property="Source" Value="Images/White/eyesOpen.png"/>
                                 <Setter TargetName="image" Property="ToolTip" Value="Show password"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -163,7 +168,7 @@
                     Padding="40,8,40,8"
                     Background="MediumBlue"
                     Foreground="White"
-                    BorderBrush="DarkGray"
+                    BorderBrush="Black"
                     BorderThickness="0.5"
                     FontSize="16"
                     FontWeight="Bold"
@@ -176,29 +181,31 @@
                     </Style>
                 </Button.Resources>
             </Button>
+        </StackPanel>
+        
+        <StackPanel Margin="0,0,0,40"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <TextBlock Text="New to our Trivia? "
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       FontSize="12"
+                       Foreground="White"
+                       FontWeight="SemiBold"/>
 
-            <StackPanel Margin="0,10,0,0"
-                        HorizontalAlignment="Center"
-                        Orientation="Horizontal">
-                <TextBlock Text="New to our Trivia? "
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           FontSize="12"
-                           FontWeight="SemiBold"/>
-
-                <Button Name="JoinLink"
-                        Content="Join now"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        Padding="0"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Foreground="MediumBlue"
-                        BorderThickness="0"
-                        Background="#00000000"
-                        Cursor="Hand"
-                        Click="JoinLink_Click"/>
-            </StackPanel>
+            <Button Name="JoinLink"
+                    Content="Join now"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Padding="0"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="MediumBlue"
+                    BorderThickness="0"
+                    Background="#00000000"
+                    Cursor="Hand"
+                    Click="JoinLink_Click"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -6,13 +6,16 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="PersonalStatsPage"
-      Background="White">
+      Title="PersonalStatsPage">
 
     <Page.Resources>
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
         <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
     </Page.Resources>
+
+    <Page.Background>
+        <ImageBrush ImageSource="Images/background.jpg"/>
+    </Page.Background>
 
     <Grid>
         <Button Background="Transparent"
@@ -22,7 +25,7 @@
                 Margin="10,10,0,0"
                 Click="HomeButton_Click">
             <Button.Content>
-                <Image Source="Images/home.png" 
+                <Image Source="Images/White/home.png" 
                        Width="30"/>
             </Button.Content>
         </Button>
@@ -31,6 +34,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    FontSize="50"
+                   Foreground="White"
                    FontWeight="Bold"
                    FontFamily="{StaticResource Babapro}"
                    Margin="0,20,0,0"/>
@@ -53,11 +57,13 @@
                 <TextBlock Text="{Binding ScoreStr}"
                            HorizontalAlignment="Center"
                            FontSize="60"
+                           Foreground="White"
                            FontWeight="Black"/>
 
                 <TextBlock Text="TOTAL SCORE"
                            HorizontalAlignment="Center"
                            FontSize="20"
+                           Foreground="White"
                            FontWeight="SemiBold"
                            Margin="0,-5,0,0"/>
             </StackPanel>
@@ -68,11 +74,13 @@
                 <TextBlock Text="{Binding DBStats.games}"
                            HorizontalAlignment="Center"
                            FontSize="60"
+                           Foreground="White"
                            FontWeight="Black"/>
 
                 <TextBlock Text="GAMES PLAYED"
                            HorizontalAlignment="Center"
                            FontSize="20"
+                           Foreground="White"
                            FontWeight="SemiBold"
                            Margin="0,-5,0,0"/>
             </StackPanel>
@@ -83,11 +91,13 @@
                 <TextBlock Text="{Binding DBStats.totalAnswers}"
                            HorizontalAlignment="Center"
                            FontSize="60"
+                           Foreground="White"
                            FontWeight="Black"/>
 
                 <TextBlock Text="QUESTIONS ANSWERED"
                            HorizontalAlignment="Center"
                            FontSize="20"
+                           Foreground="White"
                            FontWeight="SemiBold"
                            Margin="0,-5,0,0"/>
             </StackPanel>
@@ -100,11 +110,13 @@
                 <TextBlock Text="{Binding AccuracyStr}"
                            HorizontalAlignment="Center"
                            FontSize="60"
+                           Foreground="White"
                            FontWeight="Black"/>
 
                 <TextBlock Text="ACCURACY"
                            HorizontalAlignment="Center"
                            FontSize="20"
+                           Foreground="White"
                            FontWeight="SemiBold"
                            Margin="0,-5,0,0"/>
             </StackPanel>
