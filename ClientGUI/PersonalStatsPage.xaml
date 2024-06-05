@@ -50,7 +50,7 @@
             <StackPanel Grid.Row="0"
                         Grid.Column="0"
                         VerticalAlignment="Center">
-                <TextBlock Text="{Binding Score}"
+                <TextBlock Text="{Binding ScoreStr}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            FontWeight="Black"/>
@@ -65,7 +65,7 @@
             <StackPanel Grid.Row="0"
                         Grid.Column="1"
                         VerticalAlignment="Center">
-                <TextBlock Text="{Binding Games}"
+                <TextBlock Text="{Binding DBStats.games}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            FontWeight="Black"/>
@@ -80,7 +80,7 @@
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
                         VerticalAlignment="Center">
-                <TextBlock Text="{Binding TotalAnswers}"
+                <TextBlock Text="{Binding DBStats.totalAnswers}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            FontWeight="Black"/>
@@ -92,11 +92,11 @@
                            Margin="0,-5,0,0"/>
             </StackPanel>
 
-            <StackPanel Name="Accuracy"
+            <StackPanel Name="AccuracyBox"
                         Grid.Row="1"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        ToolTip="3 total correct&#x0a;8 total incorrect">
+                        ToolTip="">
                 <TextBlock Text="{Binding AccuracyStr}"
                            HorizontalAlignment="Center"
                            FontSize="60"
