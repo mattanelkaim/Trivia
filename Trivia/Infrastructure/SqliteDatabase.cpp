@@ -123,7 +123,7 @@ float SqliteDatabase::getPlayerScore(const std::string& username) const
 
 std::vector<std::string> SqliteDatabase::getHighScores() const
 {
-    const std::string query = "SELECT name FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
+    const std::string query = "SELECT username FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
 
     std::vector<std::string> scores;
     this->runQuery(query, callbackStringVector, &scores);
