@@ -34,7 +34,8 @@ bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexce
 {
     return info.id == GET_PLAYERS_IN_ROOM || info.id == JOIN_ROOM || \
            info.id == CREATE_ROOM         || info.id == GET_ROOMS || \
-           info.id == GET_STATISTICS      || info.id == LOGOUT;
+           info.id == GET_STATISTICS      || info.id == LOGOUT    || \
+           info.id == GET_HIGHSCORE;
 }
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc

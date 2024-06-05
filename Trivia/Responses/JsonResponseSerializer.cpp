@@ -54,7 +54,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse&
 buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response) noexcept
 {
     json j;
-    
+
     // Fill json with inner fields, or with "None" if non-existent
     for (size_t i = 0; i < NUM_TOP_SCORES; ++i)
         j[JsonFields::HIGH_SCORES][i + 1] = (i < response.statistics.size()) ? response.statistics[i] : "None";
