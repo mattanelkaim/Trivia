@@ -41,7 +41,6 @@ namespace ClientGUI
             //]));
 
             this.MainFrame.NavigationService.Navigate(new LoginPage());
-            this.Title = "Trivia";
         }
     }
 }
