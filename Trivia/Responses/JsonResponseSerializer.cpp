@@ -57,7 +57,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& res
 
     // Fill json with inner fields, or with "None" if non-existent
     for (size_t i = 0; i < NUM_TOP_SCORES; ++i)
-        j[JsonFields::HIGH_SCORES][i + 1] = (i < response.statistics.size()) ? response.statistics[i] : "None";
+        j[JsonFields::HIGH_SCORES][std::to_string(i + 1)] = (i < response.statistics.size()) ? response.statistics[i] : "None";
 
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
