@@ -55,6 +55,7 @@
                      MaxLength="16"
                      TextWrapping="NoWrap"
                      Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                     CaretBrush="White"
                      GotFocus="Field_GotFocus"
                      LostFocus="Field_LostFocus"
                      KeyDown="Field_KeyDown">
@@ -91,6 +92,7 @@
                          FontSize="16"
                          Foreground="White"
                          MaxLength="8"
+                         CaretBrush="White"
                          GotFocus="Field_GotFocus"
                          LostFocus="Field_LostFocus"
                          KeyDown="Field_KeyDown"
@@ -121,6 +123,7 @@
                      MaxLength="8"
                      TextWrapping="NoWrap"
                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                     CaretBrush="White"
                      GotFocus="Field_GotFocus"
                      LostFocus="Field_LostFocus"
                      KeyDown="Field_KeyDown"
@@ -183,6 +186,7 @@
                      Foreground="White"
                      TextWrapping="NoWrap"
                      Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                     CaretBrush="White"
                      GotFocus="Field_GotFocus"
                      LostFocus="Field_LostFocus"
                      KeyDown="Field_KeyDown">

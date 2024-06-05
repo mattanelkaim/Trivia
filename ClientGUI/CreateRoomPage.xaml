@@ -71,6 +71,7 @@
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
+                        CaretBrush="White"
                         GotFocus="Field_GotFocus"
                         LostFocus="Field_LostFocus">  
                 
@@ -111,6 +112,7 @@
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding MaxPlayers, UpdateSourceTrigger=PropertyChanged}"
+                        CaretBrush="White"
                         GotFocus="Field_GotFocus"
                         LostFocus="Field_LostFocus"
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
@@ -153,6 +155,7 @@
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding QuestionCount, UpdateSourceTrigger=PropertyChanged}"
+                        CaretBrush="White"
                         GotFocus="Field_GotFocus"
                         LostFocus="Field_LostFocus"
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
@@ -195,6 +198,7 @@
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding QuestionTimeout, UpdateSourceTrigger=PropertyChanged}"
+                        CaretBrush="White"
                         GotFocus="Field_GotFocus"
                         LostFocus="Field_LostFocus"
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">  
