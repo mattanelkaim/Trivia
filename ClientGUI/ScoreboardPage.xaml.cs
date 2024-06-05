@@ -20,14 +20,42 @@ namespace ClientGUI
     /// </summary>
     public partial class ScoreboardPage : Page
     {
+        public struct Highscore
+        {
+            public string Username { get; set; }
+            public int Score { get; set; }
+        }
+
+        public Highscore[] TopPlayers { get; } = new Highscore[5];
+
         public ScoreboardPage()
         {
+            DataContext = this;
+
+            this.TopPlayers = FetchTopPlayersFromDB();
+
             InitializeComponent();
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new MenuPage());
+        }
+
+        private static Highscore[] FetchTopPlayersFromDB()
+        {
+            Dictionary<string, string> highscores = Helper.SendScoreboardRequest();
+            Highscore[] Highscores = new Highscore[5];
+
+            int i = 0;
+            foreach (string username in highscores.Values)
+            {
+                Highscores[i] = new Highscore() { Username = username, Score = -1 }; // TODO score isn't supported yet
+                if (++i >= 5)
+                    break;
+            }
+
+            return Highscores;
         }
     }
 }

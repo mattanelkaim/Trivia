@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -83,7 +84,7 @@ namespace ClientGUI
             public string content;
         }
 
-        // Just a helper method to deserialize the response
+        // Just a helper struct to deserialize the response
         public struct ResponseWithStatus
         {
             public int status { get; set; } // MUST HAVE A GETTER AND SETTER ELSE THIS SHITTY DESIRIALIZER WON'T WORK
@@ -92,6 +93,11 @@ namespace ClientGUI
         public struct PersonalStatsResponse
         {
             public PersonalStatsPage.PersonalStats userStatistics { get; set; }
+        }
+
+        public class HighScoresResponse
+        {
+            public Dictionary<string, string> highScores { get; set; }
         }
 
         public static Response ExtractResponse(string response)
@@ -146,6 +152,21 @@ namespace ClientGUI
 
             // Expects {"userStatistics":{"correctAnswers":"7","games":"3","score":"3.416667","totalAnswers":"11"}}
             return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
+        }
+
+        public static Dictionary<string, string> SendScoreboardRequest()
+        {
+            string rawResponse = SendMessage(new { }, RequestType.GetHighscore);
+
+            Response response = ExtractResponse(rawResponse);
+
+            if (response.code != ResponseType.OK)
+            {
+                throw new Exception(); // TODO: Throw a more specific exception
+            }
+
+            // Expects {"highScores":{"1":"champ","2":"username2","3":"username3","4":"normalperson","5":"bad"}}
+            return JsonSerializer.Deserialize<HighScoresResponse>(response.content).highScores;
         }
 
         #endregion specificRequests

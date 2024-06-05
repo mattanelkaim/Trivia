@@ -65,7 +65,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="Mr. Sandman"
+                               Text="{Binding TopPlayers[0].Username}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -74,7 +74,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="743"
+                               Text="{Binding TopPlayers[0].Score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -98,7 +98,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="Yummy Gil"
+                               Text="{Binding TopPlayers[1].Username}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -107,7 +107,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="540"
+                               Text="{Binding TopPlayers[1].Score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -131,7 +131,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="Bad boi"
+                               Text="{Binding TopPlayers[2].Username}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -140,7 +140,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="212"
+                               Text="{Binding TopPlayers[2].Score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -164,7 +164,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="SEXY E PAPA"
+                               Text="{Binding TopPlayers[3].Username}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -173,7 +173,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="127"
+                               Text="{Binding TopPlayers[3].Score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -197,7 +197,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="Smolani"
+                               Text="{Binding TopPlayers[4].Username}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -206,7 +206,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="-69"
+                               Text="{Binding TopPlayers[4].Score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
