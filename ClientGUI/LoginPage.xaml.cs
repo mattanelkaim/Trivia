@@ -174,7 +174,6 @@ namespace ClientGUI
         private void JoinLink_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new SignupPage(Username));
-            this.Title = "Trivia - Sign Up"; // Update title to current page
         }
 
         private void Field_KeyDown(object sender, KeyEventArgs e)
