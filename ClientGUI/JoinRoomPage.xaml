@@ -6,13 +6,17 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="JoinRoomPage"
-      Background="White">
+      Title="JoinRoomPage">
 
     <Page.Resources>
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
         <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
     </Page.Resources>
+
+    <Page.Background>
+        <ImageBrush ImageSource="Images/background.jpg"/>
+    </Page.Background>
+    
     <Grid>
         <Button Background="Transparent"
                 HorizontalAlignment="Left"
@@ -22,8 +26,8 @@
                 Click="HomeButton_Click">
             
             <Button.Content>
-                <Image Source="Images/home.png" 
-               Width="30"/>
+                <Image Source="Images/White/home.png" 
+                       Width="30"/>
             </Button.Content>
             
         </Button>
@@ -34,6 +38,7 @@
                    Margin="0,20,0,0"
                    FontSize="45"
                    FontWeight="Bold"
+                   Foreground="White"
                    FontFamily="{StaticResource Babapro}"/>
 
         <Grid Width="500"
@@ -49,7 +54,7 @@
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Image Source="Images/name.png" 
+                <Image Source="Images/White/name.png" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Width="20"
@@ -58,13 +63,14 @@
                 <TextBlock Text="NAME" 
                            VerticalAlignment="Center"
                            Margin="3,0,0,0"
+                           Foreground="White"
                            FontWeight="SemiBold"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Image Source="Images/group.png" 
+                <Image Source="Images/White/group.png" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Width="20"
@@ -73,13 +79,14 @@
                 <TextBlock Text="PLAYERS" 
                            VerticalAlignment="Center"
                            Margin="3,0,0,0"
+                           Foreground="White"
                            FontWeight="SemiBold"/>
             </StackPanel>
 
             <StackPanel Grid.Column="3"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Image Source="Images/questions.png"
+                <Image Source="Images/White/questions.png"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Width="20"
@@ -88,13 +95,14 @@
                 <TextBlock Text="QUESTIONS"
                            VerticalAlignment="Center"
                            Margin="1,0,0,0"
+                           Foreground="White"
                            FontWeight="SemiBold"/>
             </StackPanel>
 
             <StackPanel Grid.Column="4"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Image Source="Images/timeout.png" 
+                <Image Source="Images/White/timeout.png" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Width="20"
@@ -103,6 +111,7 @@
                 <TextBlock Text="TIMEOUT"
                            VerticalAlignment="Center"
                            Margin="3,0,0,0"
+                           Foreground="White"
                            FontWeight="SemiBold"/>
             </StackPanel>
         </Grid>
@@ -140,7 +149,7 @@
                                 Cursor="Help">
                             
                             <Button.Content>
-                                <Image Source="Images/enter.png" 
+                                <Image Source="Images/White/enter.png" 
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Width="25"/>
@@ -217,7 +226,7 @@
                                 Cursor="Help">
 
                             <Button.Content>
-                                <Image Source="Images/closed.png" 
+                                <Image Source="Images/White/closed.png" 
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Center"
                                        Width="25"/>
