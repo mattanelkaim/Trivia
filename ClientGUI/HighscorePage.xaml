@@ -6,8 +6,11 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignWidth="800" d:DesignHeight="450"
-      Title="HighscorePage"
-      Background="LightPink">
+      Title="HighscorePage">
+
+    <Page.Background>
+        <ImageBrush ImageSource="Images/background.jpg"/>
+    </Page.Background>
 
     <Grid>
         <StackPanel VerticalAlignment="Bottom"
@@ -20,6 +23,7 @@
                            Margin="0,0,0,4"
                            FontSize="20"
                            FontWeight="Bold"
+                           Foreground="White"
                            Text="{Binding Highscores[1].Username}"
                            MouseEnter="Unblur_Text">
                     <TextBlock.Effect>
@@ -63,6 +67,7 @@
                            Margin="0,0,0,4"
                            FontSize="20"
                            FontWeight="Bold"
+                           Foreground="White"
                            Text="{Binding Highscores[0].Username}"
                            MouseEnter="Unblur_Text">
                     <TextBlock.Effect>
@@ -107,6 +112,7 @@
                            Margin="0,0,0,4"
                            FontSize="20"
                            FontWeight="Bold"
+                           Foreground="White"
                            Text="{Binding Highscores[2].Username}"
                            MouseEnter="Unblur_Text">
                     <TextBlock.Effect>

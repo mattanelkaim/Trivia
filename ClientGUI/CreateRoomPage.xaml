@@ -22,7 +22,7 @@
                 Margin="10,10,0,0"
                 Click="HomeButton_Click">
             <Button.Content>
-                <Image Source="Images/home.png" 
+                <Image Source="Images/White/home.png" 
                        Width="30"/>
             </Button.Content>
         </Button>
