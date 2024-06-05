@@ -6,13 +6,16 @@
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="CreateRoomPage"
-      Background="White">
+      Title="CreateRoomPage">
 
     <Page.Resources>
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
         <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
     </Page.Resources>
+
+    <Page.Background>
+        <ImageBrush ImageSource="Images/background.jpg"/>
+    </Page.Background>
 
     <Grid>
         <Button Background="Transparent"
@@ -22,7 +25,7 @@
                 Margin="10,10,0,0"
                 Click="HomeButton_Click">
             <Button.Content>
-                <Image Source="Images/home.png" 
+                <Image Source="Images/White/home.png" 
                        Width="30"/>
             </Button.Content>
         </Button>
@@ -32,6 +35,7 @@
                    HorizontalAlignment="Center"
                    Margin="0,30,0,0"
                    FontSize="45"
+                   Foreground="White"
                    FontWeight="Bold"
                    FontFamily="{StaticResource Babapro}"/>
 
@@ -47,6 +51,7 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
+                        Foreground="White"
                         FontWeight="SemiBold"
                         Cursor="Help"
                         ToolTip="Mustn't be empty"/>
@@ -62,6 +67,7 @@
                         BorderBrush="DarkGray"
                         BorderThickness="0,0,0,2"
                         FontSize="16"
+                        Foreground="White"
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
@@ -69,7 +75,7 @@
                         LostFocus="Field_LostFocus">  
                 
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/name.png"
+                    <ImageBrush ImageSource="Images/White/name.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -85,6 +91,7 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
+                        Foreground="White"
                         FontWeight="SemiBold"
                         Cursor="Help"
                         ToolTip="0 &lt; Must be ≤ 10"/>
@@ -100,6 +107,7 @@
                         BorderBrush="DarkGray"
                         BorderThickness="0,0,0,2"
                         FontSize="16"
+                        Foreground="White"
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding MaxPlayers, UpdateSourceTrigger=PropertyChanged}"
@@ -108,7 +116,7 @@
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
                 
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/group.png"
+                    <ImageBrush ImageSource="Images/White/group.png"
                     Stretch="Uniform"
                     AlignmentX="Left"
                     AlignmentY="Center"
@@ -125,6 +133,7 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
+                        Foreground="White"
                         FontWeight="SemiBold"
                         Cursor="Help"
                         ToolTip="0 &lt; Must be ≤ 10"/>
@@ -140,6 +149,7 @@
                         BorderBrush="DarkGray"
                         BorderThickness="0,0,0,2"
                         FontSize="16"
+                        Foreground="White"
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding QuestionCount, UpdateSourceTrigger=PropertyChanged}"
@@ -148,7 +158,7 @@
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
 
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/questions.png"
+                    <ImageBrush ImageSource="Images/White/questions.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -165,6 +175,7 @@
                         VerticalAlignment="Top"
                         Margin="28,23,0,-28"
                         FontSize="16"
+                        Foreground="White"
                         FontWeight="SemiBold"
                         Cursor="Help"
                         ToolTip="5 ≤ Must be ≤ 60"/>
@@ -180,6 +191,7 @@
                         BorderBrush="DarkGray"
                         BorderThickness="0,0,0,2"
                         FontSize="16"
+                        Foreground="White"
                         MaxLength="16"
                         TextWrapping="NoWrap"
                         Text="{Binding QuestionTimeout, UpdateSourceTrigger=PropertyChanged}"
@@ -188,7 +200,7 @@
                         PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">  
 
                 <TextBox.Background>
-                    <ImageBrush ImageSource="Images/timeout.png"
+                    <ImageBrush ImageSource="Images/White/timeout.png"
                                 Stretch="Uniform"
                                 AlignmentX="Left"
                                 AlignmentY="Center"
@@ -206,7 +218,7 @@
                     Padding="40,8,40,8"
                     Background="MediumBlue"
                     Foreground="White"
-                    BorderBrush="DarkGray"
+                    BorderBrush="Black"
                     BorderThickness="0.5"
                     FontSize="16"
                     FontWeight="Bold"
