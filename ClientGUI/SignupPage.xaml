@@ -179,7 +179,7 @@
                     FontWeight="Bold"
                     FontFamily="{StaticResource Babapro}"
                     Foreground="White"
-                    Background="MediumBlue"
+                    Background="#FF008080"
                     BorderBrush="Black"
                     BorderThickness="0.5"
                     Cursor="Hand"
@@ -206,7 +206,7 @@
                     FontSize="12"
                     FontWeight="Bold"
                     BorderThickness="0"
-                    Foreground="MediumBlue"
+                    Foreground="#FF008080"
                     Background="Transparent"
                     Cursor="Hand"
                     Click="LoginLink_Click"/>
