@@ -12,7 +12,7 @@
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
         <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
 
-        <!--Styles 215-->
+        <!--Styles-->
         <Style x:Key="fieldBase" TargetType="Control">
             <!--PasswordBox also uses it-->
             <Setter Property="Width" Value="200"/>
@@ -154,7 +154,7 @@
                     FontWeight="Bold"
                     FontFamily="{StaticResource Babapro}"
                     Foreground="White"
-                    Background="MediumBlue"
+                    Background="#FF008080"
                     BorderBrush="Black"
                     BorderThickness="0.5"
                     Cursor="Hand"
@@ -179,12 +179,13 @@
                        FontWeight="SemiBold"/>
 
             <Button Content="Join now"
+                    
                     Padding="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="12"
                     FontWeight="Bold"
-                    Foreground="MediumBlue"
+                    Foreground="#FF008080"
                     Background="Transparent"
                     BorderThickness="0"
                     Cursor="Hand"
