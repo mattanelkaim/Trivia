@@ -220,7 +220,7 @@
                     VerticalAlignment="Top"
                     Margin="0,30,0,0"
                     Padding="40,8,40,8"
-                    Background="MediumBlue"
+                    Background="#FF008080"
                     Foreground="White"
                     BorderBrush="Black"
                     BorderThickness="0.5"
