@@ -48,7 +48,7 @@
                         Padding="2"
                         FontSize="22"
                         FontWeight="Bold"
-                        Foreground="MediumBlue"
+                        Foreground="#FF008080"
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
@@ -72,7 +72,7 @@
                         Padding="2"
                         FontSize="22"
                         FontWeight="Bold"
-                        Foreground="MediumBlue"
+                        Foreground="#FF008080"
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
@@ -97,7 +97,7 @@
                         Padding="2"
                         FontSize="22"
                         FontWeight="Bold"
-                        Foreground="MediumBlue"
+                        Foreground="#FF008080"
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
@@ -122,7 +122,7 @@
                         Padding="2"
                         FontSize="22"
                         FontWeight="Bold"
-                        Foreground="MediumBlue"
+                        Foreground="#FF008080"
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
@@ -149,13 +149,12 @@
                         Padding="2"
                         FontSize="22"
                         FontWeight="Bold"
-                        Foreground="MediumBlue"
+                        Foreground="#FF008080"
                         BorderThickness="0"
                         Background="#00000000"
                         Cursor="Hand"
                         Margin="3,0,0,0"
                         Click="Logout_Click"/>
-                
             </StackPanel>
         </StackPanel>
     </Grid>
