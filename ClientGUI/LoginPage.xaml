@@ -8,55 +8,61 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LoginPage">
 
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+
+        <!--Styles 215-->
+        <Style x:Key="fieldBase" TargetType="Control">
+            <!--PasswordBox also uses it-->
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,5,0,10"/>
+            <Setter Property="Padding" Value="28,0,0,0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource fieldBase}">
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="MaxLength" Value="16"/>
+            <Setter Property="CaretBrush" Value="White"/>
+        </Style>
+    </Page.Resources>
+
     <Page.Background>
         <ImageBrush ImageSource="Images/background.jpg"
                     Stretch="UniformToFill"/>
     </Page.Background>
 
-    <Page.Resources>
-        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
-        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
-    </Page.Resources>
-
     <Grid>
         <TextBlock Text="LOG INTO TRIVIA"
+                   Margin="0,40,0,0"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Center"
-                   Margin="0,40,0,0"
                    FontSize="40"
                    FontWeight="Bold"
-                   Foreground="White"
-                   FontFamily="{StaticResource Babapro}"/>
+                   FontFamily="{StaticResource Babapro}"
+                   Foreground="White"/>
 
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Margin="0,40,0,0">
+        <StackPanel Margin="0,40,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
             <!--Moves up on field focus-->
             <TextBlock Name="UsernameTextBlock"
                        Text="Username"
+                       Margin="28,23,0,-28"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Margin="28,23,0,-28"
                        FontSize="16"
-                       Foreground="White"
-                       FontWeight="SemiBold"/>
+                       FontWeight="SemiBold"
+                       Foreground="White"/>
 
             <TextBox Name="UsernameField"
-                     Height="30"
-                     Width="200"
-                     VerticalAlignment="Top"
-                     HorizontalAlignment="Center"
-                     VerticalContentAlignment="Center"
-                     Margin="0,5,0,10"
-                     Padding="28,0,0,0"
-                     BorderBrush="DarkGray"
-                     BorderThickness="0,0,0,2"
-                     FontSize="16"
-                     Foreground="White"
-                     MaxLength="16"
-                     TextWrapping="NoWrap"
+                     Style="{StaticResource TextBoxStyle}"
                      Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                     CaretBrush="White"
                      GotFocus="Field_GotFocus"
                      LostFocus="Field_LostFocus"
                      KeyDown="Field_KeyDown">
@@ -73,25 +79,15 @@
             <!--Moves up on field focus-->
             <TextBlock Name="PasswordTextBlock"
                        Text="Password"
+                       Margin="28,23,0,-28"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Margin="28,23,0,-28"
                        FontSize="16"
-                       Foreground="White"
-                       FontWeight="SemiBold"/>
+                       FontWeight="SemiBold"
+                       Foreground="White"/>
 
             <PasswordBox Name="PasswordField"
-                         Height="30"
-                         Width="200"
-                         VerticalAlignment="Top"
-                         HorizontalAlignment="Center"
-                         VerticalContentAlignment="Center"
-                         Margin="0,5,0,0"
-                         Padding="28,0,0,0"
-                         BorderBrush="DarkGray"
-                         BorderThickness="0,0,0,2"
-                         FontSize="16"
-                         Foreground="White"
+                         Style="{StaticResource fieldBase}"
                          MaxLength="8"
                          CaretBrush="White"
                          GotFocus="Field_GotFocus"
@@ -110,25 +106,12 @@
 
             <!--Will be swapped with PasswordBox on password reveal-->
             <TextBox Name="PasswordTextBox"
-                     Height="30"
-                     Width="200"
-                     VerticalAlignment="Top"
-                     HorizontalAlignment="Center"
-                     VerticalContentAlignment="Center"
-                     Margin="0,5,0,0"
-                     Padding="28,0,0,0"
-                     BorderBrush="DarkGray"
-                     BorderThickness="0,0,0,2"
-                     FontSize="16"
-                     Foreground="White"
-                     MaxLength="8"
-                     TextWrapping="NoWrap"
+                     Style="{StaticResource TextBoxStyle}"
                      Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                     CaretBrush="White"
+                     Visibility="Collapsed"
                      GotFocus="Field_GotFocus"
                      LostFocus="Field_LostFocus"
-                     KeyDown="Field_KeyDown"
-                     Visibility="Collapsed">
+                     KeyDown="Field_KeyDown">
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/White/password.png"
                                 Stretch="Uniform"
@@ -139,10 +122,9 @@
                 </TextBox.Background>
             </TextBox>
 
-            <CheckBox Name="ShowPasswordCheckBox"
+            <CheckBox Margin="0,-36,6,0"
                       HorizontalAlignment="Right"
                       VerticalAlignment="Top"
-                      Margin="0,-26,6,0"
                       Cursor="Hand"
                       Checked="ShowPasswordCheckBox_Checked"
                       Unchecked="ShowPasswordCheckBox_Unchecked">
@@ -163,19 +145,18 @@
                 </CheckBox.Template>
             </CheckBox>
 
-            <Button Name="LoginSubmit"
-                    Content="LOGIN"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
+            <Button Content="LOGIN"
                     Margin="0,30,0,0"
                     Padding="40,8,40,8"
-                    Background="MediumBlue"
-                    Foreground="White"
-                    BorderBrush="Black"
-                    BorderThickness="0.5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
                     FontSize="16"
                     FontWeight="Bold"
                     FontFamily="{StaticResource Babapro}"
+                    Foreground="White"
+                    Background="MediumBlue"
+                    BorderBrush="Black"
+                    BorderThickness="0.5"
                     Cursor="Hand"
                     Click="LoginSubmit_Click">
                 <Button.Resources>
@@ -197,16 +178,15 @@
                        Foreground="White"
                        FontWeight="SemiBold"/>
 
-            <Button Name="JoinLink"
-                    Content="Join now"
+            <Button Content="Join now"
+                    Padding="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Padding="0"
                     FontSize="12"
                     FontWeight="Bold"
                     Foreground="MediumBlue"
+                    Background="Transparent"
                     BorderThickness="0"
-                    Background="#00000000"
                     Cursor="Hand"
                     Click="JoinLink_Click"/>
         </StackPanel>
