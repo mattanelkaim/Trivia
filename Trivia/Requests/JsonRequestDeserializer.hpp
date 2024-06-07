@@ -3,7 +3,8 @@
 #include "InvalidProtocolStructure.h"
 #include "json.hpp"
 #include "ServerDefinitions.h"
-#include <concepts>
+#include "Helper.h"
+#include <stdint.h>
 #include <string>
 
 namespace JsonRequestDeserializer
@@ -43,17 +44,17 @@ namespace JsonRequestDeserializer
                 };
             }
             else if constexpr (std::same_as<T, CreateRoomRequest>)
-            {
+            {                
                 return T{
-                    .roomName      = j.at("roomName"),
-                    .maxUsers      = j.at("maxUsers"),
-                    .questionCount = j.at("questionCount"),
-                    .answerTimeout = j.at("answerTimeout")
+                    .roomName = j.at("roomName"),
+                    .maxUsers = Helper::tryMakeIntegral<uint16_t>(j.at("maxUsers")),
+                    .questionCount = Helper::tryMakeIntegral<uint16_t>(j.at("questionCount")),
+                    .answerTimeout = Helper::tryMakeIntegral<uint32_t>(j.at("answerTimeout"))
                 };
             }
             else if constexpr (requires{ T::roomId; }) // Either GetPlayersInRoomRequest or JoinRoomRequest
             {
-                return T{.roomId = j.at("roomId")};
+                return T{.roomId = Helper::tryMakeIntegral<uint16_t>(j.at("roomId"))};
             }
             else
             {
