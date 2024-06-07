@@ -54,10 +54,13 @@ buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse&
 buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response) noexcept
 {
     json j;
+    auto& jHighScores = j[JsonFields::HIGH_SCORES] = json::object(); // Create the "highScores" wrapper
 
-    // Fill json with inner fields, or with "None" if non-existent
     for (size_t i = 0; i < NUM_TOP_SCORES; ++i)
-        j[JsonFields::HIGH_SCORES][std::to_string(i + 1)] = (i < response.statistics.size()) ? response.statistics[i] : "None";
+    {
+        json value = ((i < response.statistics.size()) ? response.statistics[i] : "None");
+        jHighScores.emplace(std::to_string(i + 1), std::move(value)); // Add the key-value pair
+    }
 
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
