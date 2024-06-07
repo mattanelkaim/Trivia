@@ -4,6 +4,8 @@
 #include <cstddef> // size_t
 #include <string>
 #include <string_view>
+#include <iterator>
+#include <map>
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) noexcept
@@ -51,15 +53,20 @@ buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse&
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response) noexcept
 {
     json j;
     auto& jHighScores = j[JsonFields::HIGH_SCORES] = json::object(); // Create the "highScores" wrapper
 
-    for (size_t i = 0; i < NUM_TOP_SCORES; ++i)
+    uint16_t i = 0;
+    for (auto it = response.statistics.cbegin(); i < NUM_TOP_SCORES; ++i)
     {
-        json value = ((i < response.statistics.size()) ? response.statistics[i] : "None");
+        json value = {it != response.statistics.cend() ? (it->first, it->second) : ("None", 0.0)};
         jHighScores.emplace(std::to_string(i + 1), std::move(value)); // Add the key-value pair
+
+        if (it != response.statistics.cend())
+            it++;
     }
 
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
