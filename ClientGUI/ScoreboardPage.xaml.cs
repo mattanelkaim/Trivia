@@ -22,8 +22,8 @@ namespace ClientGUI
     {
         public struct Highscore
         {
-            public string Username { get; set; }
-            public int Score { get; set; }
+            public string name { get; set; }
+            public double score { get; set; }
         }
 
         public Highscore[] TopPlayers { get; } = new Highscore[5];
@@ -44,18 +44,9 @@ namespace ClientGUI
 
         private static Highscore[] FetchTopPlayersFromDB()
         {
-            Dictionary<string, string> highscores = Helper.SendScoreboardRequest();
-            Highscore[] Highscores = new Highscore[5];
+            Dictionary<string, Highscore> highscores = Helper.SendScoreboardRequest();
 
-            int i = 0;
-            foreach (string username in highscores.Values)
-            {
-                Highscores[i] = new Highscore() { Username = username, Score = -1 }; // TODO score isn't supported yet
-                if (++i >= 5)
-                    break;
-            }
-
-            return Highscores;
+            return [.. highscores.Values];
         }
     }
 }
