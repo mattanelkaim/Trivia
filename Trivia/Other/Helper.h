@@ -16,10 +16,10 @@ namespace Helper
      * @tparam T The type of the object to convert (string or another integral).
      * @param obj The object to convert (string or another integral).
      * @return The converted object (integral type).
-     * @throws InvalidProtocolStructure (only relevant to string conversion)
+     * @throws InvalidProtocolStructure (only relevant for string conversion)
      */
     template <std::integral ReturnType, typename T>
-    ReturnType tryMakeIntegral(const T& obj) noexcept(std::is_convertible<T, ReturnType>())
+    ReturnType tryMakeIntegral(const T& obj) // noexcept(std::is_convertible<T, ReturnType>())
     {
         if (std::is_convertible<T, ReturnType>())
             return obj;
@@ -31,7 +31,7 @@ namespace Helper
         }
         catch (...) // std::invalid_argument OR std::out_of_range
         {
-            throw InvalidProtocolStructure("Cannot convert " + static_cast<std::string>(obj) + " to integral type!"); // Throwing a more specific exception
+            throw InvalidProtocolStructure{"Cannot convert " + static_cast<std::string>(obj) + " to integral type!"}; // Throwing a more specific exception
         }
     }
 
