@@ -69,7 +69,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="{Binding TopPlayers[0].Username}"
+                               Text="{Binding TopPlayers[0].name}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -78,7 +78,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[0].Score}"
+                               Text="{Binding TopPlayers[0].score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -102,7 +102,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="{Binding TopPlayers[1].Username}"
+                               Text="{Binding TopPlayers[1].name}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -111,7 +111,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[1].Score}"
+                               Text="{Binding TopPlayers[1].score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -135,7 +135,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="{Binding TopPlayers[2].Username}"
+                               Text="{Binding TopPlayers[2].name}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -144,7 +144,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[2].Score}"
+                               Text="{Binding TopPlayers[2].score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -169,7 +169,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="{Binding TopPlayers[3].Username}"
+                               Text="{Binding TopPlayers[3].name}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -178,7 +178,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[3].Score}"
+                               Text="{Binding TopPlayers[3].score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                Foreground="White"
@@ -204,7 +204,7 @@
 
                     <TextBlock Grid.Column="1"
                                Height="33"
-                               Text="{Binding TopPlayers[4].Username}"
+                               Text="{Binding TopPlayers[4].name}"
                                Padding="20,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -213,7 +213,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[4].Score}"
+                               Text="{Binding TopPlayers[4].score}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                Foreground="White"
