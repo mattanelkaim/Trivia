@@ -1,31 +1,37 @@
 #pragma once
 
-#include "ServerDefinitions.h"
 #include "InvalidProtocolStructure.h"
-#include <type_traits> //std::is_convertible
+#include "ServerDefinitions.h"
 #include <cstddef> // size_t
 #include <string>
 #include <string_view>
+#include <type_traits> //std::is_convertible
 #include <WinSock2.h>
 
 namespace Helper
 {
     /**
-    * @throws InvalidProtocolStructure  
-    */
+     * @brief Converts a string (implicit json-shit) OR another integral type to another integral type.
+     * @tparam ReturnType The integral type to convert to.
+     * @tparam T The type of the object to convert (string or another integral).
+     * @param obj The object to convert (string or another integral).
+     * @return The converted object (integral type).
+     * @throws InvalidProtocolStructure (only relevant to string conversion)
+     */
     template <std::integral ReturnType, typename T>
-    ReturnType tryMakeIntegral(const T& obj)
+    ReturnType tryMakeIntegral(const T& obj) noexcept(std::is_convertible<T, ReturnType>())
     {
-        if (std::is_convertible<T, ReturnType>()) 
+        if (std::is_convertible<T, ReturnType>())
             return obj;
 
         try
         {
+            // Casting json library shit to an explicit string
             return static_cast<ReturnType>(std::stoll(static_cast<std::string>(obj)));
         }
-        catch (...)
+        catch (...) // std::invalid_argument OR std::out_of_range
         {
-            throw InvalidProtocolStructure(); // throwing a more specific exception
+            throw InvalidProtocolStructure("Cannot convert " + static_cast<std::string>(obj) + " to integral type!"); // Throwing a more specific exception
         }
     }
 
