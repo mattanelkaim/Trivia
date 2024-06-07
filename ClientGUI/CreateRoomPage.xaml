@@ -11,6 +11,32 @@
     <Page.Resources>
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
         <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+
+        <!--Styles 241-->
+        <Style x:Key="textField" TargetType="TextBox">
+            <!--PasswordBox also uses it-->
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,5,0,10"/>
+            <Setter Property="Padding" Value="28,0,0,0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="MaxLength" Value="16"/>
+            <Setter Property="CaretBrush" Value="White"/>
+        </Style>
+
+        <Style x:Key="placeholder" TargetType="TextBlock">
+            <Setter Property="Margin" Value="28,23,0,-28"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
     </Page.Resources>
 
     <Page.Background>
@@ -19,10 +45,10 @@
 
     <Grid>
         <Button Background="Transparent"
+                Margin="10,10,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 BorderBrush="Transparent"
-                Margin="10,10,0,0"
                 Click="HomeButton_Click">
             <Button.Content>
                 <Image Source="Images/White/home.png" 
@@ -31,49 +57,31 @@
         </Button>
         
         <TextBlock Text="HOST YOUR OWN ROOM!"
-                   VerticalAlignment="Top"
-                   HorizontalAlignment="Center"
                    Margin="0,30,0,0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
                    FontSize="45"
-                   Foreground="White"
                    FontWeight="Bold"
-                   FontFamily="{StaticResource Babapro}"/>
+                   FontFamily="{StaticResource Babapro}"
+                   Foreground="White"/>
 
-        <StackPanel HorizontalAlignment="Center"
+        <StackPanel Margin="0,80,0,0"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Orientation="Vertical"
-                    Margin="0,80,0,0">
+                    Orientation="Vertical">
 
             <!--Moves up on field focus-->
-            <TextBlock  Name="RoomNameTextBlock"
-                        Text="Room Name"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="28,23,0,-28"
-                        FontSize="16"
-                        Foreground="White"
-                        FontWeight="SemiBold"
-                        Cursor="Help"
-                        ToolTip="Mustn't be empty"/>
+            <TextBlock Name="RoomNameTextBlock"
+                       Text="Room Name"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="Mustn't be empty"/>
 
-            <TextBox    Name="RoomNameField"
-                        Height="30"
-                        Width="200"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Margin="0,5,0,10"
-                        Padding="28,0,0,0"
-                        BorderBrush="DarkGray"
-                        BorderThickness="0,0,0,2"
-                        FontSize="16"
-                        Foreground="White"
-                        MaxLength="16"
-                        TextWrapping="NoWrap"
-                        Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
-                        CaretBrush="White"
-                        GotFocus="Field_GotFocus"
-                        LostFocus="Field_LostFocus">  
+            <TextBox Name="RoomNameField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus">  
                 
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/White/name.png"
@@ -86,79 +94,42 @@
             </TextBox>
             
             <!--Moves up on field focus-->
-            <TextBlock  Name="MaxPlayersTextBlock"
-                        Text="Max Players"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="28,23,0,-28"
-                        FontSize="16"
-                        Foreground="White"
-                        FontWeight="SemiBold"
-                        Cursor="Help"
-                        ToolTip="0 &lt; Must be ≤ 10"/>
+            <TextBlock Name="MaxPlayersTextBlock"
+                       Text="Max Players"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="0 &lt; Must be ≤ 10"/>
 
-            <TextBox    Name="MaxPlayersField"
-                        Height="30"
-                        Width="200"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Margin="0,5,0,10"
-                        Padding="28,0,0,0"
-                        BorderBrush="DarkGray"
-                        BorderThickness="0,0,0,2"
-                        FontSize="16"
-                        Foreground="White"
-                        MaxLength="16"
-                        TextWrapping="NoWrap"
-                        Text="{Binding MaxPlayers, UpdateSourceTrigger=PropertyChanged}"
-                        CaretBrush="White"
-                        GotFocus="Field_GotFocus"
-                        LostFocus="Field_LostFocus"
-                        PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
-                
+            <TextBox Name="MaxPlayersField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding MaxPlayers, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus"
+                     PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
+
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/White/group.png"
-                    Stretch="Uniform"
-                    AlignmentX="Left"
-                    AlignmentY="Center"
-                    ViewportUnits="RelativeToBoundingBox"
-                    Viewport="0.01,0.1,1,0.8"/>
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
-
             </TextBox>
             
             <!--Moves up on field focus-->
-            <TextBlock  Name="QuestionCountTextBlock"
-                        Text="Number of Questions"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="28,23,0,-28"
-                        FontSize="16"
-                        Foreground="White"
-                        FontWeight="SemiBold"
-                        Cursor="Help"
-                        ToolTip="0 &lt; Must be ≤ 10"/>
+            <TextBlock Name="QuestionCountTextBlock"
+                       Text="Number of Questions"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="0 &lt; Must be ≤ 10"/>
 
-            <TextBox    Name="QuestionCountField"
-                        Height="30"
-                        Width="200"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Margin="0,5,0,10"
-                        Padding="28,0,0,0"
-                        BorderBrush="DarkGray"
-                        BorderThickness="0,0,0,2"
-                        FontSize="16"
-                        Foreground="White"
-                        MaxLength="16"
-                        TextWrapping="NoWrap"
-                        Text="{Binding QuestionCount, UpdateSourceTrigger=PropertyChanged}"
-                        CaretBrush="White"
-                        GotFocus="Field_GotFocus"
-                        LostFocus="Field_LostFocus"
-                        PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
+            <TextBox Name="QuestionCountField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding QuestionCount, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus"
+                     PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
 
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/White/questions.png"
@@ -168,40 +139,21 @@
                                 ViewportUnits="RelativeToBoundingBox"
                                 Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
-
             </TextBox>
 
             <!--Moves up on field focus-->
-            <TextBlock  Name="QuestionTimeoutTextBlock"
-                        Text="Question Timeout"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="28,23,0,-28"
-                        FontSize="16"
-                        Foreground="White"
-                        FontWeight="SemiBold"
-                        Cursor="Help"
-                        ToolTip="5 ≤ Must be ≤ 60"/>
+            <TextBlock Name="QuestionTimeoutTextBlock"
+                       Text="Question Timeout"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="5 ≤ Must be ≤ 60"/>
 
-            <TextBox    Name="QuestionTimeoutField"
-                        Height="30"
-                        Width="200"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        Margin="0,5,0,10"
-                        Padding="28,0,0,0"
-                        BorderBrush="DarkGray"
-                        BorderThickness="0,0,0,2"
-                        FontSize="16"
-                        Foreground="White"
-                        MaxLength="16"
-                        TextWrapping="NoWrap"
-                        Text="{Binding QuestionTimeout, UpdateSourceTrigger=PropertyChanged}"
-                        CaretBrush="White"
-                        GotFocus="Field_GotFocus"
-                        LostFocus="Field_LostFocus"
-                        PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">  
+            <TextBox Name="QuestionTimeoutField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding QuestionTimeout, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus"
+                     PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
 
                 <TextBox.Background>
                     <ImageBrush ImageSource="Images/White/timeout.png"
@@ -211,22 +163,20 @@
                                 ViewportUnits="RelativeToBoundingBox"
                                 Viewport="0.01,0.1,1,0.8"/>
                 </TextBox.Background>
-
             </TextBox>
 
-            <Button Name="CreateSubmit"
-                    Content="CREATE"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
+            <Button Content="CREATE"
                     Margin="0,30,0,0"
                     Padding="40,8,40,8"
-                    Background="#FF008080"
-                    Foreground="White"
-                    BorderBrush="Black"
-                    BorderThickness="0.5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
                     FontSize="16"
                     FontWeight="Bold"
                     FontFamily="{StaticResource Babapro}"
+                    Foreground="White"
+                    Background="#FF008080"
+                    BorderBrush="Black"
+                    BorderThickness="0.5"
                     Cursor="Hand"
                     Click="CreateSubmit_Click">
 
