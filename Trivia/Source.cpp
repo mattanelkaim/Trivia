@@ -45,7 +45,7 @@ int main()
 {
     try
     {
-        createDummyRooms(); // TODO remove
+        //createDummyRooms(); // TODO remove
 
         const WSAInitializer wsaInit;
         Server::getInstance()->run();
