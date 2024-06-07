@@ -40,8 +40,9 @@ using readonly_buffer = std::span<const byte>;
 #pragma region protocolDefinitions
 
 /* protocol template: {code}{data length}{message}
-*                     ^^^^  ^^^^^^^^^^^  ^^^^^^^
-*                   1 byte,  4 bytes,  {data length} bytes
+*                      ^^^^  ^^^^^^^^^^^  ^^^^^^^
+*                     1 byte,  4 bytes,  {data length} bytes
+*  example: "10005hello"
 */
 
 constexpr uint16_t PORT = 7777;
@@ -176,6 +177,7 @@ namespace JsonFields
 } // namespace JsonFields
 
 #pragma endregion
+
 
 #pragma region requestDefinitions
 
