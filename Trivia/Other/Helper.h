@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ServerDefinitions.h"
-#include <concepts>
+#include <type_traits> //std::is_convertible
 #include <cstddef> // size_t
 #include <string>
 #include <string_view>
@@ -9,6 +9,17 @@
 
 namespace Helper
 {
+    /**
+    * @throws i dont know  
+    */
+    template <std::integral ReturnType, typename T>
+    ReturnType tryMakeIntegral(const T& obj)
+    {
+        if (std::is_convertible<T, ReturnType>()) 
+            return obj;
+        return static_cast<ReturnType>(std::stoll(static_cast<std::string>(obj)));
+    }
+
     /**
     * @throws InvalidProtocolStructure
     * @throws UnexpectedClientExit
