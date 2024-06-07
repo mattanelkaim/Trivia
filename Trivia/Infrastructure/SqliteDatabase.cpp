@@ -124,7 +124,7 @@ float SqliteDatabase::getPlayerScore(const std::string& username) const
 
 std::map<std::string, double> SqliteDatabase::getHighScores() const
 {
-    const std::string query = "SELECT score, username FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
+    const std::string query = "SELECT username, score FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
 
     std::map<std::string, double> highScores;
     this->runQuery(query, callbackStringDoubleMap, &highScores);
@@ -235,8 +235,8 @@ int SqliteDatabase::callbackStringDoubleMap(void* destination, int columns, char
         return 1; // Error
 
     try
-    {
-        static_cast<std::vector<Question>*>(destination)->emplace_back(data[0], std::strtof(data[1], nullptr)); // Construct with question string & answers
+    {        
+        static_cast<std::map<std::string, double>*>(destination)->emplace(data[0], std::strtof(data[1], nullptr)); // Construct with question string & answers
         return 0;
     }
     catch (...) // Callbacks must be noexcept

@@ -62,7 +62,17 @@ buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& res
     uint16_t i = 0;
     for (auto it = response.statistics.cbegin(); i < NUM_TOP_SCORES; ++i)
     {
-        json value = {it != response.statistics.cend() ? (it->first, it->second) : ("None", 0.0)};
+        json value;
+        if (it != response.statistics.cend())
+        {
+            value.emplace("name", it->first);
+            value.emplace("score", it->second);
+        }
+        else
+        {
+            value.emplace("name", "None");
+            value.emplace("score", 0.0);
+        }
         jHighScores.emplace(std::to_string(i + 1), std::move(value)); // Add the key-value pair
 
         if (it != response.statistics.cend())
