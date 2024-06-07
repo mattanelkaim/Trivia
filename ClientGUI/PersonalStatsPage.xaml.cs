@@ -32,8 +32,6 @@ namespace ClientGUI
         // All of these are manually calculated based on DBStats
         public uint WrongAnswers => DBStats.totalAnswers - DBStats.correctAnswers;
         public float AccuracyStat { get; set; } // Accuracy is a reserved keyword
-        public string AccuracyStr => AccuracyStat.ToString("P2"); // To percentage with max 2 decimal places
-        public string ScoreStr => DBStats.score.ToString("N2"); // To number with thousands separator, 2 decimal places
 
         public PersonalStatsPage()
         {

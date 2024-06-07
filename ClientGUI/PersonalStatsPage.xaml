@@ -54,7 +54,7 @@
             <StackPanel Grid.Row="0"
                         Grid.Column="0"
                         VerticalAlignment="Center">
-                <TextBlock Text="{Binding ScoreStr}"
+                <TextBlock Text="{Binding DBStats.score, StringFormat=N2}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            Foreground="White"
@@ -107,7 +107,7 @@
                         Grid.Column="1"
                         VerticalAlignment="Center"
                         ToolTip="">
-                <TextBlock Text="{Binding AccuracyStr}"
+                <TextBlock Text="{Binding AccuracyStat, StringFormat=P2}"
                            HorizontalAlignment="Center"
                            FontSize="60"
                            Foreground="White"

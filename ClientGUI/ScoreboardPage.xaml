@@ -78,7 +78,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[0].score}"
+                               Text="{Binding TopPlayers[0].score, StringFormat=N2}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -111,7 +111,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[1].score}"
+                               Text="{Binding TopPlayers[1].score, StringFormat=N2}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -144,7 +144,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[2].score}"
+                               Text="{Binding TopPlayers[2].score, StringFormat=N2}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                FontWeight="SemiBold"
@@ -178,7 +178,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[3].score}"
+                               Text="{Binding TopPlayers[3].score, StringFormat=N2}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                Foreground="White"
@@ -213,7 +213,7 @@
 
                     <TextBlock Grid.Column="2"
                                Height="33"
-                               Text="{Binding TopPlayers[4].score}"
+                               Text="{Binding TopPlayers[4].score, StringFormat=N2}"
                                Padding="15,3,0,0"
                                FontSize="20"
                                Foreground="White"
