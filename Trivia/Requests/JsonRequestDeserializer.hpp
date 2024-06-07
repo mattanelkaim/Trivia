@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Helper.h"
 #include "InvalidProtocolStructure.h"
 #include "json.hpp"
 #include "ServerDefinitions.h"
-#include "Helper.h"
 #include <cstdint> // uint16_t
 #include <string>
 
@@ -13,8 +13,7 @@ namespace JsonRequestDeserializer
 
     /**
      * Deserialize a JSON request buffer into a specific request type.
-     * 
-     * @tparam T The type of the request to deserialize.
+     * @tparam RequestType The type of the request to deserialize.
      * @param requestBuffer The buffer containing the JSON request.
      * @return The deserialized request object.
      * @throws InvalidProtocolStructure
@@ -44,7 +43,7 @@ namespace JsonRequestDeserializer
                 };
             }
             else if constexpr (std::same_as<RequestType, CreateRoomRequest>)
-            {                
+            {
                 return RequestType{
                     .roomName = j.at("roomName"),
                     .maxUsers = Helper::tryMakeIntegral<uint16_t>(j.at("maxUsers")),
