@@ -104,7 +104,7 @@ namespace ClientGUI
 
         public class HighScoresResponse
         {
-            public Dictionary<string, string> highScores { get; set; }
+            public Dictionary<string, ScoreboardPage.Highscore> highScores { get; set; }
         }
 
         public static Response ExtractResponse(string response)
@@ -140,11 +140,10 @@ namespace ClientGUI
             return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
         }
 
-        public static Dictionary<string, string> SendScoreboardRequest()
+        public static Dictionary<string, ScoreboardPage.Highscore> SendScoreboardRequest()
         {
             Response response = SendMessage(new { }, RequestType.GetHighscore);
 
-            // Expects {"highScores":{"1":"champ","2":"username2","3":"username3","4":"normalperson","5":"bad"}}
             return JsonSerializer.Deserialize<HighScoresResponse>(response.content).highScores;
         }
 
