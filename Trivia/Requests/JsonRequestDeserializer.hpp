@@ -4,7 +4,7 @@
 #include "json.hpp"
 #include "ServerDefinitions.h"
 #include "Helper.h"
-#include <stdint.h>
+#include <cstdint> // uint16_t
 #include <string>
 
 namespace JsonRequestDeserializer
@@ -19,8 +19,8 @@ namespace JsonRequestDeserializer
      * @return The deserialized request object.
      * @throws InvalidProtocolStructure
      */
-    template <std::derived_from<Request> T>
-    T deserializeRequest(const readonly_buffer requestBuffer)
+    template <std::derived_from<Request> RequestType>
+    RequestType deserializeRequest(const readonly_buffer requestBuffer)
     {
         try
         {
@@ -28,33 +28,33 @@ namespace JsonRequestDeserializer
             const json j = json::parse(requestBuffer);
 
             // Store data from JSON on a struct
-            if constexpr (std::same_as<T, LoginRequest>)
+            if constexpr (std::same_as<RequestType, LoginRequest>)
             {
-                return T{
+                return RequestType{
                     .username = j.at("username"),
                     .password = j.at("password")
                 };
             }
-            else if constexpr (std::same_as<T, SignupRequest>)
+            else if constexpr (std::same_as<RequestType, SignupRequest>)
             {
-                return T{
+                return RequestType{
                     .username = j.at("username"),
                     .password = j.at("password"),
                     .email    = j.at("email")
                 };
             }
-            else if constexpr (std::same_as<T, CreateRoomRequest>)
+            else if constexpr (std::same_as<RequestType, CreateRoomRequest>)
             {                
-                return T{
+                return RequestType{
                     .roomName = j.at("roomName"),
                     .maxUsers = Helper::tryMakeIntegral<uint16_t>(j.at("maxUsers")),
                     .questionCount = Helper::tryMakeIntegral<uint16_t>(j.at("questionCount")),
                     .answerTimeout = Helper::tryMakeIntegral<uint32_t>(j.at("answerTimeout"))
                 };
             }
-            else if constexpr (requires{ T::roomId; }) // Either GetPlayersInRoomRequest or JoinRoomRequest
+            else if constexpr (requires{ RequestType::roomId; }) // Either GetPlayersInRoomRequest or JoinRoomRequest
             {
-                return T{.roomId = Helper::tryMakeIntegral<uint16_t>(j.at("roomId"))};
+                return RequestType{.roomId = Helper::tryMakeIntegral<uint16_t>(j.at("roomId"))};
             }
             else
             {
