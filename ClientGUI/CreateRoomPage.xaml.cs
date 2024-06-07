@@ -56,7 +56,7 @@ namespace ClientGUI
                 return;
             }
 
-            string responseBuffer = Helper.SendMessage(new {roomName = RoomName, maxUsers = MaxPlayers, questionCount = QuestionCount, answerTimeout = QuestionTimeout}, Helper.RequestType.CreateRoom);
+            Helper.ResponseType responseCode = Helper.SendMessage(new {roomName = RoomName, maxUsers = MaxPlayers, questionCount = QuestionCount, answerTimeout = QuestionTimeout}, Helper.RequestType.CreateRoom).code;
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs e)

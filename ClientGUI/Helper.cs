@@ -59,7 +59,7 @@ namespace ClientGUI
             return serializedCode + serializedLen + content; 
         }
 
-        public static string SendMessage(object structTosend, RequestType code)
+        public static Response SendMessage(object structTosend, RequestType code)
         {
             string json = JsonSerializer.Serialize(structTosend);
 
@@ -70,7 +70,14 @@ namespace ClientGUI
             string responseBuffer = Communicator.Receive();
             Helper._DEBUG_SHOW("[Received]: " + responseBuffer);
 
-            return responseBuffer;
+            Response response = ExtractResponse(responseBuffer);
+
+            if (response.code != ResponseType.OK)
+            {
+                throw new Exception(); // TODO: Throw a more specific exception
+            }
+
+            return response;
         }
 
         #endregion protocolHelper
@@ -111,14 +118,7 @@ namespace ClientGUI
 
         public static ResponseType SendLoginRequest(string Username, string Password)
         {
-            string rawResponse = SendMessage(new { username = Username, password = Password }, RequestType.Login);
-            
-            Response response = ExtractResponse(rawResponse);
-
-            if (response.code != ResponseType.OK)
-            {
-                throw new Exception(); // TODO: Throw a more specific exception
-            }
+            Response response = SendMessage(new { username = Username, password = Password }, RequestType.Login);
 
             // Ideally expects {"status":1}
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
@@ -126,14 +126,7 @@ namespace ClientGUI
 
         public static ResponseType SendSignupRequest(string Username, string Password, string Email)
         {
-            string rawResponse = SendMessage(new { username = Username, password = Password, email = Email }, RequestType.Register);
-
-            Response response = ExtractResponse(rawResponse);
-
-            if (response.code != ResponseType.OK)
-            {
-                throw new Exception(); // TODO: Throw a more specific exception
-            }
+            Response response = SendMessage(new { username = Username, password = Password, email = Email }, RequestType.Register);
 
             // Ideally expects {"status":1}
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
@@ -141,14 +134,7 @@ namespace ClientGUI
 
         public static PersonalStatsResponse SendPersonalStatsRequest()
         {
-            string rawResponse = SendMessage(new {}, RequestType.GetStatistics);
-
-            Response response = ExtractResponse(rawResponse);
-
-            if (response.code != ResponseType.OK)
-            {
-                throw new Exception(); // TODO: Throw a more specific exception
-            }
+            Response response = SendMessage(new {}, RequestType.GetStatistics);
 
             // Expects {"userStatistics":{"correctAnswers":"7","games":"3","score":"3.416667","totalAnswers":"11"}}
             return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
@@ -156,14 +142,7 @@ namespace ClientGUI
 
         public static Dictionary<string, string> SendScoreboardRequest()
         {
-            string rawResponse = SendMessage(new { }, RequestType.GetHighscore);
-
-            Response response = ExtractResponse(rawResponse);
-
-            if (response.code != ResponseType.OK)
-            {
-                throw new Exception(); // TODO: Throw a more specific exception
-            }
+            Response response = SendMessage(new { }, RequestType.GetHighscore);
 
             // Expects {"highScores":{"1":"champ","2":"username2","3":"username3","4":"normalperson","5":"bad"}}
             return JsonSerializer.Deserialize<HighScoresResponse>(response.content).highScores;

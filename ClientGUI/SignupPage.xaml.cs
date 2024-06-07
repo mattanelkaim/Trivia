@@ -45,7 +45,6 @@ namespace ClientGUI
             }
 
             Helper.ResponseType status = Helper.SendSignupRequest(this.Username, this.Password, this.Email);
-
             switch (status)
             {
                 case Helper.ResponseType.OK:
