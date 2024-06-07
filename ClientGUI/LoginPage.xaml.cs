@@ -43,8 +43,7 @@ namespace ClientGUI
                 return;
             }
 
-            Helper.ResponseType status = Helper.SendLoginRequest(this.Username, this.Password);
-
+            Helper.ResponseType status = Helper.SendMessage(new {username = this.Username, password = this.Password }, Helper.RequestType.Login).code;
             switch (status)
             {
                 case Helper.ResponseType.OK:

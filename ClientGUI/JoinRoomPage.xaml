@@ -246,7 +246,7 @@
                         <Button Grid.Column="0"
                                 BorderBrush="Transparent"
                                 BorderThickness="0"
-                                ToolTip="Enter this room!"
+                                ToolTip="Too late to enter..."
                                 Cursor="Help"
                                 Background="Transparent">
 
