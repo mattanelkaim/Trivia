@@ -21,7 +21,7 @@ public:
     * @return A vector of strings representing the high scores of all users.
     * @throws InvalidSQL
     */
-    std::vector<std::string> getHighScore() const;
+    std::map<std::string, double> getHighScore() const;
 
     /**
     * @brief Retrieves the statistics of the specified user from the database and returns them in a vector.

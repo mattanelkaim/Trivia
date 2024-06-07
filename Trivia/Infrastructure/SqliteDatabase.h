@@ -7,6 +7,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <map>
 
 using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3_callback noexcept
 
@@ -65,7 +66,7 @@ public:
     float getPlayerScore(const std::string& username) const override;
 
     // @throws InvalidSQL
-    std::vector<std::string> getHighScores() const override;
+    std::map<std::string, double> getHighScores() const override;
 
 private:
     /*######################################
@@ -93,4 +94,5 @@ private:
     static int callbackString(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
+    static int callbackStringDoubleMap(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
 };

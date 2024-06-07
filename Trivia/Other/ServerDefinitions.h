@@ -8,6 +8,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <map>
 
 class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
@@ -139,7 +140,7 @@ struct GetPlayersInRoomResponse
 struct GetHighScoreResponse
 {
     ResponseCode status;
-    std::vector<std::string> statistics;
+    std::map<std::string, double> statistics;
 };
 
 struct GetPersonalStatsResponse
