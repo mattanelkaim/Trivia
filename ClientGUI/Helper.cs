@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ClientGUI
 {
@@ -13,7 +16,7 @@ namespace ClientGUI
     {
         #region protocolHelper
 
-#if true // to debug
+#if false // to debug
     public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
     public static void _DEBUG_SHOW(string message) {}
@@ -104,14 +107,19 @@ namespace ClientGUI
 
         public class HighScoresResponse
         {
-            public Dictionary<string, ScoreboardPage.Highscore> highScores { get; set; }
+            public Dictionary<string, ScoreboardPage.Highscore>? highScores { get; set; }
+        }
+
+        public class GetRoomsResponse
+        {
+            public Dictionary<string, JoinRoomPage.Room>? rooms { get; set; }
         }
 
         public static Response ExtractResponse(string response)
         {
             int responseCode = int.Parse(response[..BYTES_RESERVED_FOR_CODE]); // Idk what fucking syntax that is but it works
             int msgLen = int.Parse(response.Substring(BYTES_RESERVED_FOR_CODE, BYTES_RESERVED_FOR_MSG_LEN));
-            string jsonResponse = response.Substring(BYTES_RESERVED_FOR_CODE + BYTES_RESERVED_FOR_MSG_LEN, msgLen);
+            string jsonResponse = response.Substring(BYTES_RESERVED_FOR_CODE + BYTES_RESERVED_FOR_MSG_LEN, msgLen);            
 
             return new Response { code = (ResponseType)responseCode, content = jsonResponse };
         }
@@ -140,11 +148,18 @@ namespace ClientGUI
             return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
         }
 
-        public static Dictionary<string, ScoreboardPage.Highscore> SendScoreboardRequest()
+        public static Dictionary<string, ScoreboardPage.Highscore>? SendScoreboardRequest()
         {
             Response response = SendMessage(new { }, RequestType.GetHighscore);
 
-            return JsonSerializer.Deserialize<HighScoresResponse>(response.content).highScores;
+            return JsonSerializer.Deserialize<HighScoresResponse>(response.content)?.highScores;
+        }
+
+        public static Dictionary<string, JoinRoomPage.Room>? SendGetRoomsRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.GetRooms);
+
+            return JsonSerializer.Deserialize<GetRoomsResponse>(response.content)?.rooms;
         }
 
         #endregion specificRequests
@@ -155,6 +170,46 @@ namespace ClientGUI
         public static readonly ushort MAX_PASSWORD_LENGTH = 8;
         public static readonly ushort MAX_USERNAME_LENGTH = 16;
 
+        public static void HomeButton_Click(Page page, object sender, RoutedEventArgs? e)
+        {
+            page.NavigationService.Navigate(new MenuPage());
+        }
+
+        public class DeepCopy<T>
+        {
+            public static T Copy<T>(T obj)
+            {
+                if (obj == null)
+                {
+                    return default;
+                }
+
+                // Check for value types and strings (consider using IsValueType instead for .NET Core)
+                if (obj is ValueType || obj is string)
+                {
+                    return obj;
+                }
+
+                // Reflection for complex objects
+                var type = typeof(T);                
+
+                if (type.IsClass)
+                {
+                    var newObj = Activator.CreateInstance<T>();
+                    foreach (var property in type.GetProperties())
+                    {
+                        if (property.CanRead)
+                        {
+                            var value = property.GetValue(obj);
+                            property.SetValue(newObj, Copy(value));
+                        }
+                    }
+                    return newObj;
+                }
+
+                throw new ArgumentException($"Type '{type.Name}' is not supported for deep copy.");
+            }
+        }
 
         #endregion XAMLMethodsHelper
     }
