@@ -44,9 +44,9 @@ namespace ClientGUI
 
         private static Highscore[] FetchTopPlayersFromDB()
         {
-            Dictionary<string, Highscore> highscores = Helper.SendScoreboardRequest();
+            Dictionary<string, Highscore>? highscores = Helper.SendScoreboardRequest();
 
-            return [.. highscores.Values];
+            return [.. highscores?.Values];
         }
     }
 }

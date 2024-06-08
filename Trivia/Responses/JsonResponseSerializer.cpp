@@ -24,16 +24,21 @@ buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response) noexcept
 {
-    // Join all string fields with a delimiter
-    std::string rooms;
-    if (!response.rooms.empty()) [[unlikely]] // Avoid resizing to a negative size
+    json j;
+    auto& jRooms = j[JsonFields::ROOMS] = json::object(); // Create the "highScores" wrapper
+
+    for (const RoomData& room : response.rooms)
     {
-        for (const RoomData& room : response.rooms)
-            rooms += room.name + ", ";
-        rooms.resize(rooms.size() - 2); // Delete last 2 chars (", ")
+        json value;
+        value.emplace("name", room.name);
+        value.emplace("maxPlayers", room.maxPlayers);
+        value.emplace("questionCount", room.numOfQuestionsInGame);
+        value.emplace("questionTimeout", room.timePerQuestion);
+        value.emplace("status", room.status);
+
+        jRooms.emplace(std::to_string(room.id), std::move(value));
     }
 
-    const json j{{JsonFields::ROOMS, rooms}};
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
