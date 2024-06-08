@@ -78,7 +78,7 @@
               Margin="-10,116,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="100"/>
@@ -176,6 +176,7 @@
                                  Points="0,0 42,0 50,32 0,32"
                                  Margin="0"
                                  Style="{StaticResource parallelogram}"/>
+                        
                         <Button Grid.Column="0"
                                 BorderBrush="Transparent"
                                 BorderThickness="0"
@@ -194,6 +195,7 @@
                         <Polygon Grid.Column="1"
                                  Points="0,0 138,0 146,32 8,32"
                                  Style="{StaticResource parallelogram}"/>
+
                         <TextBlock Grid.Column="1"
                                    Text="somename"
                                    Style="{StaticResource cell}"/>
