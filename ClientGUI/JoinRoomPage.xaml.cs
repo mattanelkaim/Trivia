@@ -104,9 +104,8 @@ namespace ClientGUI
                 roomGrid.Children.Add(button);
 
                 Polygon polygon2 = new Polygon();                
-                polygon2.Margin = new Thickness(0);
-                polygon2.Style = (Style)FindResource("parallelogram");                                               
                 polygon2.Points = new PointCollection() { new Point(0, 0), new Point(138, 0), new Point(146, 32), new Point(8, 32) };
+                polygon2.Style = (Style)FindResource("parallelogram");                                               
                 roomGrid.Children.Add(polygon2);
                 Grid.SetColumn(polygon2, 1);
 
@@ -119,33 +118,35 @@ namespace ClientGUI
                 Polygon polygon3 = new Polygon();                                
                 polygon3.Style = (Style)FindResource("parallelogram");                                                
                 polygon3.Points = new PointCollection() { new Point(0, 0), new Point(100, 0), new Point(108, 32), new Point(8, 32) };
-                polygon3.Margin = new Thickness(-8, 0, 0, 0);
+                polygon3.Margin = new Thickness(-18, 0, 0, 0);
                 polygon3.Fill = (Brush)FindResource("gradient");
                 roomGrid.Children.Add(polygon3);
                 Grid.SetColumn(polygon3, 2);
 
                 TextBlock textBlock2 = new TextBlock();                
-                textBlock2.Style = (Style)FindResource("cell");                
+                textBlock2.Style = (Style)FindResource("cell");
+                textBlock2.Margin = new Thickness(-10, 0, 0, 0);
                 textBlock2.Text = FetchPlayersInRoom().ToString() + " / " + room.maxPlayers.ToString();
                 roomGrid.Children.Add(textBlock2);
                 Grid.SetColumn(textBlock2, 2);
 
                 Polygon polygon4 = new Polygon();                
                 polygon4.Points = new PointCollection() { new Point(0, 0), new Point(110, 0), new Point(118, 32), new Point(8, 32) };
-                polygon4.Margin = new Thickness(-8, 0, 0, 0);
                 polygon4.Style = (Style)FindResource("parallelogram");
+                polygon4.Margin = new Thickness(-18, 0, 0, 0);
                 roomGrid.Children.Add(polygon4);
                 Grid.SetColumn(polygon4, 3);
 
                 TextBlock textBlock3 = new TextBlock();                
                 textBlock3.Style = (Style)FindResource("cell");                
                 textBlock3.Text = room.questionCount.ToString();
+                textBlock3.Margin = new Thickness(-10, 0, 0, 0);
                 roomGrid.Children.Add(textBlock3);
                 Grid.SetColumn(textBlock3, 3);
 
                 Polygon polygon5 = new Polygon();                
                 polygon5.Points = new PointCollection() { new Point(0, 0), new Point(108, 0), new Point(108, 32), new Point(8, 32) };
-                polygon5.Margin = new Thickness();
+                polygon5.Margin = new Thickness(-8, 0, 0, 0);
                 polygon5.Style = (Style)FindResource("parallelogram");
                 roomGrid.Children.Add(polygon5);
                 Grid.SetColumn(polygon5, 4);
