@@ -163,6 +163,7 @@
 
                     <!-- Dynamically added items will go here -->
 
+                    <!-- Reference grids
                     <Grid Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>
@@ -301,6 +302,7 @@
                             </EventTrigger>
                         </Grid.Triggers>
                     </Grid>
+                    -->
                 </StackPanel>
             </ScrollViewer>
         </Border>
