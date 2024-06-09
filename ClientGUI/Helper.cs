@@ -49,6 +49,12 @@ namespace ClientGUI
             USERNAME_ALREADY_EXISTS
         }
 
+        public enum RoomStatus
+        {
+            OPEN,
+            CLOSED,
+        };
+
         /// <summary>
         /// Serializes a JSON message with its code and length.
         /// </summary>
@@ -221,6 +227,7 @@ namespace ClientGUI
                 Property = UIElement.IsEnabledProperty,
                 Value = false
             };
+
             isEnabledTrigger.Setters.Add(new Setter(Border.BackgroundProperty, Brushes.Gray, "border"));
             controlTemplate.Triggers.Add(isEnabledTrigger);
 

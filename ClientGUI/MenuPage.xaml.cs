@@ -23,6 +23,12 @@ namespace ClientGUI
         public MenuPage()
         {
             InitializeComponent();
+
+            Helper.RemoveButtonHighlighting(CreateRoomButton);
+            Helper.RemoveButtonHighlighting(JoinRoomButton);
+            Helper.RemoveButtonHighlighting(StatisticsButton);
+            Helper.RemoveButtonHighlighting(LeaderboardButton);
+            Helper.RemoveButtonHighlighting(LogoutButton);
         }
 
         private void CreateRoom_Click(object sender, RoutedEventArgs? e)
