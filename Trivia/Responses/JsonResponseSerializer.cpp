@@ -2,10 +2,13 @@
 #include "JsonResponseSerializer.h"
 #include "ServerDefinitions.h"
 #include <cstddef> // size_t
+#include <cstdint>
+#include <ranges>
 #include <string>
 #include <string_view>
-#include <iterator>
-#include <map>
+#include <utility> // std::move
+
+using std::to_string;
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) noexcept
@@ -24,19 +27,21 @@ buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response) noexcept
 {
-    json j;
+    json j; // Wrapper
     auto& jRooms = j[JsonFields::ROOMS] = json::object(); // Create the "highScores" wrapper
 
     for (const RoomData& room : response.rooms)
     {
-        json value;
-        value.emplace("name", room.name);
-        value.emplace("maxPlayers", room.maxPlayers);
-        value.emplace("questionCount", room.numOfQuestionsInGame);
-        value.emplace("questionTimeout", room.timePerQuestion);
-        value.emplace("status", room.status);
+        const json data
+        {
+            {"name", room.name},
+            {"maxPlayers", room.maxPlayers},
+            {"questionCount", room.numOfQuestionsInGame},
+            {"questionTimeout", room.timePerQuestion},
+            {"status", room.status}
+        };
 
-        jRooms.emplace(std::to_string(room.id), std::move(value));
+        jRooms.emplace(to_string(room.id), std::move(data));
     }
 
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
@@ -45,7 +50,6 @@ buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& respons
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse& response) noexcept
 {
-
     const json j{{JsonFields::PLAYERS_IN_ROOM, response.players}};
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
@@ -57,24 +61,14 @@ buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& res
     auto& jHighScores = j[JsonFields::HIGH_SCORES] = json::object(); // Create the "highScores" wrapper
 
     uint16_t i = 0;
-    for (auto it = response.statistics.cbegin(); i < NUM_TOP_SCORES; ++i)
-    {
-        json value;
-        if (it != response.statistics.cend())
-        {
-            value.emplace("name", it->first);
-            value.emplace("score", it->second);
-        }
-        else
-        {
-            value.emplace("name", "None");
-            value.emplace("score", 0.0);
-        }
-        jHighScores.emplace(std::to_string(i + 1), std::move(value)); // Add the key-value pair
 
-        if (it != response.statistics.cend())
-            it++;
-    }
+    // Add the highscore to the JSON object
+    for (const auto& [name, score] : response.statistics)
+        jHighScores.emplace(to_string(++i), json{{"name", name}, {"score", score}});
+
+    // Fill in the rest with default data
+    while (i < NUM_TOP_SCORES)
+        jHighScores.emplace(to_string(++i), json{{"name", "None"}, {"score", 0.0}});
 
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
@@ -110,7 +104,7 @@ buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type,
     return {
         std::from_range,
         // The first byte is the response code
-        std::to_string(type) +
+        to_string(type) +
         // Pushing the JSON's length to the buffer
         Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) +
         // Pushing the actual message to the buffer
