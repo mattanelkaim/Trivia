@@ -194,7 +194,6 @@ namespace ClientGUI
                 Grid.SetColumn(textBlock4, 4);
 
 
-
                 // Create EventTrigger objects for MouseEnter and MouseLeave
                 EventTrigger enterTrigger = new()
                 {
