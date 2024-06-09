@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ClientGUI
 {
@@ -173,42 +174,34 @@ namespace ClientGUI
         public static void HomeButton_Click(Page page, object sender, RoutedEventArgs? e)
         {
             page.NavigationService.Navigate(new MenuPage());
-        }
+        }        
 
-        public class DeepCopy<T>
+        public static void RemoveButtonHighlighting(Button button)
         {
-            public static T Copy<T>(T obj)
-            {
-                if (obj == null)
-                {
-                    return default;
-                }
+            ControlTemplate controlTemplate = new ControlTemplate(typeof(Button));
 
-                // Check for value types and strings (consider using IsValueType instead for .NET Core)
-                if (obj is ValueType || obj is string)
-                {
-                    return obj;
-                }
+            FrameworkElementFactory border = new FrameworkElementFactory(typeof(Border));
+            border.Name = "border";
+            border.SetValue(Border.BackgroundProperty, new TemplateBindingExtension(Button.BackgroundProperty));
+            border.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(Button.BorderBrushProperty));
+            border.SetValue(Border.BorderThicknessProperty, new TemplateBindingExtension(Button.BorderThicknessProperty));
 
-                // Reflection for complex objects
-                var type = typeof(T);                
+            FrameworkElementFactory contentPresenter = new FrameworkElementFactory(typeof(ContentPresenter));
+            contentPresenter.SetValue(ContentPresenter.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+            contentPresenter.SetValue(ContentPresenter.VerticalAlignmentProperty, VerticalAlignment.Center);
 
-                if (type.IsClass)
-                {
-                    var newObj = Activator.CreateInstance<T>();
-                    foreach (var property in type.GetProperties())
-                    {
-                        if (property.CanRead)
-                        {
-                            var value = property.GetValue(obj);
-                            property.SetValue(newObj, Copy(value));
-                        }
-                    }
-                    return newObj;
-                }
+            border.AppendChild(contentPresenter);
+            controlTemplate.VisualTree = border;
 
-                throw new ArgumentException($"Type '{type.Name}' is not supported for deep copy.");
-            }
+            Trigger isPressedTrigger = new Trigger { Property = Button.IsPressedProperty, Value = true };
+            isPressedTrigger.Setters.Add(new Setter(Border.BackgroundProperty, Brushes.Transparent, "border"));
+            controlTemplate.Triggers.Add(isPressedTrigger);
+
+            Trigger isEnabledTrigger = new Trigger { Property = UIElement.IsEnabledProperty, Value = false };
+            isEnabledTrigger.Setters.Add(new Setter(Border.BackgroundProperty, Brushes.Gray, "border"));
+            controlTemplate.Triggers.Add(isEnabledTrigger);
+
+            button.Template = controlTemplate;
         }
 
         #endregion XAMLMethodsHelper
