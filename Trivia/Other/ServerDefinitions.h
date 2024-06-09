@@ -111,52 +111,47 @@ struct ErrorResponse
     std::string message;
 };
 
-struct LoginResponse
+struct StatusResponse
 {
     ResponseCode status;
 };
 
-struct SignupResponse
-{
-    ResponseCode status;
-};
+using LoginResponse = StatusResponse;
+using SignupResponse = StatusResponse;
+using LogoutResponse = StatusResponse;
+using JoinRoomResponse = StatusResponse;
+using CreateRoomResponse = StatusResponse;
+using CloseRoomResponse = StatusResponse;
+using StartRoomResponse = StatusResponse;
+using LeaveRoomResponse = StatusResponse;
 
-struct LogoutResponse
-{
-    ResponseCode status;
-};
-
-struct GetRoomsResponse
-{
-    ResponseCode status;
+struct GetRoomsResponse : StatusResponse
+{    
     std::vector<RoomData> rooms;
 };
 
-struct GetPlayersInRoomResponse
+struct GetPlayersInRoomResponse : StatusResponse
 {
     std::vector<std::string> players;
 };
 
-struct GetHighScoreResponse
-{
-    ResponseCode status;
+struct GetHighScoreResponse : StatusResponse
+{    
     std::map<std::string, double> statistics;
 };
 
-struct GetPersonalStatsResponse
-{
-    ResponseCode status;
+struct GetPersonalStatsResponse : StatusResponse
+{    
     std::vector<std::string> statistics;
 };
 
-struct JoinRoomResponse
+struct GetRoomStateResponse : StatusResponse
 {
-    ResponseCode status;
-};
-
-struct CreateRoomResponse
-{
-    ResponseCode status;
+    RoomStatus state;
+    bool hasGameBegun;
+    std::vector<std::string> players;
+    uint16_t questionCount;
+    uint32_t answerTimeout;
 };
 
 namespace JsonFields
@@ -167,14 +162,25 @@ namespace JsonFields
     constexpr std::string_view PLAYERS_IN_ROOM = "playersInRoom";
     constexpr std::string_view HIGH_SCORES = "highScores";
     constexpr std::string_view STATISTICS = "userStatistics";
+    constexpr std::string_view ROOM_STATE = "roomState";
 
     namespace UserStats
     {
+        constexpr std::string_view USERNAME = "name";
         constexpr std::string_view SCORE = "score";
         constexpr std::string_view TOTAL_GAMES = "games";
         constexpr std::string_view TOTAL_ANSWERS = "totalAnswers";
         constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
     } // namespace UserStats
+
+    namespace RoomProperties
+    {
+        constexpr std::string_view ROOM_NAME = "name";
+        constexpr std::string_view MAX_PLAYERS = "maxPlayers";
+        constexpr std::string_view QUESTION_COUNT = "questionCount";
+        constexpr std::string_view QUESTION_TIMEOUT = "questionTimeout";
+        constexpr std::string_view ROOM_STATUS = "status";
+    } // namespace RoomProperties
 } // namespace JsonFields
 
 #pragma endregion
@@ -242,5 +248,5 @@ struct CreateRoomRequest : Request
     uint32_t answerTimeout;
 };
 
-#pragma endregion
+#pragma endregion requestDefinitions
 // NOLINTEND(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
