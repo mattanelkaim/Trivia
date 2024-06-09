@@ -56,6 +56,7 @@ namespace ClientGUI
                 return;
             }
 
+            // TODO something with the responseCode
             Helper.ResponseType responseCode = Helper.SendMessage(new {roomName = RoomName, maxUsers = MaxPlayers, questionCount = QuestionCount, answerTimeout = QuestionTimeout}, Helper.RequestType.CreateRoom).code;
         }
 
@@ -83,23 +84,7 @@ namespace ClientGUI
             }
             else return; // Not a field we care about
 
-            // Animate position (margin)
-            ThicknessAnimation marginAnimation = new()
-            {
-                To = new Thickness(2, 0, 0, 0),
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuarticEase()
-            };
-            textBlock.BeginAnimation(MarginProperty, marginAnimation);
-
-            // Animate font size
-            DoubleAnimation fontSizeAnimation = new()
-            {
-                To = 12,
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new QuarticEase()
-            };
-            textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
+            Helper.FieldGotFocusEffect(textBlock);
         }
 
         private void Field_LostFocus(object sender, RoutedEventArgs e)
@@ -133,25 +118,7 @@ namespace ClientGUI
 
             // Animate only if field is empty
             if (fieldValue.Length == 0)
-            {
-                // Animate position (margin)
-                ThicknessAnimation marginAnimation = new()
-                {
-                    To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
-                    Duration = TimeSpan.FromMilliseconds(200),
-                    EasingFunction = new QuarticEase()
-                };
-                textBlock.BeginAnimation(MarginProperty, marginAnimation);
-
-                // Animate font size
-                DoubleAnimation fontSizeAnimation = new()
-                {
-                    To = 16,
-                    Duration = TimeSpan.FromMilliseconds(200),
-                    EasingFunction = new QuarticEase()
-                };
-                textBlock.BeginAnimation(FontSizeProperty, fontSizeAnimation);
-            }
+                Helper.FieldLostFocusEffect(textBlock);
         }
     }
 }
