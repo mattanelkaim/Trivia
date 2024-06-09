@@ -14,6 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace ClientGUI
 {
@@ -32,7 +33,7 @@ namespace ClientGUI
         }
 
         private Dictionary<string, Room>? rooms;
-        StackPanel roomsStackPanel {  get; set; }
+        StackPanel roomsStackPanel { get; set; }
 
         public JoinRoomPage()
         {
@@ -44,7 +45,7 @@ namespace ClientGUI
 
         public static Dictionary<string, Room>? FetchRoomsFromDB()
         {
-            return Helper.SendGetRoomsRequest();            
+            return Helper.SendGetRoomsRequest();
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs? e)
@@ -56,10 +57,10 @@ namespace ClientGUI
         {
             if (sender is Grid roomRow) // Every row is a grid by itself
             {
-                ColorAnimation animation = new ()
+                ColorAnimation animation = new()
                 {
                     To = Color.FromArgb(128, 173, 216, 255),
-                    Duration = TimeSpan.FromMilliseconds(400)
+                    Duration = TimeSpan.FromMilliseconds(200)
                 };
                 roomRow.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
             }
@@ -183,8 +184,10 @@ namespace ClientGUI
 
 
                 // Create EventTrigger objects for MouseEnter and MouseLeave
-                EventTrigger enterTrigger = new EventTrigger();
-                enterTrigger.RoutedEvent = Button.MouseEnterEvent;  // Set the event to trigger on                
+                EventTrigger enterTrigger = new()
+                {
+                    RoutedEvent = Button.MouseEnterEvent  // Set the event to trigger on
+                };
 
                 EventTrigger leaveTrigger = new()
                 {
@@ -204,16 +207,12 @@ namespace ClientGUI
                 };
                 leaveTrigger.Actions.Add(leaveAction);
 
-                // Create a TriggerCollection and add the triggers
-                TriggerCollection triggers = new TriggerCollection();
-                triggers.Add(enterTrigger);
-                triggers.Add(leaveTrigger);
-
-                roomGrid.AddHandler(MouseEnterEvent, (Delegate)HighlightRoom_Hover);
+                // Add the triggers to the element
+                roomGrid.Triggers.Add(enterTrigger);
+                roomGrid.Triggers.Add(leaveTrigger);
 
                 RoomsStackPanel.Children.Add(roomGrid);
             }
-
         }
 
         private int FetchPlayersInRoom()
