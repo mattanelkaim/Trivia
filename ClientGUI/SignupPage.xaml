@@ -201,7 +201,8 @@
                        FontWeight="SemiBold"
                        Foreground="White"/>
 
-            <Button Content="Sign in"
+            <Button Name="LoginLink"
+                    Content="Sign in"
                     Padding="0"
                     FontSize="12"
                     FontWeight="Bold"

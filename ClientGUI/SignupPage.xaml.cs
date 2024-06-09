@@ -33,6 +33,9 @@ namespace ClientGUI
             this.Username = Username;
             if (Username != string.Empty)
                 Field_GotFocus(UsernameField, null);
+
+            // Remove highlighting from buttons
+            Helper.RemoveButtonHighlighting(LoginLink);
         }
 
         private void SignupSubmit_Click(object sender, RoutedEventArgs? e)
