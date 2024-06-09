@@ -1,4 +1,5 @@
 #include "IDatabase.h"
+#include "InvalidSQL.h"
 #include "LoginManager.h"
 #include <algorithm> // std::find
 #include <memory>
@@ -13,12 +14,16 @@ LoginManager::LoginManager(IDatabase* db) noexcept :
 
 bool LoginManager::signup(const std::string& username, const std::string& password, const std::string& email)
 {
-    if (!m_database->doesUserExist(username))
+    // if (!m_database->doesUserExist(username)) - no need for this as SQL's 'UNIQUE' keywprd already takes care of this for us
+    try
     {
         this->m_database->addNewUser(username, password, email);
         return true;
     }
-    return false; // User already exists
+    catch(const InvalidSQL&) // some SQL error
+    {
+        return false; // User or Email already exists
+    }
 }
 
 bool LoginManager::login(const std::string& username, const std::string& password)
