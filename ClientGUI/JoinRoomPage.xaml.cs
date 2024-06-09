@@ -70,9 +70,9 @@ namespace ClientGUI
         {
             foreach ((string id, Room room) in rooms)
             {
+                // Adding all properties to the grid to match the xaml reference
                 Grid roomGrid = new()
                 {
-                    // Adding all properties to the grid to match the xaml
                     Name = "room" + id,
                     Background = Brushes.Transparent
                 };
@@ -97,8 +97,10 @@ namespace ClientGUI
                     BorderBrush = new SolidColorBrush(Colors.Transparent),
                     Background = new SolidColorBrush(Colors.Transparent),
                     ToolTip = "Enter this room!",
-                    Cursor = Cursors.Help
+                    Cursor = Cursors.Hand,
+                    Foreground = new SolidColorBrush(Colors.Transparent),
                 };
+                Helper.RemoveButtonHighlighting(button);
 
                 Image image = new()
                 {
