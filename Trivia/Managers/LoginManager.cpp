@@ -1,4 +1,5 @@
 #include "IDatabase.h"
+#include "InvalidSQL.h"
 #include "LoginManager.h"
 #include <algorithm> // std::find
 #include <memory>
@@ -19,7 +20,7 @@ bool LoginManager::signup(const std::string& username, const std::string& passwo
         this->m_database->addNewUser(username, password, email);
         return true;
     }
-    catch(...) // some SQL error
+    catch(const InvalidSQL&) // some SQL error
     {
         return false; // User or Email already exists
     }
