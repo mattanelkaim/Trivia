@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using static ClientGUI.Helper;
 
 namespace ClientGUI
 {
@@ -151,7 +153,7 @@ namespace ClientGUI
                 {
                     Style = (Style)FindResource("cell"),
                     Margin = new Thickness(-10, 0, 0, 0),
-                    Text = FetchPlayersInRoom() + " / " + room.maxPlayers
+                    Text = Helper.SendGetPlayersInRoomRequest(id).Count + " / " + room.maxPlayers
                 };
                 roomGrid.Children.Add(textBlock2);
                 Grid.SetColumn(textBlock2, 2);
@@ -224,11 +226,5 @@ namespace ClientGUI
                 RoomsStackPanel.Children.Add(roomGrid);
             }
         }
-
-        private int FetchPlayersInRoom()
-        {
-            return 6;
-        }
-
     }
 }
