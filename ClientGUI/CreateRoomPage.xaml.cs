@@ -27,7 +27,7 @@ namespace ClientGUI
         public string QuestionCount { get; set; } = "";
         public string QuestionTimeout { get; set; } = "";
 
-        [System.Text.RegularExpressions.GeneratedRegex("[1-9]\\d*")] // Only allow numbers greater than 0
+        [System.Text.RegularExpressions.GeneratedRegex("^[1-9]\\d*$")] // Only allow numbers greater than 0
         private static partial System.Text.RegularExpressions.Regex MyRegex();
 
         public CreateRoomPage()
