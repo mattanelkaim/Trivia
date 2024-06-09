@@ -60,7 +60,7 @@ namespace ClientGUI
             // Example for a login request (without spaces of course): 0 0038 {"username":"Mattan","password":"Gil"}
             string serializedCode = ((int)code).ToString().PadLeft(BYTES_RESERVED_FOR_CODE, '0');
             string serializedLen = content.Length.ToString().PadLeft(BYTES_RESERVED_FOR_MSG_LEN, '0');
-            return serializedCode + serializedLen + content; 
+            return serializedCode + serializedLen + content;
         }
 
         public static Response SendMessage(object structTosend, RequestType code)
@@ -125,7 +125,7 @@ namespace ClientGUI
         {
             int responseCode = int.Parse(response[..BYTES_RESERVED_FOR_CODE]); // Idk what fucking syntax that is but it works
             int msgLen = int.Parse(response.Substring(BYTES_RESERVED_FOR_CODE, BYTES_RESERVED_FOR_MSG_LEN));
-            string jsonResponse = response.Substring(BYTES_RESERVED_FOR_CODE + BYTES_RESERVED_FOR_MSG_LEN, msgLen);            
+            string jsonResponse = response.Substring(BYTES_RESERVED_FOR_CODE + BYTES_RESERVED_FOR_MSG_LEN, msgLen);
 
             return new Response { code = (ResponseType)responseCode, content = jsonResponse };
         }
@@ -148,7 +148,7 @@ namespace ClientGUI
 
         public static PersonalStatsResponse SendPersonalStatsRequest()
         {
-            Response response = SendMessage(new {}, RequestType.GetStatistics);
+            Response response = SendMessage(new { }, RequestType.GetStatistics);
 
             // Expects {"userStatistics":{"correctAnswers":"7","games":"3","score":"3.416667","totalAnswers":"11"}}
             return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
@@ -172,10 +172,11 @@ namespace ClientGUI
         {
             Response response = SendMessage(new { roomId = id }, RequestType.GetPlayersInRoom);
 
-            return JsonSerializer.Deserialize<GetPlayersInRoomResponse>(response.content).playersInRoom;   
+            return JsonSerializer.Deserialize<GetPlayersInRoomResponse>(response.content).playersInRoom;
         }
 
         #endregion specificRequests
+
 
         #region XAMLMethodsHelper
 
@@ -183,33 +184,43 @@ namespace ClientGUI
         public static readonly ushort MAX_PASSWORD_LENGTH = 8;
         public static readonly ushort MAX_USERNAME_LENGTH = 16;
 
-        public static void HomeButton_Click(Page page, object sender, RoutedEventArgs? e)
+        public static void HomeButton_Click(Page page, RoutedEventArgs? e)
         {
             page.NavigationService.Navigate(new MenuPage());
-        }        
+        }
 
         public static void RemoveButtonHighlighting(Button button)
         {
-            ControlTemplate controlTemplate = new ControlTemplate(typeof(Button));
+            ControlTemplate controlTemplate = new(typeof(Button));
 
-            FrameworkElementFactory border = new FrameworkElementFactory(typeof(Border));
-            border.Name = "border";
+            FrameworkElementFactory border = new(typeof(Border))
+            {
+                Name = "border"
+            };
             border.SetValue(Border.BackgroundProperty, new TemplateBindingExtension(Button.BackgroundProperty));
             border.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(Button.BorderBrushProperty));
             border.SetValue(Border.BorderThicknessProperty, new TemplateBindingExtension(Button.BorderThicknessProperty));
 
-            FrameworkElementFactory contentPresenter = new FrameworkElementFactory(typeof(ContentPresenter));
+            FrameworkElementFactory contentPresenter = new(typeof(ContentPresenter));
             contentPresenter.SetValue(ContentPresenter.HorizontalAlignmentProperty, HorizontalAlignment.Center);
             contentPresenter.SetValue(ContentPresenter.VerticalAlignmentProperty, VerticalAlignment.Center);
 
             border.AppendChild(contentPresenter);
             controlTemplate.VisualTree = border;
 
-            Trigger isPressedTrigger = new Trigger { Property = Button.IsPressedProperty, Value = true };
+            Trigger isPressedTrigger = new()
+            {
+                Property = Button.IsPressedProperty,
+                Value = true
+            };
             isPressedTrigger.Setters.Add(new Setter(Border.BackgroundProperty, Brushes.Transparent, "border"));
             controlTemplate.Triggers.Add(isPressedTrigger);
 
-            Trigger isEnabledTrigger = new Trigger { Property = UIElement.IsEnabledProperty, Value = false };
+            Trigger isEnabledTrigger = new()
+            {
+                Property = UIElement.IsEnabledProperty,
+                Value = false
+            };
             isEnabledTrigger.Setters.Add(new Setter(Border.BackgroundProperty, Brushes.Gray, "border"));
             controlTemplate.Triggers.Add(isEnabledTrigger);
 
