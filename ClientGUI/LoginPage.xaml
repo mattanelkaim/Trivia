@@ -178,8 +178,8 @@
                        Foreground="White"
                        FontWeight="SemiBold"/>
 
-            <Button Content="Join now"
-                    
+            <Button Name="JoinLink"
+                    Content="Join now"
                     Padding="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"

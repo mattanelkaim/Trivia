@@ -98,10 +98,10 @@ namespace ClientGUI
                 {
                     Width = 25,                    
                     VerticalAlignment = VerticalAlignment.Center,
-                    Source = new BitmapImage(new Uri(room.status == 0 ? "Images/White/enter.png" : "Images/White/closed.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri(room.status == (int)Helper.RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png", UriKind.Relative))
                 };
 
-                if (room.status == 0)
+                if (room.status == (int)Helper.RoomStatus.OPEN)
                 {
                     Button button = new()
                     {
@@ -111,9 +111,10 @@ namespace ClientGUI
                         ToolTip = "Enter this room!",
                         Cursor = Cursors.Hand,
                         Foreground = new SolidColorBrush(Colors.Transparent),
+                        Content = image
                     };
+                    
                     Helper.RemoveButtonHighlighting(button);
-                    button.Content = image;
                     roomGrid.Children.Add(button);
                 }
                 else
