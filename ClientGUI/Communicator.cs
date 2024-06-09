@@ -13,7 +13,7 @@ namespace ClientGUI
         static private NetworkStream stream;
         static private readonly string IP = "127.0.0.1"; // Loopback
         static private readonly ushort PORT = 7777;
-        static private readonly int BUFFER_SIZE = 256;
+        static private readonly int BUFFER_SIZE = Helper.BYTES_RESERVED_FOR_CODE + Helper.BYTES_RESERVED_FOR_MSG_LEN + int.Parse(String.Concat(Enumerable.Repeat('9', Helper.BYTES_RESERVED_FOR_MSG_LEN)));
 
         /// <summary>
         /// Connects to the server using the specified IP address and port.

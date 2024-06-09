@@ -8,6 +8,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <map>
 
 class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
@@ -40,8 +41,9 @@ using readonly_buffer = std::span<const byte>;
 #pragma region protocolDefinitions
 
 /* protocol template: {code}{data length}{message}
-*                     ^^^^  ^^^^^^^^^^^  ^^^^^^^
-*                   1 byte,  4 bytes,  {data length} bytes
+*                      ^^^^  ^^^^^^^^^^^  ^^^^^^^
+*                     1 byte,  4 bytes,  {data length} bytes
+*  example: "10005hello"
 */
 
 constexpr uint16_t PORT = 7777;
@@ -72,6 +74,12 @@ constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral co
 
 #pragma region roomDefinitions
 
+enum RoomStatus
+{
+    OPEN,
+    CLOSED,
+};
+
 struct RoomData
 {
     std::string name;
@@ -79,12 +87,7 @@ struct RoomData
     uint16_t maxPlayers;
     uint16_t numOfQuestionsInGame;
     uint32_t timePerQuestion;
-    uint32_t status;
-    enum RoomStatus
-    {
-        OPEN,
-        CLOSED,
-    };
+    RoomStatus status;
 };
 
 #pragma endregion
@@ -96,6 +99,10 @@ enum ResponseCode
 {
     ERR, // ERROR won't compile
     OK,
+    // Login
+    LOGIN_FAILED,
+    // Signup
+    USERNAME_ALREADY_EXISTS
 };
 
 // Response structs
@@ -106,22 +113,22 @@ struct ErrorResponse
 
 struct LoginResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct SignupResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct LogoutResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct GetRoomsResponse
 {
-    uint32_t status;
+    ResponseCode status;
     std::vector<RoomData> rooms;
 };
 
@@ -132,24 +139,24 @@ struct GetPlayersInRoomResponse
 
 struct GetHighScoreResponse
 {
-    uint32_t status;
-    std::vector<std::string> statistics;
+    ResponseCode status;
+    std::map<std::string, double> statistics;
 };
 
 struct GetPersonalStatsResponse
 {
-    uint32_t status;
+    ResponseCode status;
     std::vector<std::string> statistics;
 };
 
 struct JoinRoomResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 struct CreateRoomResponse
 {
-    uint32_t status;
+    ResponseCode status;
 };
 
 namespace JsonFields
@@ -171,6 +178,7 @@ namespace JsonFields
 } // namespace JsonFields
 
 #pragma endregion
+
 
 #pragma region requestDefinitions
 
