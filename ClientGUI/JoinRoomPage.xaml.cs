@@ -91,27 +91,35 @@ namespace ClientGUI
                 roomGrid.Children.Add(polygon1);
                 Grid.SetColumn(polygon1, 0);
 
-                Button button = new()
-                {
-                    BorderThickness = new Thickness(0),
-                    BorderBrush = new SolidColorBrush(Colors.Transparent),
-                    Background = new SolidColorBrush(Colors.Transparent),
-                    ToolTip = "Enter this room!",
-                    Cursor = Cursors.Hand,
-                    Foreground = new SolidColorBrush(Colors.Transparent),
-                };
-                Helper.RemoveButtonHighlighting(button);
 
                 Image image = new()
                 {
-                    Width = 25,
-                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Width = 25,                    
                     VerticalAlignment = VerticalAlignment.Center,
                     Source = new BitmapImage(new Uri(room.status == 0 ? "Images/White/enter.png" : "Images/White/closed.png", UriKind.Relative))
                 };
 
-                button.Content = image;
-                roomGrid.Children.Add(button);
+                if (room.status == 0)
+                {
+                    Button button = new()
+                    {
+                        BorderThickness = new Thickness(0),
+                        BorderBrush = new SolidColorBrush(Colors.Transparent),
+                        Background = new SolidColorBrush(Colors.Transparent),
+                        ToolTip = "Enter this room!",
+                        Cursor = Cursors.Hand,
+                        Foreground = new SolidColorBrush(Colors.Transparent),
+                    };
+                    Helper.RemoveButtonHighlighting(button);
+                    button.Content = image;
+                    roomGrid.Children.Add(button);
+                }
+                else
+                {
+                    image.ToolTip = "Too late to enter...";
+                    image.Cursor = Cursors.Help;
+                    roomGrid.Children.Add(image);
+                }
 
                 Polygon polygon2 = new()
                 {
