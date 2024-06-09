@@ -45,16 +45,8 @@ buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& respons
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse& response) noexcept
 {
-    // Join all strings with a delimiter
-    std::string players;
-    if (!response.players.empty()) [[unlikely]] // Avoid resizing to a negative size
-    {
-        for (const std::string& room : response.players)
-            players += room + ", ";
-        players.resize(players.size() - 2); // Delete last 2 chars (", ")
-    }
 
-    const json j{{JsonFields::PLAYERS_IN_ROOM, players}};
+    const json j{{JsonFields::PLAYERS_IN_ROOM, response.players}};
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 

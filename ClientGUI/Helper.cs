@@ -106,14 +106,19 @@ namespace ClientGUI
             public PersonalStatsPage.PersonalStats userStatistics { get; set; }
         }
 
-        public class HighScoresResponse
+        public struct HighScoresResponse
         {
-            public Dictionary<string, ScoreboardPage.Highscore>? highScores { get; set; }
+            public Dictionary<string, ScoreboardPage.Highscore> highScores { get; set; }
         }
 
-        public class GetRoomsResponse
+        public struct GetRoomsResponse
         {
-            public Dictionary<string, JoinRoomPage.Room>? rooms { get; set; }
+            public Dictionary<string, JoinRoomPage.Room> rooms { get; set; }
+        }
+
+        public struct GetPlayersInRoomResponse
+        {
+            public List<string> playersInRoom { get; set; }
         }
 
         public static Response ExtractResponse(string response)
@@ -149,18 +154,25 @@ namespace ClientGUI
             return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
         }
 
-        public static Dictionary<string, ScoreboardPage.Highscore>? SendScoreboardRequest()
+        public static Dictionary<string, ScoreboardPage.Highscore> SendScoreboardRequest()
         {
             Response response = SendMessage(new { }, RequestType.GetHighscore);
 
-            return JsonSerializer.Deserialize<HighScoresResponse>(response.content)?.highScores;
+            return JsonSerializer.Deserialize<HighScoresResponse>(response.content).highScores;
         }
 
-        public static Dictionary<string, JoinRoomPage.Room>? SendGetRoomsRequest()
+        public static Dictionary<string, JoinRoomPage.Room> SendGetRoomsRequest()
         {
             Response response = SendMessage(new { }, RequestType.GetRooms);
 
-            return JsonSerializer.Deserialize<GetRoomsResponse>(response.content)?.rooms;
+            return JsonSerializer.Deserialize<GetRoomsResponse>(response.content).rooms;
+        }
+
+        public static List<string> SendGetPlayersInRoomRequest(string id)
+        {
+            Response response = SendMessage(new { roomId = id }, RequestType.GetPlayersInRoom);
+
+            return JsonSerializer.Deserialize<GetPlayersInRoomResponse>(response.content).playersInRoom;   
         }
 
         #endregion specificRequests
