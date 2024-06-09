@@ -21,8 +21,8 @@ namespace Helper
     template <std::integral ReturnType, typename T>
     ReturnType tryMakeIntegral(const T& obj) // noexcept(std::is_convertible<T, ReturnType>())
     {
-        if (std::is_convertible<T, ReturnType>())
-            return obj;
+        if (std::is_integral<T>())
+            return static_cast<ReturnType>(obj);
 
         try
         {
