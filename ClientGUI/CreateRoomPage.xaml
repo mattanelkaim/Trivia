@@ -1,0 +1,191 @@
+﻿<Page x:Class="ClientGUI.CreateRoomPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ClientGUI"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CreateRoomPage">
+
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+
+        <!--Styles 241-->
+        <Style x:Key="textField" TargetType="TextBox">
+            <!--PasswordBox also uses it-->
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,5,0,10"/>
+            <Setter Property="Padding" Value="28,0,0,0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="MaxLength" Value="16"/>
+            <Setter Property="CaretBrush" Value="White"/>
+        </Style>
+
+        <Style x:Key="placeholder" TargetType="TextBlock">
+            <Setter Property="Margin" Value="28,23,0,-28"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Page.Resources>
+
+    <Page.Background>
+        <ImageBrush ImageSource="Images/background.jpg"/>
+    </Page.Background>
+
+    <Grid>
+        <Button Background="Transparent"
+                Margin="10,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderBrush="Transparent"
+                Click="HomeButton_Click">
+            <Button.Content>
+                <Image Source="Images/White/home.png" 
+                       Width="30"/>
+            </Button.Content>
+        </Button>
+        
+        <TextBlock Text="HOST YOUR OWN ROOM!"
+                   Margin="0,30,0,0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   FontSize="45"
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"
+                   Foreground="White"/>
+
+        <StackPanel Margin="0,80,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+
+            <!--Moves up on field focus-->
+            <TextBlock Name="RoomNameTextBlock"
+                       Text="Room Name"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="Mustn't be empty"/>
+
+            <TextBox Name="RoomNameField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding RoomName, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus">  
+                
+                <TextBox.Background>
+                    <ImageBrush ImageSource="Images/White/name.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </TextBox.Background>
+            </TextBox>
+            
+            <!--Moves up on field focus-->
+            <TextBlock Name="MaxPlayersTextBlock"
+                       Text="Max Players"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="0 &lt; Must be ≤ 10"/>
+
+            <TextBox Name="MaxPlayersField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding MaxPlayers, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus"
+                     PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
+
+                <TextBox.Background>
+                    <ImageBrush ImageSource="Images/White/group.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </TextBox.Background>
+            </TextBox>
+            
+            <!--Moves up on field focus-->
+            <TextBlock Name="QuestionCountTextBlock"
+                       Text="Number of Questions"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="0 &lt; Must be ≤ 10"/>
+
+            <TextBox Name="QuestionCountField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding QuestionCount, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus"
+                     PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
+
+                <TextBox.Background>
+                    <ImageBrush ImageSource="Images/White/questions.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </TextBox.Background>
+            </TextBox>
+
+            <!--Moves up on field focus-->
+            <TextBlock Name="QuestionTimeoutTextBlock"
+                       Text="Question Timeout"
+                       Style="{StaticResource placeholder}"
+                       Cursor="Help"
+                       ToolTip="5 ≤ Must be ≤ 60"/>
+
+            <TextBox Name="QuestionTimeoutField"
+                     Style="{StaticResource textField}"
+                     Text="{Binding QuestionTimeout, UpdateSourceTrigger=PropertyChanged}"
+                     GotFocus="Field_GotFocus"
+                     LostFocus="Field_LostFocus"
+                     PreviewTextInput="NumberOnlyTextBox_PreviewTextInput">
+
+                <TextBox.Background>
+                    <ImageBrush ImageSource="Images/White/timeout.png"
+                                Stretch="Uniform"
+                                AlignmentX="Left"
+                                AlignmentY="Center"
+                                ViewportUnits="RelativeToBoundingBox"
+                                Viewport="0.01,0.1,1,0.8"/>
+                </TextBox.Background>
+            </TextBox>
+
+            <Button Content="CREATE"
+                    Margin="0,30,0,0"
+                    Padding="40,8,40,8"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    FontFamily="{StaticResource Babapro}"
+                    Foreground="White"
+                    Background="HotPink"
+                    BorderBrush="Black"
+                    BorderThickness="0.5"
+                    Cursor="Hand"
+                    Click="CreateSubmit_Click">
+
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="23"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>
