@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace ClientGUI
 {
@@ -233,6 +234,56 @@ namespace ClientGUI
 
             button.Template = controlTemplate;
         }
+
+        // Convenience method
+        public static void FocusButton(Button button)
+        {
+
+        }
+
+        public static void FieldGotFocusEffect(TextBlock textBlock)
+        {
+            // Animate position (margin)
+            ThicknessAnimation marginAnimation = new()
+            {
+                To = new Thickness(2, 0, 0, 0),
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            textBlock.BeginAnimation(TextBlock.MarginProperty, marginAnimation);
+
+            // Animate font size
+            DoubleAnimation fontSizeAnimation = new()
+            {
+                To = 12,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            textBlock.BeginAnimation(TextBlock.FontSizeProperty, fontSizeAnimation);
+        }
+
+        public static void FieldLostFocusEffect(TextBlock textBlock)
+        {
+            // Animate position (margin)
+            ThicknessAnimation marginAnimation = new()
+            {
+                To = new Thickness(28, 23, 0, -28), // -28 to overlap with field, 23 to save space above (save 5 for fontSize change)
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            textBlock.BeginAnimation(TextBlock.MarginProperty, marginAnimation);
+
+            // Animate font size
+            DoubleAnimation fontSizeAnimation = new()
+            {
+                To = 16,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new QuarticEase()
+            };
+            textBlock.BeginAnimation(TextBlock.FontSizeProperty, fontSizeAnimation);
+        }
+
+
 
         #endregion XAMLMethodsHelper
     }
