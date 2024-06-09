@@ -1,0 +1,120 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Fonts\BabaPro-Bold.ttf" />
+    <None Remove="Fonts\BabaPro.ttf" />
+    <None Remove="Fonts\Good Timing.otf" />
+    <None Remove="Images\background.jpg" />
+    <None Remove="Images\Black\closed.png" />
+    <None Remove="Images\Black\create.png" />
+    <None Remove="Images\Black\email.png" />
+    <None Remove="Images\Black\enter.png" />
+    <None Remove="Images\Black\eyesClosed.png" />
+    <None Remove="Images\Black\eyesOpen.png" />
+    <None Remove="Images\Black\group.png" />
+    <None Remove="Images\Black\home.png" />
+    <None Remove="Images\Black\leave.png" />
+    <None Remove="Images\Black\meeting.png" />
+    <None Remove="Images\Black\name.png" />
+    <None Remove="Images\Black\password.png" />
+    <None Remove="Images\Black\questions.png" />
+    <None Remove="Images\Black\stats.png" />
+    <None Remove="Images\Black\timeout.png" />
+    <None Remove="Images\Black\trophy.png" />
+    <None Remove="Images\Black\user.png" />
+    <None Remove="Images\bronze.png" />
+    <None Remove="Images\closed.png" />
+    <None Remove="Images\create.png" />
+    <None Remove="Images\email.png" />
+    <None Remove="Images\enter.png" />
+    <None Remove="Images\eyesClosed.png" />
+    <None Remove="Images\eyesOpen.png" />
+    <None Remove="Images\gold.png" />
+    <None Remove="Images\group.png" />
+    <None Remove="Images\home.png" />
+    <None Remove="Images\leave.png" />
+    <None Remove="Images\meeting.png" />
+    <None Remove="Images\name.png" />
+    <None Remove="Images\open.png" />
+    <None Remove="Images\password.png" />
+    <None Remove="Images\questions.png" />
+    <None Remove="Images\scoreboard.jpg" />
+    <None Remove="Images\silver.png" />
+    <None Remove="Images\stats.png" />
+    <None Remove="Images\timeout.png" />
+    <None Remove="Images\trophy.png" />
+    <None Remove="Images\user.png" />
+    <None Remove="Images\White\closed.png" />
+    <None Remove="Images\White\create.png" />
+    <None Remove="Images\White\email.png" />
+    <None Remove="Images\White\enter.png" />
+    <None Remove="Images\White\eyesClosed.png" />
+    <None Remove="Images\White\eyesOpen.png" />
+    <None Remove="Images\White\group.png" />
+    <None Remove="Images\White\home.png" />
+    <None Remove="Images\White\leave.png" />
+    <None Remove="Images\White\meeting.png" />
+    <None Remove="Images\White\name.png" />
+    <None Remove="Images\White\password.png" />
+    <None Remove="Images\White\questions.png" />
+    <None Remove="Images\White\stats.png" />
+    <None Remove="Images\White\timeout.png" />
+    <None Remove="Images\White\trophy.png" />
+    <None Remove="Images\White\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\background.jpg" />
+    <Resource Include="Images\Black\closed.png" />
+    <Resource Include="Images\Black\create.png" />
+    <Resource Include="Images\Black\email.png" />
+    <Resource Include="Images\Black\enter.png" />
+    <Resource Include="Images\Black\eyesClosed.png" />
+    <Resource Include="Images\Black\eyesOpen.png" />
+    <Resource Include="Images\Black\group.png" />
+    <Resource Include="Images\Black\home.png" />
+    <Resource Include="Images\Black\leave.png" />
+    <Resource Include="Images\Black\meeting.png" />
+    <Resource Include="Images\Black\name.png" />
+    <Resource Include="Images\Black\password.png" />
+    <Resource Include="Images\Black\questions.png" />
+    <Resource Include="Images\Black\stats.png" />
+    <Resource Include="Images\Black\timeout.png" />
+    <Resource Include="Images\Black\trophy.png" />
+    <Resource Include="Images\Black\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\BabaPro.ttf" />
+    <Resource Include="Fonts\Good Timing.otf" />
+    <Resource Include="Images\bronze.png" />
+    <Resource Include="Images\gold.png" />
+    <Resource Include="Images\silver.png" />
+    <Resource Include="Images\White\closed.png" />
+    <Resource Include="Images\White\create.png" />
+    <Resource Include="Images\White\email.png" />
+    <Resource Include="Images\White\enter.png" />
+    <Resource Include="Images\White\eyesClosed.png" />
+    <Resource Include="Images\White\eyesOpen.png" />
+    <Resource Include="Images\White\group.png" />
+    <Resource Include="Images\White\home.png" />
+    <Resource Include="Images\White\leave.png" />
+    <Resource Include="Images\White\meeting.png" />
+    <Resource Include="Images\White\name.png" />
+    <Resource Include="Images\White\password.png" />
+    <Resource Include="Images\White\questions.png" />
+    <Resource Include="Images\White\stats.png" />
+    <Resource Include="Images\White\timeout.png" />
+    <Resource Include="Images\White\trophy.png" />
+    <Resource Include="Images\White\user.png" />
+  </ItemGroup>
+
+</Project>
