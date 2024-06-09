@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.Json;
+using System.Windows.Media.Animation;
 
 namespace ClientGUI
 {
@@ -17,7 +18,7 @@ namespace ClientGUI
         public MainWindow()
         {
             InitializeComponent();
-            this.LoginSubmit.Click += new RoutedEventHandler(LoginSubmit_Click);
+            this.DataContext = this;
 
             try
             {
@@ -25,20 +26,21 @@ namespace ClientGUI
             }
             catch (Exception e)
             {
-                MessageBox.Show("Connection failed: " + e.Message);
+                MessageBox.Show("Connection failed: " + e.Message + "\nPlease try again later.");
+                System.Windows.Application.Current.Shutdown();
             }
         }
 
-        private void LoginSubmit_Click(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs? e)
         {
-            string json = JsonSerializer.Serialize(new { username = this.Username.Text, password = this.Password.Text });
+            //this.MainFrame.NavigationService.Navigate(new HighscorePage(
+            //[
+            //    new HighscorePage.Highscore() { Username = "first", Score = 539 },
+            //    new HighscorePage.Highscore() { Username = "SecONd", Score = 4 },
+            //    new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
+            //]));
 
-            string msg = Helper.Serialize(json, Helper.MessageType.Login);
-            MessageBox.Show("[Sending]: " + msg);
-            Communicator.Send(msg);
-
-            string response = Communicator.Receive();
-            MessageBox.Show("[Received]: " + response);
+            this.MainFrame.NavigationService.Navigate(new LoginPage());
         }
     }
 }

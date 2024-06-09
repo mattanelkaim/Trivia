@@ -11,6 +11,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <map>
 
 using std::to_string;
 
@@ -121,14 +122,14 @@ float SqliteDatabase::getPlayerScore(const std::string& username) const
     return score;
 }
 
-std::vector<std::string> SqliteDatabase::getHighScores() const
+std::map<std::string, double> SqliteDatabase::getHighScores() const
 {
-    const std::string query = "SELECT name FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
+    const std::string query = "SELECT username, score FROM user_scores ORDER BY score DESC LIMIT " + to_string(NUM_TOP_SCORES);
 
-    std::vector<std::string> scores;
-    this->runQuery(query, callbackStringVector, &scores);
+    std::map<std::string, double> highScores;
+    this->runQuery(query, callbackStringDoubleMap, &highScores);
 
-    return scores;
+    return highScores;
 }
 
 
@@ -220,6 +221,22 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
         std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
 
         static_cast<std::vector<Question>*>(destination)->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
+        return 0;
+    }
+    catch (...) // Callbacks must be noexcept
+    {
+        return 1;
+    }
+}
+
+int SqliteDatabase::callbackStringDoubleMap(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
+{
+    if (columns != 2) // 2 = number of members in a pair
+        return 1; // Error
+
+    try
+    {        
+        static_cast<std::map<std::string, double>*>(destination)->emplace(data[0], std::strtof(data[1], nullptr)); // Construct with question string & answers
         return 0;
     }
     catch (...) // Callbacks must be noexcept

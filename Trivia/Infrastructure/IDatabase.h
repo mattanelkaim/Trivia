@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <map>
 
 class IDatabase
 {
@@ -42,5 +43,5 @@ public:
     virtual float getPlayerScore(const std::string& username) const = 0;
     
     // @throws InvalidSQL
-    virtual std::vector<std::string> getHighScores() const = 0;
+    virtual std::map<std::string, double> getHighScores() const = 0;
 };

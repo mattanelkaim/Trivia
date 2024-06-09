@@ -10,7 +10,7 @@ StatisticsManager::StatisticsManager(IDatabase* db) noexcept :
     m_database(db)
 {}
 
-std::vector<std::string> StatisticsManager::getHighScore() const
+std::map<std::string, double> StatisticsManager::getHighScore() const
 {
     return m_database->getHighScores();
 }
