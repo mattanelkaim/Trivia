@@ -144,6 +144,16 @@ namespace ClientGUI
             this.NavigationService.Navigate(new SignupPage(Username));
         }
 
+        private void Button_MouseEnter(object sender, MouseEventArgs? e)
+        {
+            Helper.ButtonGotHoverEffect((Button)sender);
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs? e)
+        {
+            Helper.ButtonLostHoverEffect((Button)sender);
+        }
+
         private void Field_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
