@@ -235,11 +235,6 @@ namespace ClientGUI
             button.Template = controlTemplate;
         }
 
-        // Convenience method
-        public static void FocusButton(Button button)
-        {
-
-        }
 
         public static void FieldGotFocusEffect(TextBlock textBlock)
         {
@@ -284,6 +279,39 @@ namespace ClientGUI
         }
 
 
+        public static void ButtonGotHoverEffect(Button button)
+        {
+            ColorAnimation foregroundAnimation = new()
+            {
+                To = Colors.HotPink,
+                Duration = TimeSpan.FromMilliseconds(800),
+                EasingFunction = new QuarticEase()
+            };
+
+            SolidColorBrush brush = new()
+            {
+                Color = Colors.DarkOrange
+            };
+            button.Foreground = brush;
+            brush.BeginAnimation(SolidColorBrush.ColorProperty, foregroundAnimation);
+        }
+
+        public static void ButtonLostHoverEffect(Button button)
+        {
+            ColorAnimation foregroundAnimation = new()
+            {
+                To = Colors.DarkOrange,
+                Duration = TimeSpan.FromMilliseconds(800),
+                EasingFunction = new QuarticEase()
+            };
+
+            SolidColorBrush brush = new()
+            {
+                Color = Colors.HotPink
+            };
+            button.Foreground = brush;
+            brush.BeginAnimation(SolidColorBrush.ColorProperty, foregroundAnimation);
+        }
 
         #endregion XAMLMethodsHelper
     }
