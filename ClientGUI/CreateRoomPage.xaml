@@ -12,7 +12,7 @@
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
         <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
 
-        <!--Styles 241-->
+        <!--Styles-->
         <Style x:Key="textField" TargetType="TextBox">
             <!--PasswordBox also uses it-->
             <Setter Property="Width" Value="200"/>
