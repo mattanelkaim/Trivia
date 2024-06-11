@@ -38,24 +38,17 @@ public:
     ############### SINGLETON ##############
     ######################################*/
 
-    StatisticsManager() = delete;
     StatisticsManager(const StatisticsManager& other) = delete;
     void operator=(const StatisticsManager& other) = delete;          
-    static StatisticsManager* getInstance(IDatabase* db);
+    static StatisticsManager& getInstance() noexcept;
     ~StatisticsManager() noexcept = default;
 
 private:
     /*######################################
-    ################ MEMBERS ###############
-    ######################################*/
-
-    IDatabase* m_database;
-
-    /*######################################
     ############### SINGLETON ##############
     ######################################*/
 
-    explicit StatisticsManager(IDatabase* db) noexcept;
+    StatisticsManager() noexcept = default;
     inline static std::unique_ptr<StatisticsManager> m_StatisticsManager = nullptr;
     inline static std::mutex m_mutex;
 };

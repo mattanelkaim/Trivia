@@ -49,10 +49,9 @@ public:
     ############### SINGLETON ##############
     ######################################*/
 
-    Communicator() = delete;
     Communicator(const Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
-    static Communicator* getInstance(IDatabase* db);
+    static Communicator* getInstance();
     ~Communicator() noexcept;
 
 private:
@@ -93,7 +92,7 @@ private:
     ######################################*/
 
     // @throws std::runtime_error When connection setup fails.
-    explicit Communicator(IDatabase* db);
+    explicit Communicator();
     
     inline static std::unique_ptr<Communicator> m_Communicator = nullptr;
     inline static std::mutex m_mutex;
