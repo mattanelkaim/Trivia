@@ -1,8 +1,6 @@
 #pragma once
 
-#include "IDatabase.h"
-#include <memory>
-#include <mutex>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -21,7 +19,7 @@ public:
     * @return A vector of strings representing the high scores of all users.
     * @throws InvalidSQL
     */
-    std::map<std::string, double> getHighScore() const;
+    static std::map<std::string, double> getHighScore();
 
     /**
     * @brief Retrieves the statistics of the specified user from the database and returns them in a vector.
@@ -32,7 +30,7 @@ public:
     * @return A vector of strings representing the user's statistics.
     * @throws InvalidSQL
     */
-    std::vector<std::string> getUserStatistics(const std::string& username) const;
+    static std::vector<std::string> getUserStatistics(const std::string& username);
 
     /*######################################
     ############### SINGLETON ##############
@@ -49,6 +47,4 @@ private:
     ######################################*/
 
     StatisticsManager() noexcept = default;
-    inline static std::unique_ptr<StatisticsManager> m_StatisticsManager = nullptr;
-    inline static std::mutex m_mutex;
 };

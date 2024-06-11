@@ -6,6 +6,7 @@ Things to do before shipping
 
 #include "Server.h"
 #include "ServerDefinitions.h"
+#include "SqliteDatabase.h"
 #include "WSAInitializer.h"
 #include <exception>
 #include <iostream>
@@ -48,6 +49,7 @@ int main()
         createDummyRooms(); // TODO remove
 
         const WSAInitializer wsaInit;
+        SqliteDatabase::getInstance().openDB();
         Server::getInstance().run();
     }
     catch (const std::exception& e)

@@ -1,6 +1,5 @@
 #include "Communicator.h"
 #include "Helper.h"
-#include "IDatabase.h"
 #include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include "ServerDefinitions.h"
@@ -20,7 +19,6 @@ using std::to_string;
 
 
 Communicator::Communicator() :
-    m_handlerFactory(RequestHandlerFactory::getInstance()),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
     if (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(this->m_serverSocket == INVALID_SOCKET))
@@ -70,7 +68,7 @@ void Communicator::startHandleRequests()
 
             std::cout << ANSI_GREEN << "Client accepted (" << clientSocket << ")\n" << ANSI_NORMAL;
             // Add client with LoginRequestHandler to map
-            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler);
 
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);

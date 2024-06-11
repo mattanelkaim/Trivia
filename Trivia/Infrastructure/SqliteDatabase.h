@@ -25,7 +25,7 @@ public:
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    // @throws std::runtime_error
+    // @throws std::runtime_error If the database cannot be opened.
     bool openDB() override;
     bool closeDB() noexcept override;
 
@@ -106,5 +106,5 @@ private:
     * 
     * @throws std::runtime_error If the database cannot be opened.
     */
-    SqliteDatabase();
+    SqliteDatabase() noexcept = default;
 };

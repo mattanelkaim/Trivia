@@ -10,7 +10,7 @@ public:
     ############# CONSTRUCTORS #############
     ######################################*/
 
-    Question() = default;
+    Question() noexcept = default;
 
     /**
     * @brief Constructs a new Question object.
@@ -18,7 +18,7 @@ public:
     * @param question The question text.
     * @param answers A vector of possible answers. The correct answer should be the first one in the vector.
     */
-    explicit Question(std::string question, const std::vector<std::string>& answers);
+    explicit Question(std::string question, const std::vector<std::string>& answers) noexcept;
 
     /*######################################
     ############ PUBLIC METHODS ############
