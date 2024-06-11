@@ -35,7 +35,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexce
     catch (const ServerException& e) // Either InvalidProtocolStructure or InvalidSQL
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
         
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),

@@ -35,6 +35,8 @@ namespace Helper
         }
     }
 
+    std::string formatError(const std::string& functionName, const std::string& err);
+
     /**
     * @throws InvalidProtocolStructure
     * @throws UnexpectedClientExit

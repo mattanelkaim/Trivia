@@ -4,6 +4,7 @@ Things to do before shipping
 - Turn off ASan
 */
 
+#include "Helper.h"
 #include "Server.h"
 #include "ServerDefinitions.h"
 #include "SqliteDatabase.h"
@@ -44,6 +45,8 @@ static void createDummyRooms()
 
 int main()
 {
+    std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, "Errory error!") << ANSI_NORMAL << '\n';
+
     try
     {
         createDummyRooms(); // TODO remove
@@ -54,7 +57,7 @@ int main()
     }
     catch (const std::exception& e)
     {
-        std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
     }
 
     return 0;

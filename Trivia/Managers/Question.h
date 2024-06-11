@@ -13,8 +13,7 @@ public:
     Question() noexcept = default;
 
     /**
-    * @brief Constructs a new Question object.
-    * 
+    * Constructs a new Question object.
     * @param question The question text.
     * @param answers A vector of possible answers. The correct answer should be the first one in the vector.
     */

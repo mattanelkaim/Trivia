@@ -44,6 +44,9 @@ void Server::run()
             break;
         }
     } while (cmd != EXIT);
+
+    t_connector.join();
+    Communicator::getInstance()->disconnectAllClients();
 }
 
 // Singleton

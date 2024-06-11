@@ -6,12 +6,25 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <thread>
 #include <WinSock2.h>
 #if PRINT_IO
 #include <iostream>
 #endif
 
 using std::to_string;
+
+std::string Helper::formatError(const std::string& functionName, const std::string& err)
+{
+    if constexpr (EXTENDED_ERRORS)
+    {
+        return "{ERROR | FUNCTION=" + functionName + \
+            " | THREAD=" + to_string(std::this_thread::get_id()._Get_underlying_id()) + \
+            " | MESSAGE=" + err + "}";
+    }
+    else
+        return err;
+}
 
 std::string Helper::getMessageFromSocket(const SOCKET sc)
 {

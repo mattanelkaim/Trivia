@@ -45,6 +45,8 @@ public:
     */
     void startHandleRequests();
 
+    void disconnectAllClients();
+
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
@@ -52,7 +54,7 @@ public:
     Communicator(const Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
     static Communicator* getInstance();
-    ~Communicator() noexcept;
+    ~Communicator();
 
 private:
     /*######################################
