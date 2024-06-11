@@ -17,7 +17,6 @@
 #include <iostream>
 #endif
 
-
 MenuRequestHandler::MenuRequestHandler(IDatabase* db, LoggedUser user) :
     m_handlerFactory(RequestHandlerFactory::getInstance(db)),
     m_roomManager(RoomManager::getInstance()),
@@ -129,7 +128,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) cons
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<GetPlayersInRoomRequest>(info.buffer).roomId;
 
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{this->m_roomManager->getRoom(roomId).getAllUsers()}),
+        .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{OK, this->m_roomManager->getRoom(roomId).getAllUsers()}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
