@@ -23,7 +23,7 @@ static constexpr command hashCommands(const std::string_view cmd) noexcept
 
 void Server::run()
 {
-    std::thread t_connector(&Communicator::startHandleRequests, Communicator::getInstance());
+    std::jthread t_connector(&Communicator::startHandleRequests, &(Communicator::getInstance()));
     t_connector.detach();
 
     std::string userInput;
@@ -45,8 +45,9 @@ void Server::run()
         }
     } while (cmd != EXIT);
 
-    t_connector.join();
-    Communicator::getInstance()->disconnectAllClients();
+    Communicator::getInstance().requestStop();
+    std::cout << std::boolalpha << t_connector.get_stop_token().stop_possible() << '\n';
+    std::cout << t_connector.request_stop() << '\n';
 }
 
 // Singleton

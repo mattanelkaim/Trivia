@@ -1,8 +1,7 @@
 #pragma once
 
 #include "IRequestHandler.h"
-#include <memory>
-#include <mutex>
+#include <atomic>
 #include <unordered_map>
 #include <WinSock2.h>
 
@@ -45,7 +44,9 @@ public:
     */
     void startHandleRequests();
 
-    void disconnectAllClients();
+    void disconnectAllClients() noexcept;
+
+    void requestStop() noexcept;
 
     /*######################################
     ############### SINGLETON ##############
@@ -53,7 +54,7 @@ public:
 
     Communicator(const Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
-    static Communicator* getInstance();
+    static Communicator& getInstance();
     ~Communicator();
 
 private:
@@ -63,6 +64,7 @@ private:
 
     SOCKET m_serverSocket;
     std::unordered_map<SOCKET, IRequestHandler*> m_clients;
+    std::atomic<bool> m_stopRequested{false};
 
     /*######################################
     ############ PRIVATE METHODS ###########
@@ -94,7 +96,4 @@ private:
 
     // @throws std::runtime_error When connection setup fails.
     Communicator();
-    
-    inline static std::unique_ptr<Communicator> m_Communicator = nullptr;
-    inline static std::mutex m_mutex;
 };

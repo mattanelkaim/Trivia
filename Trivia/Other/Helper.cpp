@@ -7,6 +7,7 @@
 #include <string>
 #include <string_view>
 #include <thread>
+#include <winerror.h> // for switch-case
 #include <WinSock2.h>
 #if PRINT_IO
 #include <iostream>
@@ -77,10 +78,15 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
     {
         delete[] data;
         const int errCode = WSAGetLastError();
-        if (errCode == CLIENT_CLOSED_UNEXPECTEDLY) [[unlikely]]
+        switch (errCode)
+        {
+        case WSAECONNRESET: // Client closed unexpectedly
             throw UnexpectedClientExit(sc);
-        else [[likely]]
+        case WSAECONNABORTED:
+            throw ABORT_FLAG::ABORT; // Abort the handling thread
+        [[likely]] default:
             throw std::runtime_error("Error while receiving from socket: " + to_string(sc) + " | Error: " + to_string(errCode));
+        }
     }
 
     const std::string str(data, bufferSize); // Null terminator added automatically

@@ -45,8 +45,6 @@ static void createDummyRooms()
 
 int main()
 {
-    std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, "Errory error!") << ANSI_NORMAL << '\n';
-
     try
     {
         createDummyRooms(); // TODO remove

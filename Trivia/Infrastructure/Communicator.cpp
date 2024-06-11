@@ -9,8 +9,6 @@
 #include <format>
 #include <inaddr.h> // s_addr macro
 #include <iostream>
-#include <memory>
-#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -24,6 +22,8 @@ using std::to_string;
 Communicator::Communicator() :
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
+    puts("Created Communicator!");
+
     if (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(this->m_serverSocket == INVALID_SOCKET))
         throw std::runtime_error(std::format("{}  - socket() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
@@ -32,6 +32,8 @@ Communicator::Communicator() :
 
 Communicator::~Communicator()
 {
+    disconnectAllClients();
+
     // Close server socket
     if (this->m_serverSocket != INVALID_SOCKET)
         closesocket(this->m_serverSocket);
@@ -59,13 +61,19 @@ void Communicator::startHandleRequests()
 {
     try
     {
-        while (true)
+        while (!m_stopRequested)
         {
+            puts("Accepting...");
             // This accepts the client and create a specific socket from server to this client
             // The process will not continue until a client connects to the server
             const SOCKET clientSocket = accept(m_serverSocket, nullptr, nullptr);
             if (clientSocket == INVALID_SOCKET)
+            {
+                if (WSAGetLastError() == WSAEINTR) // Ignore if interrupted by requestStop()
+                    return;
+                // Else, throw exception
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
+            }
 
             std::cout << ANSI_GREEN << "Client accepted (" << clientSocket << ")\n" << ANSI_NORMAL;
             // Add client with LoginRequestHandler to map
@@ -84,7 +92,7 @@ void Communicator::startHandleRequests()
 
 void Communicator::handleNewClient(const SOCKET clientSocket)
 {
-    while (true)
+    while (this->m_clients.contains(clientSocket))
     {
         try
         {
@@ -119,6 +127,10 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
                 Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"VERY ERRORY ERROR"}));
                 std::cout << "Operation NOT successful\n\n";
             }
+        }
+        catch (const ABORT_FLAG)
+        {
+            return; // Simply abort the thread
         }
         catch (const ServerException& e)
         {
@@ -155,7 +167,7 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     closesocket(clientSocket);
 }
 
-void Communicator::disconnectAllClients()
+void Communicator::disconnectAllClients() noexcept
 {
     // Important to copy the keys to a new vector, because we are modifying the map
     std::vector<SOCKET> disconnectedClients;
@@ -170,13 +182,14 @@ void Communicator::disconnectAllClients()
     }
 }
 
-// Singleton
-Communicator* Communicator::getInstance()
+void Communicator::requestStop() noexcept
 {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Communicator == nullptr)
-    {
-        m_Communicator = std::unique_ptr<Communicator>(new Communicator());
-    }
-    return m_Communicator.get();
+    this->m_stopRequested = true;
+}
+
+// Singleton
+Communicator& Communicator::getInstance()
+{
+    static Communicator instance; // This is thread-safe in C++11 and later
+    return instance;
 }
