@@ -9,10 +9,13 @@
 #include <format>
 #include <inaddr.h> // s_addr macro
 #include <iostream>
+#include <memory>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <utility> // std::exchange
+#include <vector>
 #include <WinSock2.h>
 
 using std::to_string;
@@ -27,13 +30,11 @@ Communicator::Communicator() :
     this->bindAndListen();
 }
 
-Communicator::~Communicator() noexcept
+Communicator::~Communicator()
 {
-    for (auto& [client, handler] : this->m_clients)
-    {
-        this->disconnectClient(client);
-        delete handler;
-    }
+    // Close server socket
+    if (this->m_serverSocket != INVALID_SOCKET)
+        closesocket(this->m_serverSocket);
 }
 
 void Communicator::bindAndListen() const
@@ -77,7 +78,7 @@ void Communicator::startHandleRequests()
     }
     catch (const std::exception& e)
     {
-        std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
     }
 }
 
@@ -121,14 +122,14 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
         }
         catch (const ServerException& e)
         {
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
             this->disconnectClient(clientSocket);
             std::cout << ANSI_BLUE << "Disconnected client socket " << clientSocket << "\n\n" << ANSI_NORMAL;
             return; // No need to handle disconnected client
         }
         catch (const std::exception& e)
         {
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
         }
     }
 }
@@ -149,6 +150,23 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     {
         delete client->second; // Delete handler
         this->m_clients.erase(clientSocket);
+    }
+
+    closesocket(clientSocket);
+}
+
+void Communicator::disconnectAllClients()
+{
+    // Important to copy the keys to a new vector, because we are modifying the map
+    std::vector<SOCKET> disconnectedClients;
+    for (const auto& client : this->m_clients)
+    {
+        disconnectedClients.push_back(client.first);
+    }
+
+    for (const auto& clientSocket : disconnectedClients)
+    {
+        this->disconnectClient(clientSocket);
     }
 }
 

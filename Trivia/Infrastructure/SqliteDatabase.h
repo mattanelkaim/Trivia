@@ -14,11 +14,7 @@ using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3
 class SqliteDatabase final : public IDatabase
 {
 public:
-    /**
-    * @brief Destroys the SqliteDatabase object.
-    * 
-    * This destructor closes the database.
-    */
+    // Auto-closes the DB.
     ~SqliteDatabase() noexcept override;
 
     /*######################################
@@ -99,12 +95,5 @@ private:
     ############### SINGLETON ##############
     ######################################*/
 
-    /**
-    * @brief Constructs a new SqliteDatabase object.
-    * 
-    * This constructor opens the database.
-    * 
-    * @throws std::runtime_error If the database cannot be opened.
-    */
     SqliteDatabase() noexcept = default;
 };
