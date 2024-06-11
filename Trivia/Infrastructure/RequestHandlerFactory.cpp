@@ -33,11 +33,6 @@ StatisticsManager* RequestHandlerFactory::getStatisticsManager() noexcept
     return this->m_statisticsManager;
 }
 
-RoomManager* RequestHandlerFactory::getRoomManager() noexcept
-{
-    return this->m_roomManager;
-}
-
 // Singleton
 RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
 {
@@ -48,4 +43,3 @@ RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
     }
     return m_HandlerFactory.get();
 }
-

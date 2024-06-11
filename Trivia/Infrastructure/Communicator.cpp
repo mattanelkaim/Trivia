@@ -10,8 +10,6 @@
 #include <format>
 #include <inaddr.h> // s_addr macro
 #include <iostream>
-#include <memory>
-#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -160,7 +158,7 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 Communicator* Communicator::getInstance(IDatabase* db)
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Communicator == nullptr) [[unlikely]]
+    if (m_Communicator == nullptr)
     {
         m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));
     }
