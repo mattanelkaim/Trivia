@@ -22,6 +22,7 @@ using readonly_buffer = std::span<const byte>;
 #define PRINT_IO true // Used in Helper
 #define OUTPUT_COLORS true
 #define SERVER_DEBUG true
+#define EXTENDED_ERRORS true
 
 #if OUTPUT_COLORS
     constexpr std::string_view ANSI_RED    = "\033[31;1m"; // Red and bold
