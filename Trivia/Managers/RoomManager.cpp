@@ -4,8 +4,6 @@
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <cstdint>
-#include <memory>
-#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -71,12 +69,8 @@ uint32_t RoomManager::getNextRoomId() noexcept
 }
 
 // Singleton
-RoomManager* RoomManager::getInstance()
+RoomManager& RoomManager::getInstance() noexcept
 {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_RoomManager == nullptr) [[unlikely]]
-    {
-        m_RoomManager = std::unique_ptr<RoomManager>(new RoomManager());
-    }
-    return m_RoomManager.get();
+    static RoomManager instance; // This is thread-safe in C++11 and later
+    return instance;
 }

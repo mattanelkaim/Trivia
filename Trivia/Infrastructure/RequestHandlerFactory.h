@@ -26,7 +26,6 @@ public:
 
     LoginManager* getLoginManager() noexcept;
     StatisticsManager* getStatisticsManager() noexcept;
-    RoomManager* getRoomManager() noexcept;
 
     /*######################################
     ############### SINGLETON ##############
@@ -45,7 +44,7 @@ private:
 
     IDatabase* m_database;
     LoginManager* m_loginManager;
-    RoomManager* m_roomManager;
+    RoomManager& m_roomManager;
     StatisticsManager* m_statisticsManager;
 
     /*######################################

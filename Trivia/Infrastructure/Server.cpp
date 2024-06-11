@@ -1,10 +1,9 @@
 #include "Communicator.h"
 #include "RequestHandlerFactory.h"
 #include "Server.h"
+#include "ServerDefinitions.h"
 #include "SqliteDatabase.h"
 #include <iostream>
-#include <memory>
-#include <mutex>
 #include <string>
 #include <string_view>
 #include <thread>
@@ -61,12 +60,8 @@ void Server::run()
 }
 
 // Singleton
-Server* Server::getInstance()
+Server& Server::getInstance()
 {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Server == nullptr)
-    {
-        m_Server = std::unique_ptr<Server>(new Server());
-    }
-    return m_Server.get();
+    static Server instance; // This is thread-safe in C++11 and later
+    return instance;
 }

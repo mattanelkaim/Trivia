@@ -34,7 +34,7 @@ private:
     ######################################*/
 
     RequestHandlerFactory* m_handlerFactory;
-    RoomManager* m_roomManager;
+    RoomManager& m_roomManager;
     StatisticsManager* m_statisticsManager;
     const LoggedUser m_user;
 
