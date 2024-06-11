@@ -36,6 +36,11 @@ using readonly_buffer = std::span<const byte>;
     constexpr std::string_view ANSI_NORMAL;
 #endif
 
+enum ABORT_FLAG
+{
+    ABORT
+};
+
 #pragma endregion
 
 
