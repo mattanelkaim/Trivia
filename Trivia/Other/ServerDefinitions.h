@@ -200,6 +200,10 @@ enum RequestId
     GET_STATISTICS,
     GET_HIGHSCORE,
     LOGOUT,
+    START_ROOM,
+    LEAVE_ROOM,
+    CLOSE_ROOM,
+    GET_ROOM_STATE,
 };
 
 struct RequestInfo
