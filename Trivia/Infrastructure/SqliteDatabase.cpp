@@ -15,12 +15,6 @@
 
 using std::to_string;
 
-
-SqliteDatabase::SqliteDatabase()
-{
-    this->openDB(); // TODO(mattan) construct tables in code
-}
-
 SqliteDatabase::~SqliteDatabase() noexcept
 {
     this->closeDB();
@@ -38,6 +32,7 @@ bool SqliteDatabase::openDB()
         throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->m_db)));
 
     return true;
+    // TODO(mattan) construct tables in code
 }
 
 bool SqliteDatabase::closeDB() noexcept

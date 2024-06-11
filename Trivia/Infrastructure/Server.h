@@ -1,9 +1,5 @@
 #pragma once
 
-#include "Communicator.h"
-#include "IDatabase.h"
-#include "RequestHandlerFactory.h"
-
 class Server final
 {
 public:
@@ -25,21 +21,13 @@ public:
     
     Server(const Server& other) = delete;
     void operator=(const Server& other) = delete;
-    static Server& getInstance();
-    ~Server() noexcept;
+    static Server& getInstance() noexcept;
+    ~Server() noexcept = default;
 
 private:
-    /*######################################
-    ################ MEMBERS ###############
-    ######################################*/
-
-    IDatabase& m_database;
-    RequestHandlerFactory* m_handlerFactory;
-    Communicator* m_communicator;
-
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
     
-    Server();
+    Server() noexcept = default;
 };

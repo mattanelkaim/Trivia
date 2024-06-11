@@ -1,22 +1,11 @@
 #include "Communicator.h"
-#include "RequestHandlerFactory.h"
 #include "Server.h"
 #include "ServerDefinitions.h"
-#include "SqliteDatabase.h"
 #include <iostream>
 #include <string>
 #include <string_view>
 #include <thread>
 
-
-Server::Server() :
-    m_database(SqliteDatabase::getInstance()),
-    m_handlerFactory(RequestHandlerFactory::getInstance()),
-    m_communicator(Communicator::getInstance())
-{}
-
-Server::~Server() noexcept
-{}
 
 enum command
 {
@@ -34,7 +23,7 @@ static constexpr command hashCommands(const std::string_view cmd) noexcept
 
 void Server::run()
 {
-    std::thread t_connector(&Communicator::startHandleRequests, this->m_communicator);
+    std::thread t_connector(&Communicator::startHandleRequests, Communicator::getInstance());
     t_connector.detach();
 
     std::string userInput;
@@ -58,7 +47,7 @@ void Server::run()
 }
 
 // Singleton
-Server& Server::getInstance()
+Server& Server::getInstance() noexcept
 {
     static Server instance; // This is thread-safe in C++11 and later
     return instance;
