@@ -27,25 +27,24 @@ namespace ClientGUI
     {
         public struct Room
         {
-            public int maxPlayers { get; set; }
-            public string name { get; set; }
-            public int questionCount { get; set; }
-            public int questionTimeout { get; set; }
-            public int status { get; set; }
+            public string Name { get; set; }
+            public int MaxPlayers { get; set; }
+            public int QuestionCount { get; set; }
+            public int QuestionTimeout { get; set; }
+            public int Status { get; set; }
         }
 
-        private Dictionary<string, Room>? rooms;
-        StackPanel roomsStackPanel { get; set; }
+        private Dictionary<string, Room> Rooms;       
 
         public JoinRoomPage()
         {
             InitializeComponent();
             this.DataContext = this;
-            rooms = FetchRoomsFromDB();
+            Rooms = FetchRoomsFromDB();            
             showRooms();
         }
 
-        public static Dictionary<string, Room>? FetchRoomsFromDB()
+        public static Dictionary<string, Room> FetchRoomsFromDB()
         {
             return Helper.SendGetRoomsRequest();
         }
@@ -70,7 +69,7 @@ namespace ClientGUI
         
         private void showRooms()
         {
-            foreach ((string id, Room room) in rooms)
+            foreach ((string id, Room room) in Rooms)
             {
                 // Adding all properties to the grid to match the xaml reference
                 Grid roomGrid = new()
@@ -98,10 +97,10 @@ namespace ClientGUI
                 {
                     Width = 25,                    
                     VerticalAlignment = VerticalAlignment.Center,
-                    Source = new BitmapImage(new Uri(room.status == (int)Helper.RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri((room.Status == (int)Helper.RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png"), UriKind.Relative))
                 };
 
-                if (room.status == (int)Helper.RoomStatus.OPEN)
+                if (room.Status == (int)Helper.RoomStatus.OPEN)
                 {
                     Button button = new()
                     {
@@ -134,7 +133,7 @@ namespace ClientGUI
 
                 TextBlock textBlock1 = new()
                 {
-                    Text = room.name,
+                    Text = room.Name,
                     Style = (Style)FindResource("cell")
                 };
                 roomGrid.Children.Add(textBlock1);
@@ -154,7 +153,7 @@ namespace ClientGUI
                 {
                     Style = (Style)FindResource("cell"),
                     Margin = new Thickness(-10, 0, 0, 0),
-                    Text = Helper.SendGetPlayersInRoomRequest(id).Count + " / " + room.maxPlayers
+                    Text = Helper.SendGetPlayersInRoomRequest(id).Count + " / " + room.MaxPlayers
                 };
                 roomGrid.Children.Add(textBlock2);
                 Grid.SetColumn(textBlock2, 2);
@@ -171,7 +170,7 @@ namespace ClientGUI
                 TextBlock textBlock3 = new()
                 {
                     Style = (Style)FindResource("cell"),
-                    Text = room.questionCount.ToString(),
+                    Text = room.QuestionCount.ToString(),
                     Margin = new Thickness(-10, 0, 0, 0)
                 };
                 roomGrid.Children.Add(textBlock3);
@@ -189,7 +188,7 @@ namespace ClientGUI
                 TextBlock textBlock4 = new()
                 {
                     Style = (Style)FindResource("cell"),
-                    Text = room.questionTimeout.ToString()
+                    Text = room.QuestionTimeout.ToString()
                 };
                 roomGrid.Children.Add(textBlock4);
                 Grid.SetColumn(textBlock4, 4);
