@@ -179,7 +179,8 @@ namespace JsonFields
         constexpr std::string_view MAX_PLAYERS = "maxPlayers";
         constexpr std::string_view QUESTION_COUNT = "questionCount";
         constexpr std::string_view QUESTION_TIMEOUT = "questionTimeout";
-        constexpr std::string_view ROOM_STATUS = "status";
+        constexpr std::string_view ROOM_STATUS = "state";
+        constexpr std::string_view HAS_BEGUN = "hasGameBegun";
     } // namespace RoomProperties
 } // namespace JsonFields
 
