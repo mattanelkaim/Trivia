@@ -4,11 +4,11 @@
 
 #include <cstdint>
 #include <ctime> // Used for time_t
+#include <map>
 #include <span>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <map>
 
 class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
@@ -249,5 +249,26 @@ struct CreateRoomRequest : Request
     uint32_t answerTimeout;
 };
 
-#pragma endregion requestDefinitions
+struct CloseRoomRequest : Request
+{
+    uint32_t roomId;
+};
+
+struct StartGameRequest : Request
+{
+    uint32_t roomId;
+};
+
+struct GetRoomStateRequest : Request
+{
+    uint32_t roomId;
+};
+
+struct LeaveRoomRequest : Request
+{
+    uint32_t roomId;
+};
+
+
+#pragma endregion
 // NOLINTEND(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
