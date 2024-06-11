@@ -7,6 +7,8 @@
 #include "LoggedUser.h"
 #include "IDatabase.h"
 
+class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
+
 class RoomMemberRequestHandler : public IRequestHandler
 {
 public:
