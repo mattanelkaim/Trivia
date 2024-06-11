@@ -7,11 +7,11 @@
 #include <cstdint>
 #include <cstdlib> // std::atoi, std::atof
 #include <iterator> // std::back_inserter
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <map>
 
 using std::to_string;
 
@@ -24,6 +24,12 @@ SqliteDatabase::SqliteDatabase()
 SqliteDatabase::~SqliteDatabase() noexcept
 {
     this->closeDB();
+}
+
+SqliteDatabase& SqliteDatabase::getInstance() noexcept
+{
+    static SqliteDatabase instance; // This is thread-safe in C++11 and later
+    return instance;
 }
 
 bool SqliteDatabase::openDB()

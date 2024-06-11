@@ -19,8 +19,8 @@
 using std::to_string;
 
 
-Communicator::Communicator(IDatabase* db) :
-    m_handlerFactory(RequestHandlerFactory::getInstance(db)),
+Communicator::Communicator() :
+    m_handlerFactory(RequestHandlerFactory::getInstance()),
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
     if (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(this->m_serverSocket == INVALID_SOCKET))
@@ -155,12 +155,12 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 }
 
 // Singleton
-Communicator* Communicator::getInstance(IDatabase* db)
+Communicator* Communicator::getInstance()
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_Communicator == nullptr)
     {
-        m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));
+        m_Communicator = std::unique_ptr<Communicator>(new Communicator());
     }
     return m_Communicator.get();
 }

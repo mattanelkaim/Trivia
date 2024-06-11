@@ -1,4 +1,3 @@
-#include "IDatabase.h"
 #include "LoginManager.h"
 #include "LoginRequestHandler.h"
 #include "RequestHandlerFactory.h"
@@ -6,16 +5,15 @@
 #include "StatisticsManager.h"
 
 
-RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
-    m_database(db),
-    m_loginManager(LoginManager::getInstance(db)), // Might throw
+RequestHandlerFactory::RequestHandlerFactory() :
+    m_loginManager(LoginManager::getInstance()), // Might throw
     m_roomManager(RoomManager::getInstance()), //...
-    m_statisticsManager(StatisticsManager::getInstance(db)) //...
+    m_statisticsManager(StatisticsManager::getInstance()) //...
 {}
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-    return new MenuRequestHandler(this->m_database, user);
+    return new MenuRequestHandler(user);
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
@@ -28,18 +26,13 @@ LoginManager* RequestHandlerFactory::getLoginManager() noexcept
     return this->m_loginManager;
 }
 
-StatisticsManager* RequestHandlerFactory::getStatisticsManager() noexcept
-{
-    return this->m_statisticsManager;
-}
-
 // Singleton
-RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
+RequestHandlerFactory* RequestHandlerFactory::getInstance()
 {
     const std::lock_guard<std::mutex> lock(m_mutex);
     if (m_HandlerFactory == nullptr) [[unlikely]]
     {
-        m_HandlerFactory = std::unique_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
+        m_HandlerFactory = std::unique_ptr<RequestHandlerFactory>(new RequestHandlerFactory());
     }
     return m_HandlerFactory.get();
 }

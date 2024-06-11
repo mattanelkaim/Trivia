@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IDatabase.h"
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
@@ -12,7 +11,7 @@ class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shi
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
-    explicit MenuRequestHandler(IDatabase* db, LoggedUser user);
+    explicit MenuRequestHandler(LoggedUser user);
     ~MenuRequestHandler();
 
     /*######################################
@@ -35,7 +34,7 @@ private:
 
     RequestHandlerFactory* m_handlerFactory;
     RoomManager& m_roomManager;
-    StatisticsManager* m_statisticsManager;
+    StatisticsManager& m_statisticsManager;
     const LoggedUser m_user;
 
     /*######################################

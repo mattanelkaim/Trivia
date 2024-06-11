@@ -25,16 +25,14 @@ public:
     ######################################*/
 
     LoginManager* getLoginManager() noexcept;
-    StatisticsManager* getStatisticsManager() noexcept;
 
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
 
-    RequestHandlerFactory() = delete;
     RequestHandlerFactory(const RequestHandlerFactory& other) = delete;
     void operator=(const RequestHandlerFactory& other) = delete;
-    static RequestHandlerFactory* getInstance(IDatabase* db);
+    static RequestHandlerFactory* getInstance();
     ~RequestHandlerFactory() noexcept = default;
 
 private:
@@ -42,16 +40,15 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    IDatabase* m_database;
     LoginManager* m_loginManager;
     RoomManager& m_roomManager;
-    StatisticsManager* m_statisticsManager;
+    StatisticsManager& m_statisticsManager;
 
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
 
-    explicit RequestHandlerFactory(IDatabase* db);
+    explicit RequestHandlerFactory();
     inline static std::unique_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
     inline static std::mutex m_mutex;
 };
