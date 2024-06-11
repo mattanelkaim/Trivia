@@ -17,10 +17,10 @@
 #include <iostream>
 #endif
 
-MenuRequestHandler::MenuRequestHandler(IDatabase* db, LoggedUser user) :
-    m_handlerFactory(RequestHandlerFactory::getInstance(db)),
+MenuRequestHandler::MenuRequestHandler(LoggedUser user) :
+    m_handlerFactory(RequestHandlerFactory::getInstance()),
     m_roomManager(RoomManager::getInstance()),
-    m_statisticsManager(StatisticsManager::getInstance(db)),
+    m_statisticsManager(StatisticsManager::getInstance()),
     m_user(std::move(user))
 {}
 
@@ -102,7 +102,7 @@ RequestResult MenuRequestHandler::logout() const noexcept
 RequestResult MenuRequestHandler::getPersonalStats() const
 {
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{{OK}, this->m_statisticsManager->getUserStatistics(m_user)}),
+        .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{{OK}, this->m_statisticsManager.getUserStatistics(m_user)}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
@@ -110,7 +110,7 @@ RequestResult MenuRequestHandler::getPersonalStats() const
 RequestResult MenuRequestHandler::getHighScore() const
 {
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{{OK}, this->m_statisticsManager->getHighScore()}),
+        .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{{OK}, this->m_statisticsManager.getHighScore()}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
