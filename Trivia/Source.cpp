@@ -13,7 +13,7 @@ Things to do before shipping
 #include "RoomManager.h"
 static void createDummyRooms()
 {
-    RoomManager::getInstance()->createRoom("admin", {
+    RoomManager::getInstance().createRoom("admin", {
         .name = "Room1",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 6,
@@ -22,7 +22,7 @@ static void createDummyRooms()
         .status = RoomStatus::OPEN
     });
 
-    RoomManager::getInstance()->createRoom("adm2", {
+    RoomManager::getInstance().createRoom("adm2", {
         .name = "Room2",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 10,
@@ -31,7 +31,7 @@ static void createDummyRooms()
         .status = RoomStatus::CLOSED
     });
 
-    RoomManager::getInstance()->createRoom("mattan", {
+    RoomManager::getInstance().createRoom("mattan", {
         .name = "Room3",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 5,
@@ -48,7 +48,7 @@ int main()
         createDummyRooms(); // TODO remove
 
         const WSAInitializer wsaInit;
-        Server::getInstance()->run();
+        Server::getInstance().run();
     }
     catch (const std::exception& e)
     {

@@ -3,8 +3,6 @@
 #include "IDatabase.h"
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include <memory>
-#include <mutex>
 #include <unordered_map>
 #include <WinSock2.h>
 
@@ -96,6 +94,7 @@ private:
 
     // @throws std::runtime_error When connection setup fails.
     explicit Communicator(IDatabase* db);
+    
     inline static std::unique_ptr<Communicator> m_Communicator = nullptr;
     inline static std::mutex m_mutex;
 };

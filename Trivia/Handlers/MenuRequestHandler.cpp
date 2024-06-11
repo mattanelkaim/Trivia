@@ -103,7 +103,7 @@ RequestResult MenuRequestHandler::logout() const noexcept
 RequestResult MenuRequestHandler::getPersonalStats() const
 {
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{OK, this->m_statisticsManager->getUserStatistics(m_user)}),
+        .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{{OK}, this->m_statisticsManager->getUserStatistics(m_user)}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
@@ -111,7 +111,7 @@ RequestResult MenuRequestHandler::getPersonalStats() const
 RequestResult MenuRequestHandler::getHighScore() const
 {
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{OK, this->m_statisticsManager->getHighScore()}),
+        .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{{OK}, this->m_statisticsManager->getHighScore()}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
@@ -119,7 +119,7 @@ RequestResult MenuRequestHandler::getHighScore() const
 RequestResult MenuRequestHandler::getRooms() const noexcept
 {
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{OK, this->m_roomManager->getRooms()}),
+        .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{{OK}, this->m_roomManager.getRooms()}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
@@ -129,7 +129,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) cons
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<GetPlayersInRoomRequest>(info.buffer).roomId;
 
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{this->m_roomManager->getRoom(roomId).getAllUsers()}),
+        .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, this->m_roomManager.getRoom(roomId).getAllUsers()}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
     };
 }
@@ -139,7 +139,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     const auto request = JsonRequestDeserializer::deserializeRequest<CreateRoomRequest>(info.buffer);
 
     // Creating a room as specified in the request buffer
-    RoomManager::getInstance()->createRoom(m_user, {
+    RoomManager::getInstance().createRoom(m_user, {
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = request.maxUsers,
@@ -159,7 +159,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<JoinRoomRequest>(info.buffer).roomId;
 
     // Adding the user to the room specified in the request buffer
-    this->m_roomManager->getRoom(roomId).addUser(m_user);
+    this->m_roomManager.getRoom(roomId).addUser(m_user);
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{OK}),

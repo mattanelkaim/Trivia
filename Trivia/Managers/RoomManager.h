@@ -4,8 +4,6 @@
 #include "Room.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
-#include <memory>
-#include <mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -55,7 +53,7 @@ public:
 
     RoomManager(const RoomManager& other) = delete;
     void operator=(const RoomManager& other) = delete;
-    static RoomManager* getInstance();
+    static RoomManager& getInstance() noexcept;
     ~RoomManager() noexcept = default;
 
 private:
@@ -71,6 +69,4 @@ private:
     ######################################*/
 
     RoomManager() noexcept = default;
-    inline static std::unique_ptr<RoomManager> m_RoomManager = nullptr;
-    inline static std::mutex m_mutex;
 };
