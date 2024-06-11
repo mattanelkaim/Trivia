@@ -52,7 +52,9 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Click="CreateRoom_Click"/>
+                        Click="CreateRoom_Click"
+                        MouseEnter="Button_MouseEnter"
+                        MouseLeave="Button_MouseLeave"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left"
@@ -77,7 +79,9 @@
                         BorderThickness="0"
                         Cursor="Hand"
                         Margin="3,0,0,0"
-                        Click="JoinRoom_Click"/>
+                        Click="JoinRoom_Click"
+                        MouseEnter="Button_MouseEnter"
+                        MouseLeave="Button_MouseLeave"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left"
@@ -102,7 +106,9 @@
                         BorderThickness="0"
                         Cursor="Hand"
                         Margin="3,0,0,0"
-                        Click="ViewStats_Click"/>
+                        Click="ViewStats_Click"
+                        MouseEnter="Button_MouseEnter"
+                        MouseLeave="Button_MouseLeave"/>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left"
@@ -127,7 +133,9 @@
                         Background="Transparent"
                         Cursor="Hand"
                         Margin="3,0,0,0"
-                        Click="ViewLeaderboard_Click"/>
+                        Click="ViewLeaderboard_Click"
+                        MouseEnter="Button_MouseEnter"
+                        MouseLeave="Button_MouseLeave"/>
                 
             </StackPanel>
 
@@ -154,7 +162,9 @@
                         Background="Transparent"
                         Cursor="Hand"
                         Margin="3,0,0,0"
-                        Click="Logout_Click"/>
+                        Click="Logout_Click"
+                        MouseEnter="Button_MouseEnter"
+                        MouseLeave="Button_MouseLeave"/>
             </StackPanel>
         </StackPanel>
     </Grid>

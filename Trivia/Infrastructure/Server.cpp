@@ -52,7 +52,7 @@ void Server::run()
             system("cls");
             break;
         case INVALID_COMMAND:
-            std::cerr << "Invalid command\n";
+            std::cerr << ANSI_RED << "Invalid command\n" << ANSI_NORMAL;
             break;
         case EXIT:
             break;
