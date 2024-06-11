@@ -15,7 +15,8 @@ namespace JsonResponseSerializer
     buffer serializeResponse(const GetRoomsResponse& response) noexcept;
     buffer serializeResponse(const GetPlayersInRoomResponse& response) noexcept;
     buffer serializeResponse(const GetHighScoreResponse& response) noexcept;
-    buffer serializeResponse(const GetPersonalStatsResponse& response) noexcept;
+    buffer serializeResponse(const GetPersonalStatsResponse& response) noexcept;         
+    buffer serializeResponse(const GetRoomStateResponse& response) noexcept;       
 
     /**
      * Serializes a general response that isn't covered in other overloads of this function,
