@@ -27,11 +27,11 @@ namespace ClientGUI
     {
         public struct Room
         {
-            public string Name { get; set; }
-            public int MaxPlayers { get; set; }
-            public int QuestionCount { get; set; }
-            public int QuestionTimeout { get; set; }
-            public int Status { get; set; }
+            public string name { get; set; }
+            public int maxPlayers { get; set; }
+            public int questionCount { get; set; }
+            public int questionTimeout { get; set; }
+            public int state { get; set; }
         }
 
         private Dictionary<string, Room> Rooms;       
@@ -97,10 +97,10 @@ namespace ClientGUI
                 {
                     Width = 25,                    
                     VerticalAlignment = VerticalAlignment.Center,
-                    Source = new BitmapImage(new Uri((room.Status == (int)Helper.RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png"), UriKind.Relative))
+                    Source = new BitmapImage(new Uri((room.state == (int)RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png"), UriKind.Relative))
                 };
 
-                if (room.Status == (int)Helper.RoomStatus.OPEN)
+                if (room.state == (int)RoomStatus.OPEN)
                 {
                     Button button = new()
                     {
@@ -133,7 +133,7 @@ namespace ClientGUI
 
                 TextBlock textBlock1 = new()
                 {
-                    Text = room.Name,
+                    Text = room.name,
                     Style = (Style)FindResource("cell")
                 };
                 roomGrid.Children.Add(textBlock1);
@@ -153,7 +153,7 @@ namespace ClientGUI
                 {
                     Style = (Style)FindResource("cell"),
                     Margin = new Thickness(-10, 0, 0, 0),
-                    Text = Helper.SendGetPlayersInRoomRequest(id).Count + " / " + room.MaxPlayers
+                    Text = Helper.SendGetPlayersInRoomRequest(id).Count + " / " + room.maxPlayers
                 };
                 roomGrid.Children.Add(textBlock2);
                 Grid.SetColumn(textBlock2, 2);
@@ -170,7 +170,7 @@ namespace ClientGUI
                 TextBlock textBlock3 = new()
                 {
                     Style = (Style)FindResource("cell"),
-                    Text = room.QuestionCount.ToString(),
+                    Text = room.questionCount.ToString(),
                     Margin = new Thickness(-10, 0, 0, 0)
                 };
                 roomGrid.Children.Add(textBlock3);
@@ -188,7 +188,7 @@ namespace ClientGUI
                 TextBlock textBlock4 = new()
                 {
                     Style = (Style)FindResource("cell"),
-                    Text = room.QuestionTimeout.ToString()
+                    Text = room.questionTimeout.ToString()
                 };
                 roomGrid.Children.Add(textBlock4);
                 Grid.SetColumn(textBlock4, 4);
