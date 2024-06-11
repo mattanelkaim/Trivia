@@ -17,7 +17,6 @@
 #include <iostream>
 #endif
 
-
 MenuRequestHandler::MenuRequestHandler(IDatabase* db, LoggedUser user) :
     m_handlerFactory(RequestHandlerFactory::getInstance(db)),
     m_roomManager(RoomManager::getInstance()),
