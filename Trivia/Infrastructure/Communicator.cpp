@@ -22,8 +22,6 @@ using std::to_string;
 Communicator::Communicator() :
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
-    puts("Created Communicator!");
-
     if (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(this->m_serverSocket == INVALID_SOCKET))
         throw std::runtime_error(std::format("{}  - socket() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
 
@@ -32,8 +30,6 @@ Communicator::Communicator() :
 
 Communicator::~Communicator()
 {
-    disconnectAllClients();
-
     // Close server socket
     if (this->m_serverSocket != INVALID_SOCKET)
         closesocket(this->m_serverSocket);
@@ -61,17 +57,17 @@ void Communicator::startHandleRequests()
 {
     try
     {
-        while (!m_stopRequested)
+        while (true)
         {
-            puts("Accepting...");
             // This accepts the client and create a specific socket from server to this client
             // The process will not continue until a client connects to the server
             const SOCKET clientSocket = accept(m_serverSocket, nullptr, nullptr);
             if (clientSocket == INVALID_SOCKET)
             {
-                if (WSAGetLastError() == WSAEINTR) // Ignore if interrupted by requestStop()
-                    return;
-                // Else, throw exception
+                if (WSAGetLastError() == WSAEINTR)
+                    return; // Abort if interrupted by requestStop()
+
+                // Else, throw exception to continue control flow
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
             }
 
@@ -106,7 +102,7 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
                                       .buffer{std::from_range, std::move(msg)}}; // String to vector
 
             // Get current handler from clients map
-            IRequestHandler*& handler = this->m_clients.at(clientSocket);
+            IRequestHandler*& handler = this->m_clients.at(clientSocket); // Must be a reference to exchange later
 
             // Handle request if valid
             if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
@@ -160,7 +156,9 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     const auto& client = this->m_clients.find(clientSocket);
     if (client != this->m_clients.cend()) [[likely]]
     {
-        delete client->second; // Delete handler
+        if (client->second != nullptr)
+            delete client->second; // Delete handler
+
         this->m_clients.erase(clientSocket);
     }
 
@@ -180,11 +178,6 @@ void Communicator::disconnectAllClients() noexcept
     {
         this->disconnectClient(clientSocket);
     }
-}
-
-void Communicator::requestStop() noexcept
-{
-    this->m_stopRequested = true;
 }
 
 // Singleton
