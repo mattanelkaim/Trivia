@@ -45,8 +45,8 @@ void Server::run()
         }
     } while (cmd != EXIT);
 
-    std::cout << ANSI_GREEN << "\nExiting server...\n" << ANSI_NORMAL;
-    Communicator::getInstance().disconnectAllClients();
+    Communicator::getInstance().disconnectAllClients(); // MUST be here and NOT in the destructor
+    std::cout << ANSI_GREEN << "\nExited server successfully\n" << ANSI_NORMAL;
 }
 
 // Singleton

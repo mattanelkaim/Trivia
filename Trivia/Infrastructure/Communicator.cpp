@@ -156,9 +156,7 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     const auto& client = this->m_clients.find(clientSocket);
     if (client != this->m_clients.cend()) [[likely]]
     {
-        if (client->second != nullptr)
-            delete client->second; // Delete handler
-
+        delete client->second; // Delete handler
         this->m_clients.erase(clientSocket);
     }
 
@@ -167,14 +165,14 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
 
 void Communicator::disconnectAllClients() noexcept
 {
-    // Important to copy the keys to a new vector, because we are modifying the map
+    // IMPORTANT to backup the keys to a new vector, because we are deleting from the map!
     std::vector<SOCKET> disconnectedClients;
     for (const auto& client : this->m_clients)
     {
         disconnectedClients.push_back(client.first);
     }
 
-    for (const auto& clientSocket : disconnectedClients)
+    for (const auto& clientSocket : std::move(disconnectedClients))
     {
         this->disconnectClient(clientSocket);
     }
