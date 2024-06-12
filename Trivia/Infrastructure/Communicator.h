@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IRequestHandler.h"
-#include <atomic>
 #include <unordered_map>
 #include <WinSock2.h>
 
@@ -46,8 +45,6 @@ public:
 
     void disconnectAllClients() noexcept;
 
-    void requestStop() noexcept;
-
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
@@ -64,7 +61,6 @@ private:
 
     SOCKET m_serverSocket;
     std::unordered_map<SOCKET, IRequestHandler*> m_clients;
-    std::atomic<bool> m_stopRequested{false};
 
     /*######################################
     ############ PRIVATE METHODS ###########
