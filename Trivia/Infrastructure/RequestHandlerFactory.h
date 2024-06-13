@@ -7,6 +7,8 @@
 #include "MenuRequestHandler.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 #include <memory>
 #include <mutex>
 
@@ -19,6 +21,9 @@ public:
 
     MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
     LoginRequestHandler* createLoginRequestHandler();
+    RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser& user, Room room);
+    RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser& user, Room room);
+
 
     /*######################################
     ################ GETTERS ###############

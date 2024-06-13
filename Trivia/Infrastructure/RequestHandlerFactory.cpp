@@ -4,6 +4,13 @@
 #include "RequestHandlerFactory.h"
 #include "RoomManager.h"
 #include "StatisticsManager.h"
+#include "LoggedUser.h"
+#include "Room.h"
+#include "MenuRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
+#include <memory>
+#include <mutex>
 
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
@@ -21,6 +28,16 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const Logged
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
 {
     return new LoginRequestHandler(this);
+}
+
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& user, Room room)
+{
+    return new RoomAdminRequestHandler(this->m_database, user, std::move(room));
+}
+
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& user, Room room)
+{
+    return new RoomMemberRequestHandler(this->m_database, user, std::move(room));
 }
 
 LoginManager* RequestHandlerFactory::getLoginManager() noexcept

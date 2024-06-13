@@ -1,22 +1,21 @@
 #pragma once
 
-#include "IRequestHandler.h"
+#include "IRoomRequestHandler.h"
 #include "Room.h"
 #include "RoomManager.h"
 #include "RequestHandlerFactory.h"
 #include "LoggedUser.h"
 #include "IDatabase.h"
 
-class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
-
-class RoomAdminRequestHandler : public IRequestHandler
+class RoomAdminRequestHandler : public IRoomRequestHandler
 {
 public:
-	explicit RoomAdminRequestHandler(IDatabase* db, const LoggedUser user, Room room);
+	RoomAdminRequestHandler(IDatabase* db, LoggedUser user, Room room);
 
-private:
-	Room m_room;
-	const LoggedUser m_user;
-	RoomManager* m_roomManager;
-	RequestHandlerFactory* m_handlerFactory;
+	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
+	RequestResult handleRequest(const RequestInfo& requestInfo) noexcept override;
+private:	
+	RequestResult getRoomState() const noexcept;
+	RequestResult startRoomRequest() const noexcept;
+	RequestResult closeRoomRequest() const noexcept;
 };
