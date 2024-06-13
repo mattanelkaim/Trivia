@@ -1,19 +1,24 @@
 #pragma once
 
-#include "IRoomRequestHandler.h"
-#include "Room.h"
-#include "RoomManager.h"
-#include "RequestHandlerFactory.h"
-#include "LoggedUser.h"
 #include "IDatabase.h"
+#include "IRoomRequestHandler.h"
+#include "LoggedUser.h"
+#include "Room.h"
 
-class RoomAdminRequestHandler : public IRoomRequestHandler
+class RoomAdminRequestHandler final : public IRoomRequestHandler
 {
 public:
 	RoomAdminRequestHandler(IDatabase* db, LoggedUser user, Room room);
 
 	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& requestInfo) noexcept override;
+
+	/*######################################
+	#### AVOID SHITTY COMPILER WARNINGS ####
+	######################################*/
+
+	RoomAdminRequestHandler operator=(const RoomAdminRequestHandler& other) = delete;
+
 private:	
 	RequestResult getRoomState() const noexcept;
 	RequestResult startRoomRequest() const noexcept;
