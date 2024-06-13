@@ -27,12 +27,13 @@ buffer IRoomRequestHandler::getSerializedRoomState() const noexcept
 {
     const RoomData& room = this->m_room.getData();
 
-    return JsonResponseSerializer::serializeResponse(GetRoomStateResponse{
-                                                                            .status = OK,
-                                                                            .state = room.status,
-                                                                            .hasGameBegun = room.status == RoomStatus::CLOSED,
-                                                                            .players = m_room.getAllUsers(),
-                                                                            .questionCount = room.numOfQuestionsInGame,
-                                                                            .answerTimeout = room.timePerQuestion,
-                                                                         });
+    return JsonResponseSerializer::serializeResponse(GetRoomStateResponse
+    {
+        .status = OK,
+        .state = room.status,
+        .hasGameBegun = (room.status == RoomStatus::CLOSED),
+        .players = m_room.getAllUsers(),
+        .questionCount = room.numOfQuestionsInGame,
+        .answerTimeout = room.timePerQuestion,
+    });
 }

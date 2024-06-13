@@ -1,13 +1,19 @@
+#include "IDatabase.h"
+#include "IRoomRequestHandler.h"
+#include "JsonResponseSerializer.h"
+#include "LoggedUser.h"
+#include "RequestHandlerFactory.h"
+#include "Room.h"
 #include "RoomMemberRequestHandler.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
-#include "JsonResponseSerializer.h"
+#include <utility> // std::move
 #if SERVER_DEBUG
 #include <iostream>
 #endif
 
 RoomMemberRequestHandler::RoomMemberRequestHandler(IDatabase* db, LoggedUser user, Room room) :
-    IRoomRequestHandler(std::move(db), std::move(user), std::move(room))
+    IRoomRequestHandler(db, std::move(user), std::move(room))
 {}
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
@@ -54,7 +60,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom() noexcept
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveRoomResponse{OK}),
         .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) // return back to menu
-        };
+    };
 }
 
 RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
