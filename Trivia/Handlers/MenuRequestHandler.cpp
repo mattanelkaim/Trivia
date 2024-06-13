@@ -72,8 +72,9 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
             return this->joinRoom(info);
             //break;
 
+        // This should not happen
         default:
-            throw InvalidProtocolStructure("Request is not relevant to MenuRequestHandler!");
+            throw ServerException("Request is not relevant to MenuRequestHandler!");
             //break;
         }
     }
@@ -138,7 +139,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     const auto request = JsonRequestDeserializer::deserializeRequest<CreateRoomRequest>(info.buffer);
 
     // Creating a room as specified in the request buffer
-    RoomManager::getInstance()->createRoom(m_user, {
+    m_handlerFactory->getRoomManager()->createRoom(m_user, {
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = request.maxUsers,
@@ -162,6 +163,6 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{OK}),
-        .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user)
+        .newHandler = this->m_handlerFactory->createRoomMemberRequestHandler(m_user, m_handlerFactory->getRoomManager()->getRoom(roomId))
     };
 }

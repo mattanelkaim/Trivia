@@ -125,28 +125,33 @@ using CloseRoomResponse = StatusResponse;
 using StartRoomResponse = StatusResponse;
 using LeaveRoomResponse = StatusResponse;
 
-struct GetRoomsResponse : StatusResponse
+struct GetRoomsResponse
 {    
+    ResponseCode status; // inheriting means that this will no longer be an aggregate type
     std::vector<RoomData> rooms;
 };
 
-struct GetPlayersInRoomResponse : StatusResponse
+struct GetPlayersInRoomResponse
 {
+    ResponseCode status; // inheriting means that this will no longer be an aggregate type
     std::vector<std::string> players;
 };
 
-struct GetHighScoreResponse : StatusResponse
+struct GetHighScoreResponse
 {    
+    ResponseCode status; // inheriting means that this will no longer be an aggregate type
     std::map<std::string, double> statistics;
 };
 
-struct GetPersonalStatsResponse : StatusResponse
+struct GetPersonalStatsResponse
 {    
+    ResponseCode status; // inheriting means that this will no longer be an aggregate type
     std::vector<std::string> statistics;
 };
 
-struct GetRoomStateResponse : StatusResponse
+struct GetRoomStateResponse
 {
+    ResponseCode status; // inheriting means that this will no longer be an aggregate type
     RoomStatus state;
     bool hasGameBegun;
     std::vector<std::string> players;
