@@ -2,6 +2,8 @@
 
 #include "LoggedUser.h"
 #include "MenuRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 
 class RequestHandlerFactory final
 {
@@ -10,7 +12,10 @@ public:
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
+    static MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
+    static RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser& user, Room room);
+    static RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser& user, Room room);
+
 
     /*######################################
     ############### SINGLETON ##############
