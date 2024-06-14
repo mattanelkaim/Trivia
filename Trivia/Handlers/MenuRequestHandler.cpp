@@ -29,10 +29,19 @@ MenuRequestHandler::~MenuRequestHandler()
 
 bool MenuRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
-    return info.id == GET_PLAYERS_IN_ROOM || info.id == JOIN_ROOM || \
-           info.id == CREATE_ROOM         || info.id == GET_ROOMS || \
-           info.id == GET_STATISTICS      || info.id == LOGOUT    || \
-           info.id == GET_HIGHSCORE;
+    switch (info.id)
+    {
+        case GET_PLAYERS_IN_ROOM:
+        case JOIN_ROOM:
+        case CREATE_ROOM:
+        case GET_ROOMS:
+        case GET_STATISTICS:
+        case LOGOUT:
+        case GET_HIGHSCORE:
+            return true;
+        default:
+            return false;
+    }
 }
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
