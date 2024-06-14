@@ -1,19 +1,20 @@
-#include "RoomAdminRequestHandler.h"
-#include "Room.h"
-#include "RoomManager.h"
-#include "RequestHandlerFactory.h"
+#pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
+
+#include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
-#include "IDatabase.h"
+#include "RequestHandlerFactory.h"
+#include "Room.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomManager.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
-#include "JsonResponseSerializer.h"
 #include <cstdint>
 #if SERVER_DEBUG
 #include <iostream>
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(IDatabase* db, LoggedUser user, Room room) :
-    IRoomRequestHandler(db, std::move(user), std::move(room))
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) :
+    IRoomRequestHandler(std::move(user), std::move(room))
 {}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
@@ -65,13 +66,13 @@ RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
 
     for (const LoggedUser& user : this->m_room.getAllUsers())
     {
-        RoomManager::getInstance()->getRoom(roomId).removeUser(user); // removing each user from the room
+        RoomManager::getInstance().getRoom(roomId).removeUser(user); // removing each user from the room
     }
-    RoomManager::getInstance()->deleteRoom(roomId); // deleting the room after all members have left
+    RoomManager::getInstance().deleteRoom(roomId); // deleting the room after all members have left
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CloseRoomResponse{OK}),
-        .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) // return back to menu
+        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user) // return back to menu
     };
 }
 
@@ -79,7 +80,7 @@ RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
 {
     return RequestResult{
         .response = this->getSerializedRoomState(),
-        .newHandler = this->m_handlerFactory->createRoomAdminRequestHandler(m_user, m_room)
+        .newHandler = RequestHandlerFactory::getInstance().createRoomAdminRequestHandler(m_user, m_room)
     };
 }
 
@@ -87,6 +88,6 @@ RequestResult RoomAdminRequestHandler::startRoomRequest() const noexcept
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
-        .newHandler = this->m_handlerFactory->createRoomAdminRequestHandler(m_user, m_room) // return back to menu
+        .newHandler = RequestHandlerFactory::getInstance().createRoomAdminRequestHandler(m_user, m_room) // return back to menu
     };
 }
