@@ -13,7 +13,7 @@ IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room room) :
     m_user(std::move(user))
 {}
 
-inline bool IRoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
+bool IRoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
     return requestInfo.id == GET_ROOM_STATE;
 }
