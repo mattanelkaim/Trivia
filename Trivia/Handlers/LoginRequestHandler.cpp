@@ -15,7 +15,14 @@
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
-    return info.id == LOGIN || info.id == SIGNUP;
+    switch (info.id)
+    {
+        case LOGIN:
+        case SIGNUP:
+            return true;
+        default:
+            return false;
+    }
 }
 
 RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexcept

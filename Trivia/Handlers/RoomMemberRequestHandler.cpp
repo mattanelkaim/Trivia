@@ -20,7 +20,8 @@ RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) :
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
-    return this->IRoomRequestHandler::isRequestRelevant(requestInfo) || requestInfo.id == RequestId::LEAVE_ROOM;
+    return this->IRoomRequestHandler::isRequestRelevant(requestInfo) || \
+        requestInfo.id == RequestId::LEAVE_ROOM;
 }
 
 RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& requestInfo) noexcept
