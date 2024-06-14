@@ -13,6 +13,7 @@
 #include <iostream>
 #endif
 
+
 RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) :
     IRoomRequestHandler(std::move(user), std::move(room))
 {}
@@ -60,7 +61,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom() noexcept
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user) // return back to menu
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // return back to menu
     };
 }
 
@@ -68,6 +69,6 @@ RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
 {
     return RequestResult{
         .response = this->getSerializedRoomState(),
-        .newHandler = nullptr // TDOO RequestHandlerFactory::getInstance().createRoomMemberRequestHandler(m_user, m_room)
+        .newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, m_room)
     };
 }

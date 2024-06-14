@@ -17,6 +17,7 @@
 #include <iostream>
 #endif
 
+
 MenuRequestHandler::MenuRequestHandler(LoggedUser user) :
     m_user(std::move(user))
 {}
@@ -101,7 +102,7 @@ RequestResult MenuRequestHandler::getPersonalStats() const
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{{OK}, StatisticsManager::getUserStatistics(m_user)}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user)
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
     };
 }
 
@@ -109,7 +110,7 @@ RequestResult MenuRequestHandler::getHighScore() const
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{{OK}, StatisticsManager::getHighScore()}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user)
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
     };
 }
 
@@ -117,7 +118,7 @@ RequestResult MenuRequestHandler::getRooms() const noexcept
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{{OK}, RoomManager::getInstance().getRooms()}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user)
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
     };
 }
 
@@ -128,7 +129,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) cons
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.getAllUsers()}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user)
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
     };
 }
 
@@ -148,7 +149,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user)
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
     };
 }
 
@@ -161,6 +162,6 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user)
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
     };
 }

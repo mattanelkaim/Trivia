@@ -59,7 +59,7 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(LoginResponse{OK}),
-            .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(request.username)
+            .newHandler = RequestHandlerFactory::createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]
@@ -80,7 +80,7 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(SignupResponse{OK}),
-            .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(request.username)
+            .newHandler = RequestHandlerFactory::createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]
