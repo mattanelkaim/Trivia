@@ -4,8 +4,6 @@
 #include "Room.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
-#include <memory>
-#include <mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -17,8 +15,7 @@ public:
     ######################################*/
 
     /**
-    * @brief Creates a new room and adds the user to it.
-    * 
+    * Creates a new room and adds the user (admin) to it.
     * @param user The user who is creating the room.
     * @param data The metadata of the room.
     * @throws ServerException If the room already exists.
@@ -28,8 +25,7 @@ public:
     void deleteRoom(uint32_t roomId) noexcept;
 
     /**
-    * @brief Returns the state of a room.
-    * 
+    * Returns the state of a room.
     * @param roomId The ID of the room.
     * @return The state of the room.
     * @throws ServerException If the room does not exist.
@@ -39,14 +35,18 @@ public:
     std::vector<RoomData> getRooms() const noexcept;
 
     /**
-    * @brief Returns a reference to a room.
-    * 
+    * Returns a reference to a room.
     * @param roomId The ID of the room.
     * @return A reference to the room.
     * @throws ServerException If the room does not exist.
     */
     Room& getRoom(uint32_t roomId);
 
+    /**
+     * This method increments the static room ID counter and returns the new value.
+     * It is used to assign a unique ID to each new room created.
+     * @return The next unique room ID.
+     */
     static uint32_t getNextRoomId() noexcept;
 
     /*######################################
@@ -55,7 +55,7 @@ public:
 
     RoomManager(const RoomManager& other) = delete;
     void operator=(const RoomManager& other) = delete;
-    static RoomManager* getInstance();
+    static RoomManager& getInstance() noexcept;
     ~RoomManager() noexcept = default;
 
 private:
@@ -71,6 +71,4 @@ private:
     ######################################*/
 
     RoomManager() noexcept = default;
-    inline static std::unique_ptr<RoomManager> m_RoomManager = nullptr;
-    inline static std::mutex m_mutex;
 };

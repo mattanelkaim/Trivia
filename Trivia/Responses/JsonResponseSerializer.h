@@ -19,13 +19,11 @@ namespace JsonResponseSerializer
     buffer serializeResponse(const GetRoomStateResponse& response) noexcept;       
 
     /**
-     * Serializes a general response that isn't covered in other overloads of this function,
-     * with a status field.
-     *
+     * Serializes a general (status) response that isn't covered in other overloads.
      * @param response The response object to be serialized.
      * @return The serialized response as a buffer.
      */
-    buffer serializeResponse(const auto& response) noexcept requires requires { response.status;  } // NOLINT
+    buffer serializeResponse(const auto& response) noexcept requires requires { response.status;  }
     {
         const json j{{JsonFields::STATUS, response.status}};
         return serializeGeneralResponse(ResponseCode::OK, j.dump());
