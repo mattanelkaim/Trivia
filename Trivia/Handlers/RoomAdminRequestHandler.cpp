@@ -1,5 +1,6 @@
 #pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
 
+#include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
 #include "RequestHandlerFactory.h"
@@ -9,6 +10,7 @@
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <cstdint>
+#include <utility> // std::move
 #if SERVER_DEBUG
 #include <iostream>
 #endif
@@ -19,9 +21,14 @@ RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) :
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
-    return this->IRoomRequestHandler::isRequestRelevant(requestInfo) || \
-                             requestInfo.id == RequestId::CLOSE_ROOM || \
-                             requestInfo.id == RequestId::START_ROOM;
+    switch (requestInfo.id)
+    {
+        case START_ROOM:
+        case CLOSE_ROOM:
+            return true;
+        default:
+            return IRoomRequestHandler::isRequestRelevant(requestInfo);
+    }
 }
 
 RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestInfo) noexcept
@@ -72,7 +79,7 @@ RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CloseRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user) // return back to menu
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // return back to menu
     };
 }
 

@@ -5,7 +5,7 @@
 #include "LoggedUser.h"
 #include "Room.h"
 #include "ServerDefinitions.h"
-#include <type_traits> // std::move
+#include <utility> // std::move
 
 
 IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room room) :
@@ -13,7 +13,7 @@ IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room room) :
     m_user(std::move(user))
 {}
 
-bool IRoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
+inline bool IRoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
     return requestInfo.id == GET_ROOM_STATE;
 }
