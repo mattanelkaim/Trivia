@@ -27,25 +27,24 @@ namespace ClientGUI
     {
         public struct Room
         {
-            public int maxPlayers { get; set; }
             public string name { get; set; }
+            public int maxPlayers { get; set; }
             public int questionCount { get; set; }
             public int questionTimeout { get; set; }
-            public int status { get; set; }
+            public int state { get; set; }
         }
 
-        private Dictionary<string, Room>? rooms;
-        StackPanel roomsStackPanel { get; set; }
+        private Dictionary<string, Room> Rooms;       
 
         public JoinRoomPage()
         {
             InitializeComponent();
             this.DataContext = this;
-            rooms = FetchRoomsFromDB();
+            Rooms = FetchRoomsFromDB();            
             showRooms();
         }
 
-        public static Dictionary<string, Room>? FetchRoomsFromDB()
+        public static Dictionary<string, Room> FetchRoomsFromDB()
         {
             return Helper.SendGetRoomsRequest();
         }
@@ -70,7 +69,7 @@ namespace ClientGUI
         
         private void showRooms()
         {
-            foreach ((string id, Room room) in rooms)
+            foreach ((string id, Room room) in Rooms)
             {
                 // Adding all properties to the grid to match the xaml reference
                 Grid roomGrid = new()
@@ -98,10 +97,10 @@ namespace ClientGUI
                 {
                     Width = 25,                    
                     VerticalAlignment = VerticalAlignment.Center,
-                    Source = new BitmapImage(new Uri(room.status == (int)Helper.RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri((room.state == (int)RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png"), UriKind.Relative))
                 };
 
-                if (room.status == (int)Helper.RoomStatus.OPEN)
+                if (room.state == (int)RoomStatus.OPEN)
                 {
                     Button button = new()
                     {
