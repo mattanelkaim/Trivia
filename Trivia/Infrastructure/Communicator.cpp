@@ -14,6 +14,7 @@
 #include <thread>
 #include <utility> // std::exchange
 #include <vector>
+#include <winerror.h>
 #include <WinSock2.h>
 
 using std::to_string;
@@ -163,15 +164,20 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
     closesocket(clientSocket);
 }
 
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
 void Communicator::disconnectAllClients() noexcept
 {
     // IMPORTANT to backup the keys to a new vector, because we are deleting from the map!
     std::vector<SOCKET> disconnectedClients;
+    disconnectedClients.reserve(this->m_clients.size());
+
+    // Back up the client sockets
     for (const auto& client : this->m_clients)
     {
         disconnectedClients.push_back(client.first);
     }
 
+    // Disconnect all clients
     for (const auto& clientSocket : std::move(disconnectedClients))
     {
         this->disconnectClient(clientSocket);
