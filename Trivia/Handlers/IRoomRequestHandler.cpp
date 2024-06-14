@@ -1,27 +1,22 @@
 #pragma once
 
 #include "IRoomRequestHandler.h"
-#include "Room.h"
-#include "RoomManager.h"
-#include "RequestHandlerFactory.h"
-#include "LoggedUser.h"
-#include "IDatabase.h"
-#include "ServerDefinitions.h"
 #include "JsonResponseSerializer.h"
+#include "LoggedUser.h"
+#include "Room.h"
+#include "ServerDefinitions.h"
 #include <type_traits> // std::move
 
-IRoomRequestHandler::IRoomRequestHandler(IDatabase* db, LoggedUser user, Room room) :
+
+IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room room) :
     m_room(std::move(room)),
-    m_user(std::move(user)),
-    m_roomManager(RoomManager::getInstance()),
-    m_handlerFactory(RequestHandlerFactory::getInstance(db))
+    m_user(std::move(user))
 {}
 
 bool IRoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
     return requestInfo.id == GET_ROOM_STATE;
 }
-
 
 buffer IRoomRequestHandler::getSerializedRoomState() const noexcept
 {

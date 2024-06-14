@@ -1,4 +1,5 @@
-#include "IDatabase.h"
+#pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
+
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
@@ -12,8 +13,8 @@
 #include <iostream>
 #endif
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(IDatabase* db, LoggedUser user, Room room) :
-    IRoomRequestHandler(db, std::move(user), std::move(room))
+RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) :
+    IRoomRequestHandler(std::move(user), std::move(room))
 {}
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
@@ -59,7 +60,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom() noexcept
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveRoomResponse{OK}),
-        .newHandler = this->m_handlerFactory->createMenuRequestHandler(m_user) // return back to menu
+        .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(m_user) // return back to menu
     };
 }
 
@@ -67,6 +68,6 @@ RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
 {
     return RequestResult{
         .response = this->getSerializedRoomState(),
-        .newHandler = this->m_handlerFactory->createRoomMemberRequestHandler(m_user, m_room)
+        .newHandler = nullptr // TDOO RequestHandlerFactory::getInstance().createRoomMemberRequestHandler(m_user, m_room)
     };
 }
