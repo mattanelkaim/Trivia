@@ -4,8 +4,10 @@ Things to do before shipping
 - Turn off ASan
 */
 
+#include "Helper.h"
 #include "Server.h"
 #include "ServerDefinitions.h"
+#include "SqliteDatabase.h"
 #include "WSAInitializer.h"
 #include <exception>
 #include <iostream>
@@ -13,7 +15,7 @@ Things to do before shipping
 #include "RoomManager.h"
 static void createDummyRooms()
 {
-    RoomManager::getInstance()->createRoom("admin", {
+    RoomManager::getInstance().createRoom("admin", {
         .name = "Room1",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 6,
@@ -22,7 +24,7 @@ static void createDummyRooms()
         .status = RoomStatus::OPEN
     });
 
-    RoomManager::getInstance()->createRoom("adm2", {
+    RoomManager::getInstance().createRoom("adm2", {
         .name = "Room2",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 10,
@@ -31,7 +33,7 @@ static void createDummyRooms()
         .status = RoomStatus::CLOSED
     });
 
-    RoomManager::getInstance()->createRoom("mattan", {
+    RoomManager::getInstance().createRoom("mattan", {
         .name = "Room3",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 5,
@@ -48,11 +50,12 @@ int main()
         createDummyRooms(); // TODO remove
 
         const WSAInitializer wsaInit;
-        Server::getInstance()->run();
+        SqliteDatabase::getInstance().openDB();
+        Server::getInstance().run();
     }
     catch (const std::exception& e)
     {
-        std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
     }
 
     return 0;

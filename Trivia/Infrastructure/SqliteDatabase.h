@@ -4,37 +4,24 @@
 #include "Question.h"
 #include "sqlite3.h"
 #include <cstdint>
+#include <map>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <map>
 
 using safe_callback_ptr = int (*)(void*,int,char**, char**) noexcept; // sqlite3_callback noexcept
 
 class SqliteDatabase final : public IDatabase
 {
 public:
-    /**
-    * @brief Constructs a new SqliteDatabase object.
-    * 
-    * This constructor opens the database.
-    * 
-    * @throws std::runtime_error If the database cannot be opened.
-    */
-    SqliteDatabase();
-
-    /**
-    * @brief Destroys the SqliteDatabase object.
-    * 
-    * This destructor closes the database.
-    */
+    // Auto-closes the DB.
     ~SqliteDatabase() noexcept override;
 
     /*######################################
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    // @throws std::runtime_error
+    // @throws std::runtime_error If the database cannot be opened.
     bool openDB() override;
     bool closeDB() noexcept override;
 
@@ -68,6 +55,14 @@ public:
     // @throws InvalidSQL
     std::map<std::string, double> getHighScores() const override;
 
+    /*######################################
+    ############### SINGLETON ##############
+    ######################################*/
+
+    SqliteDatabase(const SqliteDatabase& other) = delete;
+    void operator=(const SqliteDatabase& other) = delete;
+    static SqliteDatabase& getInstance() noexcept;
+
 private:
     /*######################################
     ################ MEMBERS ###############
@@ -95,4 +90,10 @@ private:
     static int callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackStringDoubleMap(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
+
+    /*######################################
+    ############### SINGLETON ##############
+    ######################################*/
+
+    SqliteDatabase() noexcept = default;
 };

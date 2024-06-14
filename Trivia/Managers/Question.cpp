@@ -3,7 +3,7 @@
 #include <utility> // std::move
 #include <vector>
 
-Question::Question(std::string question, const std::vector<std::string>& answers) :
+Question::Question(std::string question, const std::vector<std::string>& answers) noexcept :
     m_question(std::move(question)),
     m_possibleAnswers(answers)
 {}

@@ -5,7 +5,7 @@
 #include <vector>
 
 Room::Room(RoomData data) noexcept :
-    m_metadata(std::move(data))
+    m_data(std::move(data))
 {}
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
@@ -21,7 +21,7 @@ void Room::removeUser(const LoggedUser& user) noexcept
 
 const RoomData& Room::getData() const noexcept
 {
-    return m_metadata;
+    return m_data;
 }
 
 const std::vector<LoggedUser>& Room::getAllUsers() const noexcept

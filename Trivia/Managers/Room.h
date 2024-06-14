@@ -28,6 +28,6 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    RoomData m_metadata;
+    RoomData m_data;
     std::vector<LoggedUser> m_users;
 };

@@ -1,11 +1,5 @@
 #pragma once
 
-#include "Communicator.h"
-#include "IDatabase.h"
-#include "RequestHandlerFactory.h"
-#include <memory>
-#include <mutex>
-
 class Server final
 {
 public:
@@ -27,23 +21,13 @@ public:
     
     Server(const Server& other) = delete;
     void operator=(const Server& other) = delete;
-    static Server* getInstance();
-    ~Server() noexcept;
+    static Server& getInstance() noexcept;
+    ~Server() noexcept = default;
 
 private:
-    /*######################################
-    ################ MEMBERS ###############
-    ######################################*/
-
-    IDatabase* m_database;
-    RequestHandlerFactory* m_handlerFactory;
-    Communicator* m_communicator;
-
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
     
-    Server();
-    inline static std::unique_ptr<Server> m_Server = nullptr;
-    inline static std::mutex m_mutex;
+    Server() noexcept = default;
 };
