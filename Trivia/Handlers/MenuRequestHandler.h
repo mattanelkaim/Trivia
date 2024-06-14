@@ -1,19 +1,18 @@
 #pragma once
 
-#include "IDatabase.h"
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
-#include <RoomManager.h>
-#include <StatisticsManager.h>
 
 class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
 
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
-    explicit MenuRequestHandler(IDatabase* db, LoggedUser user);
-    ~MenuRequestHandler();
+    explicit MenuRequestHandler(LoggedUser user);
+
+    // Logs out the user
+    ~MenuRequestHandler() override;
 
     /*######################################
     ############ PUBLIC METHODS ############
@@ -33,10 +32,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    RequestHandlerFactory* m_handlerFactory;
-    RoomManager* m_roomManager;
-    StatisticsManager* m_statisticsManager;
-    const LoggedUser m_user;
+    LoggedUser m_user;
 
     /*######################################
     ############ HELPER METHODS ############

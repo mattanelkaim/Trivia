@@ -1,16 +1,7 @@
 #pragma once
 
-#include "IDatabase.h"
 #include "LoggedUser.h"
-#include "LoginManager.h"
-#include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
-#include "RoomAdminRequestHandler.h"
-#include "RoomManager.h"
-#include "RoomMemberRequestHandler.h"
-#include "StatisticsManager.h"
-#include <memory>
-#include <mutex>
 
 class RequestHandlerFactory final
 {
@@ -20,44 +11,20 @@ public:
     ######################################*/
 
     MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
-    LoginRequestHandler* createLoginRequestHandler();
-    RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser& user, Room room);
-    RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser& user, Room room);
-
-
-    /*######################################
-    ################ GETTERS ###############
-    ######################################*/
-
-    LoginManager* getLoginManager() noexcept;
-    StatisticsManager* getStatisticsManager() noexcept;
-    RoomManager* getRoomManager() noexcept;
 
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
 
-    RequestHandlerFactory() = delete;
     RequestHandlerFactory(const RequestHandlerFactory& other) = delete;
     void operator=(const RequestHandlerFactory& other) = delete;
-    static RequestHandlerFactory* getInstance(IDatabase* db);
+    static RequestHandlerFactory& getInstance() noexcept;
     ~RequestHandlerFactory() noexcept = default;
 
 private:
     /*######################################
-    ################ MEMBERS ###############
-    ######################################*/
-
-    IDatabase* m_database;
-    LoginManager* m_loginManager;
-    RoomManager* m_roomManager;
-    StatisticsManager* m_statisticsManager;
-
-    /*######################################
     ############### SINGLETON ##############
     ######################################*/
 
-    explicit RequestHandlerFactory(IDatabase* db);
-    inline static std::unique_ptr<RequestHandlerFactory> m_HandlerFactory = nullptr;
-    inline static std::mutex m_mutex;
+    RequestHandlerFactory() noexcept = default;
 };

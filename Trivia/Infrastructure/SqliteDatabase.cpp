@@ -7,23 +7,23 @@
 #include <cstdint>
 #include <cstdlib> // std::atoi, std::atof
 #include <iterator> // std::back_inserter
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <map>
 
 using std::to_string;
-
-
-SqliteDatabase::SqliteDatabase()
-{
-    this->openDB(); // TODO(mattan) construct tables in code
-}
 
 SqliteDatabase::~SqliteDatabase() noexcept
 {
     this->closeDB();
+}
+
+SqliteDatabase& SqliteDatabase::getInstance() noexcept
+{
+    static SqliteDatabase instance; // This is thread-safe in C++11 and later
+    return instance;
 }
 
 bool SqliteDatabase::openDB()
@@ -32,6 +32,7 @@ bool SqliteDatabase::openDB()
         throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->m_db)));
 
     return true;
+    // TODO(mattan) construct tables in code
 }
 
 bool SqliteDatabase::closeDB() noexcept

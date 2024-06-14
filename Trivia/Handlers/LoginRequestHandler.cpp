@@ -13,10 +13,6 @@
 #endif
 
 
-LoginRequestHandler::LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept :
-    m_handlerFactory(handlerFactory)
-{}
-
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
 {
     return info.id == LOGIN || info.id == SIGNUP;
@@ -29,9 +25,9 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexce
         switch (info.id)
         {
         [[likely]] case LOGIN:
-            return this->login(info);
+            return LoginRequestHandler::login(info);
         case SIGNUP:
-            return this->signup(info);
+            return LoginRequestHandler::signup(info);
         default:
             throw InvalidProtocolStructure("Request is not relevant to LoginRequestHandler!");
         }
@@ -39,7 +35,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexce
     catch (const ServerException& e) // Either InvalidProtocolStructure or InvalidSQL
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
         
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
@@ -58,12 +54,12 @@ RequestResult LoginRequestHandler::login(const RequestInfo& info)
 {
     const auto request = JsonRequestDeserializer::deserializeRequest<LoginRequest>(info.buffer);
 
-    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
-    if (loginManager->login(request.username, request.password)) [[likely]]
+    LoginManager& loginManager = LoginManager::getInstance();
+    if (loginManager.login(request.username, request.password)) [[likely]]
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(LoginResponse{OK}),
-            .newHandler = m_handlerFactory->createMenuRequestHandler(request.username)
+            .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]
@@ -79,12 +75,12 @@ RequestResult LoginRequestHandler::signup(const RequestInfo& info)
 {
     const auto request = JsonRequestDeserializer::deserializeRequest<SignupRequest>(info.buffer);
 
-    LoginManager* loginManager = this->m_handlerFactory->getLoginManager();
-    if (loginManager->signup(request.username, request.password, request.email)) [[likely]]
+    LoginManager& loginManager = LoginManager::getInstance();
+    if (loginManager.signup(request.username, request.password, request.email)) [[likely]]
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(SignupResponse{OK}),
-            .newHandler = m_handlerFactory->createMenuRequestHandler(request.username)
+            .newHandler = RequestHandlerFactory::getInstance().createMenuRequestHandler(request.username)
         };
     }
     else [[unlikely]]

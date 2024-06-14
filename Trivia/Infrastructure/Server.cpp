@@ -1,25 +1,11 @@
 #include "Communicator.h"
-#include "RequestHandlerFactory.h"
 #include "Server.h"
-#include "SqliteDatabase.h"
+#include "ServerDefinitions.h"
 #include <iostream>
-#include <memory>
-#include <mutex>
 #include <string>
 #include <string_view>
 #include <thread>
 
-
-Server::Server() :
-    m_database(new SqliteDatabase()),
-    m_handlerFactory(RequestHandlerFactory::getInstance(m_database)),
-    m_communicator(Communicator::getInstance(m_database))
-{}
-
-Server::~Server() noexcept
-{
-    delete this->m_database;
-}
 
 enum command
 {
@@ -37,7 +23,7 @@ static constexpr command hashCommands(const std::string_view cmd) noexcept
 
 void Server::run()
 {
-    std::thread t_connector(&Communicator::startHandleRequests, this->m_communicator);
+    std::thread t_connector(&Communicator::startHandleRequests, &(Communicator::getInstance()));
     t_connector.detach();
 
     std::string userInput;
@@ -58,15 +44,14 @@ void Server::run()
             break;
         }
     } while (cmd != EXIT);
+
+    Communicator::getInstance().disconnectAllClients(); // MUST be here and NOT in the destructor
+    std::cout << ANSI_GREEN << "\nExited server successfully\n" << ANSI_NORMAL;
 }
 
 // Singleton
-Server* Server::getInstance()
+Server& Server::getInstance() noexcept
 {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Server == nullptr)
-    {
-        m_Server = std::unique_ptr<Server>(new Server());
-    }
-    return m_Server.get();
+    static Server instance; // This is thread-safe in C++11 and later
+    return instance;
 }
