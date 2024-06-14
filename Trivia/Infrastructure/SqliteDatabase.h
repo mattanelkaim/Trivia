@@ -101,6 +101,7 @@ private:
     ########## CALLBACK FUNCTIONS ##########
     ######################################*/
 
+    // columnNames is unused, but it's required by the sqlite3_callback signature.
     static int callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackFloat(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackString(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;

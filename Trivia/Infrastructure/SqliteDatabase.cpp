@@ -15,6 +15,7 @@
 
 using std::to_string;
 
+
 SqliteDatabase::~SqliteDatabase() noexcept
 {
     this->closeDB();
@@ -38,7 +39,7 @@ bool SqliteDatabase::openDB()
 bool SqliteDatabase::closeDB() noexcept
 {
     const bool isSuccess = sqlite3_close(this->m_db) == SQLITE_OK;
-    this->m_db = nullptr;
+    this->m_db = nullptr; // Could use std::exchange with line above
     return isSuccess;
 }
 
@@ -148,7 +149,7 @@ void SqliteDatabase::runQuery(const std::string_view query) const
 
 void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const
 {
-    char* sqlErrorMsg = nullptr;
+    char* sqlErrorMsg = nullptr; // Will be set by sqlite3_exec() if an error occurs
 
     if (sqlite3_exec(this->m_db, query.data(), callback, data, &sqlErrorMsg) != SQLITE_OK)
     {
@@ -195,6 +196,7 @@ int SqliteDatabase::callbackString(void* destination, int columns, char** data, 
     }
 }
 
+// Used in getQuestions()
 int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1)
@@ -214,6 +216,7 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
     }
 }
 
+// Used in getHighScores()
 int SqliteDatabase::callbackStringDoubleMap(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns != 2) // 2 = number of members in a pair
