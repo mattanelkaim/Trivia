@@ -87,7 +87,6 @@ private:
     static int callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackFloat(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackString(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
-    static int callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
     static int callbackStringDoubleMap(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept;
 

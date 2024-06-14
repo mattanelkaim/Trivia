@@ -195,22 +195,6 @@ int SqliteDatabase::callbackString(void* destination, int columns, char** data, 
     }
 }
 
-int SqliteDatabase::callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
-{
-    if (columns != 1)
-        return 1; // Error
-
-    try
-    {
-        static_cast<std::vector<std::string>*>(destination)->emplace_back(data[0]);
-        return 0;
-    }
-    catch (...) // Callbacks must be noexcept
-    {
-        return 1;
-    }
-}
-
 int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1)
