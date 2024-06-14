@@ -35,7 +35,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& respons
 
     for (const RoomData& room : response.rooms)
     {
-        const json data
+        json data // Not const because we need to move it
         {
             {ROOM_NAME, room.name},
             {MAX_PLAYERS, room.maxPlayers},
@@ -102,6 +102,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse&
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
 buffer JsonResponseSerializer::serializeResponse(const GetRoomStateResponse& response) noexcept
 {
     using namespace JsonFields;
