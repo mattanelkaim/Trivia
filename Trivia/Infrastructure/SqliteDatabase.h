@@ -74,10 +74,27 @@ private:
     ############ PRIVATE METHODS ###########
     ######################################*/
 
-    // @throws InvalidSQL
+    /**
+    * Executes a given SQLite query on the DB (that doesn't fetch any data).
+    * It's simply a convenience wrapper.
+    * 
+    * @param query The SQLite query to be executed.
+    * 
+    * @throws InvalidSQL
+    */
     void runQuery(std::string_view query) const;
 
-    // @throws InvalidSQL
+    /**
+     * Executes a given SQLite query on the DB.
+     * It uses a callback function that processes the results of a query (if it fetches data).
+     * 
+     * @param query The SQLite query to be executed.
+     * @param callback A pointer to a *NOEXCEPT* callback function that's performed on EACH ROW fetched (can be nullptr).
+     * @param data A pointer to user-defined data that will be passed to the callback function.
+     *        Will store the procesed results of the query (can be nullptr).
+     * 
+     * @throws InvalidSQL
+     */
     void runQuery(std::string_view query, safe_callback_ptr callback, void* data) const;
 
     /*######################################
