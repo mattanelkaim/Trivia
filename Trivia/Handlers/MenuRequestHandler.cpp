@@ -70,8 +70,9 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
             return this->joinRoom(info);
             //break;
 
+        // This should not happen
         default:
-            throw InvalidProtocolStructure("Request is not relevant to MenuRequestHandler!");
+            throw ServerException("Request is not relevant to MenuRequestHandler!");
             //break;
         }
     }
