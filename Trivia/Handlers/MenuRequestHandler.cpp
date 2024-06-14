@@ -79,10 +79,8 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
             return this->joinRoom(info);
             //break;
 
-        // This should not happen
-        default:
+        default: // This should not happen
             throw ServerException("Request is not relevant to MenuRequestHandler!");
-            //break;
         }
     }
     catch (const ServerException& e)

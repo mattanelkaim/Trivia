@@ -20,8 +20,8 @@ RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) :
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
-    return this->IRoomRequestHandler::isRequestRelevant(requestInfo) || \
-        requestInfo.id == RequestId::LEAVE_ROOM;
+    return requestInfo.id == LEAVE_ROOM || \
+        this->IRoomRequestHandler::isRequestRelevant(requestInfo); // GET_ROOM_STATE
 }
 
 RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& requestInfo) noexcept
@@ -30,18 +30,16 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
     {
         switch (requestInfo.id)
         {
-            case RequestId::LEAVE_ROOM:
-                return this->leaveRoom();
-                //break;
-
-            case RequestId::GET_ROOM_STATE:
+            case GET_ROOM_STATE:
                 return this->getRoomState();
                 //break;
 
-            // This should not happen
-            default:
-                throw ServerException("Request is not relevant to MenuRequestHandler!");
+            case LEAVE_ROOM:
+                return this->leaveRoom();
                 //break;
+
+            default: // This should not happen
+                throw ServerException("Request is not relevant to MenuRequestHandler!");
         }
     }
     catch (const ServerException& e)
@@ -56,20 +54,20 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
     }
 }
 
+RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
+{
+    return RequestResult{
+        .response = this->getSerializedRoomState(), // IRoomRequestHandler
+        .newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, m_room)
+    };
+}
+
 RequestResult RoomMemberRequestHandler::leaveRoom() noexcept
 {
     this->m_room.removeUser(this->m_user);
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // return back to menu
-    };
-}
-
-RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
-{
-    return RequestResult{
-        .response = this->getSerializedRoomState(),
-        .newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, m_room)
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
 }

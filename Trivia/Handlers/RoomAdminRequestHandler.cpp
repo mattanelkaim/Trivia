@@ -27,7 +27,7 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) 
         case CLOSE_ROOM:
             return true;
         default:
-            return IRoomRequestHandler::isRequestRelevant(requestInfo);
+            return IRoomRequestHandler::isRequestRelevant(requestInfo); // GET_ROOM_STATE
     }
 }
 
@@ -37,22 +37,20 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
     {
         switch (requestInfo.id)
         {
-        case RequestId::GET_ROOM_STATE:
+        case GET_ROOM_STATE:
             return this->getRoomState();
             //break;
 
-        case RequestId::CLOSE_ROOM:
-            return this->closeRoomRequest();
-            //break;
-
-        case RequestId::START_ROOM:
+        case START_ROOM:
             return this->startRoomRequest();
             //break;
 
-        // This should not happen
-        default:
-            throw ServerException("Request is not relevant to MenuRequestHandler!");
+        case CLOSE_ROOM:
+            return this->closeRoomRequest();
             //break;
+        
+        default: // This should not happen
+            throw ServerException("Request is not relevant to MenuRequestHandler!");
         }
     }
     catch (const ServerException& e)
@@ -67,26 +65,10 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
     }
 }
 
-RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
-{
-    const uint32_t roomId = this->m_room.getData().id;
-
-    for (const LoggedUser& user : this->m_room.getAllUsers())
-    {
-        RoomManager::getInstance().getRoom(roomId).removeUser(user); // removing each user from the room
-    }
-    RoomManager::getInstance().deleteRoom(roomId); // deleting the room after all members have left
-
-    return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(CloseRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // return back to menu
-    };
-}
-
 RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
 {
     return RequestResult{
-        .response = this->getSerializedRoomState(),
+        .response = this->getSerializedRoomState(), // IRoomRequestHandler
         .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
     };
 }
@@ -95,6 +77,25 @@ RequestResult RoomAdminRequestHandler::startRoomRequest() const noexcept
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room) // return back to menu
+        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
+    };
+}
+
+RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
+{
+    const uint32_t roomId = this->m_room.getData().id;
+
+    // Remove all users from the room
+    for (const LoggedUser& user : this->m_room.getAllUsers())
+    {
+        RoomManager::getInstance().getRoom(roomId).removeUser(user); // Removing each user from the room
+    }
+
+    // Delete the room
+    RoomManager::getInstance().deleteRoom(roomId);
+
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(CloseRoomResponse{OK}),
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
 }
