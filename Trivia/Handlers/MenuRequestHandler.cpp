@@ -6,6 +6,7 @@
 #include "LoggedUser.h"
 #include "LoginManager.h"
 #include "MenuRequestHandler.h"
+#include "NotFoundException.h"
 #include "RequestHandlerFactory.h"
 #include "Room.h"
 #include "RoomManager.h"
@@ -133,12 +134,22 @@ RequestResult MenuRequestHandler::getRooms() const noexcept
 RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) const
 {
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<GetPlayersInRoomRequest>(info.buffer).roomId;
-    const Room& room = RoomManager::getInstance().getRoom(roomId);
 
-    return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.getAllUsers()}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
-    };
+    try
+    {
+        const Room& room = RoomManager::getInstance().getRoom(roomId);
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.getAllUsers()}),
+            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        };
+    }
+    catch (const NotFoundException&) // thrown by getRoom()
+    {
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{ERR_NOT_FOUND}, {}}), // Empty vector
+            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        };
+    }
 }
 
 RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
@@ -165,11 +176,24 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
 {
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<JoinRoomRequest>(info.buffer).roomId;
 
-    // Adding the user to the room specified in the request buffer
-    RoomManager::getInstance().getRoom(roomId).addUser(m_user);
+    ResponseCode responseCode;
+    try
+    {
+        // Adding the user to the room specified in the request buffer
+        responseCode = RoomManager::getInstance().getRoom(roomId).addUser(m_user);
+    }
+    catch (const NotFoundException&) // thrown by getRoom()
+    {
+        responseCode = ERR_NOT_FOUND;
+    }
+
+    // newHandler depends on the response code
+    IRequestHandler* newHandler = (responseCode == OK)
+        ? RequestHandlerFactory::createMenuRequestHandler(m_user) // TODO - Create GameRequestHandler
+        : RequestHandlerFactory::createMenuRequestHandler(m_user); // Retry joining
 
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{responseCode}),
+        .newHandler = newHandler
     };
 }
