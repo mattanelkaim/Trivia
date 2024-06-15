@@ -3,9 +3,9 @@
 #include "Room.h"
 #include "RoomManager.h"
 #include "ServerDefinitions.h"
-#include "ServerException.h"
 #include <algorithm> // std::ranges::any_of
 #include <cstdint>
+#include <new> // std::bad_alloc
 #include <stdexcept> // std::out_of_range
 #include <string>
 #include <vector>
@@ -16,14 +16,18 @@
 using std::to_string;
 
 
-void RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
+void RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
 {
-    const auto [addedRoom, isEmplaced] = this->m_rooms.try_emplace(data.id, data); // Returns pair of iterator and bool isSuccessful
+    try
+    {
+        const auto [addedRoom, isEmplaced] = this->m_rooms.emplace(data.id, data); // Returns pair of iterator and bool isSuccessful
 
-    if (!isEmplaced) // Not emplaced successfully
-        throw ServerException("Room with id " + to_string(data.id) + " already exists");
+        // Improbable to fail emplacing because the server itself generates the room ID
 
-    addedRoom->second.addUser(user); // Add to room the room creator
+        addedRoom->second.addUser(user); // Add the room creator (admin) to the emplaced room
+    }
+    catch (const std::bad_alloc&)
+    {}
 }
 
 void RoomManager::deleteRoom(const uint32_t roomId) noexcept
@@ -61,6 +65,14 @@ Room& RoomManager::getRoom(const uint32_t roomId)
     {
         throw NotFoundException("Room with ID " + to_string(roomId));
     }
+}
+
+bool RoomManager::doesRoomExist(const std::string& roomName) const noexcept
+{
+    // Use a lambda on each room to check if room name is the same
+    return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
+        return roomPair.second.getData().name == roomName; // Check if room name is the same
+    });
 }
 
 bool RoomManager::isUserInAnyRoom(const LoggedUser& user) const noexcept

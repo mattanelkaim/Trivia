@@ -18,9 +18,8 @@ public:
     * Creates a new room and adds the user (admin) to it.
     * @param user The user who is creating the room.
     * @param data The metadata of the room.
-    * @throws ServerException If the room already exists.
     */
-    void createRoom(const LoggedUser& user, const RoomData& data);
+    void createRoom(const LoggedUser& user, const RoomData& data) noexcept;
 
     void deleteRoom(uint32_t roomId) noexcept;
 
@@ -42,6 +41,7 @@ public:
     */
     Room& getRoom(uint32_t roomId);
 
+    bool doesRoomExist(const std::string& roomName) const noexcept;
     bool isUserInAnyRoom(const LoggedUser& user) const noexcept;
 
     /**

@@ -90,6 +90,7 @@ struct RoomData
     uint32_t id;
     uint16_t maxPlayers;
     uint16_t numOfQuestionsInGame;
+    // Time in seconds
     uint32_t timePerQuestion;
     RoomStatus status;
 };
@@ -111,7 +112,8 @@ enum ResponseCode
     ROOM_IS_NOT_OPEN, // Either closed or in-game
     // General Errors
     ERR, // ERROR won't compile
-    ERR_NOT_FOUND, // General error
+    ERR_NOT_FOUND,
+    ERR_ALREADY_EXISTS,
 };
 
 // Response structs
