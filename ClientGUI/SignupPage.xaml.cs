@@ -67,7 +67,7 @@ namespace ClientGUI
             TextBlock textBlock;
 
             // Determine which field is focused
-            if (sender is TextBox textBox) // Insantiates variable textBox
+            if (sender is TextBox textBox) // Instantiates variable textBox
             {
                 if (textBox.Name.Contains("Username"))
                 {
@@ -98,7 +98,7 @@ namespace ClientGUI
             string fieldValue;
 
             // Determine which field is focused
-            if (sender is TextBox textBox) // Insantiates variable textBox
+            if (sender is TextBox textBox) // Instantiates variable textBox
             {
                 if (textBox.Name.Contains("Username"))
                 {
