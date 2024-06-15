@@ -4,8 +4,6 @@
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
 
-class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
-
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
