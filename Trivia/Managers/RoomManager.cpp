@@ -6,6 +6,7 @@
 #include <algorithm> // std::ranges::any_of
 #include <cstdint>
 #include <new> // std::bad_alloc
+#include <optional>
 #include <stdexcept> // std::out_of_range
 #include <string>
 #include <vector>
@@ -16,7 +17,7 @@
 using std::to_string;
 
 
-Room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
+std::optional<Room> RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
 {
     try
     {
@@ -30,7 +31,7 @@ Room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noex
     }
     catch (const std::bad_alloc&)
     {
-        return this->m_rooms.end()->second; // Return the last room in the map
+        return std::nullopt;
     }
 }
 

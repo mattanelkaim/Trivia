@@ -9,7 +9,7 @@
 #include "RequestHandlerFactory.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
-#include <ctre.hpp>
+#include <optional>
 #if SERVER_DEBUG
 #include <iostream>
 #endif
@@ -131,5 +131,5 @@ constexpr std::optional<RequestResult> LoginRequestHandler::validateSignupCreden
         };
     }
 
-    return {};
+    return std::nullopt;
 }
