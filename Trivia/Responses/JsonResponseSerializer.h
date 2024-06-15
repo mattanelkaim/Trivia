@@ -23,7 +23,7 @@ namespace JsonResponseSerializer
      * @param response The response object to be serialized.
      * @return The serialized response as a buffer.
      */
-    constexpr buffer serializeResponse(const auto& response) noexcept requires requires { response.status;  }
+    buffer serializeResponse(const auto& response) noexcept requires requires { response.status; }
     {
         const json j{{JsonFields::STATUS, response.status}};
         return serializeGeneralResponse(ResponseCode::OK, j.dump());

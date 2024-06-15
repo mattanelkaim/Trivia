@@ -5970,4 +5970,3 @@ template <typename A, typename B> constexpr auto operator>>(ctre::regular_expres
 
 #pragma warning(pop)
 // NOLINTEND
-// NOLINTEND
