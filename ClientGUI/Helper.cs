@@ -96,6 +96,8 @@ namespace ClientGUI
 
         #region specificRequests
 
+        // STRUCTS FOR RESPONSES
+
         public struct Response
         {
             public ResponseType code;
@@ -128,6 +130,8 @@ namespace ClientGUI
             public List<string> playersInRoom { get; set; }
         }
 
+        // ACTUAL FUNCTIONS THAT SEND REQUESTS
+
         public static Response ExtractResponse(string response)
         {
             int responseCode = int.Parse(response[..BYTES_RESERVED_FOR_CODE]); // Idk what fucking syntax that is but it works
@@ -141,7 +145,7 @@ namespace ClientGUI
         {
             Response response = SendMessage(new { username = Username, password = Password }, RequestType.Login);
 
-            // Ideally expects {"status":1}
+            // Response example: {"status":1}
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
         }
 
@@ -149,7 +153,7 @@ namespace ClientGUI
         {
             Response response = SendMessage(new { username = Username, password = Password, email = Email }, RequestType.Register);
 
-            // Ideally expects {"status":1}
+            // Response example: {"status":1}
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
         }
 
@@ -157,7 +161,7 @@ namespace ClientGUI
         {
             Response response = SendMessage(new { }, RequestType.GetStatistics);
 
-            // Expects {"userStatistics":{"correctAnswers":"7","games":"3","score":"3.416667","totalAnswers":"11"}}
+            // Response example: {"userStatistics":{"correctAnswers":"7","games":"3","score":"3.416667","totalAnswers":"11"}}
             return JsonSerializer.Deserialize<PersonalStatsResponse>(response.content);
         }
 
@@ -182,6 +186,13 @@ namespace ClientGUI
             return JsonSerializer.Deserialize<GetPlayersInRoomResponse>(response.content).playersInRoom;
         }
 
+        public static ResponseType SendJoinRoomRequest(string id)
+        {
+            Response response = SendMessage(new { roomId = id }, RequestType.JoinRoom);
+
+            // Response example: {"status":1}
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
         #endregion specificRequests
 
 
