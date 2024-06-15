@@ -48,10 +48,7 @@ private:
 
     RequestResult getRooms() const noexcept;
 
-    /**
-    * @throws ServerException If the room does not exist.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult getPlayersInRoom(const RequestInfo& info) const;
 
     /**
@@ -60,9 +57,6 @@ private:
     */
     RequestResult createRoom(const RequestInfo& info) const;
 
-    /**
-    * @throws ServerException If the room does not exist.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult joinRoom(const RequestInfo& info) const;
 };

@@ -15,6 +15,9 @@ ResponseCode Room::addUser(const LoggedUser& user) noexcept
     if (m_users.size() >= m_data.maxPlayers)
         return ResponseCode::ROOM_IS_FULL;
 
+    if (this->m_data.status != RoomStatus::OPEN)
+        return ResponseCode::ROOM_IS_NOT_OPEN;
+
     this->m_users.push_back(user);
     return ResponseCode::OK;
 }
