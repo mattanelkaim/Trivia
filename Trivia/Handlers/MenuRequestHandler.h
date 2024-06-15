@@ -4,8 +4,6 @@
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
 
-class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
-
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
@@ -48,21 +46,12 @@ private:
 
     RequestResult getRooms() const noexcept;
 
-    /**
-    * @throws ServerException If the room does not exist.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult getPlayersInRoom(const RequestInfo& info) const;
 
-    /**
-    * @throws ServerException If the room already exists.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult createRoom(const RequestInfo& info) const;
 
-    /**
-    * @throws ServerException If the room does not exist.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult joinRoom(const RequestInfo& info) const;
 };

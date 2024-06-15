@@ -18,10 +18,11 @@ public:
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    void addUser(const LoggedUser& user) noexcept;
+    ResponseCode addUser(const LoggedUser& user) noexcept;
     void removeUser(const LoggedUser& user) noexcept;
     const RoomData& getData() const noexcept;
     const std::vector<LoggedUser>& getAllUsers() const noexcept;
+    bool isUserInRoom(const LoggedUser& username) const noexcept;
 
 private:
     /*######################################

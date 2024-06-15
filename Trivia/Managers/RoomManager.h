@@ -18,9 +18,9 @@ public:
     * Creates a new room and adds the user (admin) to it.
     * @param user The user who is creating the room.
     * @param data The metadata of the room.
-    * @throws ServerException If the room already exists.
+    * @return A reference to the created room.
     */
-    void createRoom(const LoggedUser& user, const RoomData& data);
+    Room& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
 
     void deleteRoom(uint32_t roomId) noexcept;
 
@@ -28,9 +28,9 @@ public:
     * Returns the state of a room.
     * @param roomId The ID of the room.
     * @return The state of the room.
-    * @throws ServerException If the room does not exist.
+    * @throws NotFoundException
     */
-    uint32_t getRoomState(uint32_t roomId) const;
+    RoomStatus getRoomState(uint32_t roomId) const;
 
     std::vector<RoomData> getRooms() const noexcept;
 
@@ -38,9 +38,12 @@ public:
     * Returns a reference to a room.
     * @param roomId The ID of the room.
     * @return A reference to the room.
-    * @throws ServerException If the room does not exist.
+    * @throws NotFoundException
     */
     Room& getRoom(uint32_t roomId);
+
+    bool doesRoomExist(const std::string& roomName) const noexcept;
+    bool isUserInAnyRoom(const LoggedUser& user) const noexcept;
 
     /**
      * This method increments the static room ID counter and returns the new value.
