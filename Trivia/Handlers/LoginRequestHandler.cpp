@@ -8,6 +8,7 @@
 #include "RequestHandlerFactory.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
+#include <ctre.hpp>
 #if SERVER_DEBUG
 #include <iostream>
 #endif
