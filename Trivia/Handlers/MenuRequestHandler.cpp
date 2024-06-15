@@ -156,10 +156,18 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
 {
     const auto request = JsonRequestDeserializer::deserializeRequest<CreateRoomRequest>(info.buffer);
 
+    if (RoomManager::getInstance().doesRoomExist(request.roomName))
+    {
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{ERR_ALREADY_EXISTS}),
+            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        };
+    }
+
     // Creating a room as specified in the request buffer
-    RoomManager::getInstance().createRoom(m_user, { // Create RoomData struct
+    RoomManager::getInstance().createRoom(m_user, RoomData{
         .name = request.roomName,
-        .id = RoomManager::getNextRoomId(),
+        .id = RoomManager::getNextRoomId(), // Generate a unique ID
         .maxPlayers = request.maxUsers,
         .numOfQuestionsInGame = request.questionCount,
         .timePerQuestion = request.answerTimeout,
