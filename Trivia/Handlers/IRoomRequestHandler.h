@@ -5,8 +5,6 @@
 #include "Room.h"
 #include "ServerDefinitions.h"
 
-class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
-
 class IRoomRequestHandler : public IRequestHandler
 {
 public:
