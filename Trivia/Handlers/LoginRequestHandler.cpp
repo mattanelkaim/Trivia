@@ -1,5 +1,6 @@
 #pragma warning(disable: 4061) // Enumerator in switch of enum is not explicitly handled by a case label
 
+#include "Helper.h"
 #include "InvalidProtocolStructure.h"
 #include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
