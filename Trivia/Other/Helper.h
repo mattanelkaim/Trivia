@@ -20,9 +20,9 @@ namespace Helper
      * @throws InvalidProtocolStructure (only relevant for string conversion)
      */
     template <std::integral ReturnType, typename T>
-    ReturnType tryMakeIntegral(const T& obj) // noexcept(std::is_convertible<T, ReturnType>())
+    constexpr ReturnType tryMakeIntegral(const T& obj) // noexcept(std::is_convertible<T, ReturnType>())
     {
-        if (std::is_integral<T>())
+        if constexpr (std::is_integral<T>())
             return static_cast<ReturnType>(obj);
 
         try
@@ -78,7 +78,7 @@ namespace Helper
      */
     void sendData(SOCKET sc, std::string_view message);
 
-    std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
+    constexpr std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
     {
         // Return string after padding zeros if necessary
         const std::string numStr = std::to_string(num);
