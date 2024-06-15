@@ -35,7 +35,7 @@ namespace ClientGUI
 
         /*---------------------------------------
                        NAVIGATION
-         *--------------------------------------*/
+         *-------------------------------------*/
 
         private void CreateRoom_Click(object sender, RoutedEventArgs? e)
         {

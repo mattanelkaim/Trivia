@@ -166,6 +166,7 @@
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
     <ClInclude Include="Other\InvalidSQL.h" />
+    <ClInclude Include="Other\NotFoundException.h" />
     <ClInclude Include="Other\ServerException.h" />
     <ClInclude Include="Other\json.hpp" />
     <ClInclude Include="Other\ServerDefinitions.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Other\Helper.cpp" />
     <ClCompile Include="Other\InvalidProtocolStructure.cpp" />
     <ClCompile Include="Other\InvalidSQL.cpp" />
+    <ClCompile Include="Other\NotFoundException.cpp" />
     <ClCompile Include="Other\ServerException.cpp" />
     <ClCompile Include="Other\UnexpectedClientExit.cpp" />
     <ClCompile Include="Responses\JsonResponseSerializer.cpp" />

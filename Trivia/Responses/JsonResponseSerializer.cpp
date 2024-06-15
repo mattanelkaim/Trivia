@@ -91,10 +91,10 @@ buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse&
         {
             STATISTICS,
             {
-                {SCORE,           std::stod(response.statistics[0], nullptr)},
-                {TOTAL_GAMES,     std::stoi(response.statistics[1], nullptr)},
-                {TOTAL_ANSWERS,   std::stoi(response.statistics[2], nullptr)},
-                {CORRECT_ANSWERS, std::stoi(response.statistics[3], nullptr)}
+                {SCORE,           std::stod(response.statistics[0])},
+                {TOTAL_GAMES,     std::stoi(response.statistics[1])},
+                {TOTAL_ANSWERS,   std::stoi(response.statistics[2])},
+                {CORRECT_ANSWERS, std::stoi(response.statistics[3])}
             }
         }
     };
