@@ -2,6 +2,7 @@
 #pragma once
 #pragma warning(disable: 4820) // Padding added after data member
 
+#include "LoggedUser.h"
 #include <cstdint>
 #include <ctime> // Used for time_t
 #include <map>
@@ -127,6 +128,7 @@ struct StatusResponse
     ResponseCode status;
 };
 
+// Are simply a response only with a status field
 using LoginResponse = StatusResponse;
 using SignupResponse = StatusResponse;
 using LogoutResponse = StatusResponse;
@@ -136,36 +138,31 @@ using CloseRoomResponse = StatusResponse;
 using StartRoomResponse = StatusResponse;
 using LeaveRoomResponse = StatusResponse;
 
-struct GetRoomsResponse
-{    
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
+struct GetRoomsResponse : StatusResponse
+{
     std::vector<RoomData> rooms;
 };
 
-struct GetPlayersInRoomResponse
+struct GetPlayersInRoomResponse : StatusResponse
 {
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
-    std::vector<std::string> players;
+    std::vector<LoggedUser> players;
 };
 
-struct GetHighScoreResponse
-{    
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
-    std::map<std::string, double> statistics;
+struct GetHighScoreResponse : StatusResponse
+{
+    std::map<LoggedUser, double> statistics;
 };
 
-struct GetPersonalStatsResponse
-{    
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
+struct GetPersonalStatsResponse : StatusResponse
+{
     std::vector<std::string> statistics;
 };
 
-struct GetRoomStateResponse
+struct GetRoomStateResponse : StatusResponse
 {
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
     RoomStatus state;
     bool hasGameBegun;
-    std::vector<std::string> players;
+    std::vector<LoggedUser> players;
     uint16_t questionCount;
     uint32_t answerTimeout;
 };
@@ -229,15 +226,16 @@ struct RequestInfo
     buffer buffer;
 };
 
-struct Request {}; // Empty struct to inherit from
-
-struct RequestResult : Request
+struct RequestResult
 {
     buffer response;
     IRequestHandler* newHandler{nullptr};
 };
 
 // Request structs
+
+struct Request {}; // Empty struct to inherit from
+
 struct LoginRequest : Request
 {
     std::string username;

@@ -176,7 +176,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
 {
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<JoinRoomRequest>(info.buffer).roomId;
 
-    ResponseCode responseCode;
+    ResponseCode responseCode{};
     try
     {
         // Adding the user to the room specified in the request buffer
@@ -189,7 +189,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
 
     // newHandler depends on the response code
     IRequestHandler* newHandler = (responseCode == OK)
-        ? RequestHandlerFactory::createMenuRequestHandler(m_user) // TODO - Create GameRequestHandler
+        ? RequestHandlerFactory::createMenuRequestHandler(m_user) // TODO(mattan) - Create GameRequestHandler
         : RequestHandlerFactory::createMenuRequestHandler(m_user); // Retry joining
 
     return RequestResult{
