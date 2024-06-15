@@ -165,7 +165,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     }
 
     // Creating a room as specified in the request buffer
-    Room& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
+    const Room& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(), // Generate a unique ID
         .maxPlayers = request.maxUsers,
