@@ -51,10 +51,7 @@ private:
     // @throws InvalidProtocolStructure
     RequestResult getPlayersInRoom(const RequestInfo& info) const;
 
-    /**
-    * @throws ServerException If the room already exists.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult createRoom(const RequestInfo& info) const;
 
     // @throws InvalidProtocolStructure
