@@ -88,6 +88,7 @@ RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
     // Remove all users from the room
     for (const LoggedUser& user : this->m_room.getAllUsers())
     {
+        // m_room better be in the vector of RoomManager, otherwise it will crash
         RoomManager::getInstance().getRoom(roomId).removeUser(user); // Removing each user from the room
     }
 

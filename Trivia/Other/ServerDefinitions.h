@@ -110,6 +110,7 @@ enum ResponseCode
     USERNAME_ALREADY_EXISTS,
     // Join Room
     ROOM_IS_FULL,
+    ROOM_IS_NOT_OPEN, // Either closed or in-game
     // General Errors
     ERR, // ERROR won't compile
     ERR_NOT_FOUND, // General error
