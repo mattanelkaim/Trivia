@@ -165,7 +165,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     }
 
     // Creating a room as specified in the request buffer
-    RoomManager::getInstance().createRoom(m_user, RoomData{
+    Room& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(), // Generate a unique ID
         .maxPlayers = request.maxUsers,
@@ -176,7 +176,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom)
     };
 }
 
@@ -185,20 +185,24 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<JoinRoomRequest>(info.buffer).roomId;
 
     ResponseCode responseCode{};
+    IRequestHandler* newHandler = nullptr;
     try
     {
+        Room& room = RoomManager::getInstance().getRoom(roomId);
+
         // Adding the user to the room specified in the request buffer
-        responseCode = RoomManager::getInstance().getRoom(roomId).addUser(m_user);
+        responseCode = room.addUser(m_user);
+
+        if (responseCode == OK)
+            newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, room);
+        else
+            newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user); // Retry joining
     }
     catch (const NotFoundException&) // thrown by getRoom()
     {
         responseCode = ERR_NOT_FOUND;
+        newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user);
     }
-
-    // newHandler depends on the response code
-    IRequestHandler* newHandler = (responseCode == OK)
-        ? RequestHandlerFactory::createMenuRequestHandler(m_user) // TODO(mattan) - Create GameRequestHandler
-        : RequestHandlerFactory::createMenuRequestHandler(m_user); // Retry joining
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(JoinRoomResponse{responseCode}),
