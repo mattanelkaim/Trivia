@@ -14,6 +14,7 @@
 #include "ServerException.h"
 #include "StatisticsManager.h"
 #include <cstdint>
+#include <optional>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include <iostream>
@@ -165,7 +166,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     }
 
     // Creating a room as specified in the request buffer
-    Room& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
+    std::optional<Room> createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(), // Generate a unique ID
         .maxPlayers = request.maxUsers,
@@ -176,7 +177,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom)
+        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom.value())
     };
 }
 
