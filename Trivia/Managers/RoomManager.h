@@ -18,8 +18,9 @@ public:
     * Creates a new room and adds the user (admin) to it.
     * @param user The user who is creating the room.
     * @param data The metadata of the room.
+    * @return A reference to the created room.
     */
-    void createRoom(const LoggedUser& user, const RoomData& data) noexcept;
+    Room& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
 
     void deleteRoom(uint32_t roomId) noexcept;
 
