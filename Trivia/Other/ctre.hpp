@@ -1,7 +1,7 @@
 // NOLINTBEGIN
 #include <codeanalysis\warnings.h>
 #pragma warning(push)
-#pragma warning(disable : ALL_CODE_ANALYSIS_WARNINGS 4668 4626 4365)
+#pragma warning(disable : ALL_CODE_ANALYSIS_WARNINGS 5045 4710 4668 4626 4365)
 
 /*
                                  Apache License
