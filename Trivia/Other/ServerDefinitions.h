@@ -106,6 +106,9 @@ enum ResponseCode
     // Login
     LOGIN_FAILED,
     // Signup
+    INVALID_USERNAME,
+    INVALID_PASSWORD,
+    INVALID_EMAIL,
     USERNAME_ALREADY_EXISTS,
     // Join Room
     ROOM_IS_FULL,
