@@ -11,32 +11,9 @@
 
 namespace Helper
 {
-    /**
-     * @brief Converts a string (implicit json-shit) OR another integral type to another integral type.
-     * @tparam ReturnType The integral type to convert to.
-     * @tparam T The type of the object to convert (string or another integral).
-     * @param obj The object to convert (string or another integral).
-     * @return The converted object (integral type).
-     * @throws InvalidProtocolStructure (only relevant for string conversion)
-     */
-    template <std::integral ReturnType, typename T>
-    constexpr ReturnType tryMakeIntegral(const T& obj) // noexcept(std::is_convertible<T, ReturnType>())
-    {
-        if constexpr (std::is_integral<T>())
-            return static_cast<ReturnType>(obj);
-
-        try
-        {
-            // Casting json library shit to an explicit string
-            return static_cast<ReturnType>(std::stoll(static_cast<std::string>(obj)));
-        }
-        catch (...) // std::invalid_argument OR std::out_of_range
-        {
-            throw InvalidProtocolStructure{"Cannot convert " + static_cast<std::string>(obj) + " to integral type!"}; // Throwing a more specific exception
-        }
-    }
-
-    std::string formatError(const std::string& functionName, const std::string& err);
+    /*######################################
+    ############ COMMUNICATION #############
+    ######################################*/
 
     /**
     * @throws InvalidProtocolStructure
@@ -78,14 +55,11 @@ namespace Helper
      */
     void sendData(SOCKET sc, std::string_view message);
 
-    constexpr std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
-    {
-        // Return string after padding zeros if necessary
-        const std::string numStr = std::to_string(num);
-        return std::string(digits - numStr.size(), '0') + numStr;
-    }
 
-    // REGEX
+    /*######################################
+    ################ REGEX #################
+    ######################################*/
+
 
     // Username: 1-16 characters, only letters, numbers, and underscores
     constexpr auto usernameMatcher = ctre::match<R"([a-zA-Z0-9_]{1,16})">;
@@ -110,4 +84,45 @@ namespace Helper
     {
         return emailMatcher(email);
     }
+
+
+    /*######################################
+    ################ OTHER #################
+    ######################################*/
+
+
+    constexpr std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
+    {
+        // Return string after padding zeros if necessary
+        const std::string numStr = std::to_string(num);
+        return std::string(digits - numStr.size(), '0') + numStr;
+    }
+
+    /**
+    * @brief Converts a string (implicit json-shit) OR another integral type to another integral type.
+    * @tparam ReturnType The integral type to convert to.
+    * @tparam T The type of the object to convert (string or another integral).
+    * @param obj The object to convert (string or another integral).
+    * @return The converted object (integral type).
+    * @throws InvalidProtocolStructure (only relevant for string conversion)
+    */
+    template <std::integral ReturnType, typename T>
+    constexpr ReturnType tryMakeIntegral(const T& obj) // noexcept(std::is_convertible<T, ReturnType>())
+    {
+        if constexpr (std::is_integral<T>())
+            return static_cast<ReturnType>(obj);
+
+        try
+        {
+            // Casting json library shit to an explicit string
+            return static_cast<ReturnType>(std::stoll(static_cast<std::string>(obj)));
+        }
+        catch (...) // std::invalid_argument OR std::out_of_range
+        {
+            throw InvalidProtocolStructure{"Cannot convert " + static_cast<std::string>(obj) + " to integral type!"}; // Throwing a more specific exception
+        }
+    }
+
+    std::string formatError(const std::string& functionName, const std::string& err);
+
 }; // namespace Helper
