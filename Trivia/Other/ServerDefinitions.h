@@ -103,12 +103,16 @@ struct RoomData
 
 enum ResponseCode
 {
-    ERR, // ERROR won't compile
     OK,
     // Login
     LOGIN_FAILED,
     // Signup
-    USERNAME_ALREADY_EXISTS
+    USERNAME_ALREADY_EXISTS,
+    // Join Room
+    ROOM_IS_FULL,
+    // General Errors
+    ERR, // ERROR won't compile
+    ERR_NOT_FOUND, // General error
 };
 
 // Response structs
