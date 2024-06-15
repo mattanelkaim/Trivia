@@ -3,8 +3,6 @@
 #include "IRequestHandler.h"
 #include "ServerDefinitions.h"
 
-class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
-
 class LoginRequestHandler final : public IRequestHandler
 {
 public:

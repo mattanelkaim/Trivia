@@ -2,6 +2,7 @@
 #pragma once
 #pragma warning(disable: 4820) // Padding added after data member
 
+#include "LoggedUser.h"
 #include <cstdint>
 #include <ctime> // Used for time_t
 #include <map>
@@ -36,11 +37,6 @@ using readonly_buffer = std::span<const byte>;
     constexpr std::string_view ANSI_NORMAL;
 #endif
 
-enum ABORT_FLAG
-{
-    ABORT
-};
-
 #pragma endregion
 
 
@@ -57,7 +53,11 @@ constexpr uint16_t PORT = 7777;
 constexpr auto BYTES_RESERVED_FOR_CODE = 1;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 
-constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
+// A single-value enum to catch as an exception
+enum ABORT_FLAG
+{
+    ABORT
+};
 
 #pragma endregion
 
@@ -72,8 +72,6 @@ constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
 constexpr std::string_view DB_FILE_NAME = "TriviaDB.sqlite";
 constexpr uint16_t NUM_POSSIBLE_ANSWERS_PER_QUESTION = 4;
 constexpr uint16_t NUM_TOP_SCORES = 5;
-
-constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral converting shit
 
 #pragma endregion
 
@@ -92,6 +90,7 @@ struct RoomData
     uint32_t id;
     uint16_t maxPlayers;
     uint16_t numOfQuestionsInGame;
+    // Time in seconds
     uint32_t timePerQuestion;
     RoomStatus status;
 };
@@ -103,12 +102,18 @@ struct RoomData
 
 enum ResponseCode
 {
-    ERR, // ERROR won't compile
     OK,
     // Login
     LOGIN_FAILED,
     // Signup
-    USERNAME_ALREADY_EXISTS
+    USERNAME_ALREADY_EXISTS,
+    // Join Room
+    ROOM_IS_FULL,
+    ROOM_IS_NOT_OPEN, // Either closed or in-game
+    // General Errors
+    ERR, // ERROR won't compile
+    ERR_NOT_FOUND,
+    ERR_ALREADY_EXISTS,
 };
 
 // Response structs
@@ -122,6 +127,7 @@ struct StatusResponse
     ResponseCode status;
 };
 
+// Are simply a response only with a status field
 using LoginResponse = StatusResponse;
 using SignupResponse = StatusResponse;
 using LogoutResponse = StatusResponse;
@@ -131,36 +137,31 @@ using CloseRoomResponse = StatusResponse;
 using StartRoomResponse = StatusResponse;
 using LeaveRoomResponse = StatusResponse;
 
-struct GetRoomsResponse
-{    
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
+struct GetRoomsResponse : StatusResponse
+{
     std::vector<RoomData> rooms;
 };
 
-struct GetPlayersInRoomResponse
+struct GetPlayersInRoomResponse : StatusResponse
 {
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
-    std::vector<std::string> players;
+    std::vector<LoggedUser> players;
 };
 
-struct GetHighScoreResponse
-{    
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
-    std::map<std::string, double> statistics;
+struct GetHighScoreResponse : StatusResponse
+{
+    std::map<LoggedUser, double> statistics;
 };
 
-struct GetPersonalStatsResponse
-{    
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
+struct GetPersonalStatsResponse : StatusResponse
+{
     std::vector<std::string> statistics;
 };
 
-struct GetRoomStateResponse
+struct GetRoomStateResponse : StatusResponse
 {
-    ResponseCode status; // inheriting means that this will no longer be an aggregate type
     RoomStatus state;
     bool hasGameBegun;
-    std::vector<std::string> players;
+    std::vector<LoggedUser> players;
     uint16_t questionCount;
     uint32_t answerTimeout;
 };
@@ -224,15 +225,16 @@ struct RequestInfo
     buffer buffer;
 };
 
-struct Request {}; // Empty struct to inherit from
-
-struct RequestResult : Request
+struct RequestResult
 {
     buffer response;
     IRequestHandler* newHandler{nullptr};
 };
 
 // Request structs
+
+struct Request {}; // Empty struct to inherit from
+
 struct LoginRequest : Request
 {
     std::string username;
@@ -283,7 +285,6 @@ struct LeaveRoomRequest : Request
 {
     uint32_t roomId;
 };
-
 
 #pragma endregion
 // NOLINTEND(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)

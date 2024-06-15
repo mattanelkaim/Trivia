@@ -167,7 +167,7 @@ int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[m
     if (columns != 1 || data[0] == nullptr)
         return 1;
 
-    *static_cast<int*>(destination) = std::strtol(data[0], nullptr, DECIMAL_BASE);
+    *static_cast<int*>(destination) = std::stol(data[0]);
     return 0;
 }
 
@@ -176,7 +176,7 @@ int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [
     if (columns != 1 || data[0] == nullptr)
         return 1;
 
-    *static_cast<float*>(destination) = std::strtof(data[0], nullptr);
+    *static_cast<float*>(destination) = std::stof(data[0]);
     return 0;
 }
 
@@ -223,8 +223,8 @@ int SqliteDatabase::callbackStringDoubleMap(void* destination, int columns, char
         return 1; // Error
 
     try
-    {        
-        static_cast<std::map<std::string, double>*>(destination)->emplace(data[0], std::strtof(data[1], nullptr)); // Construct with question string & answers
+    {
+        static_cast<std::map<std::string, double>*>(destination)->emplace(data[0], std::stof(data[1])); // Construct with question string & answers
         return 0;
     }
     catch (...) // Callbacks must be noexcept
