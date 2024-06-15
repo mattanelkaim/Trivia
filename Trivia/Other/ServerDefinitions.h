@@ -37,11 +37,6 @@ using readonly_buffer = std::span<const byte>;
     constexpr std::string_view ANSI_NORMAL;
 #endif
 
-enum ABORT_FLAG
-{
-    ABORT
-};
-
 #pragma endregion
 
 
@@ -58,7 +53,11 @@ constexpr uint16_t PORT = 7777;
 constexpr auto BYTES_RESERVED_FOR_CODE = 1;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 
-constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
+// A single-value enum to catch as an exception
+enum ABORT_FLAG
+{
+    ABORT
+};
 
 #pragma endregion
 
@@ -73,8 +72,6 @@ constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
 constexpr std::string_view DB_FILE_NAME = "TriviaDB.sqlite";
 constexpr uint16_t NUM_POSSIBLE_ANSWERS_PER_QUESTION = 4;
 constexpr uint16_t NUM_TOP_SCORES = 5;
-
-constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral converting shit
 
 #pragma endregion
 
@@ -286,7 +283,6 @@ struct LeaveRoomRequest : Request
 {
     uint32_t roomId;
 };
-
 
 #pragma endregion
 // NOLINTEND(clang-diagnostic-unused-const-variable, clang-diagnostic-unused-macros)
