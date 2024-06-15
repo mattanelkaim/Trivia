@@ -16,12 +16,12 @@ namespace ClientGUI
 {
     internal class Helper
     {
-        #region protocolHelper
+#region protocolHelper
 
 #if false // to debug
-    public static void _DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
+    public static void DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
-    public static void _DEBUG_SHOW(string message) {}
+    public static void DEBUG_SHOW(string message) {}
 #endif
 
         public static readonly ushort BYTES_RESERVED_FOR_CODE = 1;
@@ -42,12 +42,17 @@ namespace ClientGUI
 
         public enum ResponseType
         {
-            ERR, // ERROR won't compile
             OK,
             // Login
             LOGIN_FAILED,
             // Signup
-            USERNAME_ALREADY_EXISTS
+            USERNAME_ALREADY_EXISTS,
+            // Join Room
+            ROOM_IS_FULL,
+            ROOM_IS_NOT_OPEN, // Either closed or in-game
+            // General Errors
+            ERR, // ERROR won't compile
+            ERR_NOT_FOUND, // General error
         }
 
         public enum RoomStatus
@@ -70,16 +75,16 @@ namespace ClientGUI
             return serializedCode + serializedLen + content;
         }
 
-        public static Response SendMessage(object structTosend, RequestType code)
+        public static Response SendMessage(object structToSend, RequestType code)
         {
-            string json = JsonSerializer.Serialize(structTosend);
+            string json = JsonSerializer.Serialize(structToSend);
 
             string msg = Helper.Serialize(json, code);
-            Helper._DEBUG_SHOW("[Sending]: " + msg);
+            Helper.DEBUG_SHOW("[Sending]: " + msg);
             Communicator.Send(msg);
 
             string responseBuffer = Communicator.Receive();
-            Helper._DEBUG_SHOW("[Received]: " + responseBuffer);
+            Helper.DEBUG_SHOW("[Received]: " + responseBuffer);
 
             Response response = ExtractResponse(responseBuffer);
 
@@ -91,10 +96,10 @@ namespace ClientGUI
             return response;
         }
 
-        #endregion protocolHelper
+#endregion protocolHelper
 
 
-        #region specificRequests
+#region specificRequests
 
         // STRUCTS FOR RESPONSES
 
@@ -193,10 +198,10 @@ namespace ClientGUI
             // Response example: {"status":1}
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
         }
-        #endregion specificRequests
+#endregion specificRequests
 
 
-        #region XAMLMethodsHelper
+#region XAMLMethodsHelper
 
         // Also in Login window xaml
         public static readonly ushort MAX_PASSWORD_LENGTH = 8;
@@ -324,6 +329,6 @@ namespace ClientGUI
             brush.BeginAnimation(SolidColorBrush.ColorProperty, foregroundAnimation);
         }
 
-        #endregion XAMLMethodsHelper
+#endregion XAMLMethodsHelper
     }
 }
