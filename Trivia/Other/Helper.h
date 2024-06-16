@@ -11,9 +11,32 @@
 
 namespace Helper
 {
-    /*######################################
-    ############ COMMUNICATION #############
-    ######################################*/
+    /**
+     * @brief Converts a string (implicit json-shit) OR another integral type to another integral type.
+     * @tparam ReturnType The integral type to convert to.
+     * @tparam T The type of the object to convert (string or another integral).
+     * @param obj The object to convert (string or another integral).
+     * @return The converted object (integral type).
+     * @throws InvalidProtocolStructure (only relevant for string conversion)
+     */
+    template <std::integral ReturnType, typename T>
+    constexpr ReturnType tryMakeIntegral(const T& obj) // noexcept(std::is_convertible<T, ReturnType>())
+    {
+        if constexpr (std::is_integral<T>())
+            return static_cast<ReturnType>(obj);
+
+        try
+        {
+            // Casting json library shit to an explicit string
+            return static_cast<ReturnType>(std::stoll(static_cast<std::string>(obj)));
+        }
+        catch (...) // std::invalid_argument OR std::out_of_range
+        {
+            throw InvalidProtocolStructure{"Cannot convert " + static_cast<std::string>(obj) + " to integral type!"}; // Throwing a more specific exception
+        }
+    }
+
+    std::string formatError(const std::string& functionName, const std::string& err);
 
     /**
     * @throws InvalidProtocolStructure
