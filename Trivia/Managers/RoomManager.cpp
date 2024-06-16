@@ -13,8 +13,7 @@
 #pragma warning(push) // To pop at the end of the file
 #pragma warning(disable: 26492) // Warns about using const_cast
 
-using std::to_string;
-
+using std::to_string;                                
 
 void RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
 {
