@@ -5,13 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:WindowHeight="450" d:Width="800"
       Title="WaitingRoomPage">
 
     <Page.Resources>
         <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
         <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
-    
+        
         <!--Styles-->
         <Style x:Key="NameBase" TargetType="TextBlock">
             <Setter Property="Padding" Value="2,3"/>
@@ -79,9 +79,7 @@
                 <RotateTransform Angle="-20"/>
             </Border.RenderTransform>
             <TextBlock Name="name1"
-                       Style="{StaticResource Row1}"
-                       MaxWidth="120">
-            </TextBlock>
+                       Style="{StaticResource Row1}"/>
         </Border>
 
         <Border Width="80"
@@ -91,9 +89,7 @@
                 <RotateTransform Angle="-18"/>
             </Border.RenderTransform>
             <TextBlock Name="name2"
-                       Style="{StaticResource Row1}"
-                       MaxWidth="80">
-            </TextBlock>
+                       Style="{StaticResource Row1}"/>
         </Border>
 
         <Border Width="70"
@@ -103,9 +99,7 @@
                 <RotateTransform Angle="-17"/>
             </Border.RenderTransform>
             <TextBlock Name="name3"
-                       Style="{StaticResource Row1}"
-                       MaxWidth="70">
-            </TextBlock>
+                       Style="{StaticResource Row1}"/>
         </Border>
 
         <Border Width="65"
@@ -115,9 +109,7 @@
                 <RotateTransform Angle="-15"/>
             </Border.RenderTransform>
             <TextBlock Name="name4"
-                       Style="{StaticResource Row1}"
-                       MaxWidth="70">
-            </TextBlock>
+                       Style="{StaticResource Row1}"/>
         </Border>
         
         <!--Row 2-->
@@ -129,9 +121,7 @@
                 <RotateTransform Angle="-12"/>
             </Border.RenderTransform>
             <TextBlock Name="name5"
-                       Style="{StaticResource Row2}"
-                       MaxWidth="52">
-            </TextBlock>
+                       Style="{StaticResource Row2}"/>
         </Border>
 
         <Border Width="65"
@@ -141,9 +131,7 @@
                 <RotateTransform Angle="-11"/>
             </Border.RenderTransform>
             <TextBlock Name="name6"
-                       Style="{StaticResource Row2}"
-                       MaxWidth="65">
-            </TextBlock>
+                       Style="{StaticResource Row2}"/>
         </Border>
 
         <Border Width="60"
@@ -153,9 +141,7 @@
                 <RotateTransform Angle="-11"/>
             </Border.RenderTransform>
             <TextBlock Name="name7"
-                       Style="{StaticResource Row2}"
-                       MaxWidth="60">
-            </TextBlock>
+                       Style="{StaticResource Row2}"/>
         </Border>
 
         <Border Width="55"
@@ -165,9 +151,7 @@
                 <RotateTransform Angle="-10"/>
             </Border.RenderTransform>
             <TextBlock Name="name8"
-                       Style="{StaticResource Row2}"
-                       MaxWidth="55">
-            </TextBlock>
+                       Style="{StaticResource Row2}"/>
         </Border>
 
         <Border Width="50"
@@ -177,9 +161,7 @@
                 <RotateTransform Angle="-10"/>
             </Border.RenderTransform>
             <TextBlock Name="name9"
-                       Style="{StaticResource Row2}"
-                       MaxWidth="50">
-            </TextBlock>
+                       Style="{StaticResource Row2}"/>
         </Border>
     </Grid>
 </Page>
