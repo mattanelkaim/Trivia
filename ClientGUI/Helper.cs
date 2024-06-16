@@ -18,7 +18,7 @@ namespace ClientGUI
     {
 #region protocolHelper
 
-#if false // to debug
+#if true // to debug
     public static void DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
     public static void DEBUG_SHOW(string message) {}
@@ -62,6 +62,7 @@ namespace ClientGUI
         public enum RoomStatus
         {
             OPEN,
+            IN_GAME,
             CLOSED,
         };
 
@@ -139,6 +140,11 @@ namespace ClientGUI
             public List<string> playersInRoom { get; set; }
         }
 
+        public struct GetRoomStateResponse
+        {
+            public WaitingRoomPage.RoomData roomState { get; set; }
+        }
+
         // ACTUAL FUNCTIONS THAT SEND REQUESTS
 
         public static Response ExtractResponse(string response)
@@ -208,6 +214,14 @@ namespace ClientGUI
             Response response = SendMessage(new { }, RequestType.LeaveRoom);
 
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        public static WaitingRoomPage.RoomData SendGetRoomStateRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.GetRoomState);
+
+            // Response example: 000118{"roomState":{"hasGameBegun":false,"playersInRoom":["admin","gil"],"questionCount":12,"questionTimeout":10,"state":0}}
+            return JsonSerializer.Deserialize<GetRoomStateResponse>(response.content).roomState;
         }
 
 #endregion specificRequests

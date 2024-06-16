@@ -28,9 +28,9 @@ namespace ClientGUI
         public struct Room
         {
             public string name { get; set; }
-            public int maxPlayers { get; set; }
-            public int questionCount { get; set; }
-            public int questionTimeout { get; set; }
+            public uint maxPlayers { get; set; }
+            public uint questionCount { get; set; }
+            public uint questionTimeout { get; set; }
             public int state { get; set; }
         }
 
