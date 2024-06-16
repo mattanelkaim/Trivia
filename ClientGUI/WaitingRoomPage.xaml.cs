@@ -24,5 +24,20 @@ namespace ClientGUI
         {
             InitializeComponent();
         }
+
+        private void LeaveRoom_Click(object sender, RoutedEventArgs? e)
+        {            
+            Helper.ResponseType status = Helper.SendLeaveRoomRequest(); // Button name is the room id
+
+            switch (status)
+            {
+                case Helper.ResponseType.OK:
+                    this.NavigationService.Navigate(new MenuPage());
+                    break;
+                default:
+                    MessageBox.Show("Cannot join room!");
+                    break;
+            }            
+        }
     }
 }
