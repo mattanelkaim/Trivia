@@ -81,6 +81,7 @@ constexpr uint16_t NUM_TOP_SCORES = 5;
 enum RoomStatus
 {
     OPEN,
+    IN_GAME,
     CLOSED,
 };
 
