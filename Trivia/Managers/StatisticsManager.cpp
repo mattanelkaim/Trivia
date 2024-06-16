@@ -1,0 +1,38 @@
+#include "IDatabase.h"
+#include "StatisticsManager.h"
+#include <memory>
+#include <mutex>
+#include <string>
+#include <vector>
+
+
+StatisticsManager::StatisticsManager(IDatabase* db) noexcept :
+    m_database(db)
+{}
+
+std::map<std::string, double> StatisticsManager::getHighScore() const
+{
+    return m_database->getHighScores();
+}
+
+std::vector<std::string> StatisticsManager::getUserStatistics(const std::string& username) const
+{
+    return // Returns an rvalue literal
+    {
+        std::to_string(m_database->getPlayerScore(username)),
+        std::to_string(m_database->getNumOfPlayerGames(username)),
+        std::to_string(m_database->getNumOfTotalAnswers(username)),
+        std::to_string(m_database->getNumOfCorrectAnswers(username))
+    };
+}
+
+// Singleton
+StatisticsManager* StatisticsManager::getInstance(IDatabase* db)
+{
+    const std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_StatisticsManager == nullptr) [[unlikely]]
+    {
+        m_StatisticsManager = std::unique_ptr<StatisticsManager>(new StatisticsManager(db));
+    }
+    return m_StatisticsManager.get();
+}
