@@ -93,11 +93,52 @@ namespace ClientGUI
             }
         }
 
+        private void DrawPlayers()
+        {
+            string[] players = [.. this.previousData.playersInRoom]; // Convert list to array
+            int i = 0;
+
+            if (++i > players.Length) return;
+            this.name1.Text = players[i-1];
+            this.name1.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name2.Text = players[i-1];
+            this.name2.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name3.Text = players[i-1];
+            this.name3.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name4.Text = players[i-1];
+            this.name4.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name5.Text = players[i-1];
+            this.name5.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name6.Text = players[i-1];
+            this.name6.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name7.Text = players[i-1];
+            this.name7.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name8.Text = players[i-1];
+            this.name8.Visibility = Visibility.Visible;
+
+            if (++i > players.Length) return;
+            this.name9.Text = players[i-1];
+            this.name9.Visibility = Visibility.Visible;
+        }
+
         private void RefreshRoomData(RoomData newData)
         {
             this.previousData = newData;
-            MessageBox.Show(newData.playersInRoom[0]);
-            //this.DrawPlayers();
+            this.DrawPlayers();
         }
 
         private void LeaveRoom_Click(object sender, RoutedEventArgs? e)
