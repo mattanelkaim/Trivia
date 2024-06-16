@@ -15,7 +15,7 @@
 
 using std::to_string;                                
 
-void RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
+Room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
 {
     try
     {
@@ -24,9 +24,13 @@ void RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexc
         // Improbable to fail emplacing because the server itself generates the room ID
 
         addedRoom->second.addUser(user); // Add the room creator (admin) to the emplaced room
+
+        return addedRoom->second;
     }
     catch (const std::bad_alloc&)
-    {}
+    {
+        return this->m_rooms.end()->second; // Return the last room in the map
+    }
 }
 
 void RoomManager::deleteRoom(const uint32_t roomId) noexcept
