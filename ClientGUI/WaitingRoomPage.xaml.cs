@@ -110,7 +110,7 @@ namespace ClientGUI
                     this.isRunning = false; // Stop the request thread
                     break;
                 default:
-                    MessageBox.Show("Cannot join room!");
+                    MessageBox.Show("Cannot leave room! You are stuck! Imagine being stuck in a washing machine LMFAO");
                     break;
             }
         }
