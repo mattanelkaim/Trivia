@@ -22,6 +22,7 @@
             <Setter Property="FontFamily" Value="{StaticResource Good Timing}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+            <Setter Property="Visibility" Value="Hidden"/>
         </Style>
 
         <Style x:Key="Row1" TargetType="TextBlock" BasedOn="{StaticResource NameBase}">
@@ -39,7 +40,6 @@
         <Style x:Key="BoxBase" TargetType="Border">
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Background" Value="#70000000"/> <!--Temporary-->
             <Setter Property="Padding" Value="0"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
@@ -78,9 +78,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-20"/>
             </Border.RenderTransform>
-            <TextBlock Text="Mattanssss"
-                   Style="{StaticResource Row1}"
-                   MaxWidth="120">
+            <TextBlock Name="name1"
+                       Style="{StaticResource Row1}"
+                       MaxWidth="120">
             </TextBlock>
         </Border>
 
@@ -90,9 +90,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-18"/>
             </Border.RenderTransform>
-            <TextBlock Text="Gil"
-                   Style="{StaticResource Row1}"
-                   MaxWidth="80">
+            <TextBlock Name="name2"
+                       Style="{StaticResource Row1}"
+                       MaxWidth="80">
             </TextBlock>
         </Border>
 
@@ -102,9 +102,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-17"/>
             </Border.RenderTransform>
-            <TextBlock Text="MMMMMMMMMMMMMMMM"
-                   Style="{StaticResource Row1}"
-                   MaxWidth="70">
+            <TextBlock Name="name3"
+                       Style="{StaticResource Row1}"
+                       MaxWidth="70">
             </TextBlock>
         </Border>
 
@@ -114,9 +114,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-15"/>
             </Border.RenderTransform>
-            <TextBlock Text="Gilboi"
-                   Style="{StaticResource Row1}"
-                   MaxWidth="70">
+            <TextBlock Name="name4"
+                       Style="{StaticResource Row1}"
+                       MaxWidth="70">
             </TextBlock>
         </Border>
         
@@ -128,9 +128,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-12"/>
             </Border.RenderTransform>
-            <TextBlock Text="Shonni"
-                   Style="{StaticResource Row2}"
-                   MaxWidth="52">
+            <TextBlock Name="name5"
+                       Style="{StaticResource Row2}"
+                       MaxWidth="52">
             </TextBlock>
         </Border>
 
@@ -140,9 +140,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-11"/>
             </Border.RenderTransform>
-            <TextBlock Text="MMMMMMMMMMMMMMMM"
-                   Style="{StaticResource Row2}"
-                   MaxWidth="65">
+            <TextBlock Name="name6"
+                       Style="{StaticResource Row2}"
+                       MaxWidth="65">
             </TextBlock>
         </Border>
 
@@ -152,9 +152,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-11"/>
             </Border.RenderTransform>
-            <TextBlock Text="MMMMMMMMMMMMMMMM"
-                   Style="{StaticResource Row2}"
-                   MaxWidth="60">
+            <TextBlock Name="name7"
+                       Style="{StaticResource Row2}"
+                       MaxWidth="60">
             </TextBlock>
         </Border>
 
@@ -164,9 +164,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-10"/>
             </Border.RenderTransform>
-            <TextBlock Text="MMMMMMMMMMMMMMMM"
-                   Style="{StaticResource Row2}"
-                   MaxWidth="55">
+            <TextBlock Name="name8"
+                       Style="{StaticResource Row2}"
+                       MaxWidth="55">
             </TextBlock>
         </Border>
 
@@ -176,9 +176,9 @@
             <Border.RenderTransform>
                 <RotateTransform Angle="-10"/>
             </Border.RenderTransform>
-            <TextBlock Text="MMMMMMMMMMMMMMMM"
-                   Style="{StaticResource Row2}"
-                   MaxWidth="50">
+            <TextBlock Name="name9"
+                       Style="{StaticResource Row2}"
+                       MaxWidth="50">
             </TextBlock>
         </Border>
     </Grid>
