@@ -4,6 +4,8 @@
 #include "Room.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
+#include <optional>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -18,9 +20,9 @@ public:
     * Creates a new room and adds the user (admin) to it.
     * @param user The user who is creating the room.
     * @param data The metadata of the room.
-    * @return A reference to the created room.
+    * @return A copy of created room.
     */
-    Room& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
+    std::optional<Room> createRoom(const LoggedUser& user, const RoomData& data) noexcept;
 
     void deleteRoom(uint32_t roomId) noexcept;
 
