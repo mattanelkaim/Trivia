@@ -69,6 +69,12 @@ namespace Helper
 
     // Email: RFC 5322
     constexpr auto emailMatcher = ctre::match<R"([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})">;
+    
+    // Phone number: 10 digits
+    constexpr auto phoneMatcher = ctre::match<R"(\d{10})">;
+
+    // Birth date: DD-MM-YYYY
+    constexpr auto birthDateMatcher = ctre::match<R"(\d{2}-\d{2}-\d{4})">;
 
     constexpr bool isUsernameValid(const std::string_view username) noexcept
     {
@@ -83,6 +89,16 @@ namespace Helper
     constexpr bool isEmailValid(const std::string_view email) noexcept
     {
         return emailMatcher(email);
+    }
+
+    constexpr bool isPhoneValid(const std::string_view phone) noexcept
+    {
+        return phoneMatcher(phone);
+    }
+
+    constexpr bool isBirthDateValid(const std::string_view birthDate) noexcept
+    {
+        return birthDateMatcher(birthDate);
     }
 
 
