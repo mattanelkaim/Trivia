@@ -27,7 +27,7 @@ namespace ClientGUI
 
         private void LeaveRoom_Click(object sender, RoutedEventArgs? e)
         {            
-            Helper.ResponseType status = Helper.SendLeaveRoomRequest(); // Button name is the room id
+            Helper.ResponseType status = Helper.SendLeaveRoomRequest();
 
             switch (status)
             {

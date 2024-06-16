@@ -210,7 +210,21 @@ namespace ClientGUI
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
         }
 
-#endregion specificRequests
+        public static ResponseType SendCloseRoomRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.CloseRoom);
+
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        public static ResponseType SendStartGameRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.StartRoom);
+
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        #endregion specificRequests
 
 
         #region XAMLMethodsHelper
