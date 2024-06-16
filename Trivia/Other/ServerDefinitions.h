@@ -50,7 +50,7 @@ using readonly_buffer = std::span<const byte>;
 
 constexpr uint16_t PORT = 7777;
 
-constexpr auto BYTES_RESERVED_FOR_CODE = 1;
+constexpr auto BYTES_RESERVED_FOR_CODE = 2;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 
 // A single-value enum to catch as an exception

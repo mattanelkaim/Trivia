@@ -62,8 +62,7 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
-                    MessageBox.Show("Joined room successfully! (GamePage not implemented yet)");
-                    //TODO this.NavigationService.Navigate(new GamePage());
+                    this.NavigationService.Navigate(new WaitingRoomPage());
                     break;
                 default:
                     MessageBox.Show("Cannot join room!");
@@ -128,7 +127,7 @@ namespace ClientGUI
                         ToolTip = "Enter this room!",
                         Cursor = Cursors.Hand,
                         Foreground = new SolidColorBrush(Colors.Transparent),
-                        Content = image
+                        Content = image                        
                     };
 
                     button.Click += JoinRoom;

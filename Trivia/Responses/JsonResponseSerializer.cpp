@@ -133,7 +133,7 @@ buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type,
     return {
         std::from_range,
         // The first byte is the response code
-        to_string(type) + \
+        Helper::getPaddedNumber(static_cast<uint16_t>(type), BYTES_RESERVED_FOR_CODE) + \
         // Pushing the JSON's length to the buffer
         Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) + \
         // Pushing the actual message to the buffer
