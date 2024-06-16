@@ -62,7 +62,7 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
-                    this.NavigationService.Navigate(new WaitingRoomPage());
+                    this.NavigationService.Navigate(new WaitingRoomPage(RoomsData[id]));
                     break;
                 default:
                     MessageBox.Show("Cannot join room!");

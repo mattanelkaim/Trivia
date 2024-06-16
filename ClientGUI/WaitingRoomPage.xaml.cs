@@ -44,7 +44,7 @@ namespace ClientGUI
             this.previousData = new RoomData
             {
                 hasGameBegun = (rawRoom.state == (int)Helper.RoomStatus.IN_GAME),
-                playersInRoom = [], // Empty list
+                playersInRoom = ["Gil", "Mattan", "Herbert", "Peter", "Joe", "Lois", "Stewie", "Chris", "Meg"], // Empty list
                 questionCount = rawRoom.questionCount,
                 questionTimeout = rawRoom.questionTimeout,
                 state = rawRoom.state
@@ -96,6 +96,7 @@ namespace ClientGUI
         private void RefreshRoomData(RoomData newData)
         {
             this.previousData = newData;
+            MessageBox.Show(newData.playersInRoom[0]);
             //this.DrawPlayers();
         }
 
