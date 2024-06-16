@@ -230,7 +230,6 @@ namespace ClientGUI
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
         }
 
-        #endregion specificRequests
         public static WaitingRoomPage.RoomData SendGetRoomStateRequest()
         {
             Response response = SendMessage(new { }, RequestType.GetRoomState);
