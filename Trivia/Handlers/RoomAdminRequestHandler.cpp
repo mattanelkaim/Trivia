@@ -67,7 +67,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
-            .newHandler = nullptr
+            .newHandler = nullptr // Keep the handler
         };
     }
 }
@@ -94,7 +94,7 @@ RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
     for (const LoggedUser& user : this->m_room.getAllUsers())
     {
         // m_room better be in the vector of RoomManager, otherwise it will crash
-        RoomManager::getInstance().getRoom(roomId).removeUser(user); // Removing each user from the room
+        this->m_room.removeUser(user); // Removing each user from the room
     }
 
     // Delete the room

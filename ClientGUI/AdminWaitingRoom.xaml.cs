@@ -52,9 +52,8 @@ namespace ClientGUI
         private void GetState()
         {
             while (isRunning)
-            {
+            {                 
                 RoomData newData = Helper.SendGetRoomStateRequest(); // Button name is the room id
-
                 Helper.RoomStatus status = (Helper.RoomStatus)newData.state;
 
                 switch (status)
@@ -160,20 +159,19 @@ namespace ClientGUI
             this.previousData = newData;
             this.UpdatePlayers();
         }
-
-
+        
         private void CloseRoom_Click(object sender, RoutedEventArgs? e)
         {
+            isRunning = false;
             Helper.ResponseType status = Helper.SendCloseRoomRequest(); 
 
             switch (status)
             {
                 case Helper.ResponseType.OK:
-                    isRunning = false;
-                    this.NavigationService.Navigate(new MenuPage());
+                    this.NavigationService.Navigate(new MenuPage());                    
                     break;
                 default:
-                    MessageBox.Show("Cannot Close room!");
+                    MessageBox.Show("Cannot Close room!");                    
                     break;
             }
         }
