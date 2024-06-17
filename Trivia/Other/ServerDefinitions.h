@@ -313,24 +313,9 @@ struct CreateRoomRequest : Request
     uint32_t answerTimeout;
 };
 
-struct CloseRoomRequest : Request
+struct SubmitAnswerRequest : Request
 {
-    uint32_t roomId;
-};
-
-struct StartGameRequest : Request
-{
-    uint32_t roomId;
-};
-
-struct GetRoomStateRequest : Request
-{
-    uint32_t roomId;
-};
-
-struct LeaveRoomRequest : Request
-{
-    uint32_t roomId;
+    uint32_t answerId;
 };
 
 #pragma endregion
