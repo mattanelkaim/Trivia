@@ -58,43 +58,51 @@ namespace ClientGUI
 
         private void GetState()
         {
-            while (isRunning)
+            try
             {
-                RoomData newData = Helper.SendGetRoomStateRequest(); // Button name is the room id
-
-                Helper.RoomStatus status = (Helper.RoomStatus)newData.state;
-
-                switch (status)
+                while (isRunning)
                 {
-                    case Helper.RoomStatus.OPEN:
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            this.RefreshRoomData(newData);
-                        });
-                        break;
-                    case Helper.RoomStatus.IN_GAME:
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            //this.NavigationService.Navigate(new GamePage());
-                            this.isRunning = false; // Stop the request thread
-                            return;
-                        });
-                        break;
-                    case Helper.RoomStatus.CLOSED:
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            MessageBox.Show("Room has been closed!");
-                            this.NavigationService.Navigate(new MenuPage());
-                            this.isRunning = false; // Stop the request thread
-                            return;
-                        });
-                        break;
-                    default:
-                        MessageBox.Show("Error fetching room data, try to rejoin!");
-                        break;
-                }
+                    RoomData newData = Helper.SendGetRoomStateRequest(); // Button name is the room id
 
-                Thread.Sleep(3000); // Wait for 3 seconds before sending the next request
+                    Helper.RoomStatus status = (Helper.RoomStatus)newData.state;
+
+                    switch (status)
+                    {
+                        case Helper.RoomStatus.OPEN:
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                this.RefreshRoomData(newData);
+                            });
+                            break;
+                        case Helper.RoomStatus.IN_GAME:
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                //this.NavigationService.Navigate(new GamePage());
+                                this.isRunning = false; // Stop the request thread
+                                return;
+                            });
+                            break;
+                        case Helper.RoomStatus.CLOSED:
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                MessageBox.Show("Room has been closed!");
+                                this.NavigationService.Navigate(new MenuPage());
+                                this.isRunning = false; // Stop the request thread
+                                return;
+                            });
+                            break;
+                        default:
+                            MessageBox.Show("Error fetching room data, try to rejoin!");
+                            break;
+                    }
+
+                    Thread.Sleep(3000); // Wait for 3 seconds before sending the next request
+                }
+            }
+            catch (Exception) 
+            {
+                MessageBox.Show("Room Admin Closed The Room.");
+                this.NavigationService.Navigate(new MenuPage());
             }
         }
 

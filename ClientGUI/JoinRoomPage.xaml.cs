@@ -42,8 +42,7 @@ namespace ClientGUI
         public JoinRoomPage()
         {
             InitializeComponent();
-            this.DataContext = this;
-            RoomsData = FetchRoomsFromDB();
+            this.DataContext = this;            
                         
             requestThread = new(ContinuouslyUpdateRooms)
             {
@@ -53,9 +52,10 @@ namespace ClientGUI
         }
 
         private void ContinuouslyUpdateRooms()
-        {
+        {            
             while (isThreadRunning)
             {
+                this.Dispatcher.Invoke(() => { RoomsData = FetchRoomsFromDB(); });
                 this.Dispatcher.Invoke(this.ClearRooms);
                 this.Dispatcher.Invoke(this.ShowRooms);
                 Thread.Sleep(3000);
@@ -109,6 +109,9 @@ namespace ClientGUI
 
         private void ShowRooms()
         {
+            if (RoomsData.Count == 0) 
+                return;
+
             foreach ((string id, Room room) in RoomsData)
             {
                 // Adding all properties to the grid to match the xaml reference
