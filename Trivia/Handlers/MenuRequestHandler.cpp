@@ -111,7 +111,7 @@ RequestResult MenuRequestHandler::getPersonalStats() const
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{{OK}, StatisticsManager::getUserStatistics(m_user)}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .newHandler = nullptr // Stay in the menu
     };
 }
 
@@ -119,7 +119,7 @@ RequestResult MenuRequestHandler::getHighScore() const
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{{OK}, StatisticsManager::getHighScore()}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .newHandler = nullptr // Stay in the menu
     };
 }
 
@@ -127,7 +127,7 @@ RequestResult MenuRequestHandler::getRooms() const noexcept
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{{OK}, RoomManager::getInstance().getRooms()}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .newHandler = nullptr // Stay in the menu
     };
 }
 
@@ -140,14 +140,14 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) cons
         const Room& room = RoomManager::getInstance().getRoom(roomId);
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.getAllUsers()}),
-            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+            .newHandler = nullptr // Stay in the menu
         };
     }
     catch (const NotFoundException&) // thrown by getRoom()
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{ERR_NOT_FOUND}, {}}), // Empty vector
-            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+            .newHandler = nullptr // Stay in the menu
         };
     }
 }
@@ -160,7 +160,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{ERR_ALREADY_EXISTS}),
-            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+            .newHandler = nullptr // Stay in the menu
         };
     }
 
@@ -196,12 +196,12 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
         if (responseCode == OK)
             newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, room);
         else
-            newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user); // Retry joining
+            newHandler = nullptr; // Retry joining
     }
     catch (const NotFoundException&) // thrown by getRoom()
     {
         responseCode = ERR_NOT_FOUND;
-        newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user);
+        newHandler = nullptr; // Stay in the menu
     }
 
     return RequestResult{
