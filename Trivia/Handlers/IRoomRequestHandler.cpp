@@ -18,17 +18,18 @@ bool IRoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) cons
     return requestInfo.id == GET_ROOM_STATE;
 }
 
-buffer IRoomRequestHandler::getSerializedRoomState() const noexcept
+RequestResult IRoomRequestHandler::getRoomState() noexcept
 {
     const RoomData& room = this->m_room.getData();
 
-    return JsonResponseSerializer::serializeResponse(GetRoomStateResponse
-    { // Cannot use designators cuz status isn't explicitly named in GetRoomStateResponse
-        /*.status =*/ {ResponseCode::OK},
-        /*.state =*/ room.status,
-        /*.hasGameBegun =*/ (room.status == RoomStatus::CLOSED),
-        /*.players =*/ m_room.getAllUsers(),
-        /*.questionCount =*/ room.numOfQuestionsInGame,
-        /*.answerTimeout =*/ room.timePerQuestion
-    });
+    return RequestResult{JsonResponseSerializer::serializeResponse(GetRoomStateResponse
+                        { // Cannot use designators cuz status isn't explicitly named in GetRoomStateResponse
+                            /*.status =*/ {ResponseCode::OK},
+                            /*.state =*/ room.status,
+                            /*.hasGameBegun =*/ (room.status == RoomStatus::CLOSED),
+                            /*.players =*/ m_room.getAllUsers(),
+                            /*.questionCount =*/ room.numOfQuestionsInGame,
+                            /*.answerTimeout =*/ room.timePerQuestion
+                        }),
+                        nullptr };
 }
