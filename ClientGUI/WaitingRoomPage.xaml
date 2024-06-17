@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClientGUI"
       mc:Ignorable="d" 
-      d:WindowHeight="450" d:Width="800"
+      d:Height="450" MinHeight="450" d:Width="800"
       Title="WaitingRoomPage">
 
     <Page.Resources>
@@ -70,98 +70,100 @@
                 FontSize="25">
         </Button>
 
-        <!--Row 1-->
+        <Grid>
+            <!--Row 1-->
 
-        <Border Width="120"
+            <Border Width="120"
                 Style="{StaticResource Box1}"
                 Margin="35,390,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-20"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name1"
-                       Style="{StaticResource Row1}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-20"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name1"
+                           Style="{StaticResource Row1}"/>
+            </Border>
 
-        <Border Width="80"
+            <Border Width="80"
                 Style="{StaticResource Box1}"
                 Margin="195,330,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-18"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name2"
-                       Style="{StaticResource Row1}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-18"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name2"
+                           Style="{StaticResource Row1}"/>
+            </Border>
 
-        <Border Width="70"
+            <Border Width="70"
                 Style="{StaticResource Box1}"
                 Margin="320,285,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-17"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name3"
-                       Style="{StaticResource Row1}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-17"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name3"
+                           Style="{StaticResource Row1}"/>
+            </Border>
 
-        <Border Width="65"
+            <Border Width="65"
                 Style="{StaticResource Box1}"
                 Margin="410,254,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-15"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name4"
-                       Style="{StaticResource Row1}"/>
-        </Border>
-        
-        <!--Row 2-->
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-15"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name4"
+                           Style="{StaticResource Row1}"/>
+            </Border>
 
-        <Border Width="52"
+            <!--Row 2-->
+
+            <Border Width="52"
                 Style="{StaticResource Box2}"
                 Margin="-2,218,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-12"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name5"
-                       Style="{StaticResource Row2}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-12"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name5"
+                           Style="{StaticResource Row2}"/>
+            </Border>
 
-        <Border Width="65"
+            <Border Width="65"
                 Style="{StaticResource Box2}"
                 Margin="65,205,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-11"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name6"
-                       Style="{StaticResource Row2}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-11"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name6"
+                           Style="{StaticResource Row2}"/>
+            </Border>
 
-        <Border Width="60"
+            <Border Width="60"
                 Style="{StaticResource Box2}"
                 Margin="140,190,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-11"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name7"
-                       Style="{StaticResource Row2}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-11"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name7"
+                           Style="{StaticResource Row2}"/>
+            </Border>
 
-        <Border Width="55"
+            <Border Width="55"
                 Style="{StaticResource Box2}"
                 Margin="222,179,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-10"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name8"
-                       Style="{StaticResource Row2}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-10"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name8"
+                           Style="{StaticResource Row2}"/>
+            </Border>
 
-        <Border Width="50"
+            <Border Width="50"
                 Style="{StaticResource Box2}"
                 Margin="291,167,0,0">
-            <Border.RenderTransform>
-                <RotateTransform Angle="-10"/>
-            </Border.RenderTransform>
-            <TextBlock Name="name9"
-                       Style="{StaticResource Row2}"/>
-        </Border>
+                <Border.RenderTransform>
+                    <RotateTransform Angle="-10"/>
+                </Border.RenderTransform>
+                <TextBlock Name="name9"
+                           Style="{StaticResource Row2}"/>
+            </Border>
+        </Grid>
     </Grid>
 </Page>
