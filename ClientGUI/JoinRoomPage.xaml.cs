@@ -28,9 +28,9 @@ namespace ClientGUI
         public struct Room
         {
             public string name { get; set; }
-            public int maxPlayers { get; set; }
-            public int questionCount { get; set; }
-            public int questionTimeout { get; set; }
+            public uint maxPlayers { get; set; }
+            public uint questionCount { get; set; }
+            public uint questionTimeout { get; set; }
             public int state { get; set; }
         }
 
@@ -62,7 +62,7 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
-                    this.NavigationService.Navigate(new WaitingRoomPage());
+                    this.NavigationService.Navigate(new WaitingRoomPage(RoomsData[id]));
                     break;
                 default:
                     MessageBox.Show("Cannot join room!");
