@@ -21,6 +21,5 @@ public:
 	RoomMemberRequestHandler operator=(const RoomMemberRequestHandler& other) = delete;
 
 private:
-	RequestResult leaveRoom() noexcept;	
-	RequestResult getRoomState() const noexcept;
+	RequestResult leaveRoom() noexcept;		
 };
