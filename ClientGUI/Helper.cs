@@ -62,6 +62,7 @@ namespace ClientGUI
         public enum RoomStatus
         {
             OPEN,
+            IN_GAME,
             CLOSED,
         };
 
@@ -137,6 +138,11 @@ namespace ClientGUI
         public struct GetPlayersInRoomResponse
         {
             public List<string> playersInRoom { get; set; }
+        }
+
+        public struct GetRoomStateResponse
+        {
+            public WaitingRoomPage.RoomData roomState { get; set; }
         }
 
         // ACTUAL FUNCTIONS THAT SEND REQUESTS
@@ -224,7 +230,15 @@ namespace ClientGUI
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
         }
 
-        #endregion specificRequests
+        public static WaitingRoomPage.RoomData SendGetRoomStateRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.GetRoomState);
+
+            // Response example: 000118{"roomState":{"hasGameBegun":false,"playersInRoom":["admin","gil"],"questionCount":12,"questionTimeout":10,"state":0}}
+            return JsonSerializer.Deserialize<GetRoomStateResponse>(response.content).roomState;
+        }
+
+#endregion specificRequests
 
 
         #region XAMLMethodsHelper
