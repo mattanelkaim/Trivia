@@ -36,6 +36,7 @@ namespace ClientGUI
 
         public WaitingRoomPage(JoinRoomPage.Room rawRoom)
         {
+            DataContext = this;
             InitializeComponent();
 
             this.previousData = new RoomData
@@ -48,14 +49,14 @@ namespace ClientGUI
             };
 
             isRunning = true;
-            requestThread = new Thread(SendRequest)
+            requestThread = new Thread(GetState)
             {
                 IsBackground = true
             };
             requestThread.Start();
         }
 
-        private void SendRequest()
+        private void GetState()
         {
             while (isRunning)
             {
@@ -97,12 +98,19 @@ namespace ClientGUI
             }
         }
 
+        private void DrawRoomAdmin()
+        {
+            this.nameAdmin.Text = this.previousData.playersInRoom[0];
+            this.nameAdmin.Visibility = Visibility.Visible;
+        }
+
         private void UpdatePlayers()
         {
+            this.DrawRoomAdmin();
             this.ClearPlayers();
 
             string[] players = [.. this.previousData.playersInRoom]; // Convert list to array
-            int i = 0;
+            int i = 1;
 
             if (++i > players.Length) return;
             this.name1.Text = players[i-1];
