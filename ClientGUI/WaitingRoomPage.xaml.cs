@@ -41,14 +41,17 @@ namespace ClientGUI
             this.previousData = new RoomData
             {
                 hasGameBegun = (rawRoom.state == (int)Helper.RoomStatus.IN_GAME),
-                playersInRoom = ["Gil", "Mattan", "Herbert", "Peter", "Joe", "Lois", "Stewie", "Chris", "Meg"], // Empty list
+                playersInRoom = [], // Empty list
                 questionCount = rawRoom.questionCount,
                 questionTimeout = rawRoom.questionTimeout,
                 state = rawRoom.state
             };
 
             isRunning = true;
-            requestThread = new Thread(SendRequest);
+            requestThread = new Thread(SendRequest)
+            {
+                IsBackground = true
+            };
             requestThread.Start();
         }
 
