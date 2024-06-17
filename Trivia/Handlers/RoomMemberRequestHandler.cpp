@@ -59,14 +59,6 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
     }
 }
 
-RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
-{
-    return RequestResult{
-        .response = this->getSerializedRoomState(), // IRoomRequestHandler
-        .newHandler = nullptr // Keep the handler
-    };
-}
-
 RequestResult RoomMemberRequestHandler::leaveRoom() noexcept
 {
     this->m_room.removeUser(this->m_user);

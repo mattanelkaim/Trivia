@@ -72,14 +72,6 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
     }
 }
 
-RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
-{
-    return RequestResult{
-        .response = this->getSerializedRoomState(), // IRoomRequestHandler
-        .newHandler = nullptr // Keep the handler
-    };
-}
-
 RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
 {
     this->m_hasExitedSafely = true;

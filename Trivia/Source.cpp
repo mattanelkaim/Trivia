@@ -33,7 +33,7 @@ static void createDummyRooms()
         .status = RoomStatus::CLOSED
     });
 
-    RoomManager::getInstance().createRoom("mattan", {
+    RoomManager::getInstance().createRoom("mattanigger", {
         .name = "Room3",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 200,
