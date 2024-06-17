@@ -70,12 +70,39 @@
                 FontSize="25">
         </Button>
 
+        <TextBlock Text="Room Admin"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Margin="0,183,127,0"
+                   Padding="5,0"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"
+                   Width="55"
+                   FontFamily="{StaticResource Babapro}"
+                   Background="AliceBlue"
+                   FontSize="12">
+            <TextBlock.RenderTransform>
+                <RotateTransform Angle="11"/>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+
+
         <Grid>
+            <Border Width="100"
+                    Style="{StaticResource Box1}"
+                    Margin="0,110,75,0"
+                    HorizontalAlignment="Right">
+                <Border.RenderTransform>
+                    <RotateTransform Angle="10"/>
+                </Border.RenderTransform>
+                <TextBlock Name="nameAdmin"
+                           Style="{StaticResource Row1}"/>
+            </Border>
             <!--Row 1-->
 
             <Border Width="120"
-                Style="{StaticResource Box1}"
-                Margin="35,390,0,0">
+                    Style="{StaticResource Box1}"
+                    Margin="35,390,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-20"/>
                 </Border.RenderTransform>
@@ -84,8 +111,8 @@
             </Border>
 
             <Border Width="80"
-                Style="{StaticResource Box1}"
-                Margin="195,330,0,0">
+                    Style="{StaticResource Box1}"
+                    Margin="195,330,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-18"/>
                 </Border.RenderTransform>
@@ -94,8 +121,8 @@
             </Border>
 
             <Border Width="70"
-                Style="{StaticResource Box1}"
-                Margin="320,285,0,0">
+                    Style="{StaticResource Box1}"
+                    Margin="320,285,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-17"/>
                 </Border.RenderTransform>
@@ -104,8 +131,8 @@
             </Border>
 
             <Border Width="65"
-                Style="{StaticResource Box1}"
-                Margin="410,254,0,0">
+                    Style="{StaticResource Box1}"
+                    Margin="410,254,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-15"/>
                 </Border.RenderTransform>
@@ -116,8 +143,8 @@
             <!--Row 2-->
 
             <Border Width="52"
-                Style="{StaticResource Box2}"
-                Margin="-2,218,0,0">
+                    Style="{StaticResource Box2}"
+                    Margin="-2,218,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-12"/>
                 </Border.RenderTransform>
@@ -126,8 +153,8 @@
             </Border>
 
             <Border Width="65"
-                Style="{StaticResource Box2}"
-                Margin="65,205,0,0">
+                    Style="{StaticResource Box2}"
+                    Margin="65,205,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-11"/>
                 </Border.RenderTransform>
@@ -136,8 +163,8 @@
             </Border>
 
             <Border Width="60"
-                Style="{StaticResource Box2}"
-                Margin="140,190,0,0">
+                    Style="{StaticResource Box2}"
+                    Margin="140,190,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-11"/>
                 </Border.RenderTransform>
@@ -146,8 +173,8 @@
             </Border>
 
             <Border Width="55"
-                Style="{StaticResource Box2}"
-                Margin="222,179,0,0">
+                    Style="{StaticResource Box2}"
+                    Margin="222,179,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-10"/>
                 </Border.RenderTransform>
@@ -156,8 +183,8 @@
             </Border>
 
             <Border Width="50"
-                Style="{StaticResource Box2}"
-                Margin="291,167,0,0">
+                    Style="{StaticResource Box2}"
+                    Margin="291,167,0,0">
                 <Border.RenderTransform>
                     <RotateTransform Angle="-10"/>
                 </Border.RenderTransform>
