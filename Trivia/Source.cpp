@@ -36,7 +36,7 @@ static void createDummyRooms()
     RoomManager::getInstance().createRoom("mattan", {
         .name = "Room3",
         .id = RoomManager::getNextRoomId(),
-        .maxPlayers = 5,
+        .maxPlayers = 200,
         .numOfQuestionsInGame = 10,
         .timePerQuestion = 20,
         .status = RoomStatus::OPEN
