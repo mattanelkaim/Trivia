@@ -18,7 +18,7 @@ namespace ClientGUI
     {
 #region protocolHelper
 
-#if false // to debug
+#if true// to debug
     public static void DEBUG_SHOW(string message) { _ = MessageBox.Show(message); }
 #else
     public static void DEBUG_SHOW(string message) {}
