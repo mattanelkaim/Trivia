@@ -40,8 +40,23 @@ namespace ClientGUI
         {
             InitializeComponent();
             this.DataContext = this;
-            RoomsData = FetchRoomsFromDB();            
-            ShowRooms();
+            RoomsData = FetchRoomsFromDB();
+            
+            Thread requestThread = new(ContinuouslyUpdateRooms)
+            {
+                IsBackground = true
+            };
+            requestThread.Start();
+        }
+
+        private void ContinuouslyUpdateRooms()
+        {
+            while (true)
+            {
+                this.Dispatcher.Invoke(this.ClearRooms);
+                this.Dispatcher.Invoke(this.ShowRooms);
+                Thread.Sleep(3000);
+            }
         }
 
         public static Dictionary<string, Room> FetchRoomsFromDB()
@@ -82,7 +97,12 @@ namespace ClientGUI
                 roomRow.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
             }
         }
-        
+
+        private void ClearRooms()
+        {
+            this.RoomsStackPanel.Children.Clear();
+        }
+
         private void ShowRooms()
         {
             foreach ((string id, Room room) in RoomsData)
