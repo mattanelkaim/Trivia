@@ -15,9 +15,16 @@
 #include <iostream>
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) :
-    IRoomRequestHandler(std::move(user), std::move(room))
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room& room) :
+    IRoomRequestHandler(std::move(user), room),
+    m_hasExitedSafely(false)
 {}
+
+RoomAdminRequestHandler::~RoomAdminRequestHandler() noexcept
+{
+    if (!this->m_hasExitedSafely)
+        this->closeRoomRequest();
+}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
@@ -73,8 +80,12 @@ RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
     };
 }
 
-RequestResult RoomAdminRequestHandler::startRoomRequest() const noexcept
+RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
 {
+    this->m_hasExitedSafely = true;
+
+    this->m_room.updateRoomState(RoomStatus::CLOSED);
+
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
         .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
@@ -83,6 +94,8 @@ RequestResult RoomAdminRequestHandler::startRoomRequest() const noexcept
 
 RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
 {
+    this->m_hasExitedSafely = true;
+
     const uint32_t roomId = this->m_room.getData().id;
 
     // Remove all users from the room

@@ -8,7 +8,8 @@
 class RoomMemberRequestHandler final : public IRoomRequestHandler
 {
 public:
-	RoomMemberRequestHandler(LoggedUser user, Room room);
+	RoomMemberRequestHandler(LoggedUser user, Room& room);
+	~RoomMemberRequestHandler() noexcept override;
 
 	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& requestInfo) noexcept override;
