@@ -76,7 +76,7 @@ RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
 {
     return RequestResult{
         .response = this->getSerializedRoomState(), // IRoomRequestHandler
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
+        .newHandler = nullptr // Keep the handler
     };
 }
 
@@ -88,7 +88,7 @@ RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
+        .newHandler = nullptr // Keep the handler
     };
 }
 

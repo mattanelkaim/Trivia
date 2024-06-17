@@ -63,7 +63,7 @@ RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
 {
     return RequestResult{
         .response = this->getSerializedRoomState(), // IRoomRequestHandler
-        .newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, m_room)
+        .newHandler = nullptr // Keep the handler
     };
 }
 
