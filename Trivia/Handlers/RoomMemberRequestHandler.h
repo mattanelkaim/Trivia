@@ -2,6 +2,7 @@
 
 #include "IRoomRequestHandler.h"
 #include "LoggedUser.h"
+#include "Room.h"
 #include "ServerDefinitions.h"
 
 class RoomMemberRequestHandler final : public IRoomRequestHandler
