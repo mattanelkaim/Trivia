@@ -37,18 +37,22 @@ namespace ClientGUI
         public WaitingRoomPage(JoinRoomPage.Room rawRoom)
         {
             InitializeComponent();
-            isRunning = true;
-            requestThread = new Thread(SendRequest);
-            requestThread.Start();
 
             this.previousData = new RoomData
             {
                 hasGameBegun = (rawRoom.state == (int)Helper.RoomStatus.IN_GAME),
-                playersInRoom = ["Gil", "Mattan", "Herbert", "Peter", "Joe", "Lois", "Stewie", "Chris", "Meg"], // Empty list
+                playersInRoom = [], // Empty list
                 questionCount = rawRoom.questionCount,
                 questionTimeout = rawRoom.questionTimeout,
                 state = rawRoom.state
             };
+
+            isRunning = true;
+            requestThread = new Thread(SendRequest)
+            {
+                IsBackground = true
+            };
+            requestThread.Start();
         }
 
         private void SendRequest()
@@ -93,8 +97,10 @@ namespace ClientGUI
             }
         }
 
-        private void DrawPlayers()
+        private void UpdatePlayers()
         {
+            this.ClearPlayers();
+
             string[] players = [.. this.previousData.playersInRoom]; // Convert list to array
             int i = 0;
 
@@ -135,10 +141,23 @@ namespace ClientGUI
             this.name9.Visibility = Visibility.Visible;
         }
 
+        private void ClearPlayers()
+        {
+            this.name1.Visibility = Visibility.Hidden;
+            this.name2.Visibility = Visibility.Hidden;
+            this.name3.Visibility = Visibility.Hidden;
+            this.name4.Visibility = Visibility.Hidden;
+            this.name5.Visibility = Visibility.Hidden;
+            this.name6.Visibility = Visibility.Hidden;
+            this.name7.Visibility = Visibility.Hidden;
+            this.name8.Visibility = Visibility.Hidden;
+            this.name9.Visibility = Visibility.Hidden;
+        }
+
         private void RefreshRoomData(RoomData newData)
         {
             this.previousData = newData;
-            this.DrawPlayers();
+            this.UpdatePlayers();
         }
 
         private void LeaveRoom_Click(object sender, RoutedEventArgs? e)
