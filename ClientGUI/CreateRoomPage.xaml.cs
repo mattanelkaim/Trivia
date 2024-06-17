@@ -62,7 +62,11 @@ namespace ClientGUI
             switch (responseCode)
             {
                 case Helper.ResponseType.OK:
-                    this.NavigationService.Navigate(new AdminWaitingRoom());
+                    this.NavigationService.Navigate(new AdminWaitingRoom(new JoinRoomPage.Room {name = this.RoomName, maxPlayers=UInt32.Parse(this.MaxPlayers),
+                                                                                                questionCount = UInt32.Parse(this.QuestionCount),
+                                                                                                questionTimeout = UInt32.Parse(this.QuestionTimeout),
+                                                                                                state = (int)Helper.RoomStatus.OPEN
+                    }));
                     break;
                 default:
                     MessageBox.Show("Cannot create room!");

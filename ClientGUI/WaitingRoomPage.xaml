@@ -98,6 +98,7 @@
                 <TextBlock Name="nameAdmin"
                            Style="{StaticResource Row1}"/>
             </Border>
+            
             <!--Row 1-->
 
             <Border Width="120"

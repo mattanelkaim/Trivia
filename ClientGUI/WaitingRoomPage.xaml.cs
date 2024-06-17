@@ -49,14 +49,14 @@ namespace ClientGUI
             };
 
             isRunning = true;
-            requestThread = new Thread(SendRequest)
+            requestThread = new Thread(GetState)
             {
                 IsBackground = true
             };
             requestThread.Start();
         }
 
-        private void SendRequest()
+        private void GetState()
         {
             while (isRunning)
             {
