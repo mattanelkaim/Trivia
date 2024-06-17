@@ -1,6 +1,5 @@
 #include "Communicator.h"
 #include "Helper.h"
-#include "IDatabase.h"
 #include "JsonResponseSerializer.h"
 #include "LoginRequestHandler.h"
 #include "ServerDefinitions.h"
@@ -10,19 +9,18 @@
 #include <format>
 #include <inaddr.h> // s_addr macro
 #include <iostream>
-#include <memory>
-#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <utility> // std::exchange
+#include <vector>
+#include <winerror.h>
 #include <WinSock2.h>
 
 using std::to_string;
 
 
-Communicator::Communicator(IDatabase* db) :
-    m_handlerFactory(RequestHandlerFactory::getInstance(db)),
+Communicator::Communicator() :
     m_serverSocket(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))
 {
     if (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(this->m_serverSocket == INVALID_SOCKET))
@@ -31,13 +29,11 @@ Communicator::Communicator(IDatabase* db) :
     this->bindAndListen();
 }
 
-Communicator::~Communicator() noexcept
+Communicator::~Communicator()
 {
-    for (auto& [client, handler] : this->m_clients)
-    {
-        this->disconnectClient(client);
-        delete handler;
-    }
+    // Close server socket
+    if (this->m_serverSocket != INVALID_SOCKET)
+        closesocket(this->m_serverSocket);
 }
 
 void Communicator::bindAndListen() const
@@ -68,11 +64,17 @@ void Communicator::startHandleRequests()
             // The process will not continue until a client connects to the server
             const SOCKET clientSocket = accept(m_serverSocket, nullptr, nullptr);
             if (clientSocket == INVALID_SOCKET)
+            {
+                if (WSAGetLastError() == WSAEINTR)
+                    return; // Abort if interrupted by requestStop()
+
+                // Else, throw exception to continue control flow
                 throw std::runtime_error(std::format("{}  - accept() err: ", __FUNCTION__) + to_string(WSAGetLastError()));
+            }
 
             std::cout << ANSI_GREEN << "Client accepted (" << clientSocket << ")\n" << ANSI_NORMAL;
             // Add client with LoginRequestHandler to map
-            this->m_clients.emplace(clientSocket, new LoginRequestHandler(this->m_handlerFactory));
+            this->m_clients.emplace(clientSocket, new LoginRequestHandler);
 
             // The function that handles the conversation with the client
             std::thread handlerThread(&Communicator::handleNewClient, this, clientSocket);
@@ -81,13 +83,13 @@ void Communicator::startHandleRequests()
     }
     catch (const std::exception& e)
     {
-        std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
     }
 }
 
 void Communicator::handleNewClient(const SOCKET clientSocket)
 {
-    while (true)
+    while (this->m_clients.contains(clientSocket))
     {
         try
         {
@@ -101,7 +103,7 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
                                       .buffer{std::from_range, std::move(msg)}}; // String to vector
 
             // Get current handler from clients map
-            IRequestHandler*& handler = this->m_clients.at(clientSocket);
+            IRequestHandler*& handler = this->m_clients.at(clientSocket); // Must be a reference to exchange later
 
             // Handle request if valid
             if (handler != nullptr && handler->isRequestRelevant(request)) [[likely]]
@@ -123,16 +125,20 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
                 std::cout << "Operation NOT successful\n\n";
             }
         }
+        catch (const ABORT_FLAG)
+        {
+            return; // Simply abort the thread
+        }
         catch (const ServerException& e)
         {
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
             this->disconnectClient(clientSocket);
             std::cout << ANSI_BLUE << "Disconnected client socket " << clientSocket << "\n\n" << ANSI_NORMAL;
             return; // No need to handle disconnected client
         }
         catch (const std::exception& e)
         {
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
         }
     }
 }
@@ -154,15 +160,33 @@ void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
         delete client->second; // Delete handler
         this->m_clients.erase(clientSocket);
     }
+
+    closesocket(clientSocket);
+}
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
+void Communicator::disconnectAllClients() noexcept
+{
+    // IMPORTANT to backup the keys to a new vector, because we are deleting from the map!
+    std::vector<SOCKET> disconnectedClients;
+    disconnectedClients.reserve(this->m_clients.size());
+
+    // Back up the client sockets
+    for (const auto& client : this->m_clients)
+    {
+        disconnectedClients.push_back(client.first);
+    }
+
+    // Disconnect all clients
+    for (const auto& clientSocket : std::move(disconnectedClients))
+    {
+        this->disconnectClient(clientSocket);
+    }
 }
 
 // Singleton
-Communicator* Communicator::getInstance(IDatabase* db)
+Communicator& Communicator::getInstance()
 {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_Communicator == nullptr) [[unlikely]]
-    {
-        m_Communicator = std::unique_ptr<Communicator>(new Communicator(db));
-    }
-    return m_Communicator.get();
+    static Communicator instance; // This is thread-safe in C++11 and later
+    return instance;
 }

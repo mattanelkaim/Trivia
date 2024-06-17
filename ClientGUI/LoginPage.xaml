@@ -189,7 +189,9 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Cursor="Hand"
-                    Click="JoinLink_Click"/>
+                    Click="JoinLink_Click"
+                    MouseEnter="Button_MouseEnter"
+                    MouseLeave="Button_MouseLeave"/>
         </StackPanel>
     </Grid>
 </Page>

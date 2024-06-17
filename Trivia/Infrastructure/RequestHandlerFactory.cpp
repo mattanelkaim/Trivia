@@ -1,51 +1,23 @@
-#include "IDatabase.h"
-#include "LoginManager.h"
-#include "LoginRequestHandler.h"
+#include "LoggedUser.h"
+#include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "RoomManager.h"
-#include "StatisticsManager.h"
+#include "Room.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
+#include <utility> // std::move
 
-
-RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) :
-    m_database(db),
-    m_loginManager(LoginManager::getInstance(db)), // Might throw
-    m_roomManager(RoomManager::getInstance()), //...
-    m_statisticsManager(StatisticsManager::getInstance(db)) //...
-{}
 
 MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
 {
-    return new MenuRequestHandler(this->m_database, user);
+    return new MenuRequestHandler(user);
 }
 
-LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& user, Room room)
 {
-    return new LoginRequestHandler(this);
+    return new RoomAdminRequestHandler(user, std::move(room));
 }
 
-LoginManager* RequestHandlerFactory::getLoginManager() noexcept
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& user, Room room)
 {
-    return this->m_loginManager;
+    return new RoomMemberRequestHandler(user, std::move(room));
 }
-
-StatisticsManager* RequestHandlerFactory::getStatisticsManager() noexcept
-{
-    return this->m_statisticsManager;
-}
-
-RoomManager* RequestHandlerFactory::getRoomManager() noexcept
-{
-    return this->m_roomManager;
-}
-
-// Singleton
-RequestHandlerFactory* RequestHandlerFactory::getInstance(IDatabase* db)
-{
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_HandlerFactory == nullptr) [[unlikely]]
-    {
-        m_HandlerFactory = std::unique_ptr<RequestHandlerFactory>(new RequestHandlerFactory(db));
-    }
-    return m_HandlerFactory.get();
-}
-

@@ -1,38 +1,29 @@
-#include "IDatabase.h"
+#include "SqliteDatabase.h"
 #include "StatisticsManager.h"
-#include <memory>
-#include <mutex>
+#include <map>
 #include <string>
 #include <vector>
 
 
-StatisticsManager::StatisticsManager(IDatabase* db) noexcept :
-    m_database(db)
-{}
-
-std::map<std::string, double> StatisticsManager::getHighScore() const
+std::map<std::string, double> StatisticsManager::getHighScore()
 {
-    return m_database->getHighScores();
+    return SqliteDatabase::getInstance().getHighScores();
 }
 
-std::vector<std::string> StatisticsManager::getUserStatistics(const std::string& username) const
+std::vector<std::string> StatisticsManager::getUserStatistics(const std::string& username)
 {
     return // Returns an rvalue literal
     {
-        std::to_string(m_database->getPlayerScore(username)),
-        std::to_string(m_database->getNumOfPlayerGames(username)),
-        std::to_string(m_database->getNumOfTotalAnswers(username)),
-        std::to_string(m_database->getNumOfCorrectAnswers(username))
+        std::to_string(SqliteDatabase::getInstance().getPlayerScore(username)),
+        std::to_string(SqliteDatabase::getInstance().getNumOfPlayerGames(username)),
+        std::to_string(SqliteDatabase::getInstance().getNumOfTotalAnswers(username)),
+        std::to_string(SqliteDatabase::getInstance().getNumOfCorrectAnswers(username))
     };
 }
 
 // Singleton
-StatisticsManager* StatisticsManager::getInstance(IDatabase* db)
+StatisticsManager& StatisticsManager::getInstance() noexcept
 {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_StatisticsManager == nullptr) [[unlikely]]
-    {
-        m_StatisticsManager = std::unique_ptr<StatisticsManager>(new StatisticsManager(db));
-    }
-    return m_StatisticsManager.get();
+    static StatisticsManager instance; // This is thread-safe in C++11 and later
+    return instance;
 }

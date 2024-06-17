@@ -27,25 +27,24 @@ namespace ClientGUI
     {
         public struct Room
         {
-            public int maxPlayers { get; set; }
             public string name { get; set; }
+            public int maxPlayers { get; set; }
             public int questionCount { get; set; }
             public int questionTimeout { get; set; }
-            public int status { get; set; }
+            public int state { get; set; }
         }
 
-        private Dictionary<string, Room>? rooms;
-        StackPanel roomsStackPanel { get; set; }
+        private Dictionary<string, Room> RoomsData;
 
         public JoinRoomPage()
         {
             InitializeComponent();
             this.DataContext = this;
-            rooms = FetchRoomsFromDB();
-            showRooms();
+            RoomsData = FetchRoomsFromDB();            
+            ShowRooms();
         }
 
-        public static Dictionary<string, Room>? FetchRoomsFromDB()
+        public static Dictionary<string, Room> FetchRoomsFromDB()
         {
             return Helper.SendGetRoomsRequest();
         }
@@ -53,6 +52,23 @@ namespace ClientGUI
         private void HomeButton_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new MenuPage());
+        }
+
+        private void JoinRoom(object sender, RoutedEventArgs? e)
+        {
+            string id = ((Button)sender).Name.Substring(6); // Remove "button" from the name
+            Helper.ResponseType status = Helper.SendJoinRoomRequest(id); // Button name is the room id
+
+            switch (status)
+            {
+                case Helper.ResponseType.OK:
+                    MessageBox.Show("Joined room successfully! (GamePage not implemented yet)");
+                    //TODO this.NavigationService.Navigate(new GamePage());
+                    break;
+                default:
+                    MessageBox.Show("Cannot join room!");
+                    break;
+            }
         }
 
         private void HighlightRoom_Hover(object sender, MouseEventArgs e)
@@ -68,9 +84,9 @@ namespace ClientGUI
             }
         }
         
-        private void showRooms()
+        private void ShowRooms()
         {
-            foreach ((string id, Room room) in rooms)
+            foreach ((string id, Room room) in RoomsData)
             {
                 // Adding all properties to the grid to match the xaml reference
                 Grid roomGrid = new()
@@ -98,13 +114,14 @@ namespace ClientGUI
                 {
                     Width = 25,                    
                     VerticalAlignment = VerticalAlignment.Center,
-                    Source = new BitmapImage(new Uri(room.status == (int)Helper.RoomStatus.OPEN ? "Images/White/enter.png" : "Images/White/closed.png", UriKind.Relative))
                 };
 
-                if (room.status == (int)Helper.RoomStatus.OPEN)
+                if (room.state == (int)RoomStatus.OPEN)
                 {
+                    image.Source = new BitmapImage(new Uri("Images/White/enter.png", UriKind.Relative));
                     Button button = new()
                     {
+                        Name = "button" + id, // Affects JoinRoom()
                         BorderThickness = new Thickness(0),
                         BorderBrush = new SolidColorBrush(Colors.Transparent),
                         Background = new SolidColorBrush(Colors.Transparent),
@@ -113,12 +130,15 @@ namespace ClientGUI
                         Foreground = new SolidColorBrush(Colors.Transparent),
                         Content = image
                     };
-                    
+
+                    button.Click += JoinRoom;
+
                     Helper.RemoveButtonHighlighting(button);
                     roomGrid.Children.Add(button);
                 }
                 else
                 {
+                    image.Source = new BitmapImage(new Uri("Images/White/closed.png", UriKind.Relative));
                     image.ToolTip = "Too late to enter...";
                     image.Cursor = Cursors.Help;
                     roomGrid.Children.Add(image);

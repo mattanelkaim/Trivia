@@ -210,7 +210,9 @@
                     Foreground="DarkOrange"
                     Background="Transparent"
                     Cursor="Hand"
-                    Click="LoginLink_Click"/>
+                    Click="LoginLink_Click"
+                    MouseEnter="Button_MouseEnter"
+                    MouseLeave="Button_MouseLeave"/>
         </StackPanel>
     </Grid>
 </Page>
