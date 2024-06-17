@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -31,6 +33,10 @@ namespace ClientGUI
             Helper.RemoveButtonHighlighting(LogoutButton);
         }
 
+        /*---------------------------------------
+                       NAVIGATION
+         *-------------------------------------*/
+
         private void CreateRoom_Click(object sender, RoutedEventArgs? e)
         {
             this.NavigationService.Navigate(new CreateRoomPage());
@@ -49,6 +55,20 @@ namespace ClientGUI
         private void ViewLeaderboard_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new ScoreboardPage()); // TODO remove comment @MattanElkaim // TODO remove the previous comment @Gil-Yelkin
+        }
+
+        /*---------------------------------------
+                       OTHER EVENTS
+        *--------------------------------------*/
+
+        private void Button_MouseEnter(object sender, MouseEventArgs? e)
+        {
+            Helper.ButtonGotHoverEffect((Button)sender);
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs? e)
+        {
+            Helper.ButtonLostHoverEffect((Button)sender);
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)

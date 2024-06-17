@@ -89,6 +89,18 @@
     <ClInclude Include="Other\InvalidSQL.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="Handlers\RoomAdminRequestHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Handlers\RoomMemberRequestHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Handlers\IRoomRequestHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Other\NotFoundException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Infrastructure\Communicator.cpp">
@@ -143,6 +155,18 @@
       <Filter>Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="Other\InvalidSQL.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Handlers\RoomAdminRequestHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Handlers\RoomMemberRequestHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Handlers\IRoomRequestHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Other\NotFoundException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
