@@ -32,17 +32,20 @@ namespace ClientGUI
             public uint questionCount { get; set; }
             public uint questionTimeout { get; set; }
             public int state { get; set; }
-        }
+        }        
 
         private Dictionary<string, Room> RoomsData;
+
+        private Thread requestThread;
+        private bool isThreadRunning = true;
 
         public JoinRoomPage()
         {
             InitializeComponent();
             this.DataContext = this;
             RoomsData = FetchRoomsFromDB();
-            
-            Thread requestThread = new(ContinuouslyUpdateRooms)
+                        
+            requestThread = new(ContinuouslyUpdateRooms)
             {
                 IsBackground = true
             };
@@ -51,7 +54,7 @@ namespace ClientGUI
 
         private void ContinuouslyUpdateRooms()
         {
-            while (true)
+            while (isThreadRunning)
             {
                 this.Dispatcher.Invoke(this.ClearRooms);
                 this.Dispatcher.Invoke(this.ShowRooms);
@@ -77,6 +80,7 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
+                    isThreadRunning = false;
                     this.NavigationService.Navigate(new WaitingRoomPage(RoomsData[id]));
                     break;
                 default:
