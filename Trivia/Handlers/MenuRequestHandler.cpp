@@ -62,15 +62,15 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
             //break;
 
         case GET_HIGHSCORE:
-            return this->getHighScore();
+            return MenuRequestHandler::getHighScore();
             //break;
 
         case GET_ROOMS:
-            return this->getRooms();
+            return MenuRequestHandler::getRooms();
             //break;
 
         case GET_PLAYERS_IN_ROOM:
-            return this->getPlayersInRoom(info);
+            return MenuRequestHandler::getPlayersInRoom(info);
             //break;
 
         case CREATE_ROOM:
@@ -115,7 +115,7 @@ RequestResult MenuRequestHandler::getPersonalStats() const
     };
 }
 
-RequestResult MenuRequestHandler::getHighScore() const
+RequestResult MenuRequestHandler::getHighScore()
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{{OK}, StatisticsManager::getHighScore()}),
@@ -123,7 +123,7 @@ RequestResult MenuRequestHandler::getHighScore() const
     };
 }
 
-RequestResult MenuRequestHandler::getRooms() const noexcept
+RequestResult MenuRequestHandler::getRooms() noexcept
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{{OK}, RoomManager::getInstance().getRooms()}),
@@ -131,7 +131,7 @@ RequestResult MenuRequestHandler::getRooms() const noexcept
     };
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) const
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info)
 {
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<GetPlayersInRoomRequest>(info.buffer).roomId;
 
