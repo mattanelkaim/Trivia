@@ -20,7 +20,7 @@ public:
 	IRoomRequestHandler operator=(const IRoomRequestHandler& other) = delete;
 
 protected:
-	buffer getSerializedRoomState() const noexcept;
+	RequestResult getRoomState() noexcept;
 
 	Room& m_room;
 	const LoggedUser m_user;
