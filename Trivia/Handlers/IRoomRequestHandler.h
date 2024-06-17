@@ -8,7 +8,7 @@
 class IRoomRequestHandler : public IRequestHandler
 {
 public:
-	IRoomRequestHandler(LoggedUser user, Room room);
+	IRoomRequestHandler(LoggedUser user, Room& room);
 
 	inline bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& info) override = 0;
@@ -22,6 +22,6 @@ public:
 protected:
 	buffer getSerializedRoomState() const noexcept;
 
-	Room m_room;
+	Room& m_room;
 	const LoggedUser m_user;
 };

@@ -8,8 +8,8 @@
 #include <utility> // std::move
 
 
-IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room room) :
-    m_room(std::move(room)),
+IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room& room) :
+    m_room(room),
     m_user(std::move(user))
 {}
 

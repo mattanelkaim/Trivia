@@ -14,9 +14,14 @@
 #endif
 
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) :
-    IRoomRequestHandler(std::move(user), std::move(room))
+RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room& room) :
+    IRoomRequestHandler(std::move(user), room)
 {}
+
+RoomMemberRequestHandler::~RoomMemberRequestHandler() noexcept
+{
+    this->m_room.removeUser(this->m_user);
+}
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
