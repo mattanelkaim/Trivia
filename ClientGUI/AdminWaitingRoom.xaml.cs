@@ -169,6 +169,7 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
+                    isRunning = false;
                     this.NavigationService.Navigate(new MenuPage());
                     break;
                 default:
