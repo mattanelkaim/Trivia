@@ -13,10 +13,10 @@ public:
     ############# CONSTRUCTORS #############
     ######################################*/
 
-    Question() noexcept = default;
+    Question() = delete;
 
     /**
-    * Constructs a new Question object.
+    * Constructs a new Question object. Also shuffles the answers.
     * @param question The question text.
     * @param answers A vector of possible answers. The correct answer should be the first one in the vector.
     */
@@ -38,7 +38,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    const std::string m_question;
-    const std::vector<std::string> m_possibleAnswers;
+    std::string m_question;
+    std::vector<std::string> m_possibleAnswers;
     uint8_t m_correctAnswerId;
 };
