@@ -33,10 +33,12 @@ private:
     ########### PRIVATE METHODS ############
     ######################################*/
 
-    RequestResult getQuestion(const RequestInfo& info) noexcept;
-    RequestResult submitAnswer(const RequestInfo& info) noexcept;
-    RequestResult getGameResults(const RequestInfo& info) noexcept;
+    RequestResult getQuestion() noexcept;
+    RequestResult getGameResults() noexcept;
     RequestResult leaveGame() noexcept;
+
+    // @throws InvalidProtocolStructure
+    RequestResult submitAnswer(const RequestInfo& info);
 
     /*######################################
     ################ MEMBERS ###############
