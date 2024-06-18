@@ -9,7 +9,7 @@
 class RoomAdminRequestHandler final : public IRoomRequestHandler
 {
 public:
-	RoomAdminRequestHandler(LoggedUser user, std::unique_ptr<Room>& room);
+	RoomAdminRequestHandler(LoggedUser user, safe_room& room);
 	~RoomAdminRequestHandler() noexcept override;
 
 	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;

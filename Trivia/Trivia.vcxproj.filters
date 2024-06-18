@@ -101,6 +101,9 @@
     <ClInclude Include="Other\NotFoundException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="Infrastructure\SafeRoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Infrastructure\Communicator.cpp">
@@ -168,6 +171,9 @@
     </ClCompile>
     <ClCompile Include="Other\NotFoundException.cpp">
       <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Infrastructure\SafeRoom.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

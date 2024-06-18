@@ -2,14 +2,14 @@
 
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
-#include "Room.h"
+#include "../Infrastructure/SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <memory>
 
 class IRoomRequestHandler : public IRequestHandler
 {
 public:
-	IRoomRequestHandler(LoggedUser user, std::unique_ptr<Room>& room);
+	IRoomRequestHandler(LoggedUser user, safe_room& room);
 
 	inline bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& info) override = 0;
@@ -23,6 +23,6 @@ public:
 protected:
 	virtual RequestResult getRoomState() noexcept;
 
-	std::unique_ptr<Room>& m_room;
+	safe_room& m_room;
 	const LoggedUser m_user;
 };
