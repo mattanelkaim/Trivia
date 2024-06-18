@@ -9,13 +9,14 @@
 #include "RoomManager.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
+#include "memory"
 #include <cstdint>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include <iostream>
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room& room) :
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, std::unique_ptr<Room>& room) :
     IRoomRequestHandler(std::move(user), room),
     m_hasExitedSafely(false)
 {}
@@ -76,7 +77,7 @@ RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
 {
     this->m_hasExitedSafely = true;
 
-    this->m_room.updateRoomState(RoomStatus::CLOSED);
+    this->m_room->updateRoomState(RoomStatus::CLOSED);
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
@@ -84,21 +85,15 @@ RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
     };
 }
 
-RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
+RequestResult RoomAdminRequestHandler::closeRoomRequest() noexcept
 {
     this->m_hasExitedSafely = true;
 
-    const uint32_t roomId = this->m_room.getData().id;
-
-    // Remove all users from the room
-    for (const LoggedUser& user : this->m_room.getAllUsers())
-    {
-        // m_room better be in the vector of RoomManager, otherwise it will crash
-        this->m_room.removeUser(user); // Removing each user from the room
-    }
+    const uint32_t roomId = this->m_room->getData().id;
 
     // Delete the room
     RoomManager::getInstance().deleteRoom(roomId);
+    this->m_room.reset();
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CloseRoomResponse{OK}),
