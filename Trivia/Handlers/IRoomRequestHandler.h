@@ -2,15 +2,15 @@
 
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
-#include "Room.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 
 class IRoomRequestHandler : public IRequestHandler
 {
 public:
-	IRoomRequestHandler(LoggedUser user, Room room);
+	IRoomRequestHandler(LoggedUser user, safe_room& room) noexcept;
 
-	inline bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
+	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& info) override = 0;
 
 	/*######################################
@@ -20,8 +20,8 @@ public:
 	IRoomRequestHandler operator=(const IRoomRequestHandler& other) = delete;
 
 protected:
-	buffer getSerializedRoomState() const noexcept;
+	virtual RequestResult getRoomState() noexcept;
 
-	Room m_room;
+	safe_room& m_room;
 	const LoggedUser m_user;
 };

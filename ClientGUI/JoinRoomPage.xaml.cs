@@ -28,20 +28,38 @@ namespace ClientGUI
         public struct Room
         {
             public string name { get; set; }
-            public int maxPlayers { get; set; }
-            public int questionCount { get; set; }
-            public int questionTimeout { get; set; }
+            public uint maxPlayers { get; set; }
+            public uint questionCount { get; set; }
+            public uint questionTimeout { get; set; }
             public int state { get; set; }
-        }
+        }        
 
         private Dictionary<string, Room> RoomsData;
+
+        private Thread requestThread;
+        private bool isThreadRunning = true;
 
         public JoinRoomPage()
         {
             InitializeComponent();
-            this.DataContext = this;
-            RoomsData = FetchRoomsFromDB();            
-            ShowRooms();
+            this.DataContext = this;            
+                        
+            requestThread = new(ContinuouslyUpdateRooms)
+            {
+                IsBackground = true
+            };
+            requestThread.Start();
+        }
+
+        private void ContinuouslyUpdateRooms()
+        {            
+            while (isThreadRunning)
+            {
+                this.Dispatcher.Invoke(() => { RoomsData = FetchRoomsFromDB(); });
+                this.Dispatcher.Invoke(this.ClearRooms);
+                this.Dispatcher.Invoke(this.ShowRooms);
+                Thread.Sleep(3000);
+            }
         }
 
         public static Dictionary<string, Room> FetchRoomsFromDB()
@@ -51,6 +69,7 @@ namespace ClientGUI
 
         private void HomeButton_Click(object sender, RoutedEventArgs? e)
         {
+            isThreadRunning = false;
             this.NavigationService.Navigate(new MenuPage());
         }
 
@@ -62,8 +81,8 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
-                    MessageBox.Show("Joined room successfully! (GamePage not implemented yet)");
-                    //TODO this.NavigationService.Navigate(new GamePage());
+                    isThreadRunning = false;
+                    this.NavigationService.Navigate(new WaitingRoomPage(RoomsData[id]));
                     break;
                 default:
                     MessageBox.Show("Cannot join room!");
@@ -83,9 +102,17 @@ namespace ClientGUI
                 roomRow.Background.BeginAnimation(SolidColorBrush.ColorProperty, animation);
             }
         }
-        
+
+        private void ClearRooms()
+        {
+            this.RoomsStackPanel.Children.Clear();
+        }
+
         private void ShowRooms()
         {
+            if (RoomsData.Count == 0) 
+                return;
+
             foreach ((string id, Room room) in RoomsData)
             {
                 // Adding all properties to the grid to match the xaml reference
@@ -128,7 +155,7 @@ namespace ClientGUI
                         ToolTip = "Enter this room!",
                         Cursor = Cursors.Hand,
                         Foreground = new SolidColorBrush(Colors.Transparent),
-                        Content = image
+                        Content = image                        
                     };
 
                     button.Click += JoinRoom;

@@ -15,9 +15,16 @@
 #include <iostream>
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) :
-    IRoomRequestHandler(std::move(user), std::move(room))
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, safe_room& room) :
+    IRoomRequestHandler(std::move(user), room),
+    m_hasExitedSafely(false)
 {}
+
+RoomAdminRequestHandler::~RoomAdminRequestHandler() noexcept
+{
+    if (!this->m_hasExitedSafely)
+        this->closeRoomRequest();
+}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
@@ -60,37 +67,34 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
-            .newHandler = nullptr
+            .newHandler = nullptr // Keep the handler
         };
     }
 }
 
-RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
+RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
 {
-    return RequestResult{
-        .response = this->getSerializedRoomState(), // IRoomRequestHandler
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
-    };
-}
+    this->m_hasExitedSafely = true;
 
-RequestResult RoomAdminRequestHandler::startRoomRequest() const noexcept
-{
+    this->m_room.room.updateRoomState(RoomStatus::CLOSED);
+
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
+        .newHandler = nullptr // Keep the handler
     };
 }
 
-RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
+RequestResult RoomAdminRequestHandler::closeRoomRequest() noexcept
 {
-    const uint32_t roomId = this->m_room.getData().id;
+    this->m_hasExitedSafely = true;
 
-    // Remove all users from the room
-    for (const LoggedUser& user : this->m_room.getAllUsers())
-    {
-        // m_room better be in the vector of RoomManager, otherwise it will crash
-        RoomManager::getInstance().getRoom(roomId).removeUser(user); // Removing each user from the room
-    }
+    const uint32_t roomId = this->m_room.room.getData().id;
+
+    // notify all threads in the room that the room is closing
+    this->m_room.doesRoomExist.store(false);
+
+    // waiting for all members to leave the room before finally deleting it
+    while (this->m_room.numThreadsInRoom.load() != 0) {}
 
     // Delete the room
     RoomManager::getInstance().deleteRoom(roomId);
