@@ -3,12 +3,12 @@
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
-#include "Room.h"
+#include "../Infrastructure/SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <utility> // std::move
 
 
-IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, std::unique_ptr<Room>& room) :
+IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, safe_room& room) :
     m_room(room),
     m_user(std::move(user))
 {}
@@ -20,16 +20,14 @@ bool IRoomRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) cons
 
 RequestResult IRoomRequestHandler::getRoomState() noexcept
 {
-    // checking that the room exists
-
-    const RoomData& room = this->m_room->getData();
+    const RoomData& room = this->m_room.room.getData();
 
     return RequestResult{JsonResponseSerializer::serializeResponse(GetRoomStateResponse
                         { // Cannot use designators cuz status isn't explicitly named in GetRoomStateResponse
                             /*.status =*/ {ResponseCode::OK},
                             /*.state =*/ room.status,
                             /*.hasGameBegun =*/ (room.status == RoomStatus::CLOSED),
-                            /*.players =*/ m_room->getAllUsers(),
+                            /*.players =*/ m_room.room.getAllUsers(),
                             /*.questionCount =*/ room.numOfQuestionsInGame,
                             /*.answerTimeout =*/ room.timePerQuestion
                         }),

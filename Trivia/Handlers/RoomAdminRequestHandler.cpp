@@ -16,7 +16,7 @@
 #include <iostream>
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, std::unique_ptr<Room>& room) :
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, safe_room& room) :
     IRoomRequestHandler(std::move(user), room),
     m_hasExitedSafely(false)
 {}
@@ -77,7 +77,7 @@ RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
 {
     this->m_hasExitedSafely = true;
 
-    this->m_room->updateRoomState(RoomStatus::CLOSED);
+    this->m_room.room.updateRoomState(RoomStatus::CLOSED);
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
@@ -89,11 +89,16 @@ RequestResult RoomAdminRequestHandler::closeRoomRequest() noexcept
 {
     this->m_hasExitedSafely = true;
 
-    const uint32_t roomId = this->m_room->getData().id;
+    const uint32_t roomId = this->m_room.room.getData().id;
+
+    // notify all threads in the room that the room is closing
+    this->m_room.doesRoomExist.store(false);
+
+    // waiting for all members to leave the room before finally deleting it
+    while (this->m_room.numThreadsInRoom.load() != 0) {}
 
     // Delete the room
     RoomManager::getInstance().deleteRoom(roomId);
-    this->m_room.reset();
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CloseRoomResponse{OK}),

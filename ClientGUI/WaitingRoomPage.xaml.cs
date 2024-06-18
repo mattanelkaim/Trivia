@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ClientGUI
 {
@@ -102,7 +103,7 @@ namespace ClientGUI
             catch (Exception) 
             {
                 MessageBox.Show("Room Admin Closed The Room.");
-                this.NavigationService.Navigate(new MenuPage());
+                this.Dispatcher.Invoke(() => this.NavigationService.Navigate(new MenuPage()));
             }
         }
 
