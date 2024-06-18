@@ -164,6 +164,7 @@
     <ClInclude Include="Managers\LoginManager.h" />
     <ClInclude Include="Managers\Question.h" />
     <ClInclude Include="Managers\StatisticsManager.h" />
+    <ClInclude Include="Other\ctre.hpp" />
     <ClInclude Include="Other\Helper.h" />
     <ClInclude Include="Other\InvalidProtocolStructure.h" />
     <ClInclude Include="Other\InvalidSQL.h" />
