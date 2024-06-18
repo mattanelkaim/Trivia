@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LoggedUser.h"
-#include "Room.h"
+#include "../Infrastructure/SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
 #include <unordered_map>
@@ -22,7 +22,7 @@ public:
     * @param data The metadata of the room.
     * @return A reference to the created room.
     */
-    std::unique_ptr<Room>& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
+    safe_room& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
 
     void deleteRoom(uint32_t roomId) noexcept;
 
@@ -42,7 +42,7 @@ public:
     * @return A reference to the room.
     * @throws NotFoundException
     */
-    std::unique_ptr<Room>& getRoom(uint32_t roomId);
+    safe_room& getRoom(uint32_t roomId);
 
     bool doesRoomExist(const std::string& roomName) const noexcept;
     bool isUserInAnyRoom(const LoggedUser& user) const noexcept;
@@ -68,7 +68,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    std::unordered_map<uint32_t, std::unique_ptr<Room>> m_rooms;
+    std::unordered_map<uint32_t, safe_room> m_rooms;
     inline static uint32_t roomIdCounter = 0;
 
     /*######################################

@@ -8,8 +8,8 @@
 #include "MenuRequestHandler.h"
 #include "NotFoundException.h"
 #include "RequestHandlerFactory.h"
-#include "Room.h"
 #include "RoomManager.h"
+#include "../Infrastructure/SafeRoom.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include "StatisticsManager.h"
@@ -137,9 +137,9 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info)
 
     try
     {
-        std::unique_ptr<Room>& room = RoomManager::getInstance().getRoom(roomId);
+        safe_room& room = RoomManager::getInstance().getRoom(roomId);
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room->getAllUsers()}),
+            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.room.getAllUsers()}),
             .newHandler = nullptr // Stay in the menu
         };
     }
@@ -165,7 +165,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     }
 
     // Creating a room as specified in the request buffer
-    std::unique_ptr<Room>& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
+    safe_room& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(), // Generate a unique ID
         .maxPlayers = request.maxUsers,
@@ -187,14 +187,15 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
     ResponseCode responseCode{};
     IRequestHandler* newHandler = nullptr;
     try
-    {
-        std::unique_ptr<Room>& room = RoomManager::getInstance().getRoom(roomId);
+    {       
+        safe_room& safeRoom = RoomManager::getInstance().getRoom(roomId);
 
         // Adding the user to the room specified in the request buffer
-        responseCode = room->addUser(m_user);
-
-        if (responseCode == OK)
-            newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, room);
+        if (safeRoom.doesRoomExist.load() && safeRoom.room.addUser(m_user) == OK)
+        {
+            safeRoom.numThreadsInRoom.store(safeRoom.numThreadsInRoom.load() + 1);
+            newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, safeRoom);
+        }
         else
             newHandler = nullptr; // Retry joining
     }
