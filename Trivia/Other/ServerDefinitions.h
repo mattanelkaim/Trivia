@@ -112,7 +112,7 @@ struct PlayerResults
 //NOLINTBEGIN
 struct GameData
 {
-    Question currentQuestion;
+    std::vector<Question>::const_iterator currentQuestion; // Iterator helps to keep track in the vector of questions
     uint32_t correctAnswerCount;
     uint32_t wrongAnswerCount;
     uint32_t averageAnswerTime;
@@ -143,6 +143,8 @@ enum ResponseCode
     // Join Room
     ROOM_IS_FULL,
     ROOM_IS_NOT_OPEN, // Either closed or in-game
+    // In-game
+    NO_MORE_QUESTIONS,
     // General Errors
     ERR, // ERROR won't compile
     ERR_NOT_FOUND,
