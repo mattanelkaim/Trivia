@@ -336,7 +336,7 @@ struct CreateRoomRequest : Request
 
 struct SubmitAnswerRequest : Request
 {
-    uint32_t answerId;
+    uint8_t answerId;
 };
 
 #pragma endregion
