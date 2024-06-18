@@ -2,27 +2,33 @@
 
 #include "IRoomRequestHandler.h"
 #include "LoggedUser.h"
-#include "Room.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
-#include "memory"
 
 class RoomAdminRequestHandler final : public IRoomRequestHandler
 {
 public:
-	RoomAdminRequestHandler(LoggedUser user, safe_room& room);
-	~RoomAdminRequestHandler() noexcept override;
+    RoomAdminRequestHandler(LoggedUser user, safe_room& room);
+    ~RoomAdminRequestHandler() noexcept override;
+    
+    /*######################################
+    ############ PUBLIC METHODS ############
+    ######################################*/
 
-	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
-	RequestResult handleRequest(const RequestInfo& requestInfo) noexcept override;
+    bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
+    RequestResult handleRequest(const RequestInfo& requestInfo) noexcept override;
 
-	/*######################################
-	#### AVOID SHITTY COMPILER WARNINGS ####
-	######################################*/
+    /*######################################
+    #### AVOID SHITTY COMPILER WARNINGS ####
+    ######################################*/
+    RoomAdminRequestHandler operator=(const RoomAdminRequestHandler& other) = delete;
 
-	RoomAdminRequestHandler operator=(const RoomAdminRequestHandler& other) = delete;
+private:
+    /*######################################
+    ################ MEMBERS ###############
+    ######################################*/
 
-private:	
-	mutable bool m_hasExitedSafely;	
-	RequestResult startRoomRequest() noexcept;
-	RequestResult closeRoomRequest() noexcept;
+    mutable bool m_hasExitedSafely;
+    RequestResult startRoomRequest() noexcept;
+    RequestResult closeRoomRequest() noexcept;
 };

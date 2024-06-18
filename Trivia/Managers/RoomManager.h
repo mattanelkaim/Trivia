@@ -1,15 +1,12 @@
 #pragma once
 
 #include "LoggedUser.h"
-#include "../Infrastructure/SafeRoom.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
-#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <string>
-#include <memory>
 
 class RoomManager final
 {

@@ -9,23 +9,23 @@
 #include "NotFoundException.h"
 #include "RequestHandlerFactory.h"
 #include "RoomManager.h"
-#include "../Infrastructure/SafeRoom.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include "StatisticsManager.h"
+#include <atomic>
 #include <cstdint>
-#include <optional>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include <iostream>
 #endif
 
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser user) :
+MenuRequestHandler::MenuRequestHandler(LoggedUser user) noexcept :
     m_user(std::move(user))
 {}
 
-MenuRequestHandler::~MenuRequestHandler()
+MenuRequestHandler::~MenuRequestHandler() noexcept
 {
     this->logout();
 }
@@ -177,7 +177,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom.value())
+        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom)
     };
 }
 
@@ -188,17 +188,15 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
     ResponseCode responseCode{};
     IRequestHandler* newHandler = nullptr;
     try
-    {       
+    {
         safe_room& safeRoom = RoomManager::getInstance().getRoom(roomId);
 
         // Adding the user to the room specified in the request buffer
         if (safeRoom.doesRoomExist.load() && safeRoom.room.addUser(m_user) == OK)
         {
-            safeRoom.numThreadsInRoom.store(safeRoom.numThreadsInRoom.load() + 1);
+            safeRoom.numThreadsInRoom.store(static_cast<std::atomic_ushort>(safeRoom.numThreadsInRoom.load() + 1));
             newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, safeRoom);
         }
-        else
-            newHandler = nullptr; // Retry joining
     }
     catch (const NotFoundException&) // thrown by getRoom()
     {
