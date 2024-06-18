@@ -126,8 +126,49 @@ buffer JsonResponseSerializer::serializeResponse(const GetRoomStateResponse& res
     return serializeGeneralResponse(ResponseCode::OK, j.dump());
 }
 
+buffer JsonResponseSerializer::serializeResponse(const GetGameResultsResponse& response) noexcept
+{
+    json j{{JsonFields::STATUS, response.status}};
+    json jResults;
+
+    for (const auto& result : response.results)
+    {
+        const json playerResult
+        {
+            {JsonFields::GameResults::CORRECT_ANSWERS, result.correctAnswerCount},
+            {JsonFields::GameResults::WRONG_ANSWERS, result.wrongAnswerCount},
+            {JsonFields::GameResults::AVERAGE_ANSWER_TIME, result.averageAnswerTime}
+        };
+
+        jResults.emplace(result.username, playerResult);
+    }
+
+    j.emplace(JsonFields::GAME_RESULTS, jResults);
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+buffer JsonResponseSerializer::serializeResponse(const SubmitAnswerResponse& response) noexcept
+{
+    const json j{{JsonFields::STATUS, response.status}, {JsonFields::CORRECT_ANSWER_ID, response.correctAnswerId}};
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+buffer JsonResponseSerializer::serializeResponse(const GetQuestionResponse& response) noexcept
+{
+    json j{{JsonFields::STATUS, response.status}, {JsonFields::QUESTION, response.question}};
+
+    json jAnswers;
+    for (const auto& [id, answer] : response.answers)
+        jAnswers.emplace(to_string(id), answer);
+
+    j.emplace(JsonFields::ANSWERS, jAnswers);
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
-buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type, const std::string_view json) noexcept
+constexpr buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type, const std::string_view json) noexcept
 {
     // Directly constructing the buffer for efficiency
     return {

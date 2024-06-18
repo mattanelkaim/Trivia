@@ -1,6 +1,7 @@
 // NOLINTBEGIN
 
 #include <codeanalysis\warnings.h>
+#pragma warning(push)
 #pragma warning(disable : ALL_CODE_ANALYSIS_WARNINGS 4820)
 
 /*
@@ -13378,4 +13379,5 @@ struct fts5_api {
 
 /******** End of fts5.h *********/
 
+#pragma warning(pop)
 // NOLINTEND
