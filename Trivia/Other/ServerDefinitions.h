@@ -272,6 +272,10 @@ enum RequestId
     LEAVE_ROOM,
     CLOSE_ROOM,
     GET_ROOM_STATE,
+    SUBMIT_ANSWER,
+    LEAVE_GAME,
+    GET_QUESTION,
+    GET_GAME_RESULTS,
 };
 
 struct RequestInfo
