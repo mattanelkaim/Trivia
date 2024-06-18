@@ -8,7 +8,6 @@
 #include "NotFoundException.h"
 #include "Question.h"
 #include "RequestHandlerFactory.h"
-#include "RoomManager.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <cstdint>
@@ -78,19 +77,30 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
     }
 }
 
-RequestResult GameRequestHandler::getQuestion() const noexcept
+RequestResult GameRequestHandler::getQuestion() noexcept
 {
-    const Question question = this->m_game.getQuestionForUser(this->m_user);
+    const std::optional<Question> question = this->m_game.getQuestionForUser(this->m_user);
 
+    // If no more questions, return an empty question response
+    if (!question.has_value()) [[unlikely]]
+    {
+        return RequestResult{
+            // Send an empty question and an empty list of answers
+            .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{NO_MORE_QUESTIONS}, "", {}}),
+            .newHandler = nullptr // Stay in the game
+        };
+    }
+
+    // Else extract the possible answers and send the question info
     std::map<uint32_t, std::string> possibleAnswers;
-    for (uint32_t i = 0; const std::string& answer : question.getPossibleAnswers())
+    for (uint32_t i = 0; const std::string& answer : question.value().getPossibleAnswers())
     {
         possibleAnswers[++i] = answer;
     }
 
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{OK}, question.getQuestion(), possibleAnswers}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
+        .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{OK}, question.value().getQuestion(), possibleAnswers}),
+        .newHandler = nullptr // Stay in the game
     };
 }
 

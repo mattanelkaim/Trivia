@@ -5,6 +5,7 @@
 #include "ServerDefinitions.h"
 #include <cstdint>
 #include <map>
+#include <optional>
 #include <vector>
 
 class Game final
@@ -22,8 +23,7 @@ public:
     ############ PUBLIC METHODS ############
     ######################################*/
 
-    Question getQuestionForUser(const LoggedUser& user) const noexcept;
-
+    std::optional<Question> getQuestionForUser(const LoggedUser& user) noexcept;
     std::vector<PlayerResults> getGameResult() const noexcept;
     uint32_t getGameID() const noexcept;
     

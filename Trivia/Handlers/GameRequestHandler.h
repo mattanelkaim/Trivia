@@ -25,7 +25,6 @@ public:
     /*######################################
     #### AVOID SHITTY COMPILER WARNINGS ####
     ######################################*/
-
     GameRequestHandler operator=(const GameRequestHandler& other) = delete;
 
 private:
@@ -33,7 +32,7 @@ private:
     ########### PRIVATE METHODS ############
     ######################################*/
 
-    RequestResult getQuestion() const noexcept;
+    RequestResult getQuestion() noexcept;
     RequestResult getGameResults() const noexcept;
     RequestResult leaveGame() const noexcept;
 
