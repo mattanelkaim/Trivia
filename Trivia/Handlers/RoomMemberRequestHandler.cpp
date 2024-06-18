@@ -6,15 +6,17 @@
 #include "RequestHandlerFactory.h"
 #include "Room.h"
 #include "RoomMemberRequestHandler.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
+#include <atomic>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include <iostream>
 #endif
 
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, safe_room& room) :
+RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, safe_room& room) noexcept :
     IRoomRequestHandler(std::move(user), room),
     m_hasExitedSafely(false)
 {}
@@ -84,6 +86,6 @@ bool RoomMemberRequestHandler::wasRoomClosed() const noexcept
         return false;
     }
     
-    m_room.numThreadsInRoom.store(m_room.numThreadsInRoom.load() - 1);
+    m_room.numThreadsInRoom.store(static_cast<std::atomic_ushort>(m_room.numThreadsInRoom.load() - 1));
     return true;
 }

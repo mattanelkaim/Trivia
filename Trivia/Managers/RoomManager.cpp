@@ -1,17 +1,15 @@
 #include "LoggedUser.h"
 #include "NotFoundException.h"
-#include "../Infrastructure/SafeRoom.h"
 #include "Room.h"
 #include "RoomManager.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <algorithm> // std::ranges::any_of
 #include <cstdint>
 #include <new> // std::bad_alloc
-#include <optional>
 #include <stdexcept> // std::out_of_range
 #include <string>
 #include <vector>
-#include <memory>
 
 #pragma warning(push) // To pop at the end of the file
 #pragma warning(disable: 26492) // Warns about using const_cast
@@ -31,7 +29,7 @@ safe_room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
     }
     catch (const std::bad_alloc&)
     {
-        throw(std::runtime_error("Run away!"));
+        std::terminate();
     }
 }
 
