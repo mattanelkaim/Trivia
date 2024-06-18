@@ -115,6 +115,12 @@ struct GameData
     uint32_t correctAnswerCount;
     uint32_t wrongAnswerCount;
     uint32_t averageAnswerTime;
+
+    /*######################################
+    #### AVOID SHITTY COMPILER WARNINGS ####
+    ######################################*/
+
+    GameData operator=(const GameData& other) = delete;
 };
 
 #pragma endregion
