@@ -21,11 +21,11 @@
 #endif
 
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser user) :
+MenuRequestHandler::MenuRequestHandler(LoggedUser user) noexcept :
     m_user(std::move(user))
 {}
 
-MenuRequestHandler::~MenuRequestHandler()
+MenuRequestHandler::~MenuRequestHandler() noexcept
 {
     this->logout();
 }
