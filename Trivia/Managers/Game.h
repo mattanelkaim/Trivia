@@ -5,7 +5,6 @@
 #include "ServerDefinitions.h"
 #include <cstdint>
 #include <map>
-#include <string>
 #include <vector>
 
 class Game final
@@ -24,14 +23,19 @@ public:
     ######################################*/
 
     Question getQuestionForUser(const LoggedUser& user) const noexcept;
-    bool submitAnswer(const LoggedUser& user, uint32_t answerId) noexcept; // TODO(mattan) UML is stoopit so validate this shit
-    void removePlayer(const LoggedUser& user) noexcept;
+
     std::vector<PlayerResults> getGameResult() const noexcept;
     uint32_t getGameID() const noexcept;
+    
+    // @throws NotFoundException
+    void removePlayer(const LoggedUser& user);
+
+    // @throws NotFoundException if user not found
+    uint8_t submitAnswer(const LoggedUser& user, uint8_t answerId);
 
 private:
     /*######################################
-    ############ PUBLIC METHODS ############
+    ############ PRIVATE METHODS ###########
     ######################################*/
 
     void submitStatsToDB(const GameData& data);
