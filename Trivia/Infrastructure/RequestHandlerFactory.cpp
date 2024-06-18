@@ -1,3 +1,5 @@
+#include "Game.h"
+#include "GameRequestHandler.h"
 #include "LoggedUser.h"
 #include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
@@ -20,4 +22,9 @@ RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(co
 RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& user, Room room)
 {
     return new RoomMemberRequestHandler(user, std::move(room));
+}
+
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(const LoggedUser& user, Game& room)
+{
+    return new GameRequestHandler(user, std::move(room));
 }
