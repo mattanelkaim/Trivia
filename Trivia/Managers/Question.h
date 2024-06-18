@@ -27,7 +27,9 @@ public:
     const std::vector<std::string>& getPossibleAnswers() const noexcept;
     const std::string& getCorrectAnswer() const noexcept; // The correct answer will always be the first one
 
-    // Avoid shitty compiler warnings
+    /*######################################
+    #### AVOID SHITTY COMPILER WARNINGS ####
+    ######################################*/
     Question operator=(const Question& other) = delete;
 
 private:

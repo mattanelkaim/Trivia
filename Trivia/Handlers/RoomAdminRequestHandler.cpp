@@ -9,7 +9,6 @@
 #include "RoomManager.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
-#include "memory"
 #include <cstdint>
 #include <utility> // std::move
 #if SERVER_DEBUG
