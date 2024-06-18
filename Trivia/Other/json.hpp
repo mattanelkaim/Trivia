@@ -1,5 +1,6 @@
 // NOLINTBEGIN
 #include <codeanalysis\warnings.h>
+#pragma warning(push)
 #pragma warning(disable : ALL_CODE_ANALYSIS_WARNINGS 5045 5027 4820 4626 4625 4623 4365 4514)
 
 //     __ _____ _____ _____
@@ -24768,4 +24769,5 @@ inline void swap(nlohmann::NLOHMANN_BASIC_JSON_TPL& j1, nlohmann::NLOHMANN_BASIC
 
 #endif  // INCLUDE_NLOHMANN_JSON_HPP_
 
+#pragma warning(pop)
 // NOLINTEND

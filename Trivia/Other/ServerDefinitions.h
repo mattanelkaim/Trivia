@@ -99,6 +99,19 @@ struct RoomData
 #pragma endregion
 
 
+#pragma region gameDefinitions
+
+struct PlayerResults
+{
+    std::string username;
+    uint32_t correctAnswerCount;
+    uint32_t wrongAnswerCount;
+    uint32_t averageAnswerTime;
+};
+
+#pragma endregion
+
+
 #pragma region responseDefinitions
 
 enum ResponseCode
@@ -107,6 +120,9 @@ enum ResponseCode
     // Login
     LOGIN_FAILED,
     // Signup
+    INVALID_USERNAME,
+    INVALID_PASSWORD,
+    INVALID_EMAIL,
     USERNAME_ALREADY_EXISTS,
     // Join Room
     ROOM_IS_FULL,
@@ -137,6 +153,7 @@ using CreateRoomResponse = StatusResponse;
 using CloseRoomResponse = StatusResponse;
 using StartRoomResponse = StatusResponse;
 using LeaveRoomResponse = StatusResponse;
+using LeaveGameResponse = StatusResponse;
 
 struct GetRoomsResponse : StatusResponse
 {
@@ -167,6 +184,22 @@ struct GetRoomStateResponse : StatusResponse
     uint32_t answerTimeout;
 };
 
+struct GetQuestionResponse : StatusResponse
+{
+    std::string question;
+    std::map<uint32_t, std::string> answers;
+};
+
+struct SubmitAnswerResponse : StatusResponse
+{
+    uint32_t correctAnswerId;
+};
+
+struct GetGameResultsResponse : StatusResponse
+{
+    std::vector<PlayerResults> results;
+};
+
 namespace JsonFields
 {
     constexpr std::string_view MESSAGE = "message";
@@ -176,6 +209,7 @@ namespace JsonFields
     constexpr std::string_view HIGH_SCORES = "highScores";
     constexpr std::string_view STATISTICS = "userStatistics";
     constexpr std::string_view ROOM_STATE = "roomState";
+    constexpr std::string_view GAME_RESULTS = "results";
 
     namespace UserStats
     {
@@ -195,6 +229,19 @@ namespace JsonFields
         constexpr std::string_view ROOM_STATUS = "state";
         constexpr std::string_view HAS_BEGUN = "hasGameBegun";
     } // namespace RoomProperties
+
+    namespace GameResults
+    {
+        constexpr std::string_view USERNAME = "name";
+        constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
+        constexpr std::string_view WRONG_ANSWERS = "wrongAnswers";
+        constexpr std::string_view AVERAGE_ANSWER_TIME = "averageAnswerTime";
+    } // namespace GameResults
+
+    constexpr std::string_view CORRECT_ANSWER_ID = "correctAnsID";
+    constexpr std::string_view QUESTION = "question";
+    constexpr std::string_view ANSWERS = "answers";
+
 } // namespace JsonFields
 
 #pragma endregion
@@ -267,24 +314,9 @@ struct CreateRoomRequest : Request
     uint32_t answerTimeout;
 };
 
-struct CloseRoomRequest : Request
+struct SubmitAnswerRequest : Request
 {
-    uint32_t roomId;
-};
-
-struct StartGameRequest : Request
-{
-    uint32_t roomId;
-};
-
-struct GetRoomStateRequest : Request
-{
-    uint32_t roomId;
-};
-
-struct LeaveRoomRequest : Request
-{
-    uint32_t roomId;
+    uint32_t answerId;
 };
 
 #pragma endregion

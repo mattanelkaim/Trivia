@@ -13,7 +13,7 @@ Things to do before shipping
 #include <iostream>
 
 #include "RoomManager.h"
-static void createDummyRooms()
+static void createDummyRooms() noexcept
 {
     RoomManager::getInstance().createRoom("MMMMMMMMMMMMMMMM", {
         .name = "Room1",
@@ -47,7 +47,7 @@ int main()
 {
     try
     {
-        createDummyRooms(); // TODO remove
+        createDummyRooms(); // TODO(mattan) remove
 
         const WSAInitializer wsaInit;
         SqliteDatabase::getInstance().openDB();
