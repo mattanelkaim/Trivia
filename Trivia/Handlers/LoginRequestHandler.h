@@ -2,6 +2,7 @@
 
 #include "IRequestHandler.h"
 #include "ServerDefinitions.h"
+#include <optional>
 
 class LoginRequestHandler final : public IRequestHandler
 {
@@ -35,4 +36,6 @@ private:
     * @throws InvalidSQL
     */
     static RequestResult signup(const RequestInfo& info);
+
+    static constexpr std::optional<RequestResult> validateSignupCredentials(const SignupRequest& request) noexcept;
 };
