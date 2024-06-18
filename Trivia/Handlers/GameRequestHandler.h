@@ -36,7 +36,7 @@ private:
     RequestResult getQuestion(const RequestInfo& info) noexcept;
     RequestResult submitAnswer(const RequestInfo& info) noexcept;
     RequestResult getGameResults(const RequestInfo& info) noexcept;
-    RequestResult leaveGame(const RequestInfo& info) noexcept;
+    RequestResult leaveGame() noexcept;
 
     /*######################################
     ################ MEMBERS ###############

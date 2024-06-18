@@ -109,6 +109,7 @@ struct PlayerResults
     uint32_t averageAnswerTime;
 };
 
+//NOLINTBEGIN
 struct GameData
 {
     Question currentQuestion;
@@ -122,6 +123,7 @@ struct GameData
 
     GameData operator=(const GameData& other) = delete;
 };
+//NOLINTEND
 
 #pragma endregion
 
