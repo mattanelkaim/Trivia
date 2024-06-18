@@ -1,11 +1,13 @@
 #include "Question.h"
+#include <cstdint>
 #include <string>
 #include <utility> // std::move
 #include <vector>
 
-Question::Question(std::string question, const std::vector<std::string>& answers) noexcept :
+Question::Question(std::string question, std::vector<std::string> answers) noexcept :
     m_question(std::move(question)),
-    m_possibleAnswers(answers)
+    m_possibleAnswers(std::move(answers)),
+    m_correctAnswerId(0)
 {}
 
 const std::string& Question::getQuestion() const noexcept
@@ -18,7 +20,7 @@ const std::vector<std::string>& Question::getPossibleAnswers() const noexcept
     return this->m_possibleAnswers;
 }
 
-const std::string& Question::getCorrectAnswer() const noexcept
+uint8_t Question::getCorrectAnswerId() const noexcept
 {
-    return this->m_possibleAnswers.front();
+    return m_correctAnswerId;
 }

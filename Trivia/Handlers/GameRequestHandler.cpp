@@ -78,7 +78,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
     }
 }
 
-RequestResult GameRequestHandler::getQuestion() noexcept
+RequestResult GameRequestHandler::getQuestion() const noexcept
 {
     const Question question = this->m_game.getQuestionForUser(this->m_user);
 
@@ -94,7 +94,7 @@ RequestResult GameRequestHandler::getQuestion() noexcept
     };
 }
 
-RequestResult GameRequestHandler::getGameResults() noexcept
+RequestResult GameRequestHandler::getGameResults() const noexcept
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetGameResultsResponse{{OK}, this->m_game.getGameResult()}),
@@ -102,12 +102,12 @@ RequestResult GameRequestHandler::getGameResults() noexcept
     };
 }
 
-RequestResult GameRequestHandler::leaveGame() noexcept
+RequestResult GameRequestHandler::leaveGame() const noexcept
 {
     // Try to leave the game if room exists
     try
     {
-        RoomManager::getInstance().getRoom(this->m_game.getGameID()).removeUser(this->m_user);
+        this->m_game.removePlayer(this->m_user);
     }
     catch (const NotFoundException&)
     {} // Do nothing
@@ -122,7 +122,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
 {
     const auto request = JsonRequestDeserializer::deserializeRequest<SubmitAnswerRequest>(info.buffer);
 
-    const uint32_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);
+    const uint8_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(SubmitAnswerResponse{{OK}, correctAnsId}),
