@@ -2,12 +2,18 @@
 
 #include "Game.h"
 #include "GameRequestHandler.h"
+#include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
+#include "NotFoundException.h"
+#include "Question.h"
 #include "RequestHandlerFactory.h"
 #include "RoomManager.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
+#include <cstdint>
+#include <map>
+#include <string>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
@@ -72,13 +78,54 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
     }
 }
 
+RequestResult GameRequestHandler::getQuestion() noexcept
+{
+    const Question question = this->m_game.getQuestionForUser(this->m_user);
+
+    std::map<uint32_t, std::string> possibleAnswers;
+    for (uint32_t i = 0; const std::string& answer : question.getPossibleAnswers())
+    {
+        possibleAnswers[++i] = answer;
+    }
+
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{OK}, question.getQuestion(), possibleAnswers}),
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
+    };
+}
+
+RequestResult GameRequestHandler::getGameResults() noexcept
+{
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(GetGameResultsResponse{{OK}, this->m_game.getGameResult()}),
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
+    };
+}
+
 RequestResult GameRequestHandler::leaveGame() noexcept
 {
-    // Room better be in the vector of RoomManager, otherwise it will crash
-    RoomManager::getInstance().getRoom(this->m_game.getGameID()).removeUser(this->m_user);
+    // Try to leave the game if room exists
+    try
+    {
+        RoomManager::getInstance().getRoom(this->m_game.getGameID()).removeUser(this->m_user);
+    }
+    catch (const NotFoundException&)
+    {} // Do nothing
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveGameResponse{OK}),
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
+    };
+}
+
+RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
+{
+    const auto request = JsonRequestDeserializer::deserializeRequest<SubmitAnswerRequest>(info.buffer);
+
+    const uint32_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);
+
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(SubmitAnswerResponse{{OK}, correctAnsId}),
         .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
 }
