@@ -1,5 +1,3 @@
-#pragma once
-
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
