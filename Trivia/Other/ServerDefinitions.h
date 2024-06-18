@@ -3,6 +3,7 @@
 #pragma warning(disable: 4820) // Padding added after data member
 
 #include "LoggedUser.h"
+#include "Question.h"
 #include <cstdint>
 #include <ctime> // Used for time_t
 #include <map>
@@ -103,6 +104,14 @@ struct RoomData
 struct PlayerResults
 {
     std::string username;
+    uint32_t correctAnswerCount;
+    uint32_t wrongAnswerCount;
+    uint32_t averageAnswerTime;
+};
+
+struct GameData
+{
+    Question currentQuestion;
     uint32_t correctAnswerCount;
     uint32_t wrongAnswerCount;
     uint32_t averageAnswerTime;
