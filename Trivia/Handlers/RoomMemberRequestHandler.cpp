@@ -15,7 +15,7 @@
 #endif
 
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) :
+RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) noexcept :
     IRoomRequestHandler(std::move(user), std::move(room))
 {}
 
