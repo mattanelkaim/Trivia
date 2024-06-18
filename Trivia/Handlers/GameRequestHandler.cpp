@@ -2,13 +2,13 @@
 
 #include "Game.h"
 #include "GameRequestHandler.h"
-#include "Helper.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <utility> // std::move
 #if SERVER_DEBUG
+#include "Helper.h"
 #include <iostream>
 #endif
 
