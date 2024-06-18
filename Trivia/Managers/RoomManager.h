@@ -4,6 +4,8 @@
 #include "../Infrastructure/SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
+#include <optional>
+#include <string>
 #include <unordered_map>
 #include <vector>
 #include <string>
@@ -20,7 +22,7 @@ public:
     * Creates a new room and adds the user (admin) to it.
     * @param user The user who is creating the room.
     * @param data The metadata of the room.
-    * @return A reference to the created room.
+    * @return A copy of created room.
     */
     safe_room& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
 
