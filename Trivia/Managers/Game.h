@@ -15,7 +15,9 @@ public:
     ############# CONSTRUCTORS #############
     ######################################*/
 
-    Game() noexcept = default;
+    // ID is identical to the room ID
+    Game() = delete;
+    explicit Game(uint32_t roomId) noexcept;
 
     /*######################################
     ############ PUBLIC METHODS ############
@@ -24,6 +26,7 @@ public:
     Question getQuestionForUser(const LoggedUser& user) const noexcept;
     void submitAnswer(const LoggedUser& user, const std::string& answer) noexcept; // TODO(mattan) UML is stoopit so validate this shit
     void removePlayer(const LoggedUser& user) noexcept;
+    uint32_t getGameID() const noexcept;
 
 private:
     /*######################################
