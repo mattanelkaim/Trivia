@@ -194,7 +194,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
         // Adding the user to the room specified in the request buffer
         if (safeRoom.doesRoomExist.load() && safeRoom.room.addUser(m_user) == OK)
         {
-            safeRoom.numThreadsInRoom.store(static_cast<std::atomic_ushort>(safeRoom.numThreadsInRoom.load() + 1));
+            safeRoom.numThreadsInRoom.store(static_cast<uint16_t>(safeRoom.numThreadsInRoom.load() + 1));
             newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, safeRoom);
         }
     }
