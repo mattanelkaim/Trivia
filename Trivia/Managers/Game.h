@@ -19,6 +19,8 @@ public:
     Game() = delete;
     explicit Game(uint32_t roomId) noexcept;
 
+    ~Game() noexcept;
+
     /*######################################
     ############ PUBLIC METHODS ############
     ######################################*/
@@ -38,7 +40,8 @@ private:
     ############ PRIVATE METHODS ###########
     ######################################*/
 
-    void submitStatsToDB(const GameData& data);
+    // @throws InvalidSQL
+    static void submitStatsToDB(const LoggedUser& user, const GameData& data);
 
     /*######################################
     ################ MEMBERS ###############

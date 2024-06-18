@@ -1,10 +1,14 @@
 #include "Game.h"
+#include "InvalidSQL.h"
 #include "LoggedUser.h"
 #include "NotFoundException.h"
 #include "Question.h"
 #include "RoomManager.h"
 #include "ServerDefinitions.h"
+#include "SqliteDatabase.h"
 #include <cstdint>
+#include <Helper.h>
+#include <iostream>
 #include <optional>
 #include <stdexcept>
 #include <vector>
@@ -13,6 +17,21 @@
 Game::Game(const uint32_t roomId) noexcept :
     m_gameId(roomId)
 {}
+
+Game::~Game() noexcept
+{
+    try
+    {
+        for (const auto& [user, data] : this->m_players)
+        {
+            Game::submitStatsToDB(user, data);
+        }
+    }
+    catch (const InvalidSQL& e)
+    {
+        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, std::string("Cannot submit stats to DB: ") + e.what()) << ANSI_NORMAL << '\n';
+    }
+}
 
 uint8_t Game::submitAnswer(const LoggedUser& user, uint8_t answerId)
 {
@@ -31,6 +50,12 @@ uint8_t Game::submitAnswer(const LoggedUser& user, uint8_t answerId)
     {
         throw NotFoundException("User '" + user + "' in game!");
     }
+}
+
+void Game::submitStatsToDB(const LoggedUser& user, const GameData& data)
+{
+    // Functions is simply a bridge to SqliteDatabase
+    SqliteDatabase::getInstance().updatePlayerStats(user, data);
 }
 
 void Game::removePlayer(const LoggedUser& user)
