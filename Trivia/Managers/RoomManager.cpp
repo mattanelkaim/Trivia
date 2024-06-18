@@ -7,6 +7,7 @@
 #include <algorithm> // std::ranges::any_of
 #include <cstdint>
 #include <new> // std::bad_alloc
+#include <optional>
 #include <stdexcept> // std::out_of_range
 #include <string>
 #include <vector>
