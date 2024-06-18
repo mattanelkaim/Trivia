@@ -4,6 +4,8 @@
 #include "GameRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
+#include "RequestHandlerFactory.h"
+#include "RoomManager.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <utility> // std::move
@@ -13,7 +15,7 @@
 #endif
 
 
-GameRequestHandler::GameRequestHandler(const LoggedUser user, Game& game) noexcept :
+GameRequestHandler::GameRequestHandler(LoggedUser user, Game& game) noexcept :
     m_game(game),
     m_user(std::move(user))
 {}
@@ -50,9 +52,9 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
         //    return this->getGameResults(info);
         //    //break;
 
-        //case LEAVE_GAME:
-        //    return this->leaveGame(info);
-        //    //break;
+        case LEAVE_GAME:
+            return this->leaveGame();
+            //break;
 
         default: // This should not happen
             throw ServerException("Request is not relevant to GameRequestHandler!");
@@ -68,4 +70,15 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
             .newHandler = nullptr
         };
     }
+}
+
+RequestResult GameRequestHandler::leaveGame() noexcept
+{
+    // Room better be in the vector of RoomManager, otherwise it will crash
+    RoomManager::getInstance().getRoom(this->m_game.getGameID()).removeUser(this->m_user);
+
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(LeaveGameResponse{OK}),
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
+    };
 }
