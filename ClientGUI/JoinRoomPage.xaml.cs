@@ -69,6 +69,7 @@ namespace ClientGUI
 
         private void HomeButton_Click(object sender, RoutedEventArgs? e)
         {
+            isThreadRunning = false;
             this.NavigationService.Navigate(new MenuPage());
         }
 
