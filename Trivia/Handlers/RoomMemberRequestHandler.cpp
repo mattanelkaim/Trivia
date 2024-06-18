@@ -14,13 +14,13 @@
 #endif
 
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room& room) :
+RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, std::unique_ptr<Room>& room) :
     IRoomRequestHandler(std::move(user), room)
 {}
 
 RoomMemberRequestHandler::~RoomMemberRequestHandler() noexcept
 {
-    this->m_room.removeUser(this->m_user);
+    this->m_room->removeUser(this->m_user);
 }
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
@@ -61,10 +61,19 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
 
 RequestResult RoomMemberRequestHandler::leaveRoom() noexcept
 {
-    this->m_room.removeUser(this->m_user);
+    this->m_room->removeUser(this->m_user);
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveRoomResponse{OK}),
         .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
+}
+
+RequestResult RoomMemberRequestHandler::getRoomState() noexcept
+{
+    if (this->m_room == nullptr)
+        return RequestResult{ JsonResponseSerializer::serializeResponse(ErrorResponse{"Room does not exist"}),
+                              RequestHandlerFactory::createMenuRequestHandler(m_user) };
+
+    return this->IRoomRequestHandler::getRoomState();
 }

@@ -30,7 +30,7 @@ static void createDummyRooms()
         .maxPlayers = 10,
         .numOfQuestionsInGame = 7,
         .timePerQuestion = 30,
-        .status = RoomStatus::CLOSED
+        .status = RoomStatus::OPEN
     });
 
     RoomManager::getInstance().createRoom("mattanigger", {

@@ -8,7 +8,7 @@
 class RoomMemberRequestHandler final : public IRoomRequestHandler
 {
 public:
-	RoomMemberRequestHandler(LoggedUser user, Room& room);
+	RoomMemberRequestHandler(LoggedUser user, std::unique_ptr<Room>& room);
 	~RoomMemberRequestHandler() noexcept override;
 
 	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
@@ -21,5 +21,6 @@ public:
 	RoomMemberRequestHandler operator=(const RoomMemberRequestHandler& other) = delete;
 
 private:
-	RequestResult leaveRoom() noexcept;		
+	RequestResult leaveRoom() noexcept;	
+	RequestResult getRoomState() noexcept;
 };
