@@ -86,6 +86,6 @@ bool RoomMemberRequestHandler::wasRoomClosed() const noexcept
         return false;
     }
     
-    m_room.numThreadsInRoom.store(static_cast<std::atomic_ushort>(m_room.numThreadsInRoom.load() - 1));
+    m_room.numThreadsInRoom.store(static_cast<uint16_t>(m_room.numThreadsInRoom.load() - 1));
     return true;
 }
