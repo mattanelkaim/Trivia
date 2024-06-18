@@ -2,6 +2,7 @@
 
 #include "IDatabase.h"
 #include "Question.h"
+#include "ServerDefinitions.h"
 #include "sqlite3.h"
 #include <cstdint>
 #include <map>
@@ -54,6 +55,9 @@ public:
 
     // @throws InvalidSQL
     std::map<std::string, double> getHighScores() const override;
+
+    // @throws InvalidSQL
+    void updatePlayerStats(const std::string& username, const GameData& data) override;
 
     /*######################################
     ############### SINGLETON ##############
