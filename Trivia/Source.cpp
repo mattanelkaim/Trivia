@@ -15,7 +15,7 @@ Things to do before shipping
 #include "RoomManager.h"
 static void createDummyRooms() noexcept
 {
-    RoomManager::getInstance().createRoom("admin", {
+    RoomManager::getInstance().createRoom("MMMMMMMMMMMMMMMM", {
         .name = "Room1",
         .id = RoomManager::getNextRoomId(),
         .maxPlayers = 6,
@@ -30,13 +30,13 @@ static void createDummyRooms() noexcept
         .maxPlayers = 10,
         .numOfQuestionsInGame = 7,
         .timePerQuestion = 30,
-        .status = RoomStatus::CLOSED
+        .status = RoomStatus::OPEN
     });
 
-    RoomManager::getInstance().createRoom("mattan", {
+    RoomManager::getInstance().createRoom("mattanigger", {
         .name = "Room3",
         .id = RoomManager::getNextRoomId(),
-        .maxPlayers = 5,
+        .maxPlayers = 200,
         .numOfQuestionsInGame = 10,
         .timePerQuestion = 20,
         .status = RoomStatus::OPEN

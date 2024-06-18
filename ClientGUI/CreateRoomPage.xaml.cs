@@ -58,6 +58,20 @@ namespace ClientGUI
 
             // TODO something with the responseCode
             Helper.ResponseType responseCode = Helper.SendMessage(new {roomName = RoomName, maxUsers = MaxPlayers, questionCount = QuestionCount, answerTimeout = QuestionTimeout}, Helper.RequestType.CreateRoom).code;
+
+            switch (responseCode)
+            {
+                case Helper.ResponseType.OK:
+                    this.NavigationService.Navigate(new AdminWaitingRoom(new JoinRoomPage.Room {name = this.RoomName, maxPlayers=UInt32.Parse(this.MaxPlayers),
+                                                                                                questionCount = UInt32.Parse(this.QuestionCount),
+                                                                                                questionTimeout = UInt32.Parse(this.QuestionTimeout),
+                                                                                                state = (int)Helper.RoomStatus.OPEN
+                    }));
+                    break;
+                default:
+                    MessageBox.Show("Cannot create room!");
+                    break;
+            }
         }
 
         private void Field_GotFocus(object sender, RoutedEventArgs e)

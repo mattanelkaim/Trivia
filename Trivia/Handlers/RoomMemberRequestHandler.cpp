@@ -6,17 +6,26 @@
 #include "RequestHandlerFactory.h"
 #include "Room.h"
 #include "RoomMemberRequestHandler.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
+#include <atomic>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include <iostream>
 #endif
 
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, Room room) :
-    IRoomRequestHandler(std::move(user), std::move(room))
+RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, safe_room& room) noexcept :
+    IRoomRequestHandler(std::move(user), room),
+    m_hasExitedSafely(false)
 {}
+
+RoomMemberRequestHandler::~RoomMemberRequestHandler() noexcept
+{
+    if (!this->m_hasExitedSafely)
+        this->m_room.room.removeUser(this->m_user);
+}
 
 bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
@@ -26,6 +35,12 @@ bool RoomMemberRequestHandler::isRequestRelevant(const RequestInfo& requestInfo)
 
 RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& requestInfo) noexcept
 {
+    if (this->wasRoomClosed())
+    {
+        this->m_hasExitedSafely = true;
+        return RequestResult{ JsonResponseSerializer::serializeResponse(ErrorResponse{"Room was not found"}),
+                              RequestHandlerFactory::createMenuRequestHandler(this->m_user) };
+    }
     try
     {
         switch (requestInfo.id)
@@ -54,20 +69,23 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
     }
 }
 
-RequestResult RoomMemberRequestHandler::getRoomState() const noexcept
-{
-    return RequestResult{
-        .response = this->getSerializedRoomState(), // IRoomRequestHandler
-        .newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, m_room)
-    };
-}
-
 RequestResult RoomMemberRequestHandler::leaveRoom() noexcept
 {
-    this->m_room.removeUser(this->m_user);
+    this->m_room.room.removeUser(this->m_user);
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveRoomResponse{OK}),
         .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
+}
+
+bool RoomMemberRequestHandler::wasRoomClosed() const noexcept
+{
+    if (m_room.doesRoomExist.load())
+    {
+        return false;
+    }
+    
+    m_room.numThreadsInRoom.store(static_cast<uint16_t>(m_room.numThreadsInRoom.load() - 1));
+    return true;
 }
