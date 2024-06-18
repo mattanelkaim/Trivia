@@ -9,22 +9,22 @@
 #include <utility> // std::move
 
 
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const LoggedUser& user)
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser user)
 {
-    return new MenuRequestHandler(user);
+    return new MenuRequestHandler(std::move(user));
 }
 
-RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& user, Room room)
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser user, Room room)
 {
-    return new RoomAdminRequestHandler(user, std::move(room));
+    return new RoomAdminRequestHandler(std::move(user), std::move(room));
 }
 
-RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& user, Room room)
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser user, Room room)
 {
-    return new RoomMemberRequestHandler(user, std::move(room));
+    return new RoomMemberRequestHandler(std::move(user), std::move(room));
 }
 
-GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(const LoggedUser& user, Game& room)
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser user, Game& room)
 {
-    return new GameRequestHandler(user, std::move(room));
+    return new GameRequestHandler(std::move(user), room);
 }

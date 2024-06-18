@@ -10,8 +10,8 @@
 
 namespace RequestHandlerFactory
 {
-	MenuRequestHandler* createMenuRequestHandler(const LoggedUser& user);
-	RoomAdminRequestHandler* createRoomAdminRequestHandler(const LoggedUser& user, Room room);
-	RoomMemberRequestHandler* createRoomMemberRequestHandler(const LoggedUser& user, Room room);
-	GameRequestHandler* createGameRequestHandler(const LoggedUser& user, Game& room);
+	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
+	RoomAdminRequestHandler* createRoomAdminRequestHandler(LoggedUser user, Room room);
+	RoomMemberRequestHandler* createRoomMemberRequestHandler(LoggedUser user, Room room);
+	GameRequestHandler* createGameRequestHandler(LoggedUser user, Game& room);
 }; // namespace RequestHandlerFactory
