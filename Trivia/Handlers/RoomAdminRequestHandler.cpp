@@ -16,7 +16,7 @@
 #include <iostream>
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) :
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) noexcept :
     IRoomRequestHandler(std::move(user), std::move(room))
 {}
 
