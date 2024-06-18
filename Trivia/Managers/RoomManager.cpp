@@ -6,6 +6,7 @@
 #include "ServerDefinitions.h"
 #include <algorithm> // std::ranges::any_of
 #include <cstdint>
+#include <exception> // std::terminate
 #include <new> // std::bad_alloc
 #include <stdexcept> // std::out_of_range
 #include <string>
@@ -72,22 +73,10 @@ safe_room& RoomManager::getRoom(const uint32_t roomId)
 
 bool RoomManager::doesRoomExist(const std::string& roomName) const noexcept
 {
-    return false; // TODO remove
-
-    //// Use a lambda on each room to check if room name is the same
-    //return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
-    //    return roomPair.second.room.getData().name == roomName; // Check if room name is the same
-    //});
-}
-
-bool RoomManager::isUserInAnyRoom(const LoggedUser& user) const noexcept
-{
-    return false; // TODO remove
-
-    //// Use a lambda on each room to check if user is in it
-    //return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
-    //    return roomPair.second.room.isUserInRoom(user); // Check if user is in room
-    //});
+    // Use a lambda on each room to check if room name is the same
+    return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
+        return roomPair.second.room.getData().name == roomName; // Check if room name is the same
+    });
 }
 
 uint32_t RoomManager::getNextRoomId() noexcept

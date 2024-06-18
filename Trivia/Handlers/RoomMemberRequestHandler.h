@@ -8,7 +8,7 @@
 class RoomMemberRequestHandler final : public IRoomRequestHandler
 {
 public:
-    RoomMemberRequestHandler(LoggedUser user, safe_room& room);
+    RoomMemberRequestHandler(LoggedUser user, safe_room& room) noexcept;
     ~RoomMemberRequestHandler() noexcept override;
     
     /*######################################
