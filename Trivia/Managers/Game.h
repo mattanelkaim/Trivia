@@ -24,8 +24,9 @@ public:
     ######################################*/
 
     Question getQuestionForUser(const LoggedUser& user) const noexcept;
-    void submitAnswer(const LoggedUser& user, const std::string& answer) noexcept; // TODO(mattan) UML is stoopit so validate this shit
+    bool submitAnswer(const LoggedUser& user, uint32_t answerId) noexcept; // TODO(mattan) UML is stoopit so validate this shit
     void removePlayer(const LoggedUser& user) noexcept;
+    std::vector<PlayerResults> getGameResult() const noexcept;
     uint32_t getGameID() const noexcept;
 
 private:
