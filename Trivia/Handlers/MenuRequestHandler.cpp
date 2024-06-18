@@ -137,9 +137,9 @@ RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info)
 
     try
     {
-        const Room& room = RoomManager::getInstance().getRoom(roomId);
+        std::unique_ptr<Room>& room = RoomManager::getInstance().getRoom(roomId);
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.getAllUsers()}),
+            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room->getAllUsers()}),
             .newHandler = nullptr // Stay in the menu
         };
     }
@@ -165,7 +165,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     }
 
     // Creating a room as specified in the request buffer
-    Room& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
+    std::unique_ptr<Room>& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(), // Generate a unique ID
         .maxPlayers = request.maxUsers,
@@ -188,10 +188,10 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
     IRequestHandler* newHandler = nullptr;
     try
     {
-        Room& room = RoomManager::getInstance().getRoom(roomId);
+        std::unique_ptr<Room>& room = RoomManager::getInstance().getRoom(roomId);
 
         // Adding the user to the room specified in the request buffer
-        responseCode = room.addUser(m_user);
+        responseCode = room->addUser(m_user);
 
         if (responseCode == OK)
             newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, room);

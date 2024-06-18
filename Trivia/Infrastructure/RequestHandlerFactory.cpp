@@ -12,12 +12,12 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(const Logged
     return new MenuRequestHandler(user);
 }
 
-RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& user, Room& room)
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(const LoggedUser& user, std::unique_ptr<Room>& room)
 {
     return new RoomAdminRequestHandler(user, room);
 }
 
-RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& user, Room& room)
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(const LoggedUser& user, std::unique_ptr<Room>& room)
 {
     return new RoomMemberRequestHandler(user, room);
 }

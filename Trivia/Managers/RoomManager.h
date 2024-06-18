@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <unordered_map>
 #include <vector>
+#include <string>
+#include <memory>
 
 class RoomManager final
 {
@@ -20,7 +22,7 @@ public:
     * @param data The metadata of the room.
     * @return A reference to the created room.
     */
-    Room& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
+    std::unique_ptr<Room>& createRoom(const LoggedUser& user, const RoomData& data) noexcept;
 
     void deleteRoom(uint32_t roomId) noexcept;
 
@@ -40,7 +42,7 @@ public:
     * @return A reference to the room.
     * @throws NotFoundException
     */
-    Room& getRoom(uint32_t roomId);
+    std::unique_ptr<Room>& getRoom(uint32_t roomId);
 
     bool doesRoomExist(const std::string& roomName) const noexcept;
     bool isUserInAnyRoom(const LoggedUser& user) const noexcept;
@@ -66,7 +68,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    std::unordered_map<uint32_t, Room> m_rooms;
+    std::unordered_map<uint32_t, std::unique_ptr<Room>> m_rooms;
     inline static uint32_t roomIdCounter = 0;
 
     /*######################################

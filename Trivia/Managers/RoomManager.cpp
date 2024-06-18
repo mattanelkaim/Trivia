@@ -9,27 +9,27 @@
 #include <stdexcept> // std::out_of_range
 #include <string>
 #include <vector>
+#include <memory>
 
 #pragma warning(push) // To pop at the end of the file
 #pragma warning(disable: 26492) // Warns about using const_cast
 
 using std::to_string;                                
 
-Room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
+std::unique_ptr<Room>& RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
 {
     try
     {
-        const auto [addedRoom, isEmplaced] = this->m_rooms.emplace(data.id, data); // Returns pair of iterator and bool isSuccessful
-
+        std::unique_ptr<Room>& addedRoom = this->m_rooms[data.id] = std::make_unique<Room>(data);
         // Improbable to fail emplacing because the server itself generates the room ID
 
-        addedRoom->second.addUser(user); // Add the room creator (admin) to the emplaced room
+        addedRoom->addUser(user); // Add the room creator (admin) to the emplaced room
 
-        return addedRoom->second;
+        return addedRoom;
     }
     catch (const std::bad_alloc&)
     {
-        return this->m_rooms.end()->second; // Return the last room in the map
+        throw(0);
     }
 }
 
@@ -41,8 +41,8 @@ void RoomManager::deleteRoom(const uint32_t roomId) noexcept
 RoomStatus RoomManager::getRoomState(const uint32_t roomId) const
 {
     //NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast) - ignore const_cast
-    const Room& room = const_cast<RoomManager*>(this)->getRoom(roomId); // Must use const_cast because getRoom is not const, oof
-    return room.getData().status;
+    std::unique_ptr<Room>& room = const_cast<RoomManager*>(this)->getRoom(roomId); // Must use const_cast because getRoom is not const, oof
+    return room->getData().status;
 }
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore reserve and std::bad_alloc
@@ -52,12 +52,12 @@ std::vector<RoomData> RoomManager::getRooms() const noexcept
     rooms.reserve(this->m_rooms.size());
 
     for (const auto& [_, room] : this->m_rooms)
-        rooms.emplace_back(room.getData());
+        rooms.emplace_back(room->getData());
 
     return rooms;
 }
 
-Room& RoomManager::getRoom(const uint32_t roomId)
+std::unique_ptr<Room>& RoomManager::getRoom(const uint32_t roomId)
 {
     // Simply rethrows the exception thrown by at()
     try
@@ -74,7 +74,7 @@ bool RoomManager::doesRoomExist(const std::string& roomName) const noexcept
 {
     // Use a lambda on each room to check if room name is the same
     return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
-        return roomPair.second.getData().name == roomName; // Check if room name is the same
+        return roomPair.second->getData().name == roomName; // Check if room name is the same
     });
 }
 
@@ -82,7 +82,7 @@ bool RoomManager::isUserInAnyRoom(const LoggedUser& user) const noexcept
 {
     // Use a lambda on each room to check if user is in it
     return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
-        return roomPair.second.isUserInRoom(user); // Check if user is in room
+        return roomPair.second->isUserInRoom(user); // Check if user is in room
     });
 }
 
