@@ -37,7 +37,7 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexce
             return LoginRequestHandler::login(info);
         case SIGNUP:
             return LoginRequestHandler::signup(info);
-        default:
+        default: // This should not happen
             throw InvalidProtocolStructure("Request is not relevant to LoginRequestHandler!");
         }
     }

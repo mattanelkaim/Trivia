@@ -10,6 +10,7 @@
 #include "ServerException.h"
 #include <utility> // std::move
 #if SERVER_DEBUG
+#include "Helper.h"
 #include <iostream>
 #endif
 
@@ -39,13 +40,13 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
                 //break;
 
             default: // This should not happen
-                throw ServerException("Request is not relevant to MenuRequestHandler!");
+                throw ServerException("Request is not relevant to RoomMemberRequestHandler!");
         }
     }
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
