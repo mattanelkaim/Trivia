@@ -106,7 +106,7 @@ struct PlayerResults
     std::string username;
     uint32_t correctAnswerCount;
     uint32_t wrongAnswerCount;
-    uint32_t averageAnswerTime;
+    uint32_t totalAnswerTime;
 };
 
 //NOLINTBEGIN
@@ -115,7 +115,8 @@ struct GameData
     std::vector<Question>::const_iterator currentQuestion; // Iterator helps to keep track in the vector of questions
     uint32_t correctAnswerCount;
     uint32_t wrongAnswerCount;
-    uint32_t averageAnswerTime;
+    time_t gotQuestionTime;
+    uint32_t totalAnswerTime;
 
     /*######################################
     #### AVOID SHITTY COMPILER WARNINGS ####
