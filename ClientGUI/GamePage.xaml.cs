@@ -50,6 +50,11 @@ namespace ClientGUI
             Helper.ButtonLostHoverEffect((Button)sender);
         }
 
+        private void Answer_Click(object sender, RoutedEventArgs? e)
+        {
+
+        }
+
         private void TimerThreadWrapper()
         {
             bool HasTimerEnded = false;
