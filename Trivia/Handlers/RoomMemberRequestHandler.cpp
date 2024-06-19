@@ -6,15 +6,17 @@
 #include "RequestHandlerFactory.h"
 #include "Room.h"
 #include "RoomMemberRequestHandler.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
+#include <atomic>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
 #endif
 
 
-RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, safe_room& room) :
+RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, safe_room& room) noexcept :
     IRoomRequestHandler(std::move(user), room),
     m_hasExitedSafely(false)
 {}

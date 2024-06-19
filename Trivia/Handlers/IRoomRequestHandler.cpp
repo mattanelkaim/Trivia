@@ -20,14 +20,19 @@ RequestResult IRoomRequestHandler::getRoomState() noexcept
 {
     const RoomData& room = this->m_room.room.getData();
 
-    return RequestResult{JsonResponseSerializer::serializeResponse(GetRoomStateResponse
+    // Create non-const response to move later
+    GetRoomStateResponse response = GetRoomStateResponse
     { // Cannot use designators cuz status isn't explicitly named in GetRoomStateResponse
         /*.status =*/ {ResponseCode::OK},
         /*.state =*/ room.status,
-        /*.hasGameBegun =*/ (room.status != RoomStatus::OPEN),
+        /*.hasGameBegun =*/ (room.status == RoomStatus::CLOSED),
         /*.players =*/ m_room.room.getAllUsers(),
         /*.questionCount =*/ room.numOfQuestionsInGame,
         /*.answerTimeout =*/ room.timePerQuestion
-    }),
-    nullptr };
+    };
+
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(std::move(response)),
+        .newHandler = nullptr
+    };
 }

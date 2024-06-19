@@ -5,8 +5,8 @@
 #include <atomic>
 #include <cstdint>
 
-// This is in a different file and not in serverDefinitions because of weird circular dependency
-class safe_room
+// This is a separate file and not in serverDefinitions because of a weird circular dependency
+class safe_room final
 {
 public:
     explicit safe_room(const RoomData& roomData);
@@ -20,10 +20,18 @@ public:
     safe_room(const safe_room& other) = delete;
 
 private:
+    /*######################################
+    ################ FRIENDS ###############
+    ######################################*/
+
     // friendship is not inherited for some reason
     friend class RoomAdminRequestHandler;
     friend class RoomMemberRequestHandler;
     friend class MenuRequestHandler;
+
+    /*######################################
+    ################ MEMBERS ###############
+    ######################################*/
 
     std::atomic<bool> doesRoomExist;
     std::atomic<uint16_t> numThreadsInRoom;
