@@ -12,6 +12,7 @@
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include "StatisticsManager.h"
+#include <atomic>
 #include <cstdint>
 #include <utility> // std::move
 #if SERVER_DEBUG
@@ -186,7 +187,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
     ResponseCode responseCode{};
     IRequestHandler* newHandler = nullptr;
     try
-    {       
+    {
         safe_room& safeRoom = RoomManager::getInstance().getRoom(roomId);
 
         // Adding the user to the room specified in the request buffer
@@ -195,8 +196,6 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
             safeRoom.numThreadsInRoom.store(static_cast<uint16_t>(safeRoom.numThreadsInRoom.load() + 1));
             newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, safeRoom);
         }
-        else
-            newHandler = nullptr; // Retry joining
     }
     catch (const NotFoundException&) // thrown by getRoom()
     {
