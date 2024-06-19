@@ -28,13 +28,15 @@ public:
     std::optional<Question> getQuestionForUser(const LoggedUser& user) noexcept;
     std::vector<PlayerResults> getGameResult() const noexcept;
     const RoomData& getGameData() const noexcept;
+    std::map<LoggedUser, GameData>::iterator getPlayerIt(const LoggedUser& user) noexcept;
     
     // @throws NotFoundException
     void removePlayer(const LoggedUser& user);
 
     // @throws NotFoundException if user not found
     uint8_t submitAnswer(const LoggedUser& user, uint8_t answerId);
-
+    
+    friend class GameRequestHandler;
 private:
     /*######################################
     ############ PRIVATE METHODS ###########

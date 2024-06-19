@@ -11,7 +11,9 @@
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <cstdint>
+#include <ctime>
 #include <map>
+#include <optional>
 #include <string>
 #include <utility> // std::move
 #if SERVER_DEBUG
@@ -20,9 +22,10 @@
 #endif
 
 
-GameRequestHandler::GameRequestHandler(LoggedUser user, Game& game) noexcept :
+GameRequestHandler::GameRequestHandler(const LoggedUser& user, Game& game) noexcept :
     m_game(game),
-    m_user(std::move(user))
+    m_user(user),
+    m_playerIt(game.getPlayerIt(user))
 {}
 
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
@@ -98,6 +101,9 @@ RequestResult GameRequestHandler::getQuestion() noexcept
         possibleAnswers[++i] = answer;
     }
 
+    // Register time when client got question
+    m_playerIt->second.gotQuestionTime = std::time(nullptr);
+
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{OK}, question.value().getQuestion(), possibleAnswers}),
         .newHandler = nullptr // Stay in the game
@@ -130,6 +136,10 @@ RequestResult GameRequestHandler::leaveGame() const noexcept
 
 RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
 {
+    // Add answerTime of this question to the total
+    const time_t answerTime = std::time(nullptr) - m_playerIt->second.gotQuestionTime;
+    m_playerIt->second.totalAnswerTime += static_cast<uint32_t>(answerTime);
+
     const auto request = JsonRequestDeserializer::deserializeRequest<SubmitAnswerRequest>(info.buffer);
 
     const uint8_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);

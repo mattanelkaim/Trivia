@@ -137,7 +137,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetGameResultsResponse& r
         {
             {JsonFields::GameResults::CORRECT_ANSWERS, result.correctAnswerCount},
             {JsonFields::GameResults::WRONG_ANSWERS, result.wrongAnswerCount},
-            {JsonFields::GameResults::AVERAGE_ANSWER_TIME, result.averageAnswerTime}
+            {JsonFields::GameResults::AVERAGE_ANSWER_TIME, (result.totalAnswerTime / (result.correctAnswerCount + result.wrongAnswerCount))}
         };
 
         jResults.emplace(result.username, playerResult);
