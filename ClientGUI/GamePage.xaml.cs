@@ -71,16 +71,16 @@ namespace ClientGUI
             ((TextBlock)this.ans4.Content).Text = answers[3];
         }
 
-        private void Answer_Click(object sender, RoutedEventArgs? e)
+        private async void Answer_Click(object sender, RoutedEventArgs? e)
         {
-            int AnswerId = ((Button)sender).Name[3] - '0' - 1;
+            int AnswerId = ((Button)sender).Name[3] - '0';
             SubmitAnswerResponse response = Helper.SendSubmitAnswerRequest(AnswerId);
 
             if (response.status != (int)Helper.ResponseType.OK)
                 MessageBox.Show("Error");
 
             suspendThread = true;
-            int CorrectAnswerId = response.correctAnsID + 1;
+            int CorrectAnswerId = response.correctAnsID;
             if (AnswerId != CorrectAnswerId)
             {
                 ((Button)sender).Background = Brushes.Red;
@@ -93,16 +93,16 @@ namespace ClientGUI
             Button correctButton;
             switch (CorrectAnswerId) 
             {
-                case 0:
+                case 1:
                     correctButton = this.ans1;
                     break;
-                case 1:
+                case 2:
                     correctButton = this.ans2;
                     break;
-                case 2:
+                case 3:
                     correctButton = this.ans3;
                     break;
-                default: // case 3:
+                default: // case 4:
                     correctButton = this.ans4;
                     break;
             }
@@ -110,20 +110,25 @@ namespace ClientGUI
             correctButton.Background = Brushes.Green;
 
             // wait for next question
-            Thread.Sleep((int.Parse(this.TimerTextBlock.Text) + 1) * 1000);
-            Helper.GetNextQuestionResponse repsonse = Helper.SendGetNextQuestionRequest();
+            this.suspendThread = true;
+            //Task< GetNextQuestionResponse> task = Task.Run(() =>
+            //{
+            //    Thread.Sleep((int.Parse(this.TimerTextBlock.Text) + 1) * 1000);
+            //    return Helper.SendGetNextQuestionRequest();
+            //});
 
-            // if the 
-            if (repsonse.status == (int)Helper.ResponseType.NO_MORE_QUESTIONS)
-            {
-                this.suspendThread = true;
-                this.isTimerRunning = false;
-                //this.NavigationService.Navigate(something);
-            }
-            else
-            {
-                DisplayQuestion(Helper.SendGetNextQuestionRequest());
-            }
+            //Helper.GetNextQuestionResponse repsonse2 = await task;
+
+            //// if the 
+            //if (repsonse2.status == (int)Helper.ResponseType.NO_MORE_QUESTIONS)
+            //{
+            //    this.isTimerRunning = false;
+            //    //this.NavigationService.Navigate(something);
+            //}
+            //else
+            //{
+            //    DisplayQuestion(Helper.SendGetNextQuestionRequest());
+            //}
         }
 
         private void TimerThreadWrapper()
