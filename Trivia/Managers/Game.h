@@ -17,7 +17,7 @@ public:
 
     // ID is identical to the room ID
     Game() = delete;
-    Game(RoomData roomData, const std::vector<LoggedUser>& users) noexcept;
+    Game(RoomData roomData, const std::vector<LoggedUser>& users, std::vector<Question> questions) noexcept;
 
     ~Game() noexcept;
 
