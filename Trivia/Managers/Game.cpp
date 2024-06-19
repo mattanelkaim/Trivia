@@ -11,12 +11,23 @@
 #include <iostream>
 #include <optional>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 
-Game::Game(const uint32_t roomId) noexcept :
+Game::Game(const uint32_t roomId, const std::vector<LoggedUser>& users) noexcept :
     m_gameId(roomId)
-{}
+{
+    const GameData defaultGameData{
+        .currentQuestion = this->m_questions.cbegin(),
+        .correctAnswerCount = 0,
+        .wrongAnswerCount = 0,
+        .averageAnswerTime = 0
+    };
+
+    for (const LoggedUser& user : users)
+        this->m_players.emplace(user, defaultGameData);
+}
 
 Game::~Game() noexcept
 {
