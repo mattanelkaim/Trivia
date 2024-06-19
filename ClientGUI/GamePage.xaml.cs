@@ -31,6 +31,8 @@ namespace ClientGUI
 
         private Thread TimerThread;
         private bool isTimerRunning = true;
+        private bool suspendThread = false;
+
         public GamePage()
         {
             InitializeComponent();
@@ -74,6 +76,7 @@ namespace ClientGUI
         {
             int AnswerId = ((TextBlock)(((Button)sender).Content)).Text[3] - '0' - 1;
             SubmitAnswerResponse response = Helper.SendSubmitAnswerRequest(AnswerId);
+            suspendThread = true;
             int CorrectAnswerId = response.correctAnsID + 1;
             if (AnswerId != CorrectAnswerId)
             {
@@ -109,6 +112,7 @@ namespace ClientGUI
             bool HasTimerEnded = false;
             while(isTimerRunning)
             {
+                while (suspendThread) { }
                 this.Dispatcher.Invoke(() => { this.TimerTextBlock.Text = (int.Parse(this.TimerTextBlock.Text) - 1).ToString(); });
                 this.Dispatcher.Invoke(() => { HasTimerEnded = this.TimerTextBlock.Text == "0"; });
                 if (HasTimerEnded)
