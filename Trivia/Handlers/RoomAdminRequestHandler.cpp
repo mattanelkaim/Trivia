@@ -4,6 +4,7 @@
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
+#include "NotFoundException.h"
 #include "RequestHandlerFactory.h"
 #include "Room.h"
 #include "RoomAdminRequestHandler.h"
@@ -103,8 +104,14 @@ RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
     // Remove all users from the room
     for (const LoggedUser& user : this->m_room.getAllUsers())
     {
-        // m_room better be in the vector of RoomManager, otherwise it will crash
-        RoomManager::getInstance().getRoom(roomId).removeUser(user); // Removing each user from the room
+        try
+        {
+            RoomManager::getInstance().getRoom(roomId).removeUser(user); // Removing each user from the room
+        }
+        catch (const NotFoundException&) // Improbably thrown from getRoom()
+        {
+            break;
+        }
     }
 
     // Delete the room
