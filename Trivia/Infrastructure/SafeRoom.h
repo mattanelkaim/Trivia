@@ -3,14 +3,21 @@
 #include "Room.h"
 #include "ServerDefinitions.h"
 #include <atomic>
+#include <cstdint>
 
-// This is in a differnt file and not in serverDefenitions because of weird circular dependency
+// This is in a different file and not in serverDefinitions because of weird circular dependency
 class safe_room
 {
 public:
-    safe_room(const RoomData& roomData);
+    explicit safe_room(const RoomData& roomData);
 
     Room room;
+
+    /*######################################
+    #### AVOID SHITTY COMPILER WARNINGS ####
+    ######################################*/
+    safe_room operator=(const safe_room& other) = delete;
+    safe_room(const safe_room& other) = delete;
 
 private:
     // friendship is not inherited for some reason
