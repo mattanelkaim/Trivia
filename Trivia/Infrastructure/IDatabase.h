@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Question.h"
+#include "ServerDefinitions.h"
 #include <cstdint>
 #include <map>
 #include <string>
@@ -42,6 +43,9 @@ public:
     
     // @throws InvalidSQL
     virtual std::map<std::string, double> getHighScores() const = 0;
+
+    // @throws InvalidSQL
+    virtual void updatePlayerStats(const std::string& username, const GameData& data) = 0;
 
     /*######################################
     ############### SINGLETON ##############
