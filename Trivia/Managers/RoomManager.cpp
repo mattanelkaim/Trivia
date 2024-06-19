@@ -6,6 +6,7 @@
 #include "ServerDefinitions.h"
 #include <algorithm> // std::ranges::any_of
 #include <cstdint>
+#include <exception> // std::terminate
 #include <new> // std::bad_alloc
 #include <stdexcept> // std::out_of_range
 #include <string>
@@ -28,7 +29,9 @@ safe_room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
         return addedRoom;
     }
     catch (const std::bad_alloc&)
-    {} // Ignore
+    {
+        std::terminate();
+    }
 }
 
 void RoomManager::deleteRoom(const uint32_t roomId) noexcept
