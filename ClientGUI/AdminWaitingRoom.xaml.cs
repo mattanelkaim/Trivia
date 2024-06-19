@@ -51,6 +51,7 @@ namespace ClientGUI
 
         private void GetState()
         {
+            Thread.Sleep(100);
             while (isRunning)
             {                 
                 RoomData newData = Helper.SendGetRoomStateRequest(); // Button name is the room id
@@ -184,7 +185,7 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
-                    this.NavigationService.Navigate(new GamePage());
+                    this.NavigationService.Navigate(new GamePage(previousData));
                     break;
                 default:
                     MessageBox.Show("Cannot start room!");

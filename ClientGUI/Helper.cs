@@ -54,13 +54,20 @@ namespace ClientGUI
             // Login
             LOGIN_FAILED,
             // Signup
+            INVALID_USERNAME,
+            INVALID_PASSWORD,
+            INVALID_EMAIL,
             USERNAME_ALREADY_EXISTS,
             // Join Room
             ROOM_IS_FULL,
             ROOM_IS_NOT_OPEN, // Either closed or in-game
+                              // In-game
+            NO_MORE_QUESTIONS,
+            WAIT_FOR_OTHERS,
             // General Errors
             ERR, // ERROR won't compile
-            ERR_NOT_FOUND, // General error
+            ERR_NOT_FOUND,
+            ERR_ALREADY_EXISTS,
         }
 
         public enum RoomStatus
@@ -152,7 +159,8 @@ namespace ClientGUI
         public struct GetNextQuestionResponse
         {
             public int status { get; set; }
-            public GamePage.Question question { get; set; }
+            public string question { get; set; }
+            public Dictionary<string, string> answers { get; set; }
         }
 
         public struct SubmitAnswerResponse
@@ -254,16 +262,16 @@ namespace ClientGUI
             return JsonSerializer.Deserialize<GetRoomStateResponse>(response.content).roomState;
         }
 
-        public static GamePage.Question SendGetNextQuestionRequest()
+        public static GetNextQuestionResponse SendGetNextQuestionRequest()
         {
             Response response = SendMessage(new { }, RequestType.GetQuestion);
 
-            return JsonSerializer.Deserialize<GetNextQuestionResponse>(response.content).question;
+            return JsonSerializer.Deserialize<GetNextQuestionResponse>(response.content);
         }
 
         public static SubmitAnswerResponse SendSubmitAnswerRequest(int AnswerId)
         {
-            Response response = SendMessage(new { }, RequestType.SubmitAnswer);
+            Response response = SendMessage(new {answerId = AnswerId }, RequestType.SubmitAnswer);
 
             return JsonSerializer.Deserialize<SubmitAnswerResponse>(response.content);
         }
