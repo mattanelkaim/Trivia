@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ClientGUI.GamePage;
 using static ClientGUI.Helper;
 
 namespace ClientGUI
@@ -22,24 +24,22 @@ namespace ClientGUI
     /// </summary>
     public partial class GamePage : Page
     {
-        public struct Question
-        {
-            public string Title { get; set; }
-            public Dictionary<string, string> Answers { get; set; }
-        }
 
-
+        private WaitingRoomPage.RoomData RoomData;
         private Thread TimerThread;
         private bool isTimerRunning = true;
-        public GamePage()
+        private bool suspendThread = false;
+
+        public GamePage(WaitingRoomPage.RoomData roomData)
         {
             InitializeComponent();
+            this.RoomData = roomData;
             Helper.RemoveButtonHighlighting(this.ans1);
             Helper.RemoveButtonHighlighting(this.ans2);
             Helper.RemoveButtonHighlighting(this.ans3);
             Helper.RemoveButtonHighlighting(this.ans4);
 
-            DisplayQuestions();
+            DisplayQuestion(Helper.SendGetNextQuestionRequest());
 
             // start timer
             this.TimerThread = new Thread(TimerThreadWrapper)
@@ -47,6 +47,7 @@ namespace ClientGUI
                 IsBackground = true
             };
             TimerThread.Start();
+            RoomData = roomData;
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs? e)
@@ -59,11 +60,11 @@ namespace ClientGUI
             Helper.ButtonLostHoverEffect((Button)sender);
         }
 
-        private void DisplayQuestions()
-        {
-            Question question = Helper.SendGetNextQuestionRequest();
-            this.QuestionTextBlock.Text = question.Title;
-            string[] answers = question.Answers.Values.ToArray();
+        private void DisplayQuestion(GetNextQuestionResponse question)
+        {            
+            this.TimerTextBlock.Text = RoomData.questionTimeout.ToString();     
+            this.QuestionTextBlock.Text = question.question.ToString();
+            string[] answers = question.answers.Values.ToArray();
             ((TextBlock)this.ans1.Content).Text = answers[0];
             ((TextBlock)this.ans2.Content).Text = answers[1];
             ((TextBlock)this.ans3.Content).Text = answers[2];
@@ -72,8 +73,13 @@ namespace ClientGUI
 
         private void Answer_Click(object sender, RoutedEventArgs? e)
         {
-            int AnswerId = ((TextBlock)(((Button)sender).Content)).Text[3] - '0' - 1;
+            int AnswerId = ((Button)sender).Name[3] - '0' - 1;
             SubmitAnswerResponse response = Helper.SendSubmitAnswerRequest(AnswerId);
+
+            if (response.status != (int)Helper.ResponseType.OK)
+                MessageBox.Show("Error");
+
+            suspendThread = true;
             int CorrectAnswerId = response.correctAnsID + 1;
             if (AnswerId != CorrectAnswerId)
             {
@@ -102,6 +108,22 @@ namespace ClientGUI
             }
 
             correctButton.Background = Brushes.Green;
+
+            // wait for next question
+            Thread.Sleep((int.Parse(this.TimerTextBlock.Text) + 1) * 1000);
+            Helper.GetNextQuestionResponse repsonse = Helper.SendGetNextQuestionRequest();
+
+            // if the 
+            if (repsonse.status == (int)Helper.ResponseType.NO_MORE_QUESTIONS)
+            {
+                this.suspendThread = true;
+                this.isTimerRunning = false;
+                //this.NavigationService.Navigate(something);
+            }
+            else
+            {
+                DisplayQuestion(Helper.SendGetNextQuestionRequest());
+            }
         }
 
         private void TimerThreadWrapper()
@@ -109,6 +131,7 @@ namespace ClientGUI
             bool HasTimerEnded = false;
             while(isTimerRunning)
             {
+                while (suspendThread) { }
                 this.Dispatcher.Invoke(() => { this.TimerTextBlock.Text = (int.Parse(this.TimerTextBlock.Text) - 1).ToString(); });
                 this.Dispatcher.Invoke(() => { HasTimerEnded = this.TimerTextBlock.Text == "0"; });
                 if (HasTimerEnded)
