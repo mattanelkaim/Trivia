@@ -191,7 +191,6 @@
     <ClCompile Include="Handlers\RoomAdminRequestHandler.cpp" />
     <ClCompile Include="Handlers\RoomMemberRequestHandler.cpp" />
     <ClCompile Include="Infrastructure\Communicator.cpp" />
-    <ClCompile Include="Infrastructure\ICryptoAlgorithm.cpp" />
     <ClCompile Include="Infrastructure\RequestHandlerFactory.cpp" />
     <ClCompile Include="Infrastructure\SafeRoom.cpp" />
     <ClCompile Include="Infrastructure\Server.cpp" />

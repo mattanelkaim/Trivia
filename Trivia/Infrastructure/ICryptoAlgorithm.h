@@ -5,6 +5,8 @@
 class ICryptoAlgorithm
 {
 public:
-    virtual std::string encrypt(const std::string& key) = 0;
-    virtual std::string decrypt(const std::string& key) = 0;
+    virtual ~ICryptoAlgorithm() noexcept = default;
+
+    virtual std::string encrypt(const std::string& message) = 0;
+    virtual std::string decrypt(const std::string& cypher) = 0;
 };
