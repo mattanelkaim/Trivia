@@ -1,5 +1,6 @@
 #pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
 
+#include "GameManager.h"
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
@@ -24,7 +25,7 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) 
 {
     switch (requestInfo.id)
     {
-        case START_ROOM:
+        case START_GAME:
         case CLOSE_ROOM:
             return true;
         default:
@@ -42,8 +43,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
             return this->getRoomState();
             //break;
 
-        case START_ROOM:
-            return this->startRoomRequest();
+        case START_GAME:
+            return this->startGameRequest();
             //break;
 
         case CLOSE_ROOM:
@@ -74,10 +75,23 @@ RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
     };
 }
 
-RequestResult RoomAdminRequestHandler::startRoomRequest() const noexcept
+RequestResult RoomAdminRequestHandler::startGameRequest() const noexcept
 {
+    try
+    {
+        GameManager::getInstance().createGame(this->m_room);
+    }
+    catch (const ServerException&) // Either InvalidSQL or NotFoundException
+    {
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(StartGameResponse{NO_MORE_QUESTIONS}),
+            .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
+        };
+    }
+
+    // All good
     return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
+        .response = JsonResponseSerializer::serializeResponse(StartGameResponse{OK}),
         .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
     };
 }

@@ -95,7 +95,7 @@ private:
      * @param query The SQLite query to be executed.
      * @param callback A pointer to a *NOEXCEPT* callback function that's performed on EACH ROW fetched (can be nullptr).
      * @param data A pointer to user-defined data that will be passed to the callback function.
-     *        Will store the procesed results of the query (can be nullptr).
+     *        Will store the processed results of the query (can be nullptr).
      * 
      * @throws InvalidSQL
      */

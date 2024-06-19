@@ -46,7 +46,7 @@ Game::~Game() noexcept
     }
 }
 
-uint8_t Game::submitAnswer(const LoggedUser& user, uint8_t answerId)
+uint8_t Game::submitAnswer(const LoggedUser& user, const uint8_t answerId)
 {
     try
     {

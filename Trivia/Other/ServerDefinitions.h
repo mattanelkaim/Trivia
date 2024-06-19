@@ -169,7 +169,7 @@ using LogoutResponse = StatusResponse;
 using JoinRoomResponse = StatusResponse;
 using CreateRoomResponse = StatusResponse;
 using CloseRoomResponse = StatusResponse;
-using StartRoomResponse = StatusResponse;
+using StartGameResponse = StatusResponse;
 using LeaveRoomResponse = StatusResponse;
 using LeaveGameResponse = StatusResponse;
 
@@ -278,7 +278,7 @@ enum RequestId
     GET_STATISTICS,
     GET_HIGHSCORE,
     LOGOUT,
-    START_ROOM,
+    START_GAME,
     LEAVE_ROOM,
     CLOSE_ROOM,
     GET_ROOM_STATE,
