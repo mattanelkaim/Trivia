@@ -51,6 +51,7 @@ namespace ClientGUI
             switch (status)
             {
                 case Helper.ResponseType.OK:
+                    Window.GetWindow(this).Title = "Hi " + Username + ", Have Fun Playing Trivia!";
                     this.NavigationService.Navigate(new MenuPage());
                     break;
                 case Helper.ResponseType.USERNAME_ALREADY_EXISTS:

@@ -44,14 +44,14 @@ using readonly_buffer = std::span<const byte>;
 #pragma region protocolDefinitions
 
 /* protocol template: {code}{data length}{message}
-*                      ^^^^  ^^^^^^^^^^^  ^^^^^^^
-*                     1 byte,  4 bytes,  {data length} bytes
-*  example: "10005hello"
+*                      ^^^^    ^^^^^^^    ^^^^^^^
+*                     2 bytes, 4 bytes,  {data length} bytes
+*  example: "010005hello"
 */
 
 constexpr uint16_t PORT = 7777;
 
-constexpr auto BYTES_RESERVED_FOR_CODE = 1;
+constexpr auto BYTES_RESERVED_FOR_CODE = 2;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 
 // A single-value enum to catch as an exception
@@ -82,6 +82,7 @@ constexpr uint16_t NUM_TOP_SCORES = 5;
 enum RoomStatus
 {
     OPEN,
+    IN_GAME,
     CLOSED,
 };
 

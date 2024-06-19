@@ -11,6 +11,8 @@
 using std::to_string;
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+#pragma warning(push)
+#pragma warning(disable: 26447)
 buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) noexcept
 {
     try
@@ -179,10 +181,11 @@ constexpr buffer JsonResponseSerializer::serializeGeneralResponse(const Response
     return {
         std::from_range,
         // The first byte is the response code
-        to_string(type) + \
+        Helper::getPaddedNumber(static_cast<uint16_t>(type), BYTES_RESERVED_FOR_CODE) + \
         // Pushing the JSON's length to the buffer
         Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) + \
         // Pushing the actual message to the buffer
         json.data()
     };
 }
+#pragma warning(pop)

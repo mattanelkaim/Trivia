@@ -7,13 +7,12 @@
 #include "MenuRequestHandler.h"
 #include "NotFoundException.h"
 #include "RequestHandlerFactory.h"
-#include "Room.h"
 #include "RoomManager.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include "StatisticsManager.h"
 #include <cstdint>
-#include <optional>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
@@ -62,15 +61,15 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
             //break;
 
         case GET_HIGHSCORE:
-            return this->getHighScore();
+            return MenuRequestHandler::getHighScore();
             //break;
 
         case GET_ROOMS:
-            return this->getRooms();
+            return MenuRequestHandler::getRooms();
             //break;
 
         case GET_PLAYERS_IN_ROOM:
-            return this->getPlayersInRoom(info);
+            return MenuRequestHandler::getPlayersInRoom(info);
             //break;
 
         case CREATE_ROOM:
@@ -111,43 +110,43 @@ RequestResult MenuRequestHandler::getPersonalStats() const
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetPersonalStatsResponse{{OK}, StatisticsManager::getUserStatistics(m_user)}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .newHandler = nullptr // Stay in the menu
     };
 }
 
-RequestResult MenuRequestHandler::getHighScore() const
+RequestResult MenuRequestHandler::getHighScore()
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetHighScoreResponse{{OK}, StatisticsManager::getHighScore()}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .newHandler = nullptr // Stay in the menu
     };
 }
 
-RequestResult MenuRequestHandler::getRooms() const noexcept
+RequestResult MenuRequestHandler::getRooms() noexcept
 {
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetRoomsResponse{{OK}, RoomManager::getInstance().getRooms()}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+        .newHandler = nullptr // Stay in the menu
     };
 }
 
-RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info) const
+RequestResult MenuRequestHandler::getPlayersInRoom(const RequestInfo& info)
 {
     const uint32_t roomId = JsonRequestDeserializer::deserializeRequest<GetPlayersInRoomRequest>(info.buffer).roomId;
 
     try
     {
-        const Room& room = RoomManager::getInstance().getRoom(roomId);
+        safe_room& room = RoomManager::getInstance().getRoom(roomId);
         return RequestResult{
-            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.getAllUsers()}),
-            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+            .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{OK}, room.room.getAllUsers()}),
+            .newHandler = nullptr // Stay in the menu
         };
     }
     catch (const NotFoundException&) // thrown by getRoom()
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(GetPlayersInRoomResponse{{ERR_NOT_FOUND}, {}}), // Empty vector
-            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+            .newHandler = nullptr // Stay in the menu
         };
     }
 }
@@ -160,12 +159,12 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
     {
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{ERR_ALREADY_EXISTS}),
-            .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user)
+            .newHandler = nullptr // Stay in the menu
         };
     }
 
     // Creating a room as specified in the request buffer
-    std::optional<Room> createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
+    safe_room& createdRoom = RoomManager::getInstance().createRoom(m_user, RoomData{
         .name = request.roomName,
         .id = RoomManager::getNextRoomId(), // Generate a unique ID
         .maxPlayers = request.maxUsers,
@@ -176,7 +175,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom.value())
+        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom)
     };
 }
 
@@ -187,21 +186,22 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
     ResponseCode responseCode{};
     IRequestHandler* newHandler = nullptr;
     try
-    {
-        Room& room = RoomManager::getInstance().getRoom(roomId);
+    {       
+        safe_room& safeRoom = RoomManager::getInstance().getRoom(roomId);
 
         // Adding the user to the room specified in the request buffer
-        responseCode = room.addUser(m_user);
-
-        if (responseCode == OK)
-            newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, room);
+        if (safeRoom.doesRoomExist.load() && safeRoom.room.addUser(m_user) == OK)
+        {
+            safeRoom.numThreadsInRoom.store(static_cast<uint16_t>(safeRoom.numThreadsInRoom.load() + 1));
+            newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, safeRoom);
+        }
         else
-            newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user); // Retry joining
+            newHandler = nullptr; // Retry joining
     }
     catch (const NotFoundException&) // thrown by getRoom()
     {
         responseCode = ERR_NOT_FOUND;
-        newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user);
+        newHandler = nullptr; // Stay in the menu
     }
 
     return RequestResult{

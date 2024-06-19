@@ -42,12 +42,12 @@ private:
     RequestResult getPersonalStats() const;
 
     // @throws InvalidSQL
-    RequestResult getHighScore() const;
+    static RequestResult getHighScore();
 
-    RequestResult getRooms() const noexcept;
+    static RequestResult getRooms() noexcept;
 
     // @throws InvalidProtocolStructure
-    RequestResult getPlayersInRoom(const RequestInfo& info) const;
+    static RequestResult getPlayersInRoom(const RequestInfo& info);
 
     // @throws InvalidProtocolStructure
     RequestResult createRoom(const RequestInfo& info) const;

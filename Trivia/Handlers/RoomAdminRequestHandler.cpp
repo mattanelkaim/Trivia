@@ -11,15 +11,23 @@
 #include "RoomManager.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
+#include "memory"
 #include <cstdint>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) noexcept :
-    IRoomRequestHandler(std::move(user), std::move(room))
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, safe_room& room) :
+    IRoomRequestHandler(std::move(user), room),
+    m_hasExitedSafely(false)
 {}
+
+RoomAdminRequestHandler::~RoomAdminRequestHandler() noexcept
+{
+    if (!this->m_hasExitedSafely)
+        this->closeRoomRequest();
+}
 
 bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) const noexcept
 {
@@ -62,24 +70,25 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
-            .newHandler = nullptr
+            .newHandler = nullptr // Keep the handler
         };
     }
-}
-
-RequestResult RoomAdminRequestHandler::getRoomState() const noexcept
-{
-    return RequestResult{
-        .response = this->getSerializedRoomState(), // IRoomRequestHandler
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
-    };
 }
 
 RequestResult RoomAdminRequestHandler::startGameRequest() const noexcept
 {
     try
     {
-        GameManager::getInstance().createGame(this->m_room);
+        Game& createdGame = GameManager::getInstance().createGame(this->m_room.room);
+
+        this->m_hasExitedSafely = true;
+        this->m_room.room.updateRoomState(RoomStatus::CLOSED);
+
+        // All good
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(StartGameResponse{OK}),
+            .newHandler = RequestHandlerFactory::createGameRequestHandler(m_user, createdGame)
+        };
     }
     catch (const ServerException&) // Either InvalidSQL or NotFoundException
     {
@@ -88,30 +97,19 @@ RequestResult RoomAdminRequestHandler::startGameRequest() const noexcept
             .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
         };
     }
-
-    // All good
-    return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(StartGameResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
-    };
 }
 
-RequestResult RoomAdminRequestHandler::closeRoomRequest() const noexcept
+RequestResult RoomAdminRequestHandler::closeRoomRequest() noexcept
 {
-    const uint32_t roomId = this->m_room.getData().id;
+    this->m_hasExitedSafely = true;
 
-    // Remove all users from the room
-    for (const LoggedUser& user : this->m_room.getAllUsers())
-    {
-        try
-        {
-            RoomManager::getInstance().getRoom(roomId).removeUser(user); // Removing each user from the room
-        }
-        catch (const NotFoundException&) // Improbably thrown from getRoom()
-        {
-            break;
-        }
-    }
+    const uint32_t roomId = this->m_room.room.getData().id;
+
+    // notify all threads in the room that the room is closing
+    this->m_room.doesRoomExist.store(false);
+
+    // waiting for all members to leave the room before finally deleting it
+    while (this->m_room.numThreadsInRoom.load() != 0) {}
 
     // Delete the room
     RoomManager::getInstance().deleteRoom(roomId);
