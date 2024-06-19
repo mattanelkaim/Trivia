@@ -54,6 +54,7 @@
     <None Remove="Images\trophy.png" />
     <None Remove="Images\user.png" />
     <None Remove="Images\waitingRoom9.jpeg" />
+    <None Remove="Images\White\checkmark.png" />
     <None Remove="Images\White\closed.png" />
     <None Remove="Images\White\create.png" />
     <None Remove="Images\White\email.png" />
@@ -69,6 +70,7 @@
     <None Remove="Images\White\questions.png" />
     <None Remove="Images\White\stats.png" />
     <None Remove="Images\White\timeout.png" />
+    <None Remove="Images\White\timer.png" />
     <None Remove="Images\White\trophy.png" />
     <None Remove="Images\White\user.png" />
   </ItemGroup>
@@ -106,6 +108,7 @@
     <Resource Include="Images\loading.gif" />
     <Resource Include="Images\silver.png" />
     <Resource Include="Images\waitingRoom9.jpeg" />
+    <Resource Include="Images\White\checkmark.png" />
     <Resource Include="Images\White\closed.png" />
     <Resource Include="Images\White\create.png" />
     <Resource Include="Images\White\email.png" />
@@ -121,6 +124,7 @@
     <Resource Include="Images\White\questions.png" />
     <Resource Include="Images\White\stats.png" />
     <Resource Include="Images\White\timeout.png" />
+    <Resource Include="Images\White\timer.png" />
     <Resource Include="Images\White\trophy.png" />
     <Resource Include="Images\White\user.png" />
   </ItemGroup>

@@ -177,7 +177,7 @@ RequestResult MenuRequestHandler::createRoom(const RequestInfo& info) const
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(CreateRoomResponse{OK}),
-        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom.value())
+        .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, createdRoom)
     };
 }
 
