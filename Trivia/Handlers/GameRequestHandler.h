@@ -36,6 +36,7 @@ private:
     RequestResult getQuestion() noexcept;
     // @throws InvalidProtocolStructure
     RequestResult submitAnswer(const RequestInfo& info);
+    // Returns UNSORTED results of the game
     RequestResult getGameResults() const noexcept;
     RequestResult leaveGame() const noexcept;
 

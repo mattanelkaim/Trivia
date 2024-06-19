@@ -256,6 +256,7 @@ namespace JsonFields
         constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
         constexpr std::string_view WRONG_ANSWERS = "wrongAnswers";
         constexpr std::string_view AVERAGE_ANSWER_TIME = "averageAnswerTime";
+        constexpr std::string_view SCORE = "score";
     } // namespace GameResults
 
     constexpr std::string_view CORRECT_ANSWER_ID = "correctAnsID";

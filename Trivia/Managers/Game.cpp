@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <ctime>
 #include <Helper.h>
-#include <iostream>
 #include <map>
 #include <optional>
 #include <stdexcept>
@@ -87,10 +86,11 @@ uint8_t Game::submitAnswer(const LoggedUser& user, const uint8_t answerId)
     }
 }
 
-void Game::removePlayer(const LoggedUser& user)
+void Game::removePlayer(const LoggedUser& user) const
 {
     RoomManager::getInstance().getRoom(this->m_data.id).removeUser(user);
-    this->m_players.erase(user);
+    // Should NOT delete user results, in order to submit them to DB later
+    //this->m_players.erase(user);
 }
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
