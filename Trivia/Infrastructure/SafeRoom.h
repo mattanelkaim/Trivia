@@ -17,7 +17,7 @@ public:
     #### AVOID SHITTY COMPILER WARNINGS ####
     ######################################*/
     safe_room operator=(const safe_room& other) = delete;
-    safe_room(const safe_room& other) = default;
+    safe_room(const safe_room& other) = delete;
 
 private:
     // friendship is not inherited for some reason
