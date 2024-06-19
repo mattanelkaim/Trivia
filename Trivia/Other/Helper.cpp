@@ -15,7 +15,7 @@
 
 using std::to_string;
 
-std::string Helper::formatError(const std::string& functionName, const std::string& err)
+std::string Helper::formatError(const std::string& functionName, const std::string& err) noexcept
 {
     if constexpr (EXTENDED_ERRORS)
     {

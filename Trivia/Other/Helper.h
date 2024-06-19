@@ -15,8 +15,6 @@ namespace Helper
     ############ COMMUNICATION #############
     ######################################*/
 
-    std::string formatError(const std::string& functionName, const std::string& err);
-
     /**
     * @throws InvalidProtocolStructure
     * @throws UnexpectedClientExit
@@ -109,6 +107,7 @@ namespace Helper
     ######################################*/
 
 
+    // Use a concept to constrain the type of the first param to unsigned integral only
     constexpr std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
     {
         // Return string after padding zeros if necessary
@@ -141,6 +140,6 @@ namespace Helper
         }
     }
 
-    std::string formatError(const std::string& functionName, const std::string& err);
+    std::string formatError(const std::string& functionName, const std::string& err) noexcept;
 
 }; // namespace Helper

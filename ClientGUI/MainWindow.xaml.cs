@@ -40,7 +40,7 @@ namespace ClientGUI
             //    new HighscorePage.Highscore() { Username = "tHIrD", Score = -2 }
             //]));
 
-            this.MainFrame.NavigationService.Navigate(new GamePage());
+            this.MainFrame.NavigationService.Navigate(new LoginPage());
         }
     }
 }
