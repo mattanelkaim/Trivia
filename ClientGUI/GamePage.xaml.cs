@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,26 +24,22 @@ namespace ClientGUI
     /// </summary>
     public partial class GamePage : Page
     {
-        public struct Question
-        {
-            public string Title { get; set; }
-            public Dictionary<string, string> Answers { get; set; }
-        }
 
-
+        private WaitingRoomPage.RoomData RoomData;
         private Thread TimerThread;
         private bool isTimerRunning = true;
         private bool suspendThread = false;
 
-        public GamePage()
+        public GamePage(WaitingRoomPage.RoomData roomData)
         {
             InitializeComponent();
+            this.RoomData = roomData;
             Helper.RemoveButtonHighlighting(this.ans1);
             Helper.RemoveButtonHighlighting(this.ans2);
             Helper.RemoveButtonHighlighting(this.ans3);
             Helper.RemoveButtonHighlighting(this.ans4);
 
-            DisplayQuestion(Helper.SendGetNextQuestionRequest().question);
+            DisplayQuestion(Helper.SendGetNextQuestionRequest());
 
             // start timer
             this.TimerThread = new Thread(TimerThreadWrapper)
@@ -50,6 +47,7 @@ namespace ClientGUI
                 IsBackground = true
             };
             TimerThread.Start();
+            RoomData = roomData;
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs? e)
@@ -62,10 +60,11 @@ namespace ClientGUI
             Helper.ButtonLostHoverEffect((Button)sender);
         }
 
-        private void DisplayQuestion(Question question)
-        {
-            this.QuestionTextBlock.Text = question.Title;
-            string[] answers = question.Answers.Values.ToArray();
+        private void DisplayQuestion(GetNextQuestionResponse question)
+        {            
+            this.TimerTextBlock.Text = RoomData.questionTimeout.ToString();     
+            this.QuestionTextBlock.Text = question.question.ToString();
+            string[] answers = question.answers.Values.ToArray();
             ((TextBlock)this.ans1.Content).Text = answers[0];
             ((TextBlock)this.ans2.Content).Text = answers[1];
             ((TextBlock)this.ans3.Content).Text = answers[2];

@@ -18,7 +18,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Margin="0,20,0,0"
-                   FontSize="40"
+                   FontSize="30"
                    Foreground="White"/>
 
         <Border HorizontalAlignment="Center"
@@ -42,13 +42,12 @@
                         Cursor="Hand">
                     <Button.Content>
                         <TextBlock
-                                   Text="ans1"
+                                   Text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                                    FontSize="25"
                                    Width="270"
                                    Height="120"
                                    TextAlignment="Center"
-                                   LineHeight="70"
-                                   LineStackingStrategy="BlockLineHeight"/>
+                                   TextWrapping="Wrap"/>
                     </Button.Content>
                 </Button>
 
@@ -68,8 +67,7 @@
                                    Width="270"
                                    Height="120"
                                    TextAlignment="Center"
-                                   LineHeight="70"
-                                   LineStackingStrategy="BlockLineHeight"/>
+                                   TextWrapping="Wrap"/>
                     </Button.Content>
                 </Button>
 
@@ -90,8 +88,7 @@
                                    Width="270"
                                    Height="120"
                                    TextAlignment="Center"
-                                   LineHeight="70"
-                                   LineStackingStrategy="BlockLineHeight"/>
+                                   TextWrapping="Wrap"/>
                     </Button.Content>
                 </Button>
 
@@ -111,8 +108,7 @@
                                    Width="270"
                                    Height="120"
                                    TextAlignment="Center"
-                                   LineHeight="70"
-                                   LineStackingStrategy="BlockLineHeight"/>
+                                   TextWrapping="Wrap"/>
                     </Button.Content>
                 </Button>
                 
