@@ -2,7 +2,6 @@
 #include "Room.h"
 #include "ServerDefinitions.h"
 #include <algorithm> // std::ranges::contains
-#include <cstdint>
 #include <utility> // std::move
 #include <vector>
 
@@ -41,9 +40,4 @@ const std::vector<LoggedUser>& Room::getAllUsers() const noexcept
 bool Room::isUserInRoom(const LoggedUser& username) const noexcept
 {
     return std::ranges::contains(this->m_users, username);
-}
-
-uint32_t Room::getRoomId() const noexcept
-{
-    return this->m_data.id;
 }

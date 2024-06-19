@@ -2,7 +2,6 @@
 
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
-#include <cstdint>
 #include <vector>
 
 class Room final
@@ -24,7 +23,6 @@ public:
     const RoomData& getData() const noexcept;
     const std::vector<LoggedUser>& getAllUsers() const noexcept;
     bool isUserInRoom(const LoggedUser& username) const noexcept;
-    uint32_t getRoomId() const noexcept;
 
 private:
     /*######################################
