@@ -134,10 +134,23 @@ std::map<std::string, double> SqliteDatabase::getHighScores() const
     return highScores;
 }
 
-
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
 {
     this->runQuery("INSERT INTO users(username, password, email) VALUES('" + username + "', '" + password + "', '" + email + "')");
+}
+
+void SqliteDatabase::updatePlayerStats(const std::string& username, const GameData& data)
+{
+    const auto newTotalAnswers = data.correctAnswerCount + data.wrongAnswerCount; // new total
+    const auto newTotalTime = data.averageAnswerTime * newTotalAnswers; // new avg * new total
+
+    const std::string query = "UPDATE user_scores SET num_correct = num_correct + " + to_string(data.correctAnswerCount) +
+        ", num_wrong = num_wrong + " + to_string(data.wrongAnswerCount) +
+        // new avg = (last avg * last total + new avg * new total) / (new total + last total)
+        ", avg_time = (avg_time*total_answers+" + to_string(newTotalTime) + ") / (" + to_string(newTotalAnswers) + "+total_answers)"
+        ", num_games = num_games + 1 WHERE username = '" + username + '\'';
+
+    this->runQuery(query);
 }
 
 // Helper functions

@@ -54,7 +54,7 @@ namespace JsonRequestDeserializer
             else if constexpr (std::same_as<RequestType, SubmitAnswerRequest>)
             {
                 return RequestType{
-                    .answerId = Helper::tryMakeIntegral<uint16_t>(j.at("answerId"))
+                    .answerId = Helper::tryMakeIntegral<uint8_t>(j.at("answerId"))
                 };
             }
             else if constexpr (requires{ RequestType::roomId; }) // Either GetPlayersInRoomRequest or JoinRoomRequest
