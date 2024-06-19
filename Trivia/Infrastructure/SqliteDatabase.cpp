@@ -176,7 +176,7 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
 
 #pragma region CallbackFunctions
 #pragma warning(push)
-#pragma warning(disable : 26481 26461 26447) // const for data param & don't use poitner arithmetic & noexcept violation
+#pragma warning(disable : 26481 26461 26447) // const for data param & don't use pointer arithmetic & noexcept violation
 // NOLINTBEGIN(clang-diagnostic-unsafe-buffer-usage)
 
 int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
@@ -221,8 +221,8 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
 
     try
     {
-        std::vector<std::string> possibleAnswers(NUM_POSSIBLE_ANSWERS_PER_QUESTION); // Pre-reserve size
-        std::copy(data + 1, data + columns, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
+        std::vector<std::string> possibleAnswers;
+        std::copy(data + 1, data + NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1, std::back_inserter(possibleAnswers)); // Skip index 0 (which is the actual question)
 
         static_cast<std::vector<Question>*>(destination)->emplace_back(data[0], possibleAnswers); // Construct with question string & answers
         return 0;
