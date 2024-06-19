@@ -1,6 +1,5 @@
 #pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
 
-#include "Helper.h"
 #include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
@@ -17,7 +16,7 @@
 #include <cstdint>
 #include <utility> // std::move
 #if SERVER_DEBUG
-#include <iostream>
+#include "Helper.h"
 #endif
 
 
@@ -89,7 +88,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),

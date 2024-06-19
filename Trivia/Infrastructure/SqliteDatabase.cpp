@@ -134,13 +134,27 @@ std::map<std::string, double> SqliteDatabase::getHighScores() const
     return highScores;
 }
 
-
 void SqliteDatabase::addNewUser(const std::string& username, const std::string& password, const std::string& email)
 {
     this->runQuery("INSERT INTO users(username, password, email) VALUES('" + username + "', '" + password + "', '" + email + "')");
 }
 
+void SqliteDatabase::updatePlayerStats(const std::string& username, const GameData& data)
+{
+    const auto newTotalAnswers = data.correctAnswerCount + data.wrongAnswerCount; // new total
+
+    const std::string query = "UPDATE user_scores SET num_correct = num_correct + " + to_string(data.correctAnswerCount) +
+        ", num_wrong = num_wrong + " + to_string(data.wrongAnswerCount) +
+        // new avg = (last avg * last total + new avg * new total) / (new total + last total)
+        ", avg_time = (avg_time*total_answers+" + to_string(data.totalAnswerTime) + ") / (" + to_string(newTotalAnswers) + "+total_answers)"
+        ", num_games = num_games + 1 WHERE username = '" + username + '\'';
+
+    this->runQuery(query);
+}
+
+
 // Helper functions
+
 
 void SqliteDatabase::runQuery(const std::string_view query) const
 {
@@ -159,7 +173,10 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
     }
 }
 
+
 #pragma region CallbackFunctions
+#pragma warning(push)
+#pragma warning(disable : 26481 26461 26447) // const for data param & don't use poitner arithmetic & noexcept violation
 // NOLINTBEGIN(clang-diagnostic-unsafe-buffer-usage)
 
 int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
@@ -234,4 +251,5 @@ int SqliteDatabase::callbackStringDoubleMap(void* destination, int columns, char
 }
 
 // NOLINTEND(clang-diagnostic-unsafe-buffer-usage)
+#pragma warning(pop)
 #pragma endregion

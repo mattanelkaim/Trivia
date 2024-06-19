@@ -3,19 +3,18 @@
 #include "ServerDefinitions.h"
 #include "UnexpectedClientExit.h"
 #include <cstddef> // size_t
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <thread>
 #include <winerror.h> // for switch-case
 #include <WinSock2.h>
-#if PRINT_IO
-#include <iostream>
-#endif
 
 using std::to_string;
 
-std::string Helper::formatError(const std::string& functionName, const std::string& err)
+
+std::string Helper::formatError(const std::string& functionName, const std::string& err) noexcept
 {
     if constexpr (EXTENDED_ERRORS)
     {
@@ -25,6 +24,16 @@ std::string Helper::formatError(const std::string& functionName, const std::stri
     }
     else
         return err;
+}
+
+void Helper::safePrintError(const std::string& err) noexcept
+{
+    try
+    {
+        std::cerr << ANSI_RED << err << ANSI_NORMAL << '\n';
+    }
+    catch (...)
+    {} // Ignore
 }
 
 std::string Helper::getMessageFromSocket(const SOCKET sc)
