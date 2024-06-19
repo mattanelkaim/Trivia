@@ -2,14 +2,11 @@
 
 #include "IRequestHandler.h"
 #include "ServerDefinitions.h"
-
-class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
+#include <optional>
 
 class LoginRequestHandler final : public IRequestHandler
 {
 public:
-    explicit LoginRequestHandler(RequestHandlerFactory* handlerFactory) noexcept;
-
     /*######################################
     ############ PUBLIC METHODS ############
     ######################################*/
@@ -24,8 +21,6 @@ public:
     LoginRequestHandler operator=(const LoginRequestHandler& other) = delete;
 
 private:
-    RequestHandlerFactory* m_handlerFactory;
-
     /*######################################
     ############ HELPER METHODS ############
     ######################################*/
@@ -34,11 +29,13 @@ private:
     * @throws InvalidProtocolStructure
     * @throws InvalidSQL
     */
-    RequestResult login(const RequestInfo& info);
+    static RequestResult login(const RequestInfo& info);
 
     /**
     * @throws InvalidProtocolStructure
     * @throws InvalidSQL
     */
-    RequestResult signup(const RequestInfo& info);
+    static RequestResult signup(const RequestInfo& info);
+
+    static constexpr std::optional<RequestResult> validateSignupCredentials(const SignupRequest& request) noexcept;
 };

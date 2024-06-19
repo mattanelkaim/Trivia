@@ -10,15 +10,14 @@ public:
     ############# CONSTRUCTORS #############
     ######################################*/
 
-    Question() = default;
+    Question() noexcept = default;
 
     /**
-    * @brief Constructs a new Question object.
-    * 
+    * Constructs a new Question object.
     * @param question The question text.
     * @param answers A vector of possible answers. The correct answer should be the first one in the vector.
     */
-    explicit Question(std::string question, const std::vector<std::string>& answers);
+    explicit Question(std::string question, const std::vector<std::string>& answers) noexcept;
 
     /*######################################
     ############ PUBLIC METHODS ############
@@ -28,7 +27,9 @@ public:
     const std::vector<std::string>& getPossibleAnswers() const noexcept;
     const std::string& getCorrectAnswer() const noexcept; // The correct answer will always be the first one
 
-    // Avoid shitty compiler warnings
+    /*######################################
+    #### AVOID SHITTY COMPILER WARNINGS ####
+    ######################################*/
     Question operator=(const Question& other) = delete;
 
 private:

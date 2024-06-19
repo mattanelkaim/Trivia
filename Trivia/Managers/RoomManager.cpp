@@ -1,27 +1,37 @@
 #include "LoggedUser.h"
+#include "NotFoundException.h"
 #include "Room.h"
 #include "RoomManager.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
-#include "ServerException.h"
+#include <algorithm> // std::ranges::any_of
 #include <cstdint>
-#include <memory>
-#include <mutex>
-#include <stdexcept>
+#include <exception> // std::terminate
+#include <new> // std::bad_alloc
+#include <stdexcept> // std::out_of_range
 #include <string>
 #include <vector>
 
-using std::to_string;
+#pragma warning(push) // To pop at the end of the file
+#pragma warning(disable: 26492) // Warns about using const_cast
 
+using std::to_string;                                
 
-void RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
+safe_room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data) noexcept
 {
-    const auto [addedRoom, isEmplaced] = this->m_rooms.try_emplace(data.id, data); // Returns pair of iterator and bool isSuccessful
+    try
+    {
+        safe_room& addedRoom = this->m_rooms.emplace(data.id, data).first->second;
+        // Improbable to fail emplacing because the server itself generates the room ID
 
-    if (!isEmplaced) // Not emplaced successfully
-        throw ServerException("Room with id " + to_string(data.id) + " already exists");
+        addedRoom.room.addUser(user); // Add the room creator (admin) to the emplaced room
 
-    addedRoom->second.addUser(user); // Add to room the room creator
-    roomIdCounter++;
+        return addedRoom;
+    }
+    catch (const std::bad_alloc&)
+    {
+        std::terminate();
+    }
 }
 
 void RoomManager::deleteRoom(const uint32_t roomId) noexcept
@@ -29,16 +39,11 @@ void RoomManager::deleteRoom(const uint32_t roomId) noexcept
     this->m_rooms.erase(roomId);
 }
 
-uint32_t RoomManager::getRoomState(const uint32_t roomId) const
+RoomStatus RoomManager::getRoomState(const uint32_t roomId) const
 {
-    try
-    {
-        return this->m_rooms.at(roomId).getData().status;
-    }
-    catch (const std::out_of_range&)
-    {
-        throw ServerException("Cannot find a room with ID " + to_string(roomId));
-    }
+    //NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast) - ignore const_cast
+    const safe_room& room = const_cast<RoomManager*>(this)->getRoom(roomId); // Must use const_cast because getRoom is not const, oof
+    return room.room.getData().status;
 }
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore reserve and std::bad_alloc
@@ -47,36 +52,43 @@ std::vector<RoomData> RoomManager::getRooms() const noexcept
     std::vector<RoomData> rooms;
     rooms.reserve(this->m_rooms.size());
 
-    for (const auto& [_, room] : this->m_rooms)
-        rooms.emplace_back(room.getData());
+    for (const auto& [_, safeRoom] : this->m_rooms)
+        rooms.emplace_back(safeRoom.room.getData());
 
     return rooms;
 }
 
-Room& RoomManager::getRoom(const uint32_t roomId)
+safe_room& RoomManager::getRoom(const uint32_t roomId)
 {
+    // Simply rethrows the exception thrown by at()
     try
     {
         return this->m_rooms.at(roomId);
     }
     catch (const std::out_of_range&)
     {
-        throw ServerException("Cannot find a room with ID " + to_string(roomId));
+        throw NotFoundException("Room with ID " + to_string(roomId));
     }
+}
+
+bool RoomManager::doesRoomExist(const std::string& roomName) const noexcept
+{
+    // Use a lambda on each room to check if room name is the same
+    return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
+        return roomPair.second.room.getData().name == roomName; // Check if room name is the same
+    });
 }
 
 uint32_t RoomManager::getNextRoomId() noexcept
 {
-    return ++roomIdCounter;
+    return ++roomIdCounter; // Increment then return
 }
 
 // Singleton
-RoomManager* RoomManager::getInstance()
+RoomManager& RoomManager::getInstance() noexcept
 {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_RoomManager == nullptr) [[unlikely]]
-    {
-        m_RoomManager = std::unique_ptr<RoomManager>(new RoomManager());
-    }
-    return m_RoomManager.get();
+    static RoomManager instance; // This is thread-safe in C++11 and later
+    return instance;
 }
+
+#pragma warning(pop) // Popping C26492
