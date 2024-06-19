@@ -4,11 +4,13 @@
 #include "LoggedUser.h"
 #include "Room.h"
 #include "ServerDefinitions.h"
+#include "memory"
 
 class RoomAdminRequestHandler final : public IRoomRequestHandler
 {
 public:
-	RoomAdminRequestHandler(LoggedUser user, Room room) noexcept;
+	RoomAdminRequestHandler(LoggedUser user, safe_room& room);
+	~RoomAdminRequestHandler() noexcept override;
 
 	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& requestInfo) noexcept override;
@@ -19,8 +21,8 @@ public:
 
 	RoomAdminRequestHandler operator=(const RoomAdminRequestHandler& other) = delete;
 
-private:	
-	RequestResult getRoomState() const noexcept;
+private:
+	mutable bool m_hasExitedSafely;	
 	RequestResult startGameRequest() const noexcept;
-	RequestResult closeRoomRequest() const noexcept;
+	RequestResult closeRoomRequest() noexcept;
 };
