@@ -42,6 +42,10 @@ namespace ClientGUI
             LeaveRoom,
             CloseRoom,
             GetRoomState,
+            SubmitAnswer,
+            LeaveGame,
+            GetQuestion,
+            GetGameResult,
         }
 
         public enum ResponseType
@@ -145,6 +149,11 @@ namespace ClientGUI
             public WaitingRoomPage.RoomData roomState { get; set; }
         }
 
+        public struct GetNextQuestionResponse
+        {
+            public GamePage.Question question { get; set; }
+        }
+
         // ACTUAL FUNCTIONS THAT SEND REQUESTS
 
         public static Response ExtractResponse(string response)
@@ -238,7 +247,15 @@ namespace ClientGUI
             return JsonSerializer.Deserialize<GetRoomStateResponse>(response.content).roomState;
         }
 
-#endregion specificRequests
+        public static GamePage.Question SendGetNextQuestionRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.GetQuestion);
+
+            // Response example: 000118{"roomState":{"hasGameBegun":false,"playersInRoom":["admin","gil"],"questionCount":12,"questionTimeout":10,"state":0}}
+            return JsonSerializer.Deserialize<GetNextQuestionResponse>(response.content).question;
+        }
+
+        #endregion specificRequests
 
 
         #region XAMLMethodsHelper
