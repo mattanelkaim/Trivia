@@ -141,5 +141,6 @@ namespace Helper
     }
 
     std::string formatError(const std::string& functionName, const std::string& err) noexcept;
+    void safePrintError(const std::string& err) noexcept;
 
 }; // namespace Helper
