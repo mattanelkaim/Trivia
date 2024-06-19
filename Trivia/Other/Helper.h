@@ -3,6 +3,7 @@
 #include "InvalidProtocolStructure.h"
 #include "ServerDefinitions.h"
 #include <cstddef> // size_t
+#include <cstdint>
 #include <ctre.hpp>
 #include <string>
 #include <string_view>
@@ -141,5 +142,12 @@ namespace Helper
     }
 
     std::string formatError(const std::string& functionName, const std::string& err) noexcept;
+    void safePrintError(const std::string& err) noexcept;
+
+    constexpr double calcUserScore(const uint32_t correct, const uint32_t wrong, const double avgTime) noexcept
+    {
+        // The formula should match the one in the DB (score row definition in user_scores)
+        return (3 * correct - wrong) * (1 + 4 / avgTime);
+    }
 
 }; // namespace Helper

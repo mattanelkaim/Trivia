@@ -1,8 +1,10 @@
 #pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
 
+#include "GameManager.h"
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
+#include "NotFoundException.h"
 #include "RequestHandlerFactory.h"
 #include "Room.h"
 #include "RoomAdminRequestHandler.h"
@@ -14,7 +16,6 @@
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
-#include <iostream>
 #endif
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, safe_room& room) :
@@ -32,7 +33,7 @@ bool RoomAdminRequestHandler::isRequestRelevant(const RequestInfo& requestInfo) 
 {
     switch (requestInfo.id)
     {
-        case START_ROOM:
+        case START_GAME:
         case CLOSE_ROOM:
             return true;
         default:
@@ -50,8 +51,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
             return this->getRoomState();
             //break;
 
-        case START_ROOM:
-            return this->startRoomRequest();
+        case START_GAME:
+            return this->startGameRequest();
             //break;
 
         case CLOSE_ROOM:
@@ -65,7 +66,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
@@ -74,16 +75,28 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
     }
 }
 
-RequestResult RoomAdminRequestHandler::startRoomRequest() noexcept
+RequestResult RoomAdminRequestHandler::startGameRequest() const noexcept
 {
-    this->m_hasExitedSafely = true;
+    try
+    {
+        Game& createdGame = GameManager::getInstance().createGame(this->m_room.room);
 
-    this->m_room.room.updateRoomState(RoomStatus::CLOSED);
+        this->m_hasExitedSafely = true;
+        this->m_room.room.updateRoomState(RoomStatus::CLOSED);
 
-    return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(StartRoomResponse{OK}),
-        .newHandler = nullptr // Keep the handler
-    };
+        // All good
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(StartGameResponse{OK}),
+            .newHandler = RequestHandlerFactory::createGameRequestHandler(m_user, createdGame)
+        };
+    }
+    catch (const ServerException&) // Either InvalidSQL or NotFoundException
+    {
+        return RequestResult{
+            .response = JsonResponseSerializer::serializeResponse(StartGameResponse{NO_MORE_QUESTIONS}),
+            .newHandler = RequestHandlerFactory::createRoomAdminRequestHandler(m_user, m_room)
+        };
+    }
 }
 
 RequestResult RoomAdminRequestHandler::closeRoomRequest() noexcept

@@ -1,7 +1,7 @@
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
-#include "../Infrastructure/SafeRoom.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <utility> // std::move
 
@@ -21,13 +21,13 @@ RequestResult IRoomRequestHandler::getRoomState() noexcept
     const RoomData& room = this->m_room.room.getData();
 
     return RequestResult{JsonResponseSerializer::serializeResponse(GetRoomStateResponse
-                        { // Cannot use designators cuz status isn't explicitly named in GetRoomStateResponse
-                            /*.status =*/ {ResponseCode::OK},
-                            /*.state =*/ room.status,
-                            /*.hasGameBegun =*/ (room.status == RoomStatus::CLOSED),
-                            /*.players =*/ m_room.room.getAllUsers(),
-                            /*.questionCount =*/ room.numOfQuestionsInGame,
-                            /*.answerTimeout =*/ room.timePerQuestion
-                        }),
-                        nullptr };
+    { // Cannot use designators cuz status isn't explicitly named in GetRoomStateResponse
+        /*.status =*/ {ResponseCode::OK},
+        /*.state =*/ room.status,
+        /*.hasGameBegun =*/ (room.status != RoomStatus::OPEN),
+        /*.players =*/ m_room.room.getAllUsers(),
+        /*.questionCount =*/ room.numOfQuestionsInGame,
+        /*.answerTimeout =*/ room.timePerQuestion
+    }),
+    nullptr };
 }

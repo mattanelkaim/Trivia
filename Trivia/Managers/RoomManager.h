@@ -1,15 +1,12 @@
 #pragma once
 
 #include "LoggedUser.h"
-#include "../Infrastructure/SafeRoom.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
-#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <string>
-#include <memory>
 
 class RoomManager final
 {
@@ -47,7 +44,6 @@ public:
     safe_room& getRoom(uint32_t roomId);
 
     bool doesRoomExist(const std::string& roomName) const noexcept;
-    bool isUserInAnyRoom(const LoggedUser& user) const noexcept;
 
     /**
      * This method increments the static room ID counter and returns the new value.

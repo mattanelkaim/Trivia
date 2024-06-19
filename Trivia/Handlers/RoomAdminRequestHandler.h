@@ -21,8 +21,8 @@ public:
 
 	RoomAdminRequestHandler operator=(const RoomAdminRequestHandler& other) = delete;
 
-private:	
+private:
 	mutable bool m_hasExitedSafely;	
-	RequestResult startRoomRequest() noexcept;
+	RequestResult startGameRequest() const noexcept;
 	RequestResult closeRoomRequest() noexcept;
 };

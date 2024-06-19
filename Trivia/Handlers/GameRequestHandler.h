@@ -4,6 +4,7 @@
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
+#include <map>
 
 class GameRequestHandler final : public IRequestHandler
 {
@@ -13,7 +14,7 @@ public:
     ######################################*/
 
     GameRequestHandler() = delete;
-    GameRequestHandler(LoggedUser user, Game& game) noexcept;
+    GameRequestHandler(const LoggedUser& user, Game& game) noexcept;
 
     /*######################################
     ############ PUBLIC METHODS ############
@@ -33,11 +34,11 @@ private:
     ######################################*/
 
     RequestResult getQuestion() noexcept;
-    RequestResult getGameResults() const noexcept;
-    RequestResult leaveGame() const noexcept;
-
     // @throws InvalidProtocolStructure
     RequestResult submitAnswer(const RequestInfo& info);
+    // Returns UNSORTED results of the game
+    RequestResult getGameResults() const noexcept;
+    RequestResult leaveGame() const noexcept;
 
     /*######################################
     ################ MEMBERS ###############
@@ -45,4 +46,5 @@ private:
 
     Game& m_game;
     LoggedUser m_user;
+    std::map<LoggedUser, GameData>::iterator m_playerIt; // Iterator in the Game's map
 };

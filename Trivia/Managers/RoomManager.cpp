@@ -1,17 +1,15 @@
 #include "LoggedUser.h"
 #include "NotFoundException.h"
-#include "../Infrastructure/SafeRoom.h"
 #include "Room.h"
 #include "RoomManager.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <algorithm> // std::ranges::any_of
 #include <cstdint>
 #include <new> // std::bad_alloc
-#include <optional>
 #include <stdexcept> // std::out_of_range
 #include <string>
 #include <vector>
-#include <memory>
 
 #pragma warning(push) // To pop at the end of the file
 #pragma warning(disable: 26492) // Warns about using const_cast
@@ -30,9 +28,7 @@ safe_room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
         return addedRoom;
     }
     catch (const std::bad_alloc&)
-    {
-        throw(std::runtime_error("Run away!"));
-    }
+    {} // Ignore
 }
 
 void RoomManager::deleteRoom(const uint32_t roomId) noexcept
@@ -74,22 +70,10 @@ safe_room& RoomManager::getRoom(const uint32_t roomId)
 
 bool RoomManager::doesRoomExist(const std::string& roomName) const noexcept
 {
-    return false; // TODO remove
-
-    //// Use a lambda on each room to check if room name is the same
-    //return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
-    //    return roomPair.second.room.getData().name == roomName; // Check if room name is the same
-    //});
-}
-
-bool RoomManager::isUserInAnyRoom(const LoggedUser& user) const noexcept
-{
-    return false; // TODO remove
-
-    //// Use a lambda on each room to check if user is in it
-    //return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
-    //    return roomPair.second.room.isUserInRoom(user); // Check if user is in room
-    //});
+    // Use a lambda on each room to check if room name is the same
+    return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
+        return roomPair.second.room.getData().name == roomName; // Check if room name is the same
+    });
 }
 
 uint32_t RoomManager::getNextRoomId() noexcept

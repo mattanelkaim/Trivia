@@ -135,11 +135,16 @@ buffer JsonResponseSerializer::serializeResponse(const GetGameResultsResponse& r
 
     for (const auto& result : response.results)
     {
+        const auto averageTime = static_cast<double>(result.totalAnswerTime) / (result.correctAnswerCount + result.wrongAnswerCount);
+
+        const auto score = Helper::calcUserScore(result.correctAnswerCount, result.wrongAnswerCount, averageTime);
+
         const json playerResult
         {
             {JsonFields::GameResults::CORRECT_ANSWERS, result.correctAnswerCount},
             {JsonFields::GameResults::WRONG_ANSWERS, result.wrongAnswerCount},
-            {JsonFields::GameResults::AVERAGE_ANSWER_TIME, result.averageAnswerTime}
+            {JsonFields::GameResults::AVERAGE_ANSWER_TIME, averageTime},
+            {JsonFields::GameResults::SCORE, score}
         };
 
         jResults.emplace(result.username, playerResult);
