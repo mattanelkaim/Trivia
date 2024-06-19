@@ -10,7 +10,7 @@ class IRoomRequestHandler : public IRequestHandler
 public:
 	IRoomRequestHandler(LoggedUser user, Room room) noexcept;
 
-	inline bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
+	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& info) noexcept override = 0;
 
 	/*######################################

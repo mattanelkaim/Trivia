@@ -45,7 +45,7 @@ Game::~Game() noexcept
     }
     catch (const InvalidSQL& e)
     {
-        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, std::string("Cannot submit stats to DB: ") + e.what()) << ANSI_NORMAL << '\n';
+        Helper::safePrintError(Helper::formatError(__FUNCTION__, std::string("Cannot submit stats to DB: ") + e.what()));
     }
 }
 

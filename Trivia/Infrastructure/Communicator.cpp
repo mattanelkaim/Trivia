@@ -83,7 +83,7 @@ void Communicator::startHandleRequests()
     }
     catch (const std::exception& e)
     {
-        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+        Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
     }
 }
 
@@ -131,14 +131,14 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
         }
         catch (const ServerException& e)
         {
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
             this->disconnectClient(clientSocket);
             std::cout << ANSI_BLUE << "Disconnected client socket " << clientSocket << "\n\n" << ANSI_NORMAL;
             return; // No need to handle disconnected client
         }
         catch (const std::exception& e)
         {
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
         }
     }
 }

@@ -18,7 +18,6 @@
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
-#include <iostream>
 #endif
 
 
@@ -71,7 +70,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
