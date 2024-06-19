@@ -11,18 +11,20 @@
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <cstdint>
+#include <ctime>
 #include <map>
+#include <optional>
 #include <string>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
-#include <iostream>
 #endif
 
 
-GameRequestHandler::GameRequestHandler(LoggedUser user, Game& game) noexcept :
+GameRequestHandler::GameRequestHandler(const LoggedUser& user, Game& game) noexcept :
     m_game(game),
-    m_user(std::move(user))
+    m_user(user),
+    m_playerIt(game.getPlayerIt(user))
 {}
 
 bool GameRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
@@ -49,16 +51,16 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
             return this->getQuestion();
             //break;
 
+        case SUBMIT_ANSWER:
+            return this->submitAnswer(info);
+            //break;
+
         case GET_GAME_RESULTS:
             return this->getGameResults();
             //break;
 
         case LEAVE_GAME:
             return this->leaveGame();
-            //break;
-
-        case SUBMIT_ANSWER:
-            return this->submitAnswer(info);
             //break;
 
         default: // This should not happen
@@ -68,7 +70,7 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
@@ -79,6 +81,22 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
 
 RequestResult GameRequestHandler::getQuestion() noexcept
 {
+    // Time that game is running / time per question = totalQuestionsAsked (index)
+    const auto currentQuestionInGame = ((std::time(nullptr) - m_game.m_timeGameStarted) / m_game.m_data.timePerQuestion) + 1;
+
+    const uint32_t totalAnswered = m_playerIt->second.correctAnswerCount + m_playerIt->second.wrongAnswerCount;
+
+    // Check if user is ahead of the game
+    if (totalAnswered >= static_cast<uint32_t>(currentQuestionInGame))
+    {
+        return RequestResult{
+            // Send an empty question and an empty list of answers
+            .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{WAIT_FOR_OTHERS}, "", {}}),
+            .newHandler = nullptr // Stay in the game
+        };
+    }
+
+    // Try to send a question to the user
     const std::optional<Question> question = this->m_game.getQuestionForUser(this->m_user);
 
     // If no more questions, return an empty question response
@@ -98,9 +116,28 @@ RequestResult GameRequestHandler::getQuestion() noexcept
         possibleAnswers[++i] = answer;
     }
 
+    // Register time when client got question
+    m_playerIt->second.gotQuestionTime = std::time(nullptr);
+
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{OK}, question.value().getQuestion(), possibleAnswers}),
         .newHandler = nullptr // Stay in the game
+    };
+}
+
+RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
+{
+    // Add answerTime of this question to the total
+    const time_t answerTime = std::time(nullptr) - m_playerIt->second.gotQuestionTime;
+    m_playerIt->second.totalAnswerTime += static_cast<uint32_t>(answerTime);
+
+    const auto request = JsonRequestDeserializer::deserializeRequest<SubmitAnswerRequest>(info.buffer);
+
+    const uint8_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);
+
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(SubmitAnswerResponse{{OK}, correctAnsId}),
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
 }
 
@@ -124,18 +161,6 @@ RequestResult GameRequestHandler::leaveGame() const noexcept
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveGameResponse{OK}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
-    };
-}
-
-RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
-{
-    const auto request = JsonRequestDeserializer::deserializeRequest<SubmitAnswerRequest>(info.buffer);
-
-    const uint8_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);
-
-    return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(SubmitAnswerResponse{{OK}, correctAnsId}),
         .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
 }

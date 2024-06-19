@@ -30,9 +30,6 @@ public:
     const std::vector<std::string>& getPossibleAnswers() const noexcept;
     uint8_t getCorrectAnswerId() const noexcept; // The correct answer will always be the first one
 
-    // Avoid shitty compiler warnings
-    Question operator=(const Question& other) = delete;
-
 private:
     /*######################################
     ################ MEMBERS ###############
