@@ -4,6 +4,7 @@
 #include "Question.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
+#include <ctime>
 #include <map>
 #include <optional>
 #include <vector>
@@ -17,7 +18,7 @@ public:
 
     // ID is identical to the room ID
     Game() = delete;
-    explicit Game(uint32_t roomId) noexcept;
+    Game(RoomData roomData, const std::vector<LoggedUser>& users, std::vector<Question> questions) noexcept;
 
     ~Game() noexcept;
 
@@ -26,15 +27,16 @@ public:
     ######################################*/
 
     std::optional<Question> getQuestionForUser(const LoggedUser& user) noexcept;
-    std::vector<PlayerResults> getGameResult() const noexcept;
-    uint32_t getGameID() const noexcept;
-    
-    // @throws NotFoundException
-    void removePlayer(const LoggedUser& user);
-
     // @throws NotFoundException if user not found
     uint8_t submitAnswer(const LoggedUser& user, uint8_t answerId);
+    // @throws NotFoundException
+    void removePlayer(const LoggedUser& user) const;
+    std::vector<PlayerResults> getGameResult() const noexcept;
+    const RoomData& getGameData() const noexcept;
+    std::map<LoggedUser, GameData>::iterator getPlayerIt(const LoggedUser& user) noexcept;
 
+    
+    friend class GameRequestHandler;
 private:
     /*######################################
     ############ PRIVATE METHODS ###########
@@ -47,7 +49,8 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
+    RoomData m_data;
     std::vector<Question> m_questions;
     std::map<LoggedUser, GameData> m_players;
-    uint32_t m_gameId;
+    time_t m_timeGameStarted;
 };
