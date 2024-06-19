@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ClientGUI.GamePage;
 using static ClientGUI.Helper;
 
 namespace ClientGUI
@@ -41,7 +42,7 @@ namespace ClientGUI
             Helper.RemoveButtonHighlighting(this.ans3);
             Helper.RemoveButtonHighlighting(this.ans4);
 
-            DisplayQuestions();
+            DisplayQuestion(Helper.SendGetNextQuestionRequest().question);
 
             // start timer
             this.TimerThread = new Thread(TimerThreadWrapper)
@@ -61,9 +62,8 @@ namespace ClientGUI
             Helper.ButtonLostHoverEffect((Button)sender);
         }
 
-        private void DisplayQuestions()
+        private void DisplayQuestion(Question question)
         {
-            Question question = Helper.SendGetNextQuestionRequest();
             this.QuestionTextBlock.Text = question.Title;
             string[] answers = question.Answers.Values.ToArray();
             ((TextBlock)this.ans1.Content).Text = answers[0];
@@ -76,6 +76,10 @@ namespace ClientGUI
         {
             int AnswerId = ((TextBlock)(((Button)sender).Content)).Text[3] - '0' - 1;
             SubmitAnswerResponse response = Helper.SendSubmitAnswerRequest(AnswerId);
+
+            if (response.status != (int)Helper.ResponseType.OK)
+                MessageBox.Show("Error");
+
             suspendThread = true;
             int CorrectAnswerId = response.correctAnsID + 1;
             if (AnswerId != CorrectAnswerId)
@@ -105,6 +109,18 @@ namespace ClientGUI
             }
 
             correctButton.Background = Brushes.Green;
+
+            // wait for next question
+            Thread.Sleep((int.Parse(this.TimerTextBlock.Text) + 1) * 1000);
+            Helper.GetNextQuestionResponse repsonse = Helper.SendGetNextQuestionRequest();
+
+            // if the 
+            if (repsonse.status == (int)Helper.ResponseType.NO_MORE_QUESTIONS)
+            {
+                this.suspendThread = true;
+                this.isTimerRunning = false;
+                //this.NavigationService.Navigate(something);
+            }
         }
 
         private void TimerThreadWrapper()
