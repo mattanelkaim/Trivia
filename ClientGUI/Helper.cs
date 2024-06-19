@@ -159,7 +159,8 @@ namespace ClientGUI
         public struct GetNextQuestionResponse
         {
             public int status { get; set; }
-            public GamePage.Question question { get; set; }
+            public string question { get; set; }
+            public Dictionary<string, string> answers { get; set; }
         }
 
         public struct SubmitAnswerResponse
@@ -270,7 +271,7 @@ namespace ClientGUI
 
         public static SubmitAnswerResponse SendSubmitAnswerRequest(int AnswerId)
         {
-            Response response = SendMessage(new { }, RequestType.SubmitAnswer);
+            Response response = SendMessage(new {answerId = AnswerId }, RequestType.SubmitAnswer);
 
             return JsonSerializer.Deserialize<SubmitAnswerResponse>(response.content);
         }
