@@ -78,7 +78,7 @@ namespace ClientGUI
                         case Helper.RoomStatus.IN_GAME:
                             this.Dispatcher.Invoke(() =>
                             {
-                                this.NavigationService.Navigate(new GamePage());
+                                this.NavigationService.Navigate(new GamePage(previousData));
                                 this.isRunning = false; // Stop the request thread
                                 return;
                             });
