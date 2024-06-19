@@ -3,7 +3,7 @@
 #include "LoggedUser.h"
 #include "MenuRequestHandler.h"
 #include "RequestHandlerFactory.h"
-#include "Room.h"
+#include "SafeRoom.h"
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
 #include <utility> // std::move
@@ -17,19 +17,18 @@ MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(LoggedUser u
     return new MenuRequestHandler(std::move(user));
 }
 
-RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser user, Room room) noexcept
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(LoggedUser user, safe_room& room) noexcept
 {
-    return new RoomAdminRequestHandler(std::move(user), std::move(room));
+    return new RoomAdminRequestHandler(std::move(user), room);
 }
 
-RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser user, Room room) noexcept
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(LoggedUser user, safe_room& room) noexcept
 {
-    return new RoomMemberRequestHandler(std::move(user), std::move(room));
+    return new RoomMemberRequestHandler(std::move(user), room);
 }
-
-GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser user, Game& room) noexcept
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser user, Game& game) noexcept
 {
-    return new GameRequestHandler(std::move(user), room);
+    return new GameRequestHandler(std::move(user), game);
 }
 //NOLINTEND(bugprone-unhandled-exception-at-new)
 #pragma warning(pop)
