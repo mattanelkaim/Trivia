@@ -162,6 +162,7 @@
     <ClInclude Include="Infrastructure\SqliteDatabase.h" />
     <ClInclude Include="Infrastructure\WSAInitializer.h" />
     <ClInclude Include="Managers\Game.h" />
+    <ClInclude Include="Managers\GameManager.h" />
     <ClInclude Include="Managers\LoggedUser.h" />
     <ClInclude Include="Managers\LoginManager.h" />
     <ClInclude Include="Managers\Question.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="Infrastructure\SqliteDatabase.cpp" />
     <ClCompile Include="Infrastructure\WSAInitializer.cpp" />
     <ClCompile Include="Managers\Game.cpp" />
+    <ClCompile Include="Managers\GameManager.cpp" />
     <ClCompile Include="Managers\Question.cpp" />
     <ClCompile Include="Managers\Room.cpp" />
     <ClCompile Include="Managers\RoomManager.cpp" />

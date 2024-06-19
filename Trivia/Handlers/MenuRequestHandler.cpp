@@ -8,16 +8,14 @@
 #include "NotFoundException.h"
 #include "RequestHandlerFactory.h"
 #include "RoomManager.h"
-#include "../Infrastructure/SafeRoom.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include "StatisticsManager.h"
 #include <cstdint>
-#include <optional>
 #include <utility> // std::move
 #if SERVER_DEBUG
 #include "Helper.h"
-#include <iostream>
 #endif
 
 
@@ -89,7 +87,7 @@ RequestResult MenuRequestHandler::handleRequest(const RequestInfo& info) noexcep
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
@@ -194,7 +192,7 @@ RequestResult MenuRequestHandler::joinRoom(const RequestInfo& info) const
         // Adding the user to the room specified in the request buffer
         if (safeRoom.doesRoomExist.load() && safeRoom.room.addUser(m_user) == OK)
         {
-            safeRoom.numThreadsInRoom.store(safeRoom.numThreadsInRoom.load() + 1);
+            safeRoom.numThreadsInRoom.store(static_cast<uint16_t>(safeRoom.numThreadsInRoom.load() + 1));
             newHandler = RequestHandlerFactory::createRoomMemberRequestHandler(m_user, safeRoom);
         }
         else

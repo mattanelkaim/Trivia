@@ -107,7 +107,7 @@ struct PlayerResults
     std::string username;
     uint32_t correctAnswerCount;
     uint32_t wrongAnswerCount;
-    uint32_t averageAnswerTime;
+    uint32_t totalAnswerTime;
 };
 
 //NOLINTBEGIN
@@ -116,7 +116,8 @@ struct GameData
     std::vector<Question>::const_iterator currentQuestion; // Iterator helps to keep track in the vector of questions
     uint32_t correctAnswerCount;
     uint32_t wrongAnswerCount;
-    uint32_t averageAnswerTime;
+    time_t gotQuestionTime;
+    uint32_t totalAnswerTime;
 
     /*######################################
     #### AVOID SHITTY COMPILER WARNINGS ####
@@ -146,6 +147,7 @@ enum ResponseCode
     ROOM_IS_NOT_OPEN, // Either closed or in-game
     // In-game
     NO_MORE_QUESTIONS,
+    WAIT_FOR_OTHERS,
     // General Errors
     ERR, // ERROR won't compile
     ERR_NOT_FOUND,
@@ -170,7 +172,7 @@ using LogoutResponse = StatusResponse;
 using JoinRoomResponse = StatusResponse;
 using CreateRoomResponse = StatusResponse;
 using CloseRoomResponse = StatusResponse;
-using StartRoomResponse = StatusResponse;
+using StartGameResponse = StatusResponse;
 using LeaveRoomResponse = StatusResponse;
 using LeaveGameResponse = StatusResponse;
 
@@ -255,6 +257,7 @@ namespace JsonFields
         constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
         constexpr std::string_view WRONG_ANSWERS = "wrongAnswers";
         constexpr std::string_view AVERAGE_ANSWER_TIME = "averageAnswerTime";
+        constexpr std::string_view SCORE = "score";
     } // namespace GameResults
 
     constexpr std::string_view CORRECT_ANSWER_ID = "correctAnsID";
@@ -279,7 +282,7 @@ enum RequestId
     GET_STATISTICS,
     GET_HIGHSCORE,
     LOGOUT,
-    START_ROOM,
+    START_GAME,
     LEAVE_ROOM,
     CLOSE_ROOM,
     GET_ROOM_STATE,
