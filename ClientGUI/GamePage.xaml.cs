@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static ClientGUI.Helper;
 
 namespace ClientGUI
 {
@@ -72,7 +73,35 @@ namespace ClientGUI
         private void Answer_Click(object sender, RoutedEventArgs? e)
         {
             int AnswerId = ((TextBlock)(((Button)sender).Content)).Text[3] - '0' - 1;
-            //int CorrectAnswerId = Helper.SendSubmitAnswerRequest(AnswerId) + 1;
+            SubmitAnswerResponse response = Helper.SendSubmitAnswerRequest(AnswerId);
+            int CorrectAnswerId = response.correctAnsID + 1;
+            if (AnswerId != CorrectAnswerId)
+            {
+                ((Button)sender).Background = Brushes.Red;
+            }
+            else
+            {
+                this.CorrectAnswersTextBlock.Text = (int.Parse(this.CorrectAnswersTextBlock.Text) + 1).ToString();
+            }
+
+            Button correctButton;
+            switch (CorrectAnswerId) 
+            {
+                case 0:
+                    correctButton = this.ans1;
+                    break;
+                case 1:
+                    correctButton = this.ans2;
+                    break;
+                case 2:
+                    correctButton = this.ans3;
+                    break;
+                default: // case 3:
+                    correctButton = this.ans4;
+                    break;
+            }
+
+            correctButton.Background = Brushes.Green;
         }
 
         private void TimerThreadWrapper()

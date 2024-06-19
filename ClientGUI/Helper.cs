@@ -151,7 +151,14 @@ namespace ClientGUI
 
         public struct GetNextQuestionResponse
         {
+            public int status { get; set; }
             public GamePage.Question question { get; set; }
+        }
+
+        public struct SubmitAnswerResponse
+        {
+            public int status { get; set; }
+            public int correctAnsID { get; set; }
         }
 
         // ACTUAL FUNCTIONS THAT SEND REQUESTS
@@ -251,8 +258,14 @@ namespace ClientGUI
         {
             Response response = SendMessage(new { }, RequestType.GetQuestion);
 
-            // Response example: 000118{"roomState":{"hasGameBegun":false,"playersInRoom":["admin","gil"],"questionCount":12,"questionTimeout":10,"state":0}}
             return JsonSerializer.Deserialize<GetNextQuestionResponse>(response.content).question;
+        }
+
+        public static SubmitAnswerResponse SendSubmitAnswerRequest(int AnswerId)
+        {
+            Response response = SendMessage(new { }, RequestType.SubmitAnswer);
+
+            return JsonSerializer.Deserialize<SubmitAnswerResponse>(response.content);
         }
 
         #endregion specificRequests
