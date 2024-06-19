@@ -1,5 +1,3 @@
-#pragma once
-
 #include "IRoomRequestHandler.h"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
@@ -8,7 +6,7 @@
 #include <utility> // std::move
 
 
-IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room room) :
+IRoomRequestHandler::IRoomRequestHandler(LoggedUser user, Room room) noexcept :
     m_room(std::move(room)),
     m_user(std::move(user))
 {}
