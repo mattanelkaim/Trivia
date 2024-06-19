@@ -3,6 +3,7 @@
 #pragma warning(disable: 4820) // Padding added after data member
 
 #include "LoggedUser.h"
+#include "Question.h"
 #include <cstdint>
 #include <ctime> // Used for time_t
 #include <map>
@@ -23,7 +24,7 @@ using readonly_buffer = std::span<const byte>;
 #define PRINT_IO true // Used in Helper
 #define OUTPUT_COLORS true
 #define SERVER_DEBUG true
-#define EXTENDED_ERRORS true
+#define EXTENDED_ERRORS false
 
 #if OUTPUT_COLORS
     constexpr std::string_view ANSI_RED    = "\033[31;1m"; // Red and bold
@@ -108,6 +109,22 @@ struct PlayerResults
     uint32_t averageAnswerTime;
 };
 
+//NOLINTBEGIN
+struct GameData
+{
+    std::vector<Question>::const_iterator currentQuestion; // Iterator helps to keep track in the vector of questions
+    uint32_t correctAnswerCount;
+    uint32_t wrongAnswerCount;
+    uint32_t averageAnswerTime;
+
+    /*######################################
+    #### AVOID SHITTY COMPILER WARNINGS ####
+    ######################################*/
+
+    GameData operator=(const GameData& other) = delete;
+};
+//NOLINTEND
+
 #pragma endregion
 
 
@@ -126,6 +143,8 @@ enum ResponseCode
     // Join Room
     ROOM_IS_FULL,
     ROOM_IS_NOT_OPEN, // Either closed or in-game
+    // In-game
+    NO_MORE_QUESTIONS,
     // General Errors
     ERR, // ERROR won't compile
     ERR_NOT_FOUND,
@@ -263,6 +282,10 @@ enum RequestId
     LEAVE_ROOM,
     CLOSE_ROOM,
     GET_ROOM_STATE,
+    SUBMIT_ANSWER,
+    LEAVE_GAME,
+    GET_QUESTION,
+    GET_GAME_RESULTS,
 };
 
 struct RequestInfo
@@ -315,7 +338,7 @@ struct CreateRoomRequest : Request
 
 struct SubmitAnswerRequest : Request
 {
-    uint32_t answerId;
+    uint8_t answerId;
 };
 
 #pragma endregion
