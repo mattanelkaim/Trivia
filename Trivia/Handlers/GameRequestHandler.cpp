@@ -52,16 +52,16 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
             return this->getQuestion();
             //break;
 
+        case SUBMIT_ANSWER:
+            return this->submitAnswer(info);
+            //break;
+
         case GET_GAME_RESULTS:
             return this->getGameResults();
             //break;
 
         case LEAVE_GAME:
             return this->leaveGame();
-            //break;
-
-        case SUBMIT_ANSWER:
-            return this->submitAnswer(info);
             //break;
 
         default: // This should not happen
@@ -82,6 +82,22 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
 
 RequestResult GameRequestHandler::getQuestion() noexcept
 {
+    // Time that game is running / time per question = totalQuestionsAsked (index)
+    const uint32_t currentQuestionInGame = ((std::time(nullptr) - m_game.m_timeGameStarted) / m_game.m_data.timePerQuestion) + 1;
+
+    const uint32_t totalAnswered = m_playerIt->second.correctAnswerCount + m_playerIt->second.wrongAnswerCount;
+
+    // Check if user is ahead of the game
+    if (totalAnswered >= currentQuestionInGame)
+    {
+        return RequestResult{
+            // Send an empty question and an empty list of answers
+            .response = JsonResponseSerializer::serializeResponse(GetQuestionResponse{{WAIT_FOR_OTHERS}, "", {}}),
+            .newHandler = nullptr // Stay in the game
+        };
+    }
+
+    // Try to send a question to the user
     const std::optional<Question> question = this->m_game.getQuestionForUser(this->m_user);
 
     // If no more questions, return an empty question response
@@ -110,6 +126,22 @@ RequestResult GameRequestHandler::getQuestion() noexcept
     };
 }
 
+RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
+{
+    // Add answerTime of this question to the total
+    const time_t answerTime = std::time(nullptr) - m_playerIt->second.gotQuestionTime;
+    m_playerIt->second.totalAnswerTime += static_cast<uint32_t>(answerTime);
+
+    const auto request = JsonRequestDeserializer::deserializeRequest<SubmitAnswerRequest>(info.buffer);
+
+    const uint8_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);
+
+    return RequestResult{
+        .response = JsonResponseSerializer::serializeResponse(SubmitAnswerResponse{{OK}, correctAnsId}),
+        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
+    };
+}
+
 RequestResult GameRequestHandler::getGameResults() const noexcept
 {
     return RequestResult{
@@ -130,22 +162,6 @@ RequestResult GameRequestHandler::leaveGame() const noexcept
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(LeaveGameResponse{OK}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
-    };
-}
-
-RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
-{
-    // Add answerTime of this question to the total
-    const time_t answerTime = std::time(nullptr) - m_playerIt->second.gotQuestionTime;
-    m_playerIt->second.totalAnswerTime += static_cast<uint32_t>(answerTime);
-
-    const auto request = JsonRequestDeserializer::deserializeRequest<SubmitAnswerRequest>(info.buffer);
-
-    const uint8_t correctAnsId = this->m_game.submitAnswer(this->m_user, request.answerId);
-
-    return RequestResult{
-        .response = JsonResponseSerializer::serializeResponse(SubmitAnswerResponse{{OK}, correctAnsId}),
         .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
     };
 }

@@ -146,6 +146,7 @@ enum ResponseCode
     ROOM_IS_NOT_OPEN, // Either closed or in-game
     // In-game
     NO_MORE_QUESTIONS,
+    WAIT_FOR_OTHERS,
     // General Errors
     ERR, // ERROR won't compile
     ERR_NOT_FOUND,

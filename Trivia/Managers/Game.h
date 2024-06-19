@@ -4,6 +4,7 @@
 #include "Question.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
+#include <ctime>
 #include <map>
 #include <optional>
 #include <vector>
@@ -52,4 +53,5 @@ private:
     RoomData m_data;
     std::vector<Question> m_questions;
     std::map<LoggedUser, GameData> m_players;
+    time_t m_timeGameStarted;
 };

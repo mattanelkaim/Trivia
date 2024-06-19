@@ -34,11 +34,10 @@ private:
     ######################################*/
 
     RequestResult getQuestion() noexcept;
-    RequestResult getGameResults() const noexcept;
-    RequestResult leaveGame() const noexcept;
-
     // @throws InvalidProtocolStructure
     RequestResult submitAnswer(const RequestInfo& info);
+    RequestResult getGameResults() const noexcept;
+    RequestResult leaveGame() const noexcept;
 
     /*######################################
     ################ MEMBERS ###############
