@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +21,13 @@ namespace ClientGUI
     /// </summary>
     public partial class GamePage : Page
     {
+        public struct Question
+        {
+            public string Title { get; set; }
+            public Dictionary<string, string> Answers { get; set; }
+        }
+
+
         private Thread TimerThread;
         private bool isTimerRunning = true;
         public GamePage()
@@ -30,14 +38,14 @@ namespace ClientGUI
             Helper.RemoveButtonHighlighting(this.ans3);
             Helper.RemoveButtonHighlighting(this.ans4);
 
-            // TODO - show question
-            
+            DisplayQuestions();
+
             // start timer
             this.TimerThread = new Thread(TimerThreadWrapper)
             {
                 IsBackground = true
             };
-            TimerThread.Start();            
+            TimerThread.Start();
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs? e)
@@ -50,9 +58,21 @@ namespace ClientGUI
             Helper.ButtonLostHoverEffect((Button)sender);
         }
 
+        private void DisplayQuestions()
+        {
+            Question question = Helper.SendGetNextQuestionRequest();
+            this.QuestionTextBlock.Text = question.Title;
+            string[] answers = question.Answers.Values.ToArray();
+            ((TextBlock)this.ans1.Content).Text = answers[0];
+            ((TextBlock)this.ans2.Content).Text = answers[1];
+            ((TextBlock)this.ans3.Content).Text = answers[2];
+            ((TextBlock)this.ans4.Content).Text = answers[3];
+        }
+
         private void Answer_Click(object sender, RoutedEventArgs? e)
         {
-
+            int AnswerId = ((TextBlock)(((Button)sender).Content)).Text[3] - '0' - 1;
+            //int CorrectAnswerId = Helper.SendSubmitAnswerRequest(AnswerId) + 1;
         }
 
         private void TimerThreadWrapper()
