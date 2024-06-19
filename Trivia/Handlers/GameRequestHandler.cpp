@@ -45,20 +45,20 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
     {
         switch (info.id)
         {
-        //case GET_QUESTION:
-        //    return this->getQuestion(info);
-        //    //break;
+        case GET_QUESTION:
+            return this->getQuestion();
+            //break;
 
-        //case SUBMIT_ANSWER:
-        //    return this->submitAnswer(info);
-        //    //break;
-
-        //case GET_GAME_RESULTS:
-        //    return this->getGameResults(info);
-        //    //break;
+        case GET_GAME_RESULTS:
+            return this->getGameResults();
+            //break;
 
         case LEAVE_GAME:
             return this->leaveGame();
+            //break;
+
+        case SUBMIT_ANSWER:
+            return this->submitAnswer(info);
             //break;
 
         default: // This should not happen
