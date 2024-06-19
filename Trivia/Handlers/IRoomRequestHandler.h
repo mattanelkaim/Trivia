@@ -4,15 +4,14 @@
 #include "LoggedUser.h"
 #include "../Infrastructure/SafeRoom.h"
 #include "ServerDefinitions.h"
-#include <memory>
 
 class IRoomRequestHandler : public IRequestHandler
 {
 public:
-	IRoomRequestHandler(LoggedUser user, safe_room& room);
+	IRoomRequestHandler(LoggedUser user, safe_room& room) noexcept;
 
 	inline bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
-	RequestResult handleRequest(const RequestInfo& info) override = 0;
+	RequestResult handleRequest(const RequestInfo& info) noexcept override = 0;
 
 	/*######################################
 	#### AVOID SHITTY COMPILER WARNINGS ####

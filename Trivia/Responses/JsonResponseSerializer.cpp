@@ -11,6 +11,8 @@
 using std::to_string;
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+#pragma warning(push)
+#pragma warning(disable: 26447)
 buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) noexcept
 {
     try
@@ -181,3 +183,4 @@ constexpr buffer JsonResponseSerializer::serializeGeneralResponse(const Response
         json.data()
     };
 }
+#pragma warning(pop)
