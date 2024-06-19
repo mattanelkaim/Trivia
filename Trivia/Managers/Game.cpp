@@ -7,6 +7,7 @@
 #include "ServerDefinitions.h"
 #include "SqliteDatabase.h"
 #include <cstdint>
+#include <ctime>
 #include <Helper.h>
 #include <iostream>
 #include <map>
@@ -19,7 +20,8 @@
 
 Game::Game(RoomData roomData, const std::vector<LoggedUser>& users, std::vector<Question> questions) noexcept :
     m_data(std::move(roomData)),
-    m_questions(std::move(questions))
+    m_questions(std::move(questions)),
+    m_timeGameStarted(std::time(nullptr))
 {
     const GameData defaultGameData{
         .currentQuestion = this->m_questions.cbegin(),
