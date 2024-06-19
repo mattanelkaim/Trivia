@@ -2,7 +2,7 @@
 
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
-#include "../Infrastructure/SafeRoom.h"
+#include "SafeRoom.h"
 #include "ServerDefinitions.h"
 
 class IRoomRequestHandler : public IRequestHandler
@@ -10,7 +10,7 @@ class IRoomRequestHandler : public IRequestHandler
 public:
 	IRoomRequestHandler(LoggedUser user, safe_room& room) noexcept;
 
-	inline bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
+	bool isRequestRelevant(const RequestInfo& requestInfo) const noexcept override;
 	RequestResult handleRequest(const RequestInfo& info) noexcept override = 0;
 
 	/*######################################
