@@ -16,8 +16,9 @@
 #include <vector>
 
 
-Game::Game(RoomData roomData, const std::vector<LoggedUser>& users) noexcept :
-    m_data(std::move(roomData))
+Game::Game(RoomData roomData, const std::vector<LoggedUser>& users, std::vector<Question> questions) noexcept :
+    m_data(std::move(roomData)),
+    m_questions(std::move(questions))
 {
     const GameData defaultGameData{
         .currentQuestion = this->m_questions.cbegin(),

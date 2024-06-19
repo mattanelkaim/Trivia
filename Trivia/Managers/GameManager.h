@@ -16,8 +16,9 @@ public:
     * Creates a new room from the previous (waiting) room.
     * @param room The (waiting) room from which the game started.
     * @return A const reference of created game.
+    * @throws InvalidSQL if cannot fetch questions from DB.
     */
-    const Game& createGame(const Room& room) noexcept;
+    const Game& createGame(const Room& room);
 
     void deleteGame(uint32_t gameId) noexcept;
 

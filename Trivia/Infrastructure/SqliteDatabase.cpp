@@ -153,7 +153,9 @@ void SqliteDatabase::updatePlayerStats(const std::string& username, const GameDa
     this->runQuery(query);
 }
 
+
 // Helper functions
+
 
 void SqliteDatabase::runQuery(const std::string_view query) const
 {
@@ -172,7 +174,10 @@ void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_
     }
 }
 
+
 #pragma region CallbackFunctions
+#pragma warning(push)
+#pragma warning(disable : 26481 26461 26447) // const for data param & don't use poitner arithmetic & noexcept violation
 // NOLINTBEGIN(clang-diagnostic-unsafe-buffer-usage)
 
 int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
@@ -247,4 +252,5 @@ int SqliteDatabase::callbackStringDoubleMap(void* destination, int columns, char
 }
 
 // NOLINTEND(clang-diagnostic-unsafe-buffer-usage)
+#pragma warning(pop)
 #pragma endregion

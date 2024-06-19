@@ -1,19 +1,26 @@
 #include "Game.h"
 #include "GameManager.h"
 #include "NotFoundException.h"
+#include "Question.h"
 #include "Room.h"
+#include "SqliteDatabase.h"
 #include <cstdint>
 #include <string>
+#include <utility> // std::move
 #include <vector>
 
 
-const Game& GameManager::createGame(const Room& room) noexcept
+const Game& GameManager::createGame(const Room& room)
 {
-    return this->m_games.emplace_back(room.getData(), room.getAllUsers());
+    // Get questions from DB (not const to move later)
+    std::vector<Question> questions = SqliteDatabase::getInstance().getQuestions(room.getData().numOfQuestionsInGame);
+ 
+    return this->m_games.emplace_back(room.getData(), room.getAllUsers(), std::move(questions));
 }
 
 void GameManager::deleteGame(uint32_t gameId) noexcept
 {
+    // Erase game from vector if it exists
     try
     {
         this->m_games.erase(this->findGame(gameId));
