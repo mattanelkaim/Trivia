@@ -73,7 +73,7 @@ namespace ClientGUI
 
         private void Answer_Click(object sender, RoutedEventArgs? e)
         {
-            int AnswerId = ((TextBlock)(((Button)sender).Content)).Text[3] - '0' - 1;
+            int AnswerId = ((Button)sender).Name[3] - '0' - 1;
             SubmitAnswerResponse response = Helper.SendSubmitAnswerRequest(AnswerId);
 
             if (response.status != (int)Helper.ResponseType.OK)
@@ -119,6 +119,10 @@ namespace ClientGUI
                 this.suspendThread = true;
                 this.isTimerRunning = false;
                 //this.NavigationService.Navigate(something);
+            }
+            else
+            {
+                DisplayQuestion(Helper.SendGetNextQuestionRequest());
             }
         }
 
