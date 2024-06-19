@@ -12,11 +12,12 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <utility> // std::move
 #include <vector>
 
 
-Game::Game(const uint32_t roomId, const std::vector<LoggedUser>& users) noexcept :
-    m_gameId(roomId)
+Game::Game(RoomData roomData, const std::vector<LoggedUser>& users) noexcept :
+    m_data(std::move(roomData))
 {
     const GameData defaultGameData{
         .currentQuestion = this->m_questions.cbegin(),
@@ -71,7 +72,7 @@ void Game::submitStatsToDB(const LoggedUser& user, const GameData& data)
 
 void Game::removePlayer(const LoggedUser& user)
 {
-    RoomManager::getInstance().getRoom(this->m_gameId).removeUser(user);
+    RoomManager::getInstance().getRoom(this->m_data.id).removeUser(user);
     this->m_players.erase(user);
 }
 
@@ -79,6 +80,7 @@ std::optional<Question> Game::getQuestionForUser(const LoggedUser& user) noexcep
 {
     try
     {
+        // Get next question if there are any left
         if (++(this->m_players.at(user).currentQuestion) == m_questions.cend()) [[unlikely]]
         {
             return std::nullopt;
@@ -106,7 +108,7 @@ std::vector<PlayerResults> Game::getGameResult() const noexcept
     return results;
 }
 
-uint32_t Game::getGameID() const noexcept
+const RoomData& Game::getGameData() const noexcept
 {
-    return this->m_gameId;
+    return this->m_data;
 }

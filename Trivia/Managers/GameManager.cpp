@@ -9,7 +9,7 @@
 
 const Game& GameManager::createGame(const Room& room) noexcept
 {
-    return this->m_games.emplace_back(room.getRoomId(), room.getAllUsers());
+    return this->m_games.emplace_back(room.getData(), room.getAllUsers());
 }
 
 void GameManager::deleteGame(uint32_t gameId) noexcept
@@ -22,18 +22,20 @@ void GameManager::deleteGame(uint32_t gameId) noexcept
     {} // Ignore
 }
 
-GameManager& GameManager::getInstance() noexcept
-{
-    static GameManager instance; // This is thread-safe in C++11 and later
-    return instance;
-}
-
 std::vector<Game>::const_iterator GameManager::findGame(uint32_t gameId) const
 {
     for (auto it = m_games.cbegin(); it != m_games.cend(); ++it)
     {
-        if (it->getGameID() == gameId)
+        if (it->getGameData().id == gameId)
             return it;
     }
     throw NotFoundException("Game with id " + std::to_string(gameId));
+}
+
+
+// Singleton
+GameManager& GameManager::getInstance() noexcept
+{
+    static GameManager instance; // This is thread-safe in C++11 and later
+    return instance;
 }
