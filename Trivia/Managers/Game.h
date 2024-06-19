@@ -17,7 +17,7 @@ public:
 
     // ID is identical to the room ID
     Game() = delete;
-    Game(uint32_t roomId, const std::vector<LoggedUser>& users) noexcept;
+    Game(RoomData roomData, const std::vector<LoggedUser>& users) noexcept;
 
     ~Game() noexcept;
 
@@ -27,7 +27,7 @@ public:
 
     std::optional<Question> getQuestionForUser(const LoggedUser& user) noexcept;
     std::vector<PlayerResults> getGameResult() const noexcept;
-    uint32_t getGameID() const noexcept;
+    const RoomData& getGameData() const noexcept;
     
     // @throws NotFoundException
     void removePlayer(const LoggedUser& user);
@@ -47,7 +47,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
+    RoomData m_data;
     std::vector<Question> m_questions;
     std::map<LoggedUser, GameData> m_players;
-    uint32_t m_gameId;
 };
