@@ -139,7 +139,7 @@
                    ToolTip="Correct Answers"/>
             
             <TextBlock x:Name="CorrectAnswersTextBlock"
-                       Text="10"
+                       Text="0"
                        FontSize="20"
                        Foreground="DarkOrange"
                        Cursor="Help"
