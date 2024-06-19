@@ -178,12 +178,13 @@ namespace ClientGUI
 
         private void StartGame_Click(object sender, RoutedEventArgs? e)
         {
+            isRunning = false;
             Helper.ResponseType status = Helper.SendStartGameRequest();
 
             switch (status)
             {
                 case Helper.ResponseType.OK:
-                    // this.NavigationService.Navigate(new AdminGamePage());
+                    this.NavigationService.Navigate(new GamePage());
                     break;
                 default:
                     MessageBox.Show("Cannot start room!");
