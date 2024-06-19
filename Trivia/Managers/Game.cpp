@@ -49,6 +49,25 @@ Game::~Game() noexcept
     }
 }
 
+
+std::optional<Question> Game::getQuestionForUser(const LoggedUser& user) noexcept
+{
+    try
+    {
+        // Get next question if there are any left
+        if (++(this->m_players.at(user).currentQuestion) == m_questions.cend()) [[unlikely]]
+        {
+            return std::nullopt;
+        }
+
+        return *(this->m_players.at(user).currentQuestion); // Dereference the iterator
+    }
+    catch (const std::out_of_range&) // If user does not exist for some reason
+    {
+        return std::nullopt;
+    }
+}
+
 uint8_t Game::submitAnswer(const LoggedUser& user, const uint8_t answerId)
 {
     try
@@ -68,34 +87,10 @@ uint8_t Game::submitAnswer(const LoggedUser& user, const uint8_t answerId)
     }
 }
 
-void Game::submitStatsToDB(const LoggedUser& user, const GameData& data)
-{
-    // Functions is simply a bridge to SqliteDatabase
-    SqliteDatabase::getInstance().updatePlayerStats(user, data);
-}
-
 void Game::removePlayer(const LoggedUser& user)
 {
     RoomManager::getInstance().getRoom(this->m_data.id).removeUser(user);
     this->m_players.erase(user);
-}
-
-std::optional<Question> Game::getQuestionForUser(const LoggedUser& user) noexcept
-{
-    try
-    {
-        // Get next question if there are any left
-        if (++(this->m_players.at(user).currentQuestion) == m_questions.cend()) [[unlikely]]
-        {
-            return std::nullopt;
-        }
-
-        return *(this->m_players.at(user).currentQuestion); // Dereference the iterator
-    }
-    catch (const std::out_of_range&) // If user does not exist for some reason
-    {
-        return std::nullopt;
-    }
 }
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
@@ -120,4 +115,10 @@ const RoomData& Game::getGameData() const noexcept
 std::map<LoggedUser, GameData>::iterator Game::getPlayerIt(const LoggedUser& user) noexcept
 {
     return this->m_players.find(user);
+}
+
+void Game::submitStatsToDB(const LoggedUser& user, const GameData& data)
+{
+    // Functions is simply a bridge to SqliteDatabase
+    SqliteDatabase::getInstance().updatePlayerStats(user, data);
 }
