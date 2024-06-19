@@ -137,7 +137,7 @@ RequestResult GameRequestHandler::submitAnswer(const RequestInfo& info)
 
     return RequestResult{
         .response = JsonResponseSerializer::serializeResponse(SubmitAnswerResponse{{OK}, correctAnsId}),
-        .newHandler = RequestHandlerFactory::createMenuRequestHandler(m_user) // Return back to menu
+        .newHandler = nullptr // Stay in the game
     };
 }
 
