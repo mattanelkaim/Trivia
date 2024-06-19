@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <Helper.h>
 #include <iostream>
+#include <map>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -24,7 +25,7 @@ Game::Game(RoomData roomData, const std::vector<LoggedUser>& users, std::vector<
         .currentQuestion = this->m_questions.cbegin(),
         .correctAnswerCount = 0,
         .wrongAnswerCount = 0,
-        .averageAnswerTime = 0
+        .totalAnswerTime = 0
     };
 
     for (const LoggedUser& user : users)
@@ -103,7 +104,7 @@ std::vector<PlayerResults> Game::getGameResult() const noexcept
 
     for (const auto& [user, data] : this->m_players)
     {
-        results.emplace_back(user, data.correctAnswerCount, data.wrongAnswerCount, data.averageAnswerTime);
+        results.emplace_back(user, data.correctAnswerCount, data.wrongAnswerCount, data.totalAnswerTime);
     }
 
     return results;
@@ -112,4 +113,9 @@ std::vector<PlayerResults> Game::getGameResult() const noexcept
 const RoomData& Game::getGameData() const noexcept
 {
     return this->m_data;
+}
+
+std::map<LoggedUser, GameData>::iterator Game::getPlayerIt(const LoggedUser& user) noexcept
+{
+    return this->m_players.find(user);
 }
