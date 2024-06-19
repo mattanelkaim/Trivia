@@ -88,7 +88,7 @@ uint8_t Game::submitAnswer(const LoggedUser& user, const uint8_t answerId)
 
 void Game::removePlayer(const LoggedUser& user) const
 {
-    RoomManager::getInstance().getRoom(this->m_data.id).removeUser(user);
+    RoomManager::getInstance().getRoom(this->m_data.id).room.removeUser(user);
     // Should NOT delete user results, in order to submit them to DB later
     //this->m_players.erase(user);
 }

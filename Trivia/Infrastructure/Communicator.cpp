@@ -121,7 +121,7 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
             else [[unlikely]]
             {
                 // Serialize an error response and send it to the client
-                Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"VERY ERRORY ERROR"}));
+                Helper::sendData(clientSocket, JsonResponseSerializer::serializeResponse(ErrorResponse{"Request Isn't Relevant To The Current Handler"}));
                 std::cout << "Operation NOT successful\n\n";
             }
         }

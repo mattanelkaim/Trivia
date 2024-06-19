@@ -24,7 +24,7 @@ namespace ClientGUI
     public static void DEBUG_SHOW(string message) {}
 #endif
 
-        public static readonly ushort BYTES_RESERVED_FOR_CODE = 1;
+        public static readonly ushort BYTES_RESERVED_FOR_CODE = 2;
         public static readonly ushort BYTES_RESERVED_FOR_MSG_LEN = 4;
 
         public enum RequestType
@@ -37,7 +37,11 @@ namespace ClientGUI
             GetRooms,
             GetStatistics,
             GetHighscore,
-            Logout
+            Logout,
+            StartRoom,
+            LeaveRoom,
+            CloseRoom,
+            GetRoomState,
         }
 
         public enum ResponseType
@@ -58,6 +62,7 @@ namespace ClientGUI
         public enum RoomStatus
         {
             OPEN,
+            IN_GAME,
             CLOSED,
         };
 
@@ -135,6 +140,11 @@ namespace ClientGUI
             public List<string> playersInRoom { get; set; }
         }
 
+        public struct GetRoomStateResponse
+        {
+            public WaitingRoomPage.RoomData roomState { get; set; }
+        }
+
         // ACTUAL FUNCTIONS THAT SEND REQUESTS
 
         public static Response ExtractResponse(string response)
@@ -198,10 +208,40 @@ namespace ClientGUI
             // Response example: {"status":1}
             return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
         }
+
+        public static ResponseType SendLeaveRoomRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.LeaveRoom);
+
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        public static ResponseType SendCloseRoomRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.CloseRoom);
+
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        public static ResponseType SendStartGameRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.StartRoom);
+
+            return (ResponseType)JsonSerializer.Deserialize<ResponseWithStatus>(response.content).status;
+        }
+
+        public static WaitingRoomPage.RoomData SendGetRoomStateRequest()
+        {
+            Response response = SendMessage(new { }, RequestType.GetRoomState);
+
+            // Response example: 000118{"roomState":{"hasGameBegun":false,"playersInRoom":["admin","gil"],"questionCount":12,"questionTimeout":10,"state":0}}
+            return JsonSerializer.Deserialize<GetRoomStateResponse>(response.content).roomState;
+        }
+
 #endregion specificRequests
 
 
-#region XAMLMethodsHelper
+        #region XAMLMethodsHelper
 
         // Also in Login window xaml
         public static readonly ushort MAX_PASSWORD_LENGTH = 8;

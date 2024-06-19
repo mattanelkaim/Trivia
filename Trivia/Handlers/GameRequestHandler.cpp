@@ -82,12 +82,12 @@ RequestResult GameRequestHandler::handleRequest(const RequestInfo& info) noexcep
 RequestResult GameRequestHandler::getQuestion() noexcept
 {
     // Time that game is running / time per question = totalQuestionsAsked (index)
-    const uint32_t currentQuestionInGame = ((std::time(nullptr) - m_game.m_timeGameStarted) / m_game.m_data.timePerQuestion) + 1;
+    const auto currentQuestionInGame = ((std::time(nullptr) - m_game.m_timeGameStarted) / m_game.m_data.timePerQuestion) + 1;
 
     const uint32_t totalAnswered = m_playerIt->second.correctAnswerCount + m_playerIt->second.wrongAnswerCount;
 
     // Check if user is ahead of the game
-    if (totalAnswered >= currentQuestionInGame)
+    if (totalAnswered >= static_cast<uint32_t>(currentQuestionInGame))
     {
         return RequestResult{
             // Send an empty question and an empty list of answers

@@ -23,6 +23,7 @@ public:
     const RoomData& getData() const noexcept;
     const std::vector<LoggedUser>& getAllUsers() const noexcept;
     bool isUserInRoom(const LoggedUser& username) const noexcept;
+    void updateRoomState(RoomStatus newState) noexcept;
 
 private:
     /*######################################
