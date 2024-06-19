@@ -30,7 +30,7 @@ public:
     // @throws NotFoundException if user not found
     uint8_t submitAnswer(const LoggedUser& user, uint8_t answerId);
     // @throws NotFoundException
-    void removePlayer(const LoggedUser& user);
+    void removePlayer(const LoggedUser& user) const;
     std::vector<PlayerResults> getGameResult() const noexcept;
     const RoomData& getGameData() const noexcept;
     std::map<LoggedUser, GameData>::iterator getPlayerIt(const LoggedUser& user) noexcept;
