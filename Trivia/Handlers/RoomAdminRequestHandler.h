@@ -21,6 +21,6 @@ public:
 
 private:	
 	RequestResult getRoomState() const noexcept;
-	RequestResult startRoomRequest() const noexcept;
+	RequestResult startGameRequest() const noexcept;
 	RequestResult closeRoomRequest() const noexcept;
 };
