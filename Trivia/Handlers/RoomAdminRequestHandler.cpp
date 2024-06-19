@@ -12,10 +12,11 @@
 #include <cstdint>
 #include <utility> // std::move
 #if SERVER_DEBUG
+#include "Helper.h"
 #include <iostream>
 #endif
 
-RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) :
+RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, Room room) noexcept :
     IRoomRequestHandler(std::move(user), std::move(room))
 {}
 
@@ -50,13 +51,13 @@ RequestResult RoomAdminRequestHandler::handleRequest(const RequestInfo& requestI
             //break;
         
         default: // This should not happen
-            throw ServerException("Request is not relevant to MenuRequestHandler!");
+            throw ServerException("Request is not relevant to RoomAdminRequestHandler!");
         }
     }
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),

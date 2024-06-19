@@ -1,6 +1,5 @@
 #pragma warning(disable: 4061) // enumerator in switch of enum is not explicitly handled by a case label
 
-#include "Helper.h"
 #include "JsonRequestDeserializer.hpp"
 #include "JsonResponseSerializer.h"
 #include "LoggedUser.h"
@@ -17,15 +16,16 @@
 #include <optional>
 #include <utility> // std::move
 #if SERVER_DEBUG
+#include "Helper.h"
 #include <iostream>
 #endif
 
 
-MenuRequestHandler::MenuRequestHandler(LoggedUser user) :
+MenuRequestHandler::MenuRequestHandler(LoggedUser user) noexcept :
     m_user(std::move(user))
 {}
 
-MenuRequestHandler::~MenuRequestHandler()
+MenuRequestHandler::~MenuRequestHandler() noexcept
 {
     this->logout();
 }
