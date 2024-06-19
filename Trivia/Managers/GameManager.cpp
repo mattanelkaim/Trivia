@@ -11,7 +11,7 @@
 #include <vector>
 
 
-const Game& GameManager::createGame(const Room& room)
+Game& GameManager::createGame(const Room& room)
 {
     // Get questions from DB (not const to move later)
     std::vector<Question> questions = SqliteDatabase::getInstance().getQuestions(room.getData().numOfQuestionsInGame);
