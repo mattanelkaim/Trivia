@@ -7,10 +7,10 @@
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
-    explicit MenuRequestHandler(LoggedUser user);
+    explicit MenuRequestHandler(LoggedUser user) noexcept;
 
     // Logs out the user
-    ~MenuRequestHandler() override;
+    ~MenuRequestHandler() noexcept override;
 
     /*######################################
     ############ PUBLIC METHODS ############
