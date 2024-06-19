@@ -1,9 +1,6 @@
 #pragma once
 
-#include "IDatabase.h"
 #include "LoggedUser.h"
-#include <memory>
-#include <mutex>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -16,7 +13,7 @@ public:
     ######################################*/
 
     /**
-    * @brief Registers a new user.
+    * @brief Registers a new user AND logs them in (if successful).
     * 
     * @param username The username of the new user.
     * @param password The password of the new user.
@@ -42,10 +39,9 @@ public:
     ############### SINGLETON ##############
     ######################################*/
 
-    LoginManager() = delete;
     LoginManager(const LoginManager& other) = delete;
     void operator=(const LoginManager& other) = delete;
-    static LoginManager* getInstance(IDatabase* db);
+    static LoginManager& getInstance() noexcept;
     ~LoginManager() noexcept = default;
 
 private:
@@ -53,7 +49,6 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    IDatabase* m_database;
     std::vector<LoggedUser> m_loggedUsers;
 
     /*######################################
@@ -66,7 +61,5 @@ private:
     ############### SINGLETON ##############
     ######################################*/
 
-    explicit LoginManager(IDatabase* db) noexcept;
-    inline static std::unique_ptr<LoginManager> m_LoginManager = nullptr;
-    inline static std::mutex m_mutex;
+    LoginManager() noexcept = default;
 };

@@ -2,15 +2,13 @@
 
 #include "Question.h"
 #include <cstdint>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 class IDatabase
 {
 public:
-    virtual ~IDatabase() = default;
-    
     // @throws std::runtime_error
     virtual bool openDB() = 0;
     virtual bool closeDB() = 0;
@@ -44,4 +42,16 @@ public:
     
     // @throws InvalidSQL
     virtual std::map<std::string, double> getHighScores() const = 0;
+
+    /*######################################
+    ############### SINGLETON ##############
+    ######################################*/
+
+    IDatabase(const IDatabase& other) = delete;
+    void operator=(const IDatabase& other) = delete;
+    //static IDatabase& getInstance() noexcept {} // NEEDS TO BE IMPLEMENTED IN ALL INHERITING CLASSES
+    virtual ~IDatabase() noexcept = default;
+
+protected:
+    IDatabase() = default;
 };

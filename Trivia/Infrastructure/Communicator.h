@@ -1,10 +1,6 @@
 #pragma once
 
-#include "IDatabase.h"
 #include "IRequestHandler.h"
-#include "RequestHandlerFactory.h"
-#include <memory>
-#include <mutex>
 #include <unordered_map>
 #include <WinSock2.h>
 
@@ -47,22 +43,22 @@ public:
     */
     void startHandleRequests();
 
+    void disconnectAllClients() noexcept;
+
     /*######################################
     ############### SINGLETON ##############
     ######################################*/
 
-    Communicator() = delete;
     Communicator(const Communicator& other) = delete;
     void operator=(const Communicator& other) = delete;
-    static Communicator* getInstance(IDatabase* db);
-    ~Communicator() noexcept;
+    static Communicator& getInstance();
+    ~Communicator();
 
 private:
     /*######################################
     ################ MEMBERS ###############
     ######################################*/
 
-    RequestHandlerFactory* m_handlerFactory;
     SOCKET m_serverSocket;
     std::unordered_map<SOCKET, IRequestHandler*> m_clients;
 
@@ -95,7 +91,5 @@ private:
     ######################################*/
 
     // @throws std::runtime_error When connection setup fails.
-    explicit Communicator(IDatabase* db);
-    inline static std::unique_ptr<Communicator> m_Communicator = nullptr;
-    inline static std::mutex m_mutex;
+    Communicator();
 };

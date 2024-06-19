@@ -51,7 +51,7 @@ namespace JsonRequestDeserializer
                     .answerTimeout = Helper::tryMakeIntegral<uint32_t>(j.at("answerTimeout"))
                 };
             }
-            else if constexpr (requires{ RequestType::roomId; }) // Either GetPlayersInRoomRequest or JoinRoomRequest
+            else if constexpr (requires{ RequestType::roomId; }) // All requests with a roomId field
             {
                 return RequestType{.roomId = Helper::tryMakeIntegral<uint16_t>(j.at("roomId"))};
             }

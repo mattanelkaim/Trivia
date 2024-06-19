@@ -1,19 +1,16 @@
 #pragma once
 
-#include "IDatabase.h"
 #include "IRequestHandler.h"
 #include "LoggedUser.h"
 #include "ServerDefinitions.h"
-#include <RoomManager.h>
-#include <StatisticsManager.h>
-
-class RequestHandlerFactory; // Double-circular-jerk-dependency-linkage mega-shit
 
 class MenuRequestHandler final : public IRequestHandler
 {
 public:
-    explicit MenuRequestHandler(IDatabase* db, LoggedUser user);
-    ~MenuRequestHandler();
+    explicit MenuRequestHandler(LoggedUser user) noexcept;
+
+    // Logs out the user
+    ~MenuRequestHandler() noexcept override;
 
     /*######################################
     ############ PUBLIC METHODS ############
@@ -33,10 +30,7 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    RequestHandlerFactory* m_handlerFactory;
-    RoomManager* m_roomManager;
-    StatisticsManager* m_statisticsManager;
-    const LoggedUser m_user;
+    LoggedUser m_user;
 
     /*######################################
     ############ HELPER METHODS ############
@@ -48,25 +42,16 @@ private:
     RequestResult getPersonalStats() const;
 
     // @throws InvalidSQL
-    RequestResult getHighScore() const;
+    static RequestResult getHighScore();
 
-    RequestResult getRooms() const noexcept;
+    static RequestResult getRooms() noexcept;
 
-    /**
-    * @throws ServerException If the room does not exist.
-    * @throws InvalidProtocolStructure
-    */
-    RequestResult getPlayersInRoom(const RequestInfo& info) const;
+    // @throws InvalidProtocolStructure
+    static RequestResult getPlayersInRoom(const RequestInfo& info);
 
-    /**
-    * @throws ServerException If the room already exists.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult createRoom(const RequestInfo& info) const;
 
-    /**
-    * @throws ServerException If the room does not exist.
-    * @throws InvalidProtocolStructure
-    */
+    // @throws InvalidProtocolStructure
     RequestResult joinRoom(const RequestInfo& info) const;
 };

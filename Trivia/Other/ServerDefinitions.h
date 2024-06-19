@@ -2,13 +2,14 @@
 #pragma once
 #pragma warning(disable: 4820) // Padding added after data member
 
+#include "LoggedUser.h"
 #include <cstdint>
 #include <ctime> // Used for time_t
+#include <map>
 #include <span>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <map>
 
 class IRequestHandler; // Double-circular-jerk-dependency-linkage mega-shit
 
@@ -22,6 +23,7 @@ using readonly_buffer = std::span<const byte>;
 #define PRINT_IO true // Used in Helper
 #define OUTPUT_COLORS true
 #define SERVER_DEBUG true
+#define EXTENDED_ERRORS true
 
 #if OUTPUT_COLORS
     constexpr std::string_view ANSI_RED    = "\033[31;1m"; // Red and bold
@@ -41,17 +43,21 @@ using readonly_buffer = std::span<const byte>;
 #pragma region protocolDefinitions
 
 /* protocol template: {code}{data length}{message}
-*                      ^^^^  ^^^^^^^^^^^  ^^^^^^^
-*                     1 byte,  4 bytes,  {data length} bytes
-*  example: "10005hello"
+*                      ^^^^    ^^^^^^^    ^^^^^^^
+*                     2 bytes, 4 bytes,  {data length} bytes
+*  example: "010005hello"
 */
 
 constexpr uint16_t PORT = 7777;
 
-constexpr auto BYTES_RESERVED_FOR_CODE = 1;
+constexpr auto BYTES_RESERVED_FOR_CODE = 2;
 constexpr auto BYTES_RESERVED_FOR_MSG_LEN = 4;
 
-constexpr int CLIENT_CLOSED_UNEXPECTEDLY = 10054; // WinError constant
+// A single-value enum to catch as an exception
+enum ABORT_FLAG
+{
+    ABORT
+};
 
 #pragma endregion
 
@@ -67,8 +73,6 @@ constexpr std::string_view DB_FILE_NAME = "TriviaDB.sqlite";
 constexpr uint16_t NUM_POSSIBLE_ANSWERS_PER_QUESTION = 4;
 constexpr uint16_t NUM_TOP_SCORES = 5;
 
-constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral converting shit
-
 #pragma endregion
 
 
@@ -77,6 +81,7 @@ constexpr auto DECIMAL_BASE = 10; // Dah, but needed for some str-to-integral co
 enum RoomStatus
 {
     OPEN,
+    IN_GAME,
     CLOSED,
 };
 
@@ -86,6 +91,7 @@ struct RoomData
     uint32_t id;
     uint16_t maxPlayers;
     uint16_t numOfQuestionsInGame;
+    // Time in seconds
     uint32_t timePerQuestion;
     RoomStatus status;
 };
@@ -97,12 +103,21 @@ struct RoomData
 
 enum ResponseCode
 {
-    ERR, // ERROR won't compile
     OK,
     // Login
     LOGIN_FAILED,
     // Signup
-    USERNAME_ALREADY_EXISTS
+    INVALID_USERNAME,
+    INVALID_PASSWORD,
+    INVALID_EMAIL,
+    USERNAME_ALREADY_EXISTS,
+    // Join Room
+    ROOM_IS_FULL,
+    ROOM_IS_NOT_OPEN, // Either closed or in-game
+    // General Errors
+    ERR, // ERROR won't compile
+    ERR_NOT_FOUND,
+    ERR_ALREADY_EXISTS,
 };
 
 // Response structs
@@ -111,52 +126,48 @@ struct ErrorResponse
     std::string message;
 };
 
-struct LoginResponse
+struct StatusResponse
 {
     ResponseCode status;
 };
 
-struct SignupResponse
-{
-    ResponseCode status;
-};
+// Are simply a response only with a status field
+using LoginResponse = StatusResponse;
+using SignupResponse = StatusResponse;
+using LogoutResponse = StatusResponse;
+using JoinRoomResponse = StatusResponse;
+using CreateRoomResponse = StatusResponse;
+using CloseRoomResponse = StatusResponse;
+using StartRoomResponse = StatusResponse;
+using LeaveRoomResponse = StatusResponse;
 
-struct LogoutResponse
+struct GetRoomsResponse : StatusResponse
 {
-    ResponseCode status;
-};
-
-struct GetRoomsResponse
-{
-    ResponseCode status;
     std::vector<RoomData> rooms;
 };
 
-struct GetPlayersInRoomResponse
+struct GetPlayersInRoomResponse : StatusResponse
 {
-    std::vector<std::string> players;
+    std::vector<LoggedUser> players;
 };
 
-struct GetHighScoreResponse
+struct GetHighScoreResponse : StatusResponse
 {
-    ResponseCode status;
-    std::map<std::string, double> statistics;
+    std::map<LoggedUser, double> statistics;
 };
 
-struct GetPersonalStatsResponse
+struct GetPersonalStatsResponse : StatusResponse
 {
-    ResponseCode status;
     std::vector<std::string> statistics;
 };
 
-struct JoinRoomResponse
+struct GetRoomStateResponse : StatusResponse
 {
-    ResponseCode status;
-};
-
-struct CreateRoomResponse
-{
-    ResponseCode status;
+    RoomStatus state;
+    bool hasGameBegun;
+    std::vector<LoggedUser> players;
+    uint16_t questionCount;
+    uint32_t answerTimeout;
 };
 
 namespace JsonFields
@@ -167,14 +178,26 @@ namespace JsonFields
     constexpr std::string_view PLAYERS_IN_ROOM = "playersInRoom";
     constexpr std::string_view HIGH_SCORES = "highScores";
     constexpr std::string_view STATISTICS = "userStatistics";
+    constexpr std::string_view ROOM_STATE = "roomState";
 
     namespace UserStats
     {
+        constexpr std::string_view USERNAME = "name";
         constexpr std::string_view SCORE = "score";
         constexpr std::string_view TOTAL_GAMES = "games";
         constexpr std::string_view TOTAL_ANSWERS = "totalAnswers";
         constexpr std::string_view CORRECT_ANSWERS = "correctAnswers";
     } // namespace UserStats
+
+    namespace RoomProperties
+    {
+        constexpr std::string_view ROOM_NAME = "name";
+        constexpr std::string_view MAX_PLAYERS = "maxPlayers";
+        constexpr std::string_view QUESTION_COUNT = "questionCount";
+        constexpr std::string_view QUESTION_TIMEOUT = "questionTimeout";
+        constexpr std::string_view ROOM_STATUS = "state";
+        constexpr std::string_view HAS_BEGUN = "hasGameBegun";
+    } // namespace RoomProperties
 } // namespace JsonFields
 
 #pragma endregion
@@ -193,6 +216,10 @@ enum RequestId
     GET_STATISTICS,
     GET_HIGHSCORE,
     LOGOUT,
+    START_ROOM,
+    LEAVE_ROOM,
+    CLOSE_ROOM,
+    GET_ROOM_STATE,
 };
 
 struct RequestInfo
@@ -202,15 +229,16 @@ struct RequestInfo
     buffer buffer;
 };
 
-struct Request {}; // Empty struct to inherit from
-
-struct RequestResult : Request
+struct RequestResult
 {
     buffer response;
     IRequestHandler* newHandler{nullptr};
 };
 
 // Request structs
+
+struct Request {}; // Empty struct to inherit from
+
 struct LoginRequest : Request
 {
     std::string username;
@@ -240,6 +268,26 @@ struct CreateRoomRequest : Request
     uint16_t maxUsers;
     uint16_t questionCount;
     uint32_t answerTimeout;
+};
+
+struct CloseRoomRequest : Request
+{
+    uint32_t roomId;
+};
+
+struct StartGameRequest : Request
+{
+    uint32_t roomId;
+};
+
+struct GetRoomStateRequest : Request
+{
+    uint32_t roomId;
+};
+
+struct LeaveRoomRequest : Request
+{
+    uint32_t roomId;
 };
 
 #pragma endregion

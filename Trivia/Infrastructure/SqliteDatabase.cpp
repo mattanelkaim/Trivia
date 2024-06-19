@@ -7,23 +7,24 @@
 #include <cstdint>
 #include <cstdlib> // std::atoi, std::atof
 #include <iterator> // std::back_inserter
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <map>
 
 using std::to_string;
 
 
-SqliteDatabase::SqliteDatabase()
-{
-    this->openDB(); // TODO(mattan) construct tables in code
-}
-
 SqliteDatabase::~SqliteDatabase() noexcept
 {
     this->closeDB();
+}
+
+SqliteDatabase& SqliteDatabase::getInstance() noexcept
+{
+    static SqliteDatabase instance; // This is thread-safe in C++11 and later
+    return instance;
 }
 
 bool SqliteDatabase::openDB()
@@ -32,12 +33,13 @@ bool SqliteDatabase::openDB()
         throw std::runtime_error("Error while opening the DB: " + to_string(sqlite3_errcode(this->m_db)));
 
     return true;
+    // TODO(mattan) construct tables in code
 }
 
 bool SqliteDatabase::closeDB() noexcept
 {
     const bool isSuccess = sqlite3_close(this->m_db) == SQLITE_OK;
-    this->m_db = nullptr;
+    this->m_db = nullptr; // Could use std::exchange with line above
     return isSuccess;
 }
 
@@ -147,7 +149,7 @@ void SqliteDatabase::runQuery(const std::string_view query) const
 
 void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const
 {
-    char* sqlErrorMsg = nullptr;
+    char* sqlErrorMsg = nullptr; // Will be set by sqlite3_exec() if an error occurs
 
     if (sqlite3_exec(this->m_db, query.data(), callback, data, &sqlErrorMsg) != SQLITE_OK)
     {
@@ -165,7 +167,7 @@ int SqliteDatabase::callbackInt(void* destination, int columns, char** data, [[m
     if (columns != 1 || data[0] == nullptr)
         return 1;
 
-    *static_cast<int*>(destination) = std::strtol(data[0], nullptr, DECIMAL_BASE);
+    *static_cast<int*>(destination) = std::stol(data[0]);
     return 0;
 }
 
@@ -174,7 +176,7 @@ int SqliteDatabase::callbackFloat(void* destination, int columns, char** data, [
     if (columns != 1 || data[0] == nullptr)
         return 1;
 
-    *static_cast<float*>(destination) = std::strtof(data[0], nullptr);
+    *static_cast<float*>(destination) = std::stof(data[0]);
     return 0;
 }
 
@@ -194,22 +196,7 @@ int SqliteDatabase::callbackString(void* destination, int columns, char** data, 
     }
 }
 
-int SqliteDatabase::callbackStringVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
-{
-    if (columns != 1)
-        return 1; // Error
-
-    try
-    {
-        static_cast<std::vector<std::string>*>(destination)->emplace_back(data[0]);
-        return 0;
-    }
-    catch (...) // Callbacks must be noexcept
-    {
-        return 1;
-    }
-}
-
+// Used in getQuestions()
 int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns != NUM_POSSIBLE_ANSWERS_PER_QUESTION + 1)
@@ -229,14 +216,15 @@ int SqliteDatabase::callbackQuestionVector(void* destination, int columns, char*
     }
 }
 
+// Used in getHighScores()
 int SqliteDatabase::callbackStringDoubleMap(void* destination, int columns, char** data, [[maybe_unused]] char** columnsNames) noexcept
 {
     if (columns != 2) // 2 = number of members in a pair
         return 1; // Error
 
     try
-    {        
-        static_cast<std::map<std::string, double>*>(destination)->emplace(data[0], std::strtof(data[1], nullptr)); // Construct with question string & answers
+    {
+        static_cast<std::map<std::string, double>*>(destination)->emplace(data[0], std::stof(data[1])); // Construct with question string & answers
         return 0;
     }
     catch (...) // Callbacks must be noexcept
