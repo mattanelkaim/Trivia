@@ -178,7 +178,7 @@ void Communicator::disconnectAllClients() noexcept
     }
 
     // Disconnect all clients
-    for (const auto& clientSocket : std::move(disconnectedClients))
+    for (const auto& clientSocket : disconnectedClients)
     {
         this->disconnectClient(clientSocket);
     }
