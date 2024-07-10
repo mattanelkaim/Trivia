@@ -82,7 +82,7 @@ RequestResult RoomAdminRequestHandler::startGameRequest() const noexcept
         Game& createdGame = GameManager::getInstance().createGame(this->m_room.room);
 
         this->m_hasExitedSafely = true;
-        this->m_room.room.updateRoomState(RoomStatus::CLOSED);
+        this->m_room.room.updateRoomState(RoomStatus::IN_GAME);
 
         // All good
         return RequestResult{
