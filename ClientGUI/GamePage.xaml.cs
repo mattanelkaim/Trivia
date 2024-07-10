@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -28,7 +29,8 @@ namespace ClientGUI
         private WaitingRoomPage.RoomData RoomData;
         private Thread TimerThread;
         private bool isTimerRunning = true;
-        private bool suspendThread = false;
+        private bool suspendTimerThread = false;
+        private bool hasAnswered = false;
 
         public GamePage(WaitingRoomPage.RoomData roomData)
         {
@@ -62,7 +64,7 @@ namespace ClientGUI
 
         private void DisplayQuestion(GetNextQuestionResponse question)
         {            
-            this.TimerTextBlock.Text = RoomData.questionTimeout.ToString();     
+            this.TimerTextBlock.Text = RoomData.questionTimeout.ToString();
             this.QuestionTextBlock.Text = question.question.ToString();
             string[] answers = question.answers.Values.ToArray();
             ((TextBlock)this.ans1.Content).Text = answers[0];
@@ -73,13 +75,17 @@ namespace ClientGUI
 
         private async void Answer_Click(object sender, RoutedEventArgs? e)
         {
+            if (this.hasAnswered)
+                return;
+
             int AnswerId = ((Button)sender).Name[3] - '0';
             SubmitAnswerResponse response = Helper.SendSubmitAnswerRequest(AnswerId);
 
             if (response.status != (int)Helper.ResponseType.OK)
                 MessageBox.Show("Error");
 
-            suspendThread = true;
+            hasAnswered = true;
+            suspendTimerThread = true;
             int CorrectAnswerId = response.correctAnsID;
             if (AnswerId != CorrectAnswerId)
             {
@@ -110,7 +116,7 @@ namespace ClientGUI
             correctButton.Background = Brushes.Green;
 
             // wait for next question
-            this.suspendThread = true;
+            this.WaitForNextQuestion();
             //Task< GetNextQuestionResponse> task = Task.Run(() =>
             //{
             //    Thread.Sleep((int.Parse(this.TimerTextBlock.Text) + 1) * 1000);
@@ -131,12 +137,31 @@ namespace ClientGUI
             //}
         }
 
+        private void WaitForNextQuestion()
+        {
+            this.suspendTimerThread = true;
+            Helper.GetNextQuestionResponse response;
+
+            while (true)
+            {
+                response = Helper.SendGetNextQuestionRequest();
+                if (response.status == (int)Helper.ResponseType.WAIT_FOR_OTHERS)
+                    Thread.Sleep(1000);
+                else
+                    break;
+            }
+
+            this.suspendTimerThread = false;
+            this.hasAnswered = false;
+            DisplayQuestion(response);
+        }
+
         private void TimerThreadWrapper()
         {
             bool HasTimerEnded = false;
             while(isTimerRunning)
             {
-                while (suspendThread) { }
+                while (suspendTimerThread) { }
                 this.Dispatcher.Invoke(() => { this.TimerTextBlock.Text = (int.Parse(this.TimerTextBlock.Text) - 1).ToString(); });
                 this.Dispatcher.Invoke(() => { HasTimerEnded = this.TimerTextBlock.Text == "0"; });
                 if (HasTimerEnded)
