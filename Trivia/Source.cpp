@@ -47,7 +47,7 @@ int main()
 {
     try
     {
-        createDummyRooms(); // TODO(mattan) remove
+        //createDummyRooms(); // TODO(mattan) remove
 
         const WSAInitializer wsaInit;
         SqliteDatabase::getInstance().openDB();
