@@ -47,7 +47,7 @@ int main()
 {
     try
     {
-        createDummyRooms(); // TODO(mattan) remove
+        //createDummyRooms(); // TODO(mattan) remove
 
         const WSAInitializer wsaInit;
         SqliteDatabase::getInstance().openDB();
@@ -55,7 +55,7 @@ int main()
     }
     catch (const std::exception& e)
     {
-        std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
+        Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
     }
 
     return 0;

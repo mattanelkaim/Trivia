@@ -28,7 +28,8 @@ private:
     ################ MEMBERS ###############
     ######################################*/
 
-    mutable bool m_hasExitedSafely;
-    RequestResult startRoomRequest() noexcept;
-    RequestResult closeRoomRequest() noexcept;
+private:
+	mutable bool m_hasExitedSafely;	
+	RequestResult startGameRequest() const noexcept;
+	RequestResult closeRoomRequest() noexcept;
 };

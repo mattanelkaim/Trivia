@@ -1,5 +1,8 @@
 #pragma once
 
+#pragma warning(disable: 4820) // Padding added after data member
+
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -10,14 +13,14 @@ public:
     ############# CONSTRUCTORS #############
     ######################################*/
 
-    Question() noexcept = default;
+    Question() = delete;
 
     /**
-    * Constructs a new Question object.
+    * Constructs a new Question object. Also shuffles the answers.
     * @param question The question text.
     * @param answers A vector of possible answers. The correct answer should be the first one in the vector.
     */
-    explicit Question(std::string question, const std::vector<std::string>& answers) noexcept;
+    Question(std::string question, std::vector<std::string> answers) noexcept;
 
     /*######################################
     ############ PUBLIC METHODS ############
@@ -25,18 +28,14 @@ public:
 
     const std::string& getQuestion() const noexcept;
     const std::vector<std::string>& getPossibleAnswers() const noexcept;
-    const std::string& getCorrectAnswer() const noexcept; // The correct answer will always be the first one
-
-    /*######################################
-    #### AVOID SHITTY COMPILER WARNINGS ####
-    ######################################*/
-    Question operator=(const Question& other) = delete;
+    uint8_t getCorrectAnswerId() const noexcept; // The correct answer will always be the first one
 
 private:
     /*######################################
     ################ MEMBERS ###############
     ######################################*/
 
-    const std::string m_question;
-    const std::vector<std::string> m_possibleAnswers;
+    std::string m_question;
+    std::vector<std::string> m_possibleAnswers;
+    uint8_t m_correctAnswerId;
 };
