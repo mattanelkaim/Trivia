@@ -137,6 +137,7 @@ namespace Helper
         }
         catch (...) // std::invalid_argument OR std::out_of_range
         {
+            return static_cast<ReturnType>(obj);
             throw InvalidProtocolStructure{"Cannot convert " + static_cast<std::string>(obj) + " to integral type!"}; // Throwing a more specific exception
         }
     }
