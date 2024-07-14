@@ -10,9 +10,6 @@
 #include "ServerDefinitions.h"
 #include "ServerException.h"
 #include <optional>
-#if SERVER_DEBUG
-#include <iostream>
-#endif
 
 
 bool LoginRequestHandler::isRequestRelevant(const RequestInfo& info) const noexcept
@@ -37,15 +34,15 @@ RequestResult LoginRequestHandler::handleRequest(const RequestInfo& info) noexce
             return LoginRequestHandler::login(info);
         case SIGNUP:
             return LoginRequestHandler::signup(info);
-        default:
+        default: // This should not happen
             throw InvalidProtocolStructure("Request is not relevant to LoginRequestHandler!");
         }
     }
     catch (const ServerException& e) // Either InvalidProtocolStructure or InvalidSQL
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << Helper::formatError(__FUNCTION__, e.what()) << ANSI_NORMAL << '\n';
-        
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
+
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
             .newHandler = nullptr
