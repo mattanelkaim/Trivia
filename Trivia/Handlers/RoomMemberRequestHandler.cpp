@@ -12,7 +12,7 @@
 #include <atomic>
 #include <utility> // std::move
 #if SERVER_DEBUG
-#include <iostream>
+#include "Helper.h"
 #endif
 
 
@@ -54,13 +54,13 @@ RequestResult RoomMemberRequestHandler::handleRequest(const RequestInfo& request
                 //break;
 
             default: // This should not happen
-                throw ServerException("Request is not relevant to MenuRequestHandler!");
+                throw ServerException("Request is not relevant to RoomMemberRequestHandler!");
         }
     }
     catch (const ServerException& e)
     {
         if constexpr (SERVER_DEBUG)
-            std::cerr << ANSI_RED << e.what() << ANSI_NORMAL << '\n';
+            Helper::safePrintError(Helper::formatError(__FUNCTION__, e.what()));
 
         return RequestResult{
             .response = JsonResponseSerializer::serializeResponse(ErrorResponse{"Invalid protocol structure"}),
