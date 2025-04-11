@@ -1,16 +1,9 @@
-/*
-Things to do before shipping
-- Build with compiler optimizations (O2/O3)
-- Turn off ASan
-*/
-
 #include "Helper.h"
 #include "Server.h"
 #include "ServerDefinitions.h"
 #include "SqliteDatabase.h"
 #include "WSAInitializer.h"
 #include <exception>
-#include <iostream>
 
 #include "RoomManager.h"
 static void createDummyRooms() noexcept
