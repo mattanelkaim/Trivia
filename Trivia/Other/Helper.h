@@ -2,6 +2,7 @@
 
 #include "InvalidProtocolStructure.h"
 #include "ServerDefinitions.h"
+#include <concepts>
 #include <cstddef> // size_t
 #include <cstdint>
 #include <ctre.hpp>
@@ -63,44 +64,19 @@ namespace Helper
 
 
     // Username: 1-16 characters, only letters, numbers, and underscores
-    constexpr auto usernameMatcher = ctre::match<R"([a-zA-Z0-9_]{1,16})">;
+    constexpr auto isUsernameValid = ctre::match<R"([a-zA-Z0-9_]{1,16})">;
 
     // Password: 5-20 characters, at least 1 uppercase, 1 lowercase, 1 number, and 1 special character
-    constexpr auto passwordMatcher = ctre::match<R"(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+|{};:/?.])([a-zA-Z0-9!@#$%^&*()\-_=+|{};:/?.]{5,20})$)">;
+    constexpr auto isPasswordValid = ctre::match<R"(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+|{};:/?.])([a-zA-Z0-9!@#$%^&*()\-_=+|{};:/?.]{5,20})$)">;
 
     // Email: RFC 5322
-    constexpr auto emailMatcher = ctre::match<R"([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})">;
+    constexpr auto isEmailValid = ctre::match<R"([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})">;
     
     // Phone number: 10 digits
-    constexpr auto phoneMatcher = ctre::match<R"(\d{10})">;
+    constexpr auto isPhoneValid = ctre::match<R"(\d{10})">;
 
     // Birth date: DD-MM-YYYY
-    constexpr auto birthDateMatcher = ctre::match<R"(\d{2}-\d{2}-\d{4})">;
-
-    constexpr bool isUsernameValid(const std::string_view username) noexcept
-    {
-        return usernameMatcher(username);
-    }
-
-    constexpr bool isPasswordValid(const std::string_view password) noexcept
-    {
-        return passwordMatcher(password);
-    }
-
-    constexpr bool isEmailValid(const std::string_view email) noexcept
-    {
-        return emailMatcher(email);
-    }
-
-    constexpr bool isPhoneValid(const std::string_view phone) noexcept
-    {
-        return phoneMatcher(phone);
-    }
-
-    constexpr bool isBirthDateValid(const std::string_view birthDate) noexcept
-    {
-        return birthDateMatcher(birthDate);
-    }
+    constexpr auto isBirthDateValid = ctre::match<R"(\d{2}-\d{2}-\d{4})">;
 
 
     /*######################################

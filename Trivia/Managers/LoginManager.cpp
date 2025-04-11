@@ -1,7 +1,7 @@
 #include "InvalidSQL.h"
 #include "LoginManager.h"
 #include "SqliteDatabase.h"
-#include <algorithm> // std::find
+#include <algorithm> // std::find, std::ranges::contains
 #include <string>
 #include <string_view>
 #include <vector> // std::erase
@@ -39,7 +39,7 @@ void LoginManager::logout(const std::string_view username) noexcept
 
 bool LoginManager::isUserLoggedIn(const std::string_view username) const noexcept
 {
-    return std::find(m_loggedUsers.cbegin(), m_loggedUsers.cend(), username) != m_loggedUsers.cend();
+    return std::ranges::contains(m_loggedUsers, username);
 }
 
 // Singleton
