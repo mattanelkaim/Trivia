@@ -175,7 +175,7 @@ buffer JsonResponseSerializer::serializeResponse(const GetQuestionResponse& resp
 }
 
 // NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
-constexpr buffer JsonResponseSerializer::serializeGeneralResponse(const ResponseCode type, const std::string_view json) noexcept
+constexpr buffer JsonResponseSerializer::serializeGeneralResponse(ResponseCode type, std::string_view json) noexcept
 {
     // Directly constructing the buffer for efficiency
     return {

@@ -3,6 +3,6 @@
 #include <string>
 #include <WinSock2.h>
 
-UnexpectedClientExit::UnexpectedClientExit(const SOCKET crashedClient) :
+UnexpectedClientExit::UnexpectedClientExit(SOCKET crashedClient) :
     ServerException("Client socket " + std::to_string(crashedClient) + " unexpectedly disconnected")
 {}

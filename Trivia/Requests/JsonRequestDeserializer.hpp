@@ -19,7 +19,7 @@ namespace JsonRequestDeserializer
      * @throws InvalidProtocolStructure
      */
     template <std::derived_from<Request> RequestType>
-    RequestType deserializeRequest(const readonly_buffer requestBuffer)
+    RequestType deserializeRequest(readonly_buffer requestBuffer)
     {
         try
         {

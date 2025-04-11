@@ -34,12 +34,12 @@ safe_room& RoomManager::createRoom(const LoggedUser& user, const RoomData& data)
     }
 }
 
-void RoomManager::deleteRoom(const uint32_t roomId) noexcept
+void RoomManager::deleteRoom(uint32_t roomId) noexcept
 {
     this->m_rooms.erase(roomId);
 }
 
-RoomStatus RoomManager::getRoomState(const uint32_t roomId) const
+RoomStatus RoomManager::getRoomState(uint32_t roomId) const
 {
     //NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast) - ignore const_cast
     const safe_room& room = const_cast<RoomManager*>(this)->getRoom(roomId); // Must use const_cast because getRoom is not const, oof
@@ -58,7 +58,7 @@ std::vector<RoomData> RoomManager::getRooms() const noexcept
     return rooms;
 }
 
-safe_room& RoomManager::getRoom(const uint32_t roomId)
+safe_room& RoomManager::getRoom(uint32_t roomId)
 {
     // Simply rethrows the exception thrown by at()
     try
@@ -71,10 +71,10 @@ safe_room& RoomManager::getRoom(const uint32_t roomId)
     }
 }
 
-bool RoomManager::doesRoomExist(const std::string& roomName) const noexcept
+bool RoomManager::doesRoomExist(std::string_view roomName) const noexcept
 {
     // Use a lambda on each room to check if room name is the same
-    return std::ranges::any_of(this->m_rooms, [&](const auto& roomPair) noexcept {
+    return std::ranges::any_of(this->m_rooms, [roomName](const auto& roomPair) noexcept {
         return roomPair.second.room.getData().name == roomName; // Check if room name is the same
     });
 }

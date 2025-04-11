@@ -42,7 +42,7 @@ bool Room::isUserInRoom(const LoggedUser& username) const noexcept
     return std::ranges::contains(this->m_users, username);
 }
 
-void Room::updateRoomState(const RoomStatus newState) noexcept
+void Room::updateRoomState(RoomStatus newState) noexcept
 {
     this->m_data.status = newState;
 }

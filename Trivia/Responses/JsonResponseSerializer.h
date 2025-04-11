@@ -23,7 +23,7 @@ namespace JsonResponseSerializer
 
     /**
      * Serializes a general (status) response that isn't covered in other overloads.
-     * @param response The response object to be serialized.
+     * @param response The response object to be serialized (derived from StatusResponse).
      * @return The serialized response as a buffer.
      */
     constexpr buffer serializeResponse(const auto& response) noexcept requires requires { response.status; }
