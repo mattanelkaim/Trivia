@@ -36,7 +36,7 @@ void Helper::safePrintError(const std::string& err) noexcept
     {} // Ignore
 }
 
-std::string Helper::getMessageFromSocket(const SOCKET sc)
+std::string Helper::getMessageFromSocket(SOCKET sc)
 {
     const int length = [sc] { // Using IIFE
         try
@@ -52,7 +52,7 @@ std::string Helper::getMessageFromSocket(const SOCKET sc)
     return getStringFromSocket(sc, length);
 }
 
-int Helper::getCodeFromSocket(const SOCKET sc)
+int Helper::getCodeFromSocket(SOCKET sc)
 {
     try
     {
@@ -64,7 +64,7 @@ int Helper::getCodeFromSocket(const SOCKET sc)
     }
 }
 
-int Helper::getIntPartFromSocket(const SOCKET sc, const int bytesNum)
+int Helper::getIntPartFromSocket(SOCKET sc, int bytesNum)
 {
     try
     {
@@ -76,7 +76,7 @@ int Helper::getIntPartFromSocket(const SOCKET sc, const int bytesNum)
     }
 }
 
-std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
+std::string Helper::getStringFromSocket(SOCKET sc, int bytesNum)
 {
     if (bytesNum <= 0) return "";
 
@@ -107,12 +107,12 @@ std::string Helper::getStringFromSocket(const SOCKET sc, const int bytesNum)
     return str;
 }
 
-void Helper::sendData(const SOCKET sc, const buffer& message)
+void Helper::sendData(SOCKET sc, const buffer& message)
 {
     sendData(sc, std::string_view(reinterpret_cast<const char*>(message.data()), message.size()));
 }
 
-void Helper::sendData(const SOCKET sc, const std::string_view message)
+void Helper::sendData(SOCKET sc, std::string_view message)
 {
 #if PRINT_IO
     std::cout << "[SERVER -> " << sc << "] " << message << '\n';

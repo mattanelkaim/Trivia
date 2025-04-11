@@ -85,7 +85,7 @@ namespace Helper
 
 
     // Use a concept to constrain the type of the first param to unsigned integral only
-    constexpr std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
+    constexpr std::string getPaddedNumber(std::unsigned_integral auto num, size_t digits) noexcept
     {
         // Return string after padding zeros if necessary
         const std::string numStr = std::to_string(num);
@@ -121,7 +121,7 @@ namespace Helper
     std::string formatError(const std::string& functionName, const std::string& err) noexcept;
     void safePrintError(const std::string& err) noexcept;
 
-    constexpr double calcUserScore(const uint32_t correct, const uint32_t wrong, const double avgTime) noexcept
+    constexpr double calcUserScore(uint32_t correct, uint32_t wrong, double avgTime) noexcept
     {
         // The formula should match the one in the DB (score row definition in user_scores)
         return (3 * correct - wrong) * (1 + 4 / avgTime);

@@ -64,7 +64,7 @@ bool SqliteDatabase::doesPasswordMatch(const std::string& username, const std::s
     return password == realPassword;
 }
 
-std::vector<Question> SqliteDatabase::getQuestions(const uint32_t numQuestions) const
+std::vector<Question> SqliteDatabase::getQuestions(uint32_t numQuestions) const
 {
     const std::string query = "SELECT question, correct, ans1, ans2, ans3 FROM questions LIMIT " + to_string(numQuestions);
 
@@ -156,12 +156,12 @@ void SqliteDatabase::updatePlayerStats(const std::string& username, const GameDa
 // Helper functions
 
 
-void SqliteDatabase::runQuery(const std::string_view query) const
+void SqliteDatabase::runQuery(std::string_view query) const
 {
     runQuery(query, nullptr, nullptr);
 }
 
-void SqliteDatabase::runQuery(const std::string_view query, const safe_callback_ptr callback, void* data) const
+void SqliteDatabase::runQuery(std::string_view query, const safe_callback_ptr callback, void* data) const
 {
     char* sqlErrorMsg = nullptr; // Will be set by sqlite3_exec() if an error occurs
 

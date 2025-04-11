@@ -32,12 +32,12 @@ bool LoginManager::login(const std::string& username, const std::string& passwor
     return false; // Login failed
 }
 
-void LoginManager::logout(const std::string_view username) noexcept
+void LoginManager::logout(std::string_view username) noexcept
 {
     std::erase(this->m_loggedUsers, username);
 }
 
-bool LoginManager::isUserLoggedIn(const std::string_view username) const noexcept
+bool LoginManager::isUserLoggedIn(std::string_view username) const noexcept
 {
     return std::ranges::contains(m_loggedUsers, username);
 }

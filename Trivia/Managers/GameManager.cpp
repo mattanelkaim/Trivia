@@ -22,7 +22,7 @@ Game& GameManager::createGame(const Room& room)
     return this->m_games.emplace_back(room.getData(), room.getAllUsers(), std::move(questions));
 }
 
-void GameManager::deleteGame(const uint32_t gameId) noexcept
+void GameManager::deleteGame(uint32_t gameId) noexcept
 {
     // Erase game from vector if it exists
     try
@@ -35,7 +35,7 @@ void GameManager::deleteGame(const uint32_t gameId) noexcept
     {} // Ignore
 }
 
-std::vector<Game>::const_iterator GameManager::findGame(const uint32_t gameId) const
+std::vector<Game>::const_iterator GameManager::findGame(uint32_t gameId) const
 {
     for (auto it = m_games.cbegin(); it != m_games.cend(); ++it)
     {

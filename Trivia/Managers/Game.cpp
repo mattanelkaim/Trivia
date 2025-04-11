@@ -67,7 +67,7 @@ std::optional<Question> Game::getQuestionForUser(const LoggedUser& user) noexcep
     }
 }
 
-uint8_t Game::submitAnswer(const LoggedUser& user, const uint8_t answerId)
+uint8_t Game::submitAnswer(const LoggedUser& user, uint8_t answerId)
 {
     try
     {

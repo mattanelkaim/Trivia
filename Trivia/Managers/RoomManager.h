@@ -4,7 +4,7 @@
 #include "SafeRoom.h"
 #include "ServerDefinitions.h"
 #include <cstdint>
-#include <string>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -43,7 +43,7 @@ public:
     */
     safe_room& getRoom(uint32_t roomId);
 
-    bool doesRoomExist(const std::string& roomName) const noexcept;
+    bool doesRoomExist(std::string_view roomName) const noexcept;
 
     /**
      * This method increments the static room ID counter and returns the new value.

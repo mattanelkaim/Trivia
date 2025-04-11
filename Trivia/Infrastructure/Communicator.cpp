@@ -87,7 +87,7 @@ void Communicator::startHandleRequests()
     }
 }
 
-void Communicator::handleNewClient(const SOCKET clientSocket)
+void Communicator::handleNewClient(SOCKET clientSocket)
 {
     while (this->m_clients.contains(clientSocket))
     {
@@ -143,7 +143,7 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
     }
 }
 
-void Communicator::disconnectClient(const SOCKET clientSocket) noexcept
+void Communicator::disconnectClient(SOCKET clientSocket) noexcept
 {
     // Send a goodbye message to the client if possible
     try
