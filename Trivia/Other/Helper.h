@@ -3,6 +3,7 @@
 #include "InvalidProtocolStructure.h"
 #include "ServerDefinitions.h"
 #include <cstddef> // size_t
+#include <cstdint>
 #include <ctre.hpp>
 #include <string>
 #include <string_view>
@@ -107,6 +108,7 @@ namespace Helper
     ######################################*/
 
 
+    // Use a concept to constrain the type of the first param to unsigned integral only
     constexpr std::string getPaddedNumber(const std::unsigned_integral auto num, const size_t digits) noexcept
     {
         // Return string after padding zeros if necessary
@@ -135,10 +137,18 @@ namespace Helper
         }
         catch (...) // std::invalid_argument OR std::out_of_range
         {
+            return static_cast<ReturnType>(obj);
             throw InvalidProtocolStructure{"Cannot convert " + static_cast<std::string>(obj) + " to integral type!"}; // Throwing a more specific exception
         }
     }
 
-    std::string formatError(const std::string& functionName, const std::string& err);
+    std::string formatError(const std::string& functionName, const std::string& err) noexcept;
+    void safePrintError(const std::string& err) noexcept;
+
+    constexpr double calcUserScore(const uint32_t correct, const uint32_t wrong, const double avgTime) noexcept
+    {
+        // The formula should match the one in the DB (score row definition in user_scores)
+        return (3 * correct - wrong) * (1 + 4 / avgTime);
+    }
 
 }; // namespace Helper
