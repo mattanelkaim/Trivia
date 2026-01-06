@@ -1,0 +1,226 @@
+﻿<Page x:Class="ClientGUI.ScoreboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ClientGUI"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ScoreboardPage">
+
+    <Page.Resources>
+        <FontFamily x:Key="Babapro">/Fonts/BabaPro.ttf#BABAPRO FONT</FontFamily>
+        <FontFamily x:Key="Good Timing">/Fonts/Good Timing.otf#Good Timing Rg</FontFamily>
+    </Page.Resources>
+
+    <Page.Background>
+        <ImageBrush ImageSource="Images/background.jpg"/>
+    </Page.Background>
+
+    <Grid>
+        <Button Background="Transparent"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderBrush="Transparent"
+                Margin="10,10,0,0"
+                Click="HomeButton_Click">
+
+            <Button.Content>
+                <Image Source="Images/White/home.png" 
+                       Width="30"/>
+            </Button.Content>
+
+        </Button>
+
+        <TextBlock Text="SCOREBOARD"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Margin="0,40,0,0"
+                   FontSize="45"
+                   Foreground="White"
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource Babapro}"/>
+
+        <Border Width="300"
+                BorderThickness="1"
+                BorderBrush="Black"
+                Margin="0,140,0,0"
+                VerticalAlignment="Top">
+            
+            <StackPanel x:Name="RoomsStackPanel"
+                        Orientation="Vertical">
+
+                <!-- Dynamically added items will go here -->
+
+                <Grid Background="PaleGoldenrod">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Height="33"
+                               Text="1"
+                               FontSize="23"
+                               FontWeight="Black"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1"
+                               Height="33"
+                               Text="{Binding TopPlayers[0].name}"
+                               Padding="20,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Background="#99E9E9E9"/>
+
+                    <TextBlock Grid.Column="2"
+                               Height="33"
+                               Text="{Binding TopPlayers[0].score, StringFormat=N2}"
+                               Padding="15,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Background="Silver">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Height="33"
+                               Text="2"
+                               FontSize="23"
+                               FontWeight="Black"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1"
+                               Height="33"
+                               Text="{Binding TopPlayers[1].name}"
+                               Padding="20,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Background="#99E9E9E9"/>
+
+                    <TextBlock Grid.Column="2"
+                               Height="33"
+                               Text="{Binding TopPlayers[1].score, StringFormat=N2}"
+                               Padding="15,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Background="RosyBrown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Height="33"
+                               Text="3"
+                               FontSize="23"
+                               FontWeight="Black"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1"
+                               Height="33"
+                               Text="{Binding TopPlayers[2].name}"
+                               Padding="20,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Background="#99E9E9E9"/>
+
+                    <TextBlock Grid.Column="2"
+                               Height="33"
+                               Text="{Binding TopPlayers[2].score, StringFormat=N2}"
+                               Padding="15,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Height="33"
+                               Text="4"
+                               FontSize="23"
+                               Foreground="White"
+                               FontWeight="Black"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1"
+                               Height="33"
+                               Text="{Binding TopPlayers[3].name}"
+                               Padding="20,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Background="#99E9E9E9"/>
+
+                    <TextBlock Grid.Column="2"
+                               Height="33"
+                               Text="{Binding TopPlayers[3].score, StringFormat=N2}"
+                               Padding="15,3,0,0"
+                               FontSize="20"
+                               Foreground="White"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Height="33"
+                               Text="5"
+                               FontSize="23"
+                               Foreground="White"
+                               FontWeight="Black"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+
+                    <TextBlock Grid.Column="1"
+                               Height="33"
+                               Text="{Binding TopPlayers[4].name}"
+                               Padding="20,3,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Background="#99E9E9E9"/>
+
+                    <TextBlock Grid.Column="2"
+                               Height="33"
+                               Text="{Binding TopPlayers[4].score, StringFormat=N2}"
+                               Padding="15,3,0,0"
+                               FontSize="20"
+                               Foreground="White"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

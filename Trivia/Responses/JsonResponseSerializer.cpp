@@ -1,0 +1,191 @@
+#include "Helper.h"
+#include "JsonResponseSerializer.h"
+#include "ServerDefinitions.h"
+#include <cstddef> // size_t
+#include <cstdint>
+#include <ranges>
+#include <string>
+#include <string_view>
+#include <utility> // std::move
+
+using std::to_string;
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+#pragma warning(push)
+#pragma warning(disable: 26447)
+buffer JsonResponseSerializer::serializeResponse(const ErrorResponse& response) noexcept
+{
+    try
+    {
+        const json j{{JsonFields::MESSAGE, response.message}};
+        return serializeGeneralResponse(ResponseCode::ERR, j.dump());
+    }
+    catch (const nlohmann::json_abi_v3_11_3::detail::type_error& e)
+    {
+        return serializeGeneralResponse(ResponseCode::ERR, e.what());
+    }
+}
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetRoomsResponse& response) noexcept
+{
+    using namespace JsonFields;
+    using namespace RoomProperties;
+
+    json j; // Wrapper
+    auto& jRooms = j[JsonFields::ROOMS] = json::object(); // Create the "highScores" wrapper
+
+    for (const RoomData& room : response.rooms)
+    {
+        json data // Not const because we need to move it
+        {
+            {ROOM_NAME, room.name},
+            {MAX_PLAYERS, room.maxPlayers},
+            {QUESTION_COUNT, room.numOfQuestionsInGame},
+            {QUESTION_TIMEOUT, room.timePerQuestion},
+            {ROOM_STATUS, room.status}
+        };
+
+        jRooms.emplace(to_string(room.id), std::move(data));
+    }
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetPlayersInRoomResponse& response) noexcept
+{
+    const json j{{JsonFields::PLAYERS_IN_ROOM, response.players}};
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetHighScoreResponse& response) noexcept
+{
+    using namespace JsonFields;
+    using namespace JsonFields::UserStats;
+
+    json j;
+    auto& jHighScores = j[JsonFields::HIGH_SCORES] = json::object(); // Create the "highScores" wrapper
+
+    uint16_t i = 0;
+
+    // Add the highscore to the JSON object
+    for (const auto& [name, score] : response.statistics)
+        jHighScores.emplace(to_string(++i), json{{USERNAME, name}, {SCORE, score}});
+
+    // Fill in the rest with default data
+    while (i < NUM_TOP_SCORES)
+        jHighScores.emplace(to_string(++i), json{{USERNAME, "None"}, {SCORE, 0.0}});
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetPersonalStatsResponse& response) noexcept
+{
+    using namespace JsonFields;
+    using namespace JsonFields::UserStats;
+
+    // Sub-fields that construct the "userStatistics" outer field
+    const json j
+    {
+        {
+            STATISTICS,
+            {
+                {SCORE,           std::stod(response.statistics[0])},
+                {TOTAL_GAMES,     std::stoi(response.statistics[1])},
+                {TOTAL_ANSWERS,   std::stoi(response.statistics[2])},
+                {CORRECT_ANSWERS, std::stoi(response.statistics[3])}
+            }
+        }
+    };
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore json constructor
+buffer JsonResponseSerializer::serializeResponse(const GetRoomStateResponse& response) noexcept
+{
+    using namespace JsonFields;
+    using namespace RoomProperties;
+
+    // Sub-fields that construct the "userStatistics" outer field
+    const json j
+    {
+        {
+            ROOM_STATE,
+            {                                
+                {QUESTION_COUNT, response.questionCount},
+                {QUESTION_TIMEOUT, response.answerTimeout},
+                {ROOM_STATUS, response.state},
+                {PLAYERS_IN_ROOM, response.players},
+                {HAS_BEGUN, response.hasGameBegun}
+            }
+        }
+    };
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+buffer JsonResponseSerializer::serializeResponse(const GetGameResultsResponse& response) noexcept
+{
+    json j{{JsonFields::STATUS, response.status}};
+    json jResults;
+
+    for (const auto& result : response.results)
+    {
+        const auto averageTime = static_cast<double>(result.totalAnswerTime) / (result.correctAnswerCount + result.wrongAnswerCount);
+
+        const auto score = Helper::calcUserScore(result.correctAnswerCount, result.wrongAnswerCount, averageTime);
+
+        const json playerResult
+        {
+            {JsonFields::GameResults::CORRECT_ANSWERS, result.correctAnswerCount},
+            {JsonFields::GameResults::WRONG_ANSWERS, result.wrongAnswerCount},
+            {JsonFields::GameResults::AVERAGE_ANSWER_TIME, averageTime},
+            {JsonFields::GameResults::SCORE, score}
+        };
+
+        jResults.emplace(result.username, playerResult);
+    }
+
+    j.emplace(JsonFields::GAME_RESULTS, jResults);
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+buffer JsonResponseSerializer::serializeResponse(const SubmitAnswerResponse& response) noexcept
+{
+    const json j{{JsonFields::STATUS, response.status}, {JsonFields::CORRECT_ANSWER_ID, response.correctAnswerId}};
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+buffer JsonResponseSerializer::serializeResponse(const GetQuestionResponse& response) noexcept
+{
+    json j{{JsonFields::STATUS, response.status}, {JsonFields::QUESTION, response.question}};
+
+    json jAnswers;
+    for (const auto& [id, answer] : response.answers)
+        jAnswers.emplace(to_string(id), answer);
+
+    j.emplace(JsonFields::ANSWERS, jAnswers);
+
+    return serializeGeneralResponse(ResponseCode::OK, j.dump());
+}
+
+// NOLINTNEXTLINE(bugprone-exception-escape) - ignore std::bad_alloc
+constexpr buffer JsonResponseSerializer::serializeGeneralResponse(ResponseCode type, std::string_view json) noexcept
+{
+    // Directly constructing the buffer for efficiency
+    return {
+        std::from_range,
+        // The first byte is the response code
+        Helper::getPaddedNumber(static_cast<uint16_t>(type), BYTES_RESERVED_FOR_CODE) + \
+        // Pushing the JSON's length to the buffer
+        Helper::getPaddedNumber(json.length(), BYTES_RESERVED_FOR_MSG_LEN) + \
+        // Pushing the actual message to the buffer
+        json.data()
+    };
+}
+#pragma warning(pop)
